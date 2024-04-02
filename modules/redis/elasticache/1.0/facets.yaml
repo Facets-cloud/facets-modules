@@ -1,0 +1,84 @@
+spec:
+  title: Redis elasticache
+  $schema: http://json-schema.org/draft-07/schema#
+  type: object
+  properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: is authenticated?
+    size:
+      type: object
+      title: Size
+      description: What size?
+      properties:
+        reader:
+          type: object
+          title: reader
+          description: Reader
+          properties:
+            instance:
+              type: string
+              title: Instance
+              description: What instance type?
+              minLength: 1
+              pattern: ^[a-zA-Z0-9-.]+$
+              enum:
+                - t2.micro
+                - Standard_DS1_v2
+                - n1-standard-2
+                - db.m5.large
+                - db.r5.large
+                - db.t3.medium
+                - db-n1-standard-1
+                - db-f1-micro
+            instance_count:
+              type: integer
+              title: instance count
+              description: How many instances?
+              minimum: 1
+          required:
+            - instance
+            - instance_count
+          order:
+            - instance
+            - instance_count
+        writer:
+          type: object
+          title: writer
+          description: Writer
+          properties:
+            instance:
+              type: string
+              title: Instance
+              description: What instance type?
+              minLength: 1
+              pattern: ^[a-zA-Z0-9-.]+$
+              enum:
+                - t2.micro
+                - Standard_DS1_v2
+                - n1-standard-2
+                - db.m5.large
+                - db.r5.large
+                - db.t3.medium
+                - db-n1-standard-1
+                - db-f1-micro
+            instance_count:
+              type: integer
+              title: instance count
+              description: How many instances?
+              minimum: 1
+          required:
+            - instance
+            - instance_count
+          order:
+            - instance
+            - instance_count
+      order:
+        - writer
+        - reader
+  required:
+    - size
+  order:
+    - authenticated
+    - size
