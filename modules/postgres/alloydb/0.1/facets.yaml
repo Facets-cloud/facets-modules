@@ -1,0 +1,51 @@
+spec:
+  title: AlloyDB
+  $schema: http://json-schema.org/draft-07/schema#
+  type: object
+  properties:
+    postgres_version:
+      type: string
+      title: Postgres version
+      description: Version of postgres e.g. 13.3
+      minLength: 1
+    size:
+      type: object
+      title: Size
+      description: Writer reader datastore sizing
+      properties:
+        reader:
+          type: object
+          title: reader
+          description: Reader
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: The number of CPU cores required
+              minLength: 1
+            instance_count:
+              type: integer
+              title: Instance count
+              description: The number of instances to create
+              minimum: 1
+          required:
+            - cpu
+            - instance_count
+        writer:
+          type: object
+          title: writer
+          description: Writer
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: The number of CPU cores required
+              minLength: 1
+          required:
+            - cpu
+  required:
+    - size
+    - postgres_version
+  order:
+    - postgres_version
+    - size

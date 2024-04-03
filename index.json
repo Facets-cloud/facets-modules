@@ -30,5 +30,37 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/redis/k8s/0.1/"
+  },
+  {
+    "intent": "postgres",
+    "flavor": "aurora",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/postgres/aurora/0.1/"
+  },
+  {
+    "intent": "postgres",
+    "flavor": "cloudsql",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/postgres/cloudsql/0.1/"
+  },
+  {
+    "intent": "postgres",
+    "flavor": "alloydb",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/postgres/alloydb/0.1/"
+  },
+  {
+    "intent": "postgres",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/postgres/k8s/0.1/"
   }
 ]

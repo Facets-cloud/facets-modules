@@ -3,18 +3,10 @@ spec:
   $schema: http://json-schema.org/draft-07/schema#
   type: object
   properties:
-    authenticated:
-      type: boolean
-      title: Authenticated
-      description: Make this Redis Password protected
-    persistence_enabled:
-      type: boolean
-      title: Persistence enabled
-      description: Enable Persistence for this Redis
-    redis_version:
+    postgres_version:
       type: string
-      title: Redis version
-      description: Version of redis e.g. 6.3
+      title: Postgres version
+      description: Version of postgres e.g. 13.3
       minLength: 1
     size:
       type: object
@@ -26,21 +18,16 @@ spec:
           title: reader
           description: Reader
           properties:
-            instance_count:
-              type: integer
-              title: Instance count
-              description: The number of instances to create
-              minimum: 1
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required, e.g '1' or '1000m'
+              description: The number of CPU cores required
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required, e.g '800Mi' or '1.5Gi'
+              description: The amount of memory required
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
@@ -55,6 +42,11 @@ spec:
               description: The memory limit to set a maximum limit on the amount of memory resources utilization, e.g '800Mi' or '1.5Gi'
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            instance_count:
+              type: integer
+              title: Instance count
+              description: The number of instances to create
+              minimum: 1
           required:
             - instance_count
             - cpu
@@ -64,21 +56,16 @@ spec:
           title: writer
           description: Writer
           properties:
-            instance_count:
-              type: integer
-              title: Instance count
-              description: The number of instances to create
-              minimum: 1
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required, e.g '1' or '1000m'
+              description: The number of CPU cores required
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required, e.g '800Mi' or '1.5Gi'
+              description: The amount of memory required
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
@@ -94,16 +81,11 @@ spec:
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           required:
-            - instance_count
             - cpu
             - memory
   required:
     - size
-    - authenticated
-    - persistence_enabled
-    - redis_version
+    - postgres_version
   order:
-    - authenticated
-    - persistence_enabled
-    - redis_version
+    - postgres_version
     - size
