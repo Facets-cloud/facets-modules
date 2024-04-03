@@ -1,20 +1,12 @@
 spec:
-  title: Memorystore
+  title: Aurora
   $schema: http://json-schema.org/draft-07/schema#
   type: object
   properties:
-    authenticated:
-      type: boolean
-      title: Authenticated
-      description: Make this Redis password protected
-    persistence_enabled:
-      type: boolean
-      title: Persistence enabled
-      description: Enable Persistence for this Redis
-    redis_version:
+    postgres_version:
       type: string
-      title: Redis version
-      description: Version of redis e.g. 6.3
+      title: Postgres version
+      description: Version of postgres e.g. 13.3
       minLength: 1
     size:
       type: object
@@ -26,44 +18,40 @@ spec:
           title: reader
           description: Reader
           properties:
+            instance:
+              type: string
+              title: Instance type
+              description: The instance type of the node.
+              minLength: 1
             instance_count:
               type: integer
               title: Instance count
               description: The number of instances to create
               minimum: 1
-            volume:
-              type: string
-              title: Volume
-              description: The size of the volume. e.g '10G' or '5Gi'
-              pattern: "^[0-9]+[a-zA-Z]$"
           required:
+            - instance
             - instance_count
-            - volume
         writer:
           type: object
           title: writer
           description: Writer
           properties:
+            instance:
+              type: string
+              title: Instance type
+              description: The instance type of the node.
+              minLength: 1
             instance_count:
               type: integer
               title: Instance count
               description: The number of instances to create
               minimum: 1
-            volume:
-              type: string
-              title: Volume
-              description: The size of the volume. e.g '10G' or '5Gi'
-              pattern: "^[0-9]+[a-zA-Z]$"
           required:
+            - instance
             - instance_count
-            - volume
   required:
     - size
-    - authenticated
-    - persistence_enabled
-    - redis_version
+    - postgres_version
   order:
-    - authenticated
-    - persistence_enabled
-    - redis_version
+    - postgres_version
     - size
