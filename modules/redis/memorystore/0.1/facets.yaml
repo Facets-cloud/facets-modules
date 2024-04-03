@@ -1,0 +1,69 @@
+spec:
+  title: Memorystore
+  $schema: http://json-schema.org/draft-07/schema#
+  type: object
+  properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: Make this memorystore Password protected
+    persistence_enabled:
+      type: boolean
+      title: Persistence enabled
+      description: Enable Persistence for this memorystore
+    redis_version:
+      type: string
+      title: Redis version
+      description: Version of redis e.g. 6.3
+      minLength: 1
+    size:
+      type: object
+      title: Size
+      description: Writer reader datastore sizing
+      properties:
+        reader:
+          type: object
+          title: reader
+          description: Reader
+          properties:
+            instance_count:
+              type: integer
+              title: Instance count
+              description: The number of instances to create
+              minimum: 1
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume. e.g '10G' or '5Gi'
+              pattern: "^[0-9]+[a-zA-Z]$"
+          required:
+            - instance_count
+            - volume
+        writer:
+          type: object
+          title: writer
+          description: Writer
+          properties:
+            instance_count:
+              type: integer
+              title: Instance count
+              description: The number of instances to create
+              minimum: 1
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume. e.g '10G' or '5Gi'
+              pattern: "^[0-9]+[a-zA-Z]$"
+          required:
+            - instance_count
+            - volume
+  required:
+    - size
+    - authenticated
+    - persistence_enabled
+    - redis_version
+  order:
+    - authenticated
+    - persistence_enabled
+    - redis_version
+    - size

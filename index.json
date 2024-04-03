@@ -2,9 +2,9 @@
   {
     "intent": "redis",
     "flavor": "elasticache",
-    "version": "1.0",
+    "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
-    "relativePath": "./modules/redis/elasticache/1.0/"
+    "relativePath": "./modules/redis/elasticache/0.1/"
   }
 ]
