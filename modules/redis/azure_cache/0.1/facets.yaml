@@ -1,16 +1,25 @@
 spec:
-  title: Redis elasticache
+  title: Redis Azure Cache
   $schema: http://json-schema.org/draft-07/schema#
   type: object
   properties:
     authenticated:
       type: boolean
       title: Authenticated
-      description: is authenticated?
+      description: Make this redis Password protected
+    persistence_enabled:
+      type: boolean
+      title: Persistence enabled
+      description: Enable Persistence for this redis
+    redis_version:
+      type: string
+      title: Redis version
+      description: Version of redis e.g. 6.3
+      minLength: 1
     size:
       type: object
       title: Size
-      description: What size?
+      description: Writer reader datastore sizing
       properties:
         reader:
           type: object
@@ -19,8 +28,8 @@ spec:
           properties:
             instance:
               type: string
-              title: Instance
-              description: What instance type?
+              title: Instance type
+              description: The instance type of the node. e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
               minLength: 1
               pattern: ^[a-zA-Z0-9-.]+$
               enum:
@@ -34,8 +43,8 @@ spec:
                 - db-f1-micro
             instance_count:
               type: integer
-              title: instance count
-              description: How many instances?
+              title: Instance count
+              description: The number of instances to create
               minimum: 1
           required:
             - instance
@@ -50,8 +59,8 @@ spec:
           properties:
             instance:
               type: string
-              title: Instance
-              description: What instance type?
+              title: Instance type
+              description: The instance type of the node. e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
               minLength: 1
               pattern: ^[a-zA-Z0-9-.]+$
               enum:
@@ -65,8 +74,8 @@ spec:
                 - db-f1-micro
             instance_count:
               type: integer
-              title: instance count
-              description: How many instances?
+              title: Instance count
+              description: The number of instances to create
               minimum: 1
           required:
             - instance
@@ -74,11 +83,18 @@ spec:
           order:
             - instance
             - instance_count
+      required:
+        - writer
       order:
         - writer
         - reader
   required:
     - size
+    - authenticated
+    - persistence_enabled
+    - redis_version
   order:
     - authenticated
+    - persistence_enabled
+    - redis_version
     - size
