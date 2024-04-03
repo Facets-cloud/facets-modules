@@ -6,5 +6,29 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/redis/elasticache/0.1/"
+  },
+  {
+    "intent": "redis",
+    "flavor": "azure_cache",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/redis/azure_cache/0.1/"
+  },
+  {
+    "intent": "redis",
+    "flavor": "memorystore",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/redis/memorystore/0.1/"
+  },
+  {
+    "intent": "redis",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/redis/k8s/0.1/"
   }
 ]
