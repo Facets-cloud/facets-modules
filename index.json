@@ -5,6 +5,6 @@
     "version": "1.0",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
-    "relativePath": "./modules/redis/elasticache/0.1/"
+    "relativePath": "./modules/redis/elasticache/1.0/"
   }
 ]
