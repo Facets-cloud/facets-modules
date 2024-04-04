@@ -1,0 +1,103 @@
+spec:
+  title: K8s
+  $schema: http://json-schema.org/draft-07/schema#
+  type: object
+  properties:
+    mysql_version:
+      type: string
+      title: MySQL version
+      description: Version of MySQL e.g. 8.0
+      minLength: 1
+    size:
+      type: object
+      title: Size
+      description: Writer reader datastore sizing
+      properties:
+        reader:
+          type: object
+          title: reader
+          description: Reader
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: The number of CPU cores required
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+            memory:
+              type: string
+              title: Memory
+              description: The amount of memory required
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            cpu_limit:
+              type: string
+              title: CPU limit
+              description: The CPU limit
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+            memory_limit:
+              type: string
+              title: Memory limit
+              description: The memory limit
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume.
+              pattern: "^[0-9]+[a-zA-Z]$"
+            instance_count:
+              type: integer
+              title: Instance count
+              description: The number of instances to create
+              minimum: 1
+          required:
+            - instance_count
+            - cpu
+            - memory
+            - volume
+        writer:
+          type: object
+          title: writer
+          description: Writer
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: The number of CPU cores required
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+            memory:
+              type: string
+              title: Memory
+              description: The amount of memory required
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            cpu_limit:
+              type: string
+              title: CPU limit
+              description: The CPU limit
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+            memory_limit:
+              type: string
+              title: Memory limit
+              description: The memory limit
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume.
+              pattern: "^[0-9]+[a-zA-Z]$"
+          required:
+            - cpu
+            - memory
+            - volume
+  required:
+    - size
+    - mysql_version
+  order:
+    - mysql_version
+    - size
