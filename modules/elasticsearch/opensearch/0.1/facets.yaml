@@ -1,0 +1,40 @@
+spec:
+  title: OpenSearch
+  $schema: http://json-schema.org/draft-07/schema#
+  type: object
+  properties:
+    elasticsearch_version:
+      type: string
+      title: Elasticsearch version
+      description: Version of Elasticsearch e.g. 7.10
+      minLength: 1
+    size:
+      type: object
+      title: Size
+      description: Datastore sizing
+      properties:
+        instance:
+          type: string
+          title: Instance type
+          description: The instance type of the node.
+          minLength: 1
+        instance_count:
+          type: integer
+          title: Instance count
+          description: The number of instances to create
+          minimum: 1
+        volume:
+          type: string
+          title: Volume
+          description: The size of the volume.
+          pattern: "^[0-9]+[a-zA-Z]$"
+      required:
+        - instance
+        - instance_count
+        - volume
+  required:
+    - size
+    - elasticsearch_version
+  order:
+    - elasticsearch_version
+    - size
