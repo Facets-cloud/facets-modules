@@ -22,7 +22,42 @@ spec:
               type: string
               title: Instance type
               description: The instance type of the node.
-              minLength: 1
+              enum:
+                - db.t3.micro
+                - db.t3.small
+                - db.t3.medium
+                - db.t3.large
+                - db.t4g.micro
+                - db.t4g.small
+                - db.t4g.medium
+                - db.t4g.large
+                - db.m5.large
+                - db.m5.xlarge
+                - db.m5.x2large
+                - db.m5.4xlarge
+                - db.m5.8xlarge
+                - db.m5.12xlarge
+                - db.m6g.micro
+                - db.m6g.small
+                - db.m6g.medium
+                - db.m6g.large
+                - db.m6g.xlarge
+                - db.m6g.x2large
+                - db.m6g.4xlarge
+                - db.m6g.8xlarge
+                - db.m6g.12xlarge
+                - db.r5.large
+                - db.r5.xlarge
+                - db.r5.2xlarge
+                - db.r5.4xlarge
+                - db.r5.8xlarge
+                - db.r5.12xlarge
+                - db.r6g.large
+                - db.r6g.xlarge
+                - db.r6g.2xlarge
+                - db.r6g.4xlarge
+                - db.r6g.8xlarge
+                - db.r6g.12xlarge
             instance_count:
               type: integer
               title: Instance count
@@ -40,7 +75,42 @@ spec:
               type: string
               title: Instance type
               description: The instance type of the node.
-              minLength: 1
+              enum:
+                - db.t3.micro
+                - db.t3.small
+                - db.t3.medium
+                - db.t3.large
+                - db.t4g.micro
+                - db.t4g.small
+                - db.t4g.medium
+                - db.t4g.large
+                - db.m5.large
+                - db.m5.xlarge
+                - db.m5.x2large
+                - db.m5.4xlarge
+                - db.m5.8xlarge
+                - db.m5.12xlarge
+                - db.m6g.micro
+                - db.m6g.small
+                - db.m6g.medium
+                - db.m6g.large
+                - db.m6g.xlarge
+                - db.m6g.x2large
+                - db.m6g.4xlarge
+                - db.m6g.8xlarge
+                - db.m6g.12xlarge
+                - db.r5.large
+                - db.r5.xlarge
+                - db.r5.2xlarge
+                - db.r5.4xlarge
+                - db.r5.8xlarge
+                - db.r5.12xlarge
+                - db.r6g.large
+                - db.r6g.xlarge
+                - db.r6g.2xlarge
+                - db.r6g.4xlarge
+                - db.r6g.8xlarge
+                - db.r6g.12xlarge
             instance_count:
               type: integer
               title: Instance count
