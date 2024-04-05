@@ -25,6 +25,14 @@
   },
   {
     "intent": "redis",
+    "flavor": "memorystore",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/redis/memorystore/0.2/"
+  },
+  {
+    "intent": "redis",
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -49,6 +57,14 @@
   },
   {
     "intent": "postgres",
+    "flavor": "cloudsql",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/postgres/cloudsql/0.2/"
+  },
+  {
+    "intent": "postgres",
     "flavor": "alloydb",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -70,6 +86,14 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/mysql/aurora/0.1/"
+  },
+  {
+    "intent": "mysql",
+    "flavor": "aurora",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/mysql/aurora/0.2/"
   },
   {
     "intent": "mysql",
@@ -110,6 +134,14 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/elasticsearch/k8s/0.1/"
+  },
+  {
+    "intent": "elasticsearch",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/elasticsearch/k8s/0.2/"
   },
   {
     "intent": "elasticsearch",
