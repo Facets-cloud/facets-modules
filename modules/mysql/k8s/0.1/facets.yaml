@@ -97,6 +97,6 @@ spec:
   required:
     - size
     - mysql_version
-  order:
+  x-ui-order:
     - mysql_version
     - size

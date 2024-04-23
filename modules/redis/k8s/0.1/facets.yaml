@@ -101,7 +101,7 @@ spec:
     - authenticated
     - persistence_enabled
     - redis_version
-  order:
+  x-ui-order:
     - authenticated
     - persistence_enabled
     - redis_version

@@ -1,0 +1,311 @@
+spec:
+  title: K8s flavor of service
+  type: object
+  properties:
+    type:
+      type: string
+      title: Service type
+      description: Type of service - application, statefulset, cronjob, job
+      enum:
+        - application
+    restart_policy:
+      type: string
+      title: Restart policy
+      description: Service restart policy - Always, OnFailure, Never
+      enum:
+        - Always
+        - OnFailure
+        - Never
+    enable_host_anti_affinity:
+      type: boolean
+      title: Enable host anti-affinity
+      description: Boolean value to enable or disable host anti-affinity
+    runtime:
+      type: object
+      title: Runtime
+      description: Runtime configuration
+      properties:
+        health_checks:
+          type: object
+          title: Health checks
+          description: All the health check related key value pairs
+          x-ui-toggle: true
+          properties:
+            readiness_check_type:
+              type: string
+              default: None
+              enum:
+                - None
+                - PortCheck
+                - HTTPCheck
+                - ExecCheck
+            liveness_check_type:
+              type: string
+              default: None
+              enum:
+                - None
+                - PortCheck
+                - HTTPCheck
+                - ExecCheck
+            liveness_start_up_time:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.liveness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: The time kubernetes api needs to wait until the application is ready for liveness check, this is takes precedence from start_up_time
+            readiness_start_up_time:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: The time kubernetes api needs to wait until the application is ready for readiness check, this is takes precedence from start_up_time
+            liveness_timeout:
+              type: string
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: Timeout for the health check liveness, this is takes precedence from timeout
+            readiness_timeout:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: Timeout for the health check readiness, this is takes precedence from timeout
+            liveness_period:
+              type: string
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
+            readiness_period:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
+            liveness_port:
+              type: string
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: [ "PortCheck", "HttpCheck" ]
+              description: Specify the port in which the health checks should be made, this is takes precedence from port
+              x-ui-dynamic-enum: spec.runtime.ports.*.port
+            readiness_port:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck" ]
+              description: Specify the port in which the health checks should be made, this is takes precedence from port
+              x-ui-dynamic-enum: spec.runtime.ports.*.port
+            liveness_url:
+              type: string
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: [ "HttpCheck" ]
+              description: URL to make the liveness check
+            readiness_url:
+              type: string
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "HttpCheck" ]
+              description: URL to make the readiness check
+            liveness_exec_command:
+              type: array
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: [ "ExecCheck" ]
+              description: The list of commands to make liveness check
+            readiness_exec_command:
+              type: array
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "ExecCheck" ]
+              description: The list of commands to make readiness check
+        autoscaling:
+          type: object
+          title: Autoscaling
+          description: Autoscaling configuration
+          properties:
+            min:
+              type: string
+              description: This is the min replicas where the hpa downscales to
+            max:
+              type: string
+              description: This is the max replicas where the hpa upscales to
+            cpu_threshold:
+              type: string
+              description: The max cpu threshold that the hpa waits until it upscales
+            ram_threshold:
+              type: string
+              description: The max ram threshold that the hpa waits until it upscales
+            packets_per_second:
+              type: string
+              description:
+                The max number of packets that can be sent to the pod, once exceeded it autoscales. eg: 10k
+            requests_per_second:
+              type: object
+              description: Requests per second RPS object keys
+              properties:
+                threshold:
+                  type: string
+                  description:
+                    The rps threshold that hpa looks for, once exceeds it autoscales eg: 10k
+                ingress_name:
+                  type: string
+                  description: Name of the ingress object that the hpa should watch for autoscaling
+              required:
+                - threshold
+                - ingress_name
+        size:
+          type: object
+          title: Size
+          description: Size configuration
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: CPU size
+              pattern: '^[0-9]+[m]?$'
+            memory:
+              type: string
+              title: Memory
+              description: Memory size
+              pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
+            cpu_limit:
+              type: string
+              title: CPU limit
+              description: CPU limit size
+              pattern: '^[0-9]+[m]?$'
+            memory_limit:
+              type: string
+              title: Memory limit
+              description: Memory limit size
+              pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
+          required:
+            - cpu
+            - memory
+        ports:
+          type: object
+          title: Ports
+          description: Maps of all the ports that you want to expose in the service
+          patternProperties:
+            type: object
+            title: Port name
+            description: This is the name of the port that you have to specify
+            keyPattern: '^[0-9]+[m]?$'
+            properties:
+              port:
+                type: string
+                title: Port
+                description: the port number where the pod is exposed
+                pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
+              service_port:
+                type: string
+                title: Service Port
+                description: the port number where the service is exposed, this is optional
+                pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
+              protocol:
+                type: string
+                title: Protocol
+                description: the protocol of the port, either tcp or udp
+                enum:
+                  - tcp
+                  - udp
+            required:
+              - protocol
+              - port
+        metrics:
+          type: object
+          title: Metrics
+          description: Maps of all the metrics port that you want to expose to prometheus
+          patternProperties:
+            type: object
+            title: Metrics name
+            description: This is the name of the metrics, this can be any name
+            keyPattern: '^[a-zA-Z0-9_.-]*$'
+            properties:
+              path:
+                type: string
+                title: Path
+                description: The path where the service monitor should scrape metrics
+              port_name:
+                type: string
+                title: Port Name
+                description: Name of the service monitor
+                x-ui-dynamic-enum: spec.runtime.ports.*
+            required:
+              - path
+              - port_name
+        volumes:
+          type: object
+          title: Volumes
+          description: All the volumes you want to attach to the service
+          properties:
+            config_maps:
+              type: object
+              description: The map of all the config maps that you want to mount
+              patternProperties:
+                type: object
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                properties:
+                  name:
+                    type: string
+                    description: The name of the config map that has been created in the kubernetes cluster
+                  mount_path:
+                    type: string
+                    description: The mount path for the config map
+            secrets:
+              type: object
+              description: The map of all the secrets that you want to mount
+              patternProperties:
+                type: object
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                properties:
+                  name:
+                    type: string
+                    description: The name of the secret that has been created in the kubernetes cluster
+                  mount_path:
+                    type: string
+                    description: The mount path for the secrets
+            pvc:
+              type: object
+              description: The map of all the pvcs that you want to mount
+              patternProperties:
+                type: object
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                properties:
+                  claim_name:
+                    type: string
+                    description: The name of the pvc that has been created in the kubernetes cluster
+                  mount_path:
+                    type: string
+                    description: The mount path for the pvc
+            host_path:
+              type: object
+              description: The map of all the secrets that you want to mount
+              patternProperties:
+                type: object
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                properties:
+                  mount_path:
+                    type: string
+                    description: The mount path for the host path
+      required:
+        - ports
+        - size
+        - health_checks
+    release:
+      type: object
+      title: Release
+      description: Release configuration
+      properties: { }
+  required:
+    - type
+    - restart_policy
+    - enable_host_anti_affinity
+    - runtime
+  x-ui-order:
+    - type
+    - restart_policy
+    - enable_host_anti_affinity
+    - runtime
