@@ -57,6 +57,6 @@ spec:
   required:
     - size
     - postgres_version
-  order:
+  x-ui-order:
     - postgres_version
     - size

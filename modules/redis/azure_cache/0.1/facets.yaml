@@ -48,7 +48,7 @@ spec:
           required:
             - instance
             - instance_count
-          order:
+          x-ui-order:
             - instance
             - instance_count
         writer:
@@ -79,12 +79,12 @@ spec:
           required:
             - instance
             - instance_count
-          order:
+          x-ui-order:
             - instance
             - instance_count
       required:
         - writer
-      order:
+      x-ui-order:
         - writer
         - reader
   required:
@@ -92,7 +92,7 @@ spec:
     - authenticated
     - persistence_enabled
     - redis_version
-  order:
+  x-ui-order:
     - authenticated
     - persistence_enabled
     - redis_version

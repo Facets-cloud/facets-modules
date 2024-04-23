@@ -127,6 +127,6 @@ spec:
   required:
     - size
     - elasticsearch_version
-  order:
+  x-ui-order:
     - elasticsearch_version
     - size
