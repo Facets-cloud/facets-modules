@@ -118,5 +118,13 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/elasticsearch/opensearch/0.1/"
+  },
+  {
+    "intent": "service",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/service/k8s/0.1/"
   }
 ]
