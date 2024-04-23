@@ -38,8 +38,56 @@ spec:
               enum:
                 - None
                 - PortCheck
-                - HTTPCheck
+                - HttpPCheck
                 - ExecCheck
+            readiness_start_up_time:
+              type: integer
+              title: Readiness start up time in sec
+              default: 30
+              default: 
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: The time kubernetes api needs to wait until the application is ready for readiness check, this is takes precedence from start_up_time
+            readiness_timeout:
+              type: integer
+              title: Readiness timeout in sec
+              default: 5
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: Timeout for the health check readiness, this is takes precedence from timeout
+            readiness_period:
+              type: integer
+              title: Readiness check interval in sec
+              default: 30
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
+              description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
+            readiness_port:
+              type: string
+              title: Readiness port
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "PortCheck", "HttpCheck" ]
+              description: Specify the port in which the health checks should be made, this is takes precedence from port
+              x-ui-dynamic-enum: spec.runtime.ports.*.port           
+            readiness_url:
+              type: string
+              title: Readiness URL
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "HttpCheck" ]
+              description: URL to make the readiness check
+            readiness_exec_command:
+              type: array
+              title: Readiness exec command
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: [ "ExecCheck" ]
+              description: The list of commands to make readiness check
+
             liveness_check_type:
               type: string
               title: Liveness check type
@@ -47,48 +95,30 @@ spec:
               enum:
                 - None
                 - PortCheck
-                - HTTPCheck
+                - HttpCheck
                 - ExecCheck
             liveness_start_up_time:
-              type: string
-              title: Liveness start up time
+              type: integer
+              default: 30
+              title: Liveness start up time in secs
               x-ui-visible-if:
                 field: spec.runtime.health_checks.liveness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: The time kubernetes api needs to wait until the application is ready for liveness check, this is takes precedence from start_up_time
-            readiness_start_up_time:
-              type: string
-              title: Readiness start up time
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: The time kubernetes api needs to wait until the application is ready for readiness check, this is takes precedence from start_up_time
             liveness_timeout:
-              type: string
-              title: Liveness timeout
+              type: integer
+              default: 5
+              title: Liveness timeout in secs
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: Timeout for the health check liveness, this is takes precedence from timeout
-            readiness_timeout:
-              type: string
-              title: Readiness timeout
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: Timeout for the health check readiness, this is takes precedence from timeout
+              description: Timeout for the health check liveness, this is takes precedence from timeout            
             liveness_period:
-              type: string
-              title: Liveness period
+              type: integer
+              title: Liveness check interval in secs 
+              default: 30
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
-                values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
-            readiness_period:
-              type: string
-              title: Readiness period
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
             liveness_port:
@@ -98,15 +128,7 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck" ]
               description: Specify the port in which the health checks should be made, this is takes precedence from port
-              x-ui-dynamic-enum: spec.runtime.ports.*.port
-            readiness_port:
-              type: string
-              title: Readiness port
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: [ "PortCheck", "HttpCheck" ]
-              description: Specify the port in which the health checks should be made, this is takes precedence from port
-              x-ui-dynamic-enum: spec.runtime.ports.*.port
+              x-ui-dynamic-enum: spec.runtime.ports.*.port            
             liveness_url:
               type: string
               title: Liveness URL
@@ -114,31 +136,18 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "HttpCheck" ]
               description: URL to make the liveness check
-            readiness_url:
-              type: string
-              title: Readiness URL
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: [ "HttpCheck" ]
-              description: URL to make the readiness check
             liveness_exec_command:
               type: array
               title: Liveness exec command
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "ExecCheck" ]
-              description: The list of commands to make liveness check
-            readiness_exec_command:
-              type: array
-              title: Readiness exec command
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: [ "ExecCheck" ]
-              description: The list of commands to make readiness check
+              description: The list of commands to make liveness check            
         autoscaling:
           type: object
           title: Autoscaling
           description: Autoscaling configuration
+          x-ui-toggle: true
           properties:
             min:
               type: integer
@@ -152,22 +161,44 @@ spec:
               default: 1
               minimum: 1
               description: This is the max replicas where the hpa upscales to
+            scaling_on:
+              type: string
+              title: Scale based on
+              default: None
+              enum:
+                - None
+                - CPU
+                - RAM
+                - RPS
+                - PPS
             cpu_threshold:
               type: string
               title: CPU threshold
               description: The max cpu threshold that the hpa waits until it upscales
+              x-ui-visible-if:
+                field: "spec.runtime.autoscaling.scaling_on"
+                values: [ "CPU" ]
             ram_threshold:
               type: string
               title: RAM threshold
               description: The max ram threshold that the hpa waits until it upscales
+              x-ui-visible-if:
+                field: "spec.runtime.autoscaling.scaling_on"
+                values: [ "RAM" ]
             packets_per_second:
               type: string
               title: Packets per second
               description: 'The max number of packets that can be sent to the pod, once exceeded it autoscales. eg: 10k'
+              x-ui-visible-if:
+                field: "spec.runtime.autoscaling.scaling_on"
+                values: [ "PPS" ]
             requests_per_second:
               type: object
               title: Requests per second
               description: Requests per second RPS object keys
+              x-ui-visible-if:
+                field: "spec.runtime.autoscaling.scaling_on"
+                values: [ "RPS" ]
               properties:
                 threshold:
                   type: string
@@ -241,6 +272,7 @@ spec:
         metrics:
           type: object
           title: Metrics
+          x-ui-toggle: true
           description: Maps of all the metrics port that you want to expose to prometheus
           patternProperties:
             type: object
@@ -263,6 +295,7 @@ spec:
         volumes:
           type: object
           title: Volumes
+          x-ui-toggle: true
           description: All the volumes you want to attach to the service
           properties:
             config_maps:
