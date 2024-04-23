@@ -140,16 +140,14 @@ spec:
               description: The max ram threshold that the hpa waits until it upscales
             packets_per_second:
               type: string
-              description:
-                The max number of packets that can be sent to the pod, once exceeded it autoscales. eg: 10k
+              description: 'The max number of packets that can be sent to the pod, once exceeded it autoscales. eg: 10k'
             requests_per_second:
               type: object
               description: Requests per second RPS object keys
               properties:
                 threshold:
                   type: string
-                  description:
-                    The rps threshold that hpa looks for, once exceeds it autoscales eg: 10k
+                  description: 'The rps threshold that hpa looks for, once exceeds it autoscales eg: 10k'
                 ingress_name:
                   type: string
                   description: Name of the ingress object that the hpa should watch for autoscaling
