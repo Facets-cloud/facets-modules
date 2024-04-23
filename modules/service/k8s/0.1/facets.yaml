@@ -33,6 +33,7 @@ spec:
           properties:
             readiness_check_type:
               type: string
+              title: Readiness check type
               default: None
               enum:
                 - None
@@ -41,6 +42,7 @@ spec:
                 - ExecCheck
             liveness_check_type:
               type: string
+              title: Liveness check type
               default: None
               enum:
                 - None
@@ -49,42 +51,49 @@ spec:
                 - ExecCheck
             liveness_start_up_time:
               type: string
+              title: Liveness start up time
               x-ui-visible-if:
                 field: spec.runtime.health_checks.liveness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: The time kubernetes api needs to wait until the application is ready for liveness check, this is takes precedence from start_up_time
             readiness_start_up_time:
               type: string
+              title: Readiness start up time
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: The time kubernetes api needs to wait until the application is ready for readiness check, this is takes precedence from start_up_time
             liveness_timeout:
               type: string
+              title: Liveness timeout
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: Timeout for the health check liveness, this is takes precedence from timeout
             readiness_timeout:
               type: string
+              title: Readiness timeout
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: Timeout for the health check readiness, this is takes precedence from timeout
             liveness_period:
               type: string
+              title: Liveness period
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
             readiness_period:
               type: string
+              title: Readiness period
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
               description: This is the repeated interval in which kubelet does a health check, this is takes precedence from period
             liveness_port:
               type: string
+              title: Liveness port
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck" ]
@@ -92,6 +101,7 @@ spec:
               x-ui-dynamic-enum: spec.runtime.ports.*.port
             readiness_port:
               type: string
+              title: Readiness port
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck" ]
@@ -99,24 +109,28 @@ spec:
               x-ui-dynamic-enum: spec.runtime.ports.*.port
             liveness_url:
               type: string
+              title: Liveness URL
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "HttpCheck" ]
               description: URL to make the liveness check
             readiness_url:
               type: string
+              title: Readiness URL
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "HttpCheck" ]
               description: URL to make the readiness check
             liveness_exec_command:
               type: array
+              title: Liveness exec command
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "ExecCheck" ]
               description: The list of commands to make liveness check
             readiness_exec_command:
               type: array
+              title: Readiness exec command
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "ExecCheck" ]
@@ -127,29 +141,41 @@ spec:
           description: Autoscaling configuration
           properties:
             min:
-              type: string
+              type: integer
+              title: Min
+              default: 1
+              minimum: 1
               description: This is the min replicas where the hpa downscales to
             max:
-              type: string
+              type: integer
+              title: Max
+              default: 1
+              minimum: 1
               description: This is the max replicas where the hpa upscales to
             cpu_threshold:
               type: string
+              title: CPU threshold
               description: The max cpu threshold that the hpa waits until it upscales
             ram_threshold:
               type: string
+              title: RAM threshold
               description: The max ram threshold that the hpa waits until it upscales
             packets_per_second:
               type: string
+              title: Packets per second
               description: 'The max number of packets that can be sent to the pod, once exceeded it autoscales. eg: 10k'
             requests_per_second:
               type: object
+              title: Requests per second
               description: Requests per second RPS object keys
               properties:
                 threshold:
                   type: string
+                  title: Threshold
                   description: 'The rps threshold that hpa looks for, once exceeds it autoscales eg: 10k'
                 ingress_name:
                   type: string
+                  title: Ingress name
                   description: Name of the ingress object that the hpa should watch for autoscaling
               required:
                 - threshold
@@ -241,57 +267,79 @@ spec:
           properties:
             config_maps:
               type: object
+              title: Config maps
               description: The map of all the config maps that you want to mount
               patternProperties:
                 type: object
+                title: Config map name
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 properties:
                   name:
                     type: string
+                    title: Name
                     description: The name of the config map that has been created in the kubernetes cluster
                   mount_path:
                     type: string
+                    title: Mount path
                     description: The mount path for the config map
             secrets:
               type: object
+              title: Secrets
               description: The map of all the secrets that you want to mount
               patternProperties:
                 type: object
+                title: Secret name
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 properties:
                   name:
                     type: string
+                    title: Name
                     description: The name of the secret that has been created in the kubernetes cluster
                   mount_path:
                     type: string
+                    title: Mount path
                     description: The mount path for the secrets
             pvc:
               type: object
+              title: PVC
               description: The map of all the pvcs that you want to mount
               patternProperties:
                 type: object
+                title: PVC name
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 properties:
                   claim_name:
                     type: string
+                    title: Claim name
                     description: The name of the pvc that has been created in the kubernetes cluster
                   mount_path:
                     type: string
+                    title: Mount path
                     description: The mount path for the pvc
             host_path:
               type: object
+              title: Host path
               description: The map of all the secrets that you want to mount
               patternProperties:
                 type: object
+                title: Host path name
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 properties:
                   mount_path:
                     type: string
+                    title: Mount path
                     description: The mount path for the host path
       required:
         - ports
         - size
         - health_checks
+      x-ui-order:
+        - ports
+        - metrics
+        - size
+        - health_checks
+        - autoscaling
+        - volumes
     release:
       type: object
       title: Release
