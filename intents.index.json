@@ -1,15 +1,15 @@
 [
   {
     "name": "redis",
-    "type": "Databases"
+    "type": "Database"
   },
   {
     "name": "postgres",
-    "type": "Databases"
+    "type": "Database"
   },
   {
     "name": "mysql",
-    "type": "Databases"
+    "type": "Database"
   },
   {
     "name": "elasticsearch",
