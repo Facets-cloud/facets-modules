@@ -1,0 +1,22 @@
+[
+  {
+    "name": "redis",
+    "type": "Databases"
+  },
+  {
+    "name": "postgres",
+    "type": "Databases"
+  },
+  {
+    "name": "mysql",
+    "type": "Databases"
+  },
+  {
+    "name": "elasticsearch",
+    "type": "Indexing"
+  },
+  {
+    "name": "service",
+    "type": "Service"
+  }
+]
