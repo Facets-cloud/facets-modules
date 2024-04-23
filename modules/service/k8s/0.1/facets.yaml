@@ -44,7 +44,6 @@ spec:
               type: integer
               title: Readiness start up time in sec
               default: 30
-              default: 
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
