@@ -5,26 +5,26 @@ spec:
     authenticated:
       type: boolean
       title: Authenticated
-      description: "Determines if Redis is password protected. When enabled, it requires users to authenticate."
+      description: "Requires password if enabled."
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
-      description: "Enable persistence to ensure data is not lost between restarts. Useful for durable storage."
+      description: "Preserves data across restarts."
     redis_version:
       type: string
       title: Redis Version
-      description: "Specifies the version of Redis to be deployed. Choose from supported versions to ensure compatibility."
+      description: "Version of Redis to use."
       enum:
         - '3.2'
         - '4.0'
         - '5.0'
         - '6.x'
         - '7.0'
-      x-ui-error-message: "A supported Redis version must be selected."
+      x-ui-error-message: "Select a supported Redis version."
     size:
       type: object
       title: Size
-      description: "Configures sizing for datastore components, including separate configurations for readers and writers."
+      description: "Sizing for datastore components."
       x-ui-order:
         - writer
         - reader
@@ -32,38 +32,38 @@ spec:
         reader:
           type: object
           title: Reader
-          description: "Configuration options for reader instances, including count and volume size."
+          description: "Reader instance settings."
           properties:
             instance_count:
               type: integer
               title: Instance Count
-              description: "Defines the number of reader instances to be created."
+              description: "Number of reader instances."
             volume:
               type: string
               title: Volume
-              description: "Specifies the volume size for each reader instance, e.g., '10Gi' or '5Gi'."
+              description: "Volume size (e.g., '10Gi')."
               pattern: "^[0-9]+Gi$"
-              x-ui-error-message: "Volume size must be specified in Gi (e.g., '10Gi')."
+              x-ui-error-message: "Use Gi format (e.g., '10Gi')."
           required:
             - instance_count
             - volume
         writer:
           type: object
           title: Writer
-          description: "Configuration options for writer instances, including count and volume size."
+          description: "Writer instance settings."
           properties:
             instance_count:
               type: integer
               title: Instance Count
-              description: "Defines the number of writer instances to be created."
+              description: "Number of writer instances."
               minimum: 1
-              x-ui-error-message: "At least one writer instance is required."
+              x-ui-error-message: "At least one instance required."
             volume:
               type: string
               title: Volume
-              description: "Specifies the volume size for each writer instance, e.g., '10Gi' or '5Gi'."
+              description: "Volume size (e.g., '10Gi')."
               pattern: "^[0-9]+Gi$"
-              x-ui-error-message: "Volume size must be specified in Gi (e.g., '10Gi')."
+              x-ui-error-message: "Use Gi format (e.g., '10Gi')."
           required:
             - instance_count
             - volume
