@@ -252,12 +252,10 @@ spec:
                 type: string
                 title: Port
                 description: the port number where the pod is exposed
-                pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
               service_port:
                 type: string
                 title: Service Port
                 description: the port number where the service is exposed, this is optional
-                pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
               protocol:
                 type: string
                 title: Protocol
