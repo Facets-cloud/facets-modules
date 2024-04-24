@@ -18,5 +18,9 @@
   {
     "name": "service",
     "type": "Service"
+  },
+  {
+    "name": "ingress",
+    "type": "Loadbalancer"
   }
 ]

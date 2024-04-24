@@ -126,5 +126,29 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/service/k8s/0.1/"
+  },
+  {
+    "intent": "ingress",
+    "flavor": "nginx_ingress_controller",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/ingress/nginx_ingress_controller/0.2/"
+  },
+  {
+    "intent": "ingress",
+    "flavor": "aws_alb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/ingress/aws_alb/0.2/"
+  },
+  {
+    "intent": "ingress",
+    "flavor": "gcp_alb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/ingress/gcp_alb/0.2/"
   }
 ]
