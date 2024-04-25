@@ -4,7 +4,7 @@ spec:
   properties:
     mysql_version:
       type: string
-      title: MySQL version
+      title: MySQL Version
       description: Version of MySQL e.g. 8.0
       minLength: 1
     size:
@@ -14,17 +14,17 @@ spec:
       properties:
         reader:
           type: object
-          title: reader
+          title: Reader
           description: Reader
           properties:
             instance:
               type: string
-              title: Instance type
-              description: The instance type of the node.
+              title: Instance Type
+              description: The instance type of the node
               minLength: 1
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
@@ -32,17 +32,17 @@ spec:
             - instance_count
         writer:
           type: object
-          title: writer
+          title: Writer
           description: Writer
           properties:
             instance:
               type: string
-              title: Instance type
-              description: The instance type of the node.
+              title: Instance Type
+              description: The instance type of the node
               minLength: 1
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
