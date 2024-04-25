@@ -4,47 +4,47 @@ spec:
   properties:
     elasticsearch_version:
       type: string
-      title: Elasticsearch version
-      description: Version of Elasticsearch e.g. 7.10
+      title: Elasticsearch Version
+      description: Version of Elasticsearch
       minLength: 1
     size:
       type: object
       title: Size
-      description: Datastore sizing
+      description: Datastore Sizing
       properties:
         cpu:
           type: string
           title: CPU
-          description: The number of CPU cores required
+          description: Number of CPU cores required
           minLength: 1
           pattern: "^[0-9]+[m]?$"
         memory:
           type: string
           title: Memory
-          description: The amount of memory required
+          description: Amount of required memory
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
         cpu_limit:
           type: string
-          title: CPU limit
-          description: The CPU limit
+          title: CPU Limit
+          description: CPU limit for the instance
           minLength: 1
           pattern: "^[0-9]+[m]?$"
         memory_limit:
           type: string
-          title: Memory limit
-          description: The memory limit
+          title: Memory Limit
+          description: Memory limit for the instance
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
         volume:
           type: string
           title: Volume
-          description: The size of the volume.
+          description: Size of the volume
           pattern: "^[0-9]+[a-zA-Z]$"
         instance_count:
           type: integer
-          title: Instance count
-          description: The number of instances to create
+          title: Instance Count
+          description: Number of instances to create
           minimum: 1
       required:
         - cpu
