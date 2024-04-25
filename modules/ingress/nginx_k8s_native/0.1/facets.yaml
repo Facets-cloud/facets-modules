@@ -18,6 +18,7 @@ spec:
       title: Domains
       description: Map of domain key to rules
       type: object
+      x-ui-overrides-only: true
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
         title: Domain Object
@@ -31,44 +32,7 @@ spec:
             type: string
             title: Alias
             description: Alias for the domain
-          certificate_reference:
-            type: string
-            title: Certificate Reference
-            description: Certificate reference name. For aws_alb, it's the ACM ARN certificate reference. For gcp_alb, it's the name of the managed certificate in GCP. For nginx_ingress_controller, it's the uploaded Kubernetes certificate referenced as a secret. For azure_agic, it is the secret key ID of the secret in Azure Key Vault.
-          rules:
-            title: Ingress Rules
-            description: Objects of all ingress rules
-            type: object
-            patternProperties:
-              keyPattern: "^[a-zA-Z0-9_.-]*$"
-              title: Ingress Object
-              description: Name of the ingress object
-              properties:
-                service_name:
-                  type: string
-                  title: Service Name
-                  description: Kubernetes service name
-                path:
-                  type: string
-                  title: Path
-                  description: Path of the application
-                port_name:
-                  type: string
-                  title: Port Name
-                  description: Service port name
-                port:
-                  type: string
-                  title: Port
-                  description: Service port number
-                domain_prefix:
-                  type: string
-                  title: Domain Prefix
-                  description: Subdomain prefix
-          equivalent_prefixes:
-            type: array
-            title: Equivalent Prefixes
-            description: List of domain prefixes
-        required: [ "domain", "alias", "certificate_reference" ]
+        required: [ "domain", "alias" ]
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
@@ -102,9 +66,5 @@ spec:
       type: boolean
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
-    ipv6_enabled:
-      type: boolean
-      title: IPv6 Enabled
-      description: Enable/disable IPv6
   required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basicAuth", "grpc", "private", "domains", "rules", "force_ssl_redirection", "ipv6_enabled"]
+  x-ui-order: ["basicAuth", "grpc", "private", "domains", "rules", "force_ssl_redirection"]
