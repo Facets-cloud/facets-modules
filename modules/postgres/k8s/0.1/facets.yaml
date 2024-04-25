@@ -4,7 +4,7 @@ spec:
   properties:
     postgres_version:
       type: string
-      title: Postgres version
+      title: Postgres Version
       description: Version of postgres e.g. 13.3
       minLength: 1
     size:
@@ -14,7 +14,7 @@ spec:
       properties:
         reader:
           type: object
-          title: reader
+          title: Reader
           description: Reader
           properties:
             cpu:
@@ -31,19 +31,21 @@ spec:
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
               type: string
-              title: CPU limit
-              description: The CPU limit to set a maximum limit on the amount of CPU resources utilization, e.g '1' or '1000m'
+              title: CPU Limit
+              description: Set a maximum limit on the amount of utilization
+              x-ui-placeholder: e.g '1' or '1000m'
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
               title: Memory limit
-              description: The memory limit to set a maximum limit on the amount of memory resources utilization, e.g '800Mi' or '1.5Gi'
+              description: Set a maximum limit on the amount of utilization
+              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
@@ -70,13 +72,15 @@ spec:
             cpu_limit:
               type: string
               title: CPU limit
-              description: The CPU limit to set a maximum limit on the amount of CPU resources utilization, e.g '1' or '1000m'
+              description: Set a maximum limit on the amount of utilization
+              x-ui-placeholder: e.g '1' or '1000m'
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
               title: Memory limit
-              description: The memory limit to set a maximum limit on the amount of memory resources utilization, e.g '800Mi' or '1.5Gi'
+              description: Set a maximum limit on the amount of utilization
+              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           required:
