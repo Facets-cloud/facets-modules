@@ -8,11 +8,11 @@ spec:
       description: Make this redis Password protected
     persistence_enabled:
       type: boolean
-      title: Persistence enabled
+      title: Persistence Enabled
       description: Enable Persistence for this redis
     redis_version:
       type: string
-      title: Redis version
+      title: Redis Version
       description: Version of redis e.g. 6.3
       minLength: 1
     size:
@@ -22,13 +22,14 @@ spec:
       properties:
         reader:
           type: object
-          title: reader
+          title: Reader
           description: Reader
           properties:
             instance:
               type: string
               title: Instance type
-              description: The instance type of the node. e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
+              description: The instance type of the node
+              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
               minLength: 1
               pattern: ^[a-zA-Z0-9-.]+$
               enum:
@@ -42,7 +43,7 @@ spec:
                 - db-f1-micro
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
@@ -53,13 +54,14 @@ spec:
             - instance_count
         writer:
           type: object
-          title: writer
+          title: Writer
           description: Writer
           properties:
             instance:
               type: string
-              title: Instance type
-              description: The instance type of the node. e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
+              title: Instance Type
+              description: The instance type of the node
+              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
               minLength: 1
               pattern: ^[a-zA-Z0-9-.]+$
               enum:
@@ -73,7 +75,7 @@ spec:
                 - db-f1-micro
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
