@@ -1,26 +1,32 @@
 [
   {
     "name": "redis",
-    "type": "Database"
+    "type": "Database",
+    "displayName": "Redis"
   },
   {
     "name": "postgres",
-    "type": "Database"
+    "type": "Database",
+    "displayName": "Postgres"
   },
   {
     "name": "mysql",
-    "type": "Database"
+    "type": "Database",
+    "displayName": "MySQL"
   },
   {
     "name": "elasticsearch",
-    "type": "Indexing"
+    "type": "Indexing",
+    "displayName": "Elasticsearch"
   },
   {
     "name": "service",
-    "type": "Service"
+    "type": "Service",
+    "displayName": "Service"
   },
   {
     "name": "ingress",
-    "type": "Loadbalancer"
+    "type": "Loadbalancer",
+    "displayName": "Ingress"
   }
 ]
