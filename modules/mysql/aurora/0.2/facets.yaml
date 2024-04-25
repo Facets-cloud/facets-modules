@@ -4,7 +4,7 @@ spec:
   properties:
     mysql_version:
       type: string
-      title: MySQL version
+      title: MySQL Version
       description: Version of MySQL e.g. 8.0
       minLength: 1
     size:
@@ -14,7 +14,7 @@ spec:
       properties:
         reader:
           type: object
-          title: reader
+          title: Reader
           description: Reader
           properties:
             instance:
@@ -67,7 +67,7 @@ spec:
             - instance_count
         writer:
           type: object
-          title: writer
+          title: Writer
           description: Writer
           properties:
             instance:
