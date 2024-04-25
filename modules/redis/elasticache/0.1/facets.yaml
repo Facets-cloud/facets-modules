@@ -27,7 +27,7 @@ spec:
           properties:
             instance:
               type: string
-              title: Instance type
+              title: Instance Type
               description: The instance type of the node
               x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
               minLength: 1
