@@ -4,7 +4,7 @@ spec:
   properties:
     elasticsearch_version:
       type: string
-      title: Elasticsearch version
+      title: Elasticsearch Version
       description: Version of Elasticsearch e.g. 7.10
       minLength: 1
     size:
@@ -14,8 +14,8 @@ spec:
       properties:
         instance:
           type: string
-          title: Instance type
-          description: The instance type of the node.
+          title: Instance Type
+          description: The instance type of the node
           enum:
             - or1.medium.search
             - or1.large.search
@@ -112,13 +112,13 @@ spec:
             - t2.medium.search
         instance_count:
           type: integer
-          title: Instance count
+          title: Instance Count
           description: The number of instances to create
           minimum: 1
         volume:
           type: string
           title: Volume
-          description: The size of the volume.
+          description: The size of the volume
           pattern: "^[0-9]+[a-zA-Z]$"
       required:
         - instance
