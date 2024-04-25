@@ -19,8 +19,8 @@ spec:
           properties:
             instance:
               type: string
-              title: Instance type
-              description: The instance type of the node.
+              title: Instance Type
+              description: The instance type of the node
               enum:
                 - db.t3.micro
                 - db.t3.small
@@ -59,7 +59,7 @@ spec:
                 - db.r6g.12xlarge
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
@@ -72,8 +72,8 @@ spec:
           properties:
             instance:
               type: string
-              title: Instance type
-              description: The instance type of the node.
+              title: Instance Type
+              description: The instance type of the node
               enum:
                 - db.t3.micro
                 - db.t3.small
@@ -112,7 +112,7 @@ spec:
                 - db.r6g.12xlarge
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
