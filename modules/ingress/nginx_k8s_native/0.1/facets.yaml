@@ -1,5 +1,5 @@
 spec:
-  title: AWS ALB
+  title: Nginx Ingress Controller
   type: object
   properties:
     basicAuth:
@@ -34,7 +34,7 @@ spec:
           certificate_reference:
             type: string
             title: Certificate Reference
-            description: Certificate reference name, if flavor is `aws_alb` then its the ACM ARN certificate reference
+            description: Certificate reference name. For aws_alb, it's the ACM ARN certificate reference. For gcp_alb, it's the name of the managed certificate in GCP. For nginx_ingress_controller, it's the uploaded Kubernetes certificate referenced as a secret. For azure_agic, it is the secret key ID of the secret in Azure Key Vault.
           rules:
             title: Ingress rules
             description: Objects of all ingress rules
@@ -64,13 +64,6 @@ spec:
                   type: string
                   title: Domain Prefix
                   description: Subdomain prefix for the service
-                priority:
-                  type: integer
-                  title: Priority
-                  description: Priority number for the above rule ( this can be from 1 - 1000 ) and it should be unique for each rule - applicable only for `aws_alb` version `0.2`
-                  minimum: 1
-                  maximum: 1000
-                  x-ui-error-message: "Priority value must be between 1 and 1000"
           equivalent_prefixes:
             type: array
             title: Equivalent Prefixes
@@ -105,13 +98,6 @@ spec:
             type: string
             title: Domain Prefix
             description: Subdomain prefix for the service
-          priority:
-            type: integer
-            title: Priority
-            description: Priority number for the above rule ( this can be from 1 - 1000 ) and it should be unique for each rule - applicable only for `aws_alb` version `0.2`
-            minimum: 1
-            maximum: 1000
-            x-ui-error-message: "Priority value must be between 1 and 1000"
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
