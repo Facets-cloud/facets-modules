@@ -5,49 +5,49 @@ spec:
     basicAuth:
       type: boolean
       title: Basic Authentication
-      description: Enable or disable basic auth
+      description: Enable/disable basic auth
     grpc:
       type: boolean
       title: GRPC
-      description: Enable or Disable grpc support in nginx_ingress_controller
+      description: Enable/disable GRPC support
     private:
       type: boolean
       title: Private
-      description: Make this load balancer private
+      description: Set load balancer as private
     domains:
       title: Domains
-      description: The map of domain key to rules
+      description: Map of domain key to rules
       type: object
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Domain object
-        description: This is the name of the domain object that you are creating, it can be of any name
+        title: Domain Object
+        description: Name of the domain object
         properties:
           domain:
             type: string
             title: Domain
-            description: The host name of the domain
+            description: Host name of the domain
           alias:
             type: string
             title: Alias
-            description: Alias naming for the domain
+            description: Alias for the domain
           certificate_reference:
             type: string
             title: Certificate Reference
             description: Certificate reference name. For aws_alb, it's the ACM ARN certificate reference. For gcp_alb, it's the name of the managed certificate in GCP. For nginx_ingress_controller, it's the uploaded Kubernetes certificate referenced as a secret. For azure_agic, it is the secret key ID of the secret in Azure Key Vault.
           rules:
-            title: Ingress rules
+            title: Ingress Rules
             description: Objects of all ingress rules
             type: object
             patternProperties:
               keyPattern: "^[a-zA-Z0-9_.-]*$"
-              title: Ingress object
-              description: This is the name of the ingress object that you are creating, it can be of any name
+              title: Ingress Object
+              description: Name of the ingress object
               properties:
                 service_name:
                   type: string
                   title: Service Name
-                  description: The Kubernetes service name of the application
+                  description: Kubernetes service name
                 path:
                   type: string
                   title: Path
@@ -55,33 +55,33 @@ spec:
                 port_name:
                   type: string
                   title: Port Name
-                  description: Port name of the service
+                  description: Service port name
                 port:
                   type: string
                   title: Port
-                  description: Port number of the service
+                  description: Service port number
                 domain_prefix:
                   type: string
                   title: Domain Prefix
-                  description: Subdomain prefix for the service
+                  description: Subdomain prefix
           equivalent_prefixes:
             type: array
             title: Equivalent Prefixes
-            description: The list of domain_prefix's to auto populate rules that matches from .spec.rules
+            description: List of domain prefixes
         required: [ "domain", "alias", "certificate_reference" ]
     rules:
-      title: Ingress rules
+      title: Ingress Rules
       description: Objects of all ingress rules
       type: object
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Ingress object
-        description: This is the name of the ingress object that you are creating, it can be of any name
+        title: Ingress Object
+        description: Name of the ingress object
         properties:
           service_name:
             type: string
             title: Service Name
-            description: The Kubernetes service name of the application
+            description: Kubernetes service name
           path:
             type: string
             title: Path
@@ -89,22 +89,22 @@ spec:
           port_name:
             type: string
             title: Port Name
-            description: Port name of the service
+            description: Service port name
           port:
             type: string
             title: Port
-            description: Port number of the service
+            description: Service port number
           domain_prefix:
             type: string
             title: Domain Prefix
-            description: Subdomain prefix for the service
+            description: Subdomain prefix
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
-      description: Force SSL redirection from http to https
+      description: Force HTTP to HTTPS redirection
     ipv6_enabled:
       type: boolean
       title: IPv6 Enabled
-      description: Enable/disable ipv6, this is a cloud specific check if your vpc has ipv6 support enabled
+      description: Enable/disable IPv6
   required: ["private", "rules", "force_ssl_redirection"]
   x-ui-order: ["basicAuth", "grpc", "private", "domains", "rules", "force_ssl_redirection", "ipv6_enabled"]
