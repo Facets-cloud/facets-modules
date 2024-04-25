@@ -4,7 +4,7 @@ spec:
   properties:
     mysql_version:
       type: string
-      title: MySQL version
+      title: MySQL Version
       description: Version of MySQL e.g. 8.0
       minLength: 1
     size:
@@ -14,7 +14,7 @@ spec:
       properties:
         reader:
           type: object
-          title: reader
+          title: Reader
           description: Reader
           properties:
             cpu:
@@ -31,24 +31,24 @@ spec:
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
               type: string
-              title: CPU limit
+              title: CPU Limit
               description: The CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
-              title: Memory limit
+              title: Memory Limit
               description: The memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             volume:
               type: string
               title: Volume
-              description: The size of the volume.
+              description: The size of the volume
               pattern: "^[0-9]+[a-zA-Z]$"
             instance_count:
               type: integer
-              title: Instance count
+              title: Instance Count
               description: The number of instances to create
               minimum: 1
           required:
@@ -58,7 +58,7 @@ spec:
             - volume
         writer:
           type: object
-          title: writer
+          title: Writer
           description: Writer
           properties:
             cpu:
@@ -75,20 +75,20 @@ spec:
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
               type: string
-              title: CPU limit
+              title: CPU Limit
               description: The CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
-              title: Memory limit
+              title: Memory Limit
               description: The memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             volume:
               type: string
               title: Volume
-              description: The size of the volume.
+              description: The size of the volume
               pattern: "^[0-9]+[a-zA-Z]$"
           required:
             - cpu
