@@ -1,0 +1,7 @@
+out:
+  type: object
+  title: Redis
+  description: Redis
+  properties:
+    reader:
+    writer:
