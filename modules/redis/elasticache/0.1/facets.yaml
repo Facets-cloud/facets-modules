@@ -99,3 +99,23 @@ spec:
     - persistence_enabled
     - redis_version
     - size
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/redis/redis.schema.json'
+  flavor: elasticache
+  metadata:
+    tags:
+      managed-by: facets
+  kind: redis
+  disabled: true
+  version: '0.1'
+  spec:
+    authenticated: true
+    redis_version: 6.x
+    persistence_enabled: false
+    size:
+      reader:
+        instance_count: 1
+        instance: cache.t3.micro
+      writer:
+        instance: cache.t3.micro
+        instance_count: 1

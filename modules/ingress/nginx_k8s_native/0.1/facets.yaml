@@ -68,3 +68,27 @@ spec:
       description: Force HTTP to HTTPS redirection
   required: ["private", "rules", "force_ssl_redirection"]
   x-ui-order: ["basicAuth", "grpc", "private", "domains", "rules", "force_ssl_redirection"]
+sample:
+  kind: ingress
+  flavor: nginx_k8s_native
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
+  disabled: true
+  version: '0.1'
+  metadata:
+    annotations: { }
+  spec:
+    private: false
+    basic_auth: false
+    grpc: false
+    domains: { }
+    rules:
+      grafana1:
+        service_name: prometheus-operator-grafana
+        path: /
+        port: 80
+        domain_prefix: grafana1
+        annotations:
+          app: ''
+        disable_auth: false
+    force_ssl_redirection: true

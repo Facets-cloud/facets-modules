@@ -73,7 +73,7 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "PortCheck", "HttpCheck" ]
               description: Port for Health Checks
-              x-ui-dynamic-enum: spec.runtime.ports.*.port           
+              x-ui-dynamic-enum: spec.runtime.ports.*.port
             readiness_url:
               type: string
               title: Readiness URL
@@ -113,7 +113,7 @@ spec:
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: Max time for liveness (in sec)         
+              description: Max time for liveness (in sec)
             liveness_period:
               type: integer
               title: Liveness Check Interval
@@ -121,7 +121,7 @@ spec:
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck", "ExecCheck" ]
-              description: Interval for Liveness (in sec) 
+              description: Interval for Liveness (in sec)
             liveness_port:
               type: string
               title: Liveness Port
@@ -129,7 +129,7 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "PortCheck", "HttpCheck" ]
               description: Port for Health Checks
-              x-ui-dynamic-enum: spec.runtime.ports.*.port            
+              x-ui-dynamic-enum: spec.runtime.ports.*.port
             liveness_url:
               type: string
               title: Liveness URL
@@ -143,7 +143,7 @@ spec:
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "ExecCheck" ]
-              description: Commands for liveness            
+              description: Commands for liveness
         autoscaling:
           type: object
           title: Autoscaling
@@ -378,10 +378,70 @@ spec:
         - autoscaling
         - volumes
     release:
-      type: object
       title: Release
-      description: Release configuration
-      properties: { }
+      description: Map of all release keys
+      type: object
+      properties:
+        image:
+          type: string
+          title: Image
+          description: The docker image of the application that you want to run
+        build:
+          type: object
+          title: Build
+          description: These contains the build objects required for running the containers
+          properties:
+            artifactory:
+              type: string
+              title: Artifactory
+              description: Parent artifactory name
+            name:
+              type: string
+              title: Name
+              description: Name of the artifactory
+            pull_policy:
+              type: string
+              title: Pull Policy
+              description: ImagePullPolicy
+              enum:
+                - IfNotPresent
+                - Always
+                - Never
+          required: [ "artifactory", "name" ]
+        strategy:
+          type: object
+          title: Strategy
+          description: The type of upgrade strategy to be followed by this service
+          properties:
+            type:
+              type: string
+              title: Type
+              description:
+                Your kubernetes rollout type eg: RollingUpdate or Recreate
+              enum:
+                - RollingUpdate
+                - Recreate
+            max_available:
+              type: string
+              title: Max Available
+              description: If type RollingUpdate, this is the max number of pods that can be created from the default replicas
+            max_unavailable:
+              type: string
+              title: Max Unavailable
+              description: If type RollingUpdate, this is the max number of pods that can be unavailable from the default replicas
+        disruption_policy:
+          type: object
+          title: Disruption Policy
+          description: The disruption policy for the service
+          properties:
+            min_available:
+              type: string
+              title: Min Available
+              description: This is the min number of pods should be available in case of failures
+            max_unavailable:
+              type: string
+              title: Max Unavailable
+              description: This is the max number of pods that can be unavailable during a failure.
   required:
     - type
     - restart_policy
@@ -392,3 +452,43 @@ spec:
     - restart_policy
     - enable_host_anti_affinity
     - runtime
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
+  flavor: k8s
+  metadata:
+    labels: { }
+  kind: service
+  disabled: true
+  version: '0.1'
+  spec:
+    enable_host_anti_affinity: false
+    type: application
+    release:
+      strategy:
+        type: RollingUpdate
+      build:
+        artifactory: default
+        name: replace-with-app-name
+    runtime:
+      autoscaling:
+        min: '1'
+        max: '1'
+        cpu_threshold: '50'
+      ports:
+        http:
+          port: '8080'
+          protocol: tcp
+      size:
+        cpu: 300m
+        memory: 1Gi
+        cpu_limit: 1000m
+      health_checks:
+        timeout: '10'
+        period: '30'
+        port: '8080'
+        start_up_time: '15'
+      volumes: { }
+    env:
+      LOG_LEVEL: INFO
+

@@ -124,3 +124,22 @@ spec:
   x-ui-order:
     - postgres_version
     - size
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
+  kind: postgres
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+  flavor: aurora
+  spec:
+    postgres_version: '12.11'
+    size:
+      writer:
+        instance: db.t3.medium
+        instance_count: 1
+      reader:
+        instance: db.t3.medium
+        instance_count: 1

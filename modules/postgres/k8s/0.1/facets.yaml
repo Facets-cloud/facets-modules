@@ -92,3 +92,23 @@ spec:
   x-ui-order:
     - postgres_version
     - size
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
+  flavor: k8s
+  metadata: { }
+  kind: postgres
+  disabled: true
+  version: 0.1
+  spec:
+    postgres_version: 15.3.0
+    size:
+      writer:
+        cpu: 1000m
+        memory: 1000Mi
+        volume: 8G
+      reader:
+        cpu: 200m
+        memory: 800Mi
+        volume: 8G
+        instance_count: 1

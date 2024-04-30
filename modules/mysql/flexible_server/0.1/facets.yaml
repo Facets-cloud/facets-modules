@@ -54,3 +54,21 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+sample:
+  flavor: flexible_server
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  metadata:
+    tags:
+      managed-by: facets
+  kind: mysql
+  disabled: true
+  version: '0.1'
+  spec:
+    mysql_version: 8.0.21
+    size:
+      writer:
+        instance_count: 1
+        instance: GP_Standard_D2ds_v4
+      reader:
+        instance_count: 1
+        instance: GP_Standard_D2ds_v4

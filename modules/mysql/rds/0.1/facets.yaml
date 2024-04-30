@@ -54,3 +54,21 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  kind: mysql
+  flavor: rds
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+  spec:
+    mysql_version: '8.0'
+    size:
+      writer:
+        instance: db.t4g.medium
+        replica_count: 1
+      reader:
+        instance: db.t4g.medium
+        replica_count: 1

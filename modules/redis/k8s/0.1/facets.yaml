@@ -114,3 +114,24 @@ spec:
     - persistence_enabled
     - redis_version
     - size
+sample:
+  flavor: k8s
+  metadata: { }
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/redis/redis.schema.json'
+  kind: redis
+  disabled: true
+  version: '0.1'
+  spec:
+    authenticated: true
+    redis_version: '6.2'
+    persistence_enabled: false
+    size:
+      writer:
+        cpu: '1'
+        memory: 512M
+        replica_count: 1
+      reader:
+        cpu: '1'
+        memory: 512M
+        replica_count: 1
+

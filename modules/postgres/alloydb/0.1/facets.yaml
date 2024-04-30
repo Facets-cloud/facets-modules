@@ -48,3 +48,19 @@ spec:
   x-ui-order:
     - postgres_version
     - size
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
+  flavor: alloydb
+  metadata: { }
+  kind: postgres
+  disabled: true
+  version: '0.1'
+  spec:
+    postgres_version: '12.11'
+    size:
+      writer:
+        cpu: 2
+      reader:
+        cpu: 2
+        instance_count: 1

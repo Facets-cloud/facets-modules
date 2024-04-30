@@ -130,3 +130,17 @@ spec:
   x-ui-order:
     - elasticsearch_version
     - size
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json
+  flavor: opensearch
+  kind: elasticsearch
+  metadata: { }
+  spec:
+    elasticsearch_version: '7.10'
+    size:
+      instance: r4.large.elasticsearch
+      instance_count: 2
+      volume: 100G
+  version: 0.1
+  disabled: true

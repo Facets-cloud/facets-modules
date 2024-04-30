@@ -99,3 +99,24 @@ spec:
     - persistence_enabled
     - redis_version
     - size
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/redis/redis.schema.json'
+  flavor: azure_cache
+  metadata:
+    tags:
+      managed-by: facets
+  kind: redis
+  disabled: true
+  version: '0.1'
+  spec:
+    authenticated: true
+    redis_version: '6'
+    persistence_enabled: true
+    size:
+      reader:
+        instance_count: 1
+        instance: 1
+      writer:
+        instance_count: 1
+        instance: 1
+
