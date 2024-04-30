@@ -124,3 +124,21 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  kind: mysql
+  flavor: aurora
+  version: '0.2'
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+  spec:
+    mysql_version: 8.0.mysql_aurora.3.02.0
+    size:
+      writer:
+        instance: db.t4g.medium
+        instance_count: 1
+      reader:
+        instance_count: 1
+        instance: db.t4g.medium

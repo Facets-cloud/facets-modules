@@ -100,3 +100,21 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  flavor: k8s
+  kind: mysql
+  metadata: { }
+  spec:
+    mysql_version: 8.0.34
+    size:
+      writer:
+        cpu: 1000m
+        memory: 1000Mi
+        volume: 8G
+      reader:
+        cpu: 200m
+        memory: 800Mi
+        volume: 8G
+        instance_count: 1
+  disabled: true
