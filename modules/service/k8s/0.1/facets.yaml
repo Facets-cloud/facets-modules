@@ -1,18 +1,19 @@
 spec:
   title: K8s flavor of service
   type: object
-  x-ui-override: true
   properties:
     type:
       type: string
       title: Service Type
       description: Type- Application, Statefulset, Cronjob, Job
+      x-ui-override-disable: true
       enum:
         - application
     restart_policy:
       type: string
       title: Restart Policy
       description: Restart Policy- Always, OnFailure, Never
+      x-ui-override-disable: true
       enum:
         - Always
         - OnFailure
@@ -24,13 +25,13 @@ spec:
     runtime:
       type: object
       title: Runtime
-      x-ui-override: true
       description: Runtime configuration
       properties:
         health_checks:
           type: object
           title: Health Checks
           description: Health check key value pairs
+          x-ui-override-disable: true
           x-ui-toggle: true
           properties:
             readiness_check_type:
@@ -216,38 +217,34 @@ spec:
           type: object
           title: Size
           description: Size configuration
-          x-ui-override: true
           properties:
             cpu:
               type: string
               title: CPU
               description: CPU size
               pattern: '^[0-9]+[m]?$'
-              x-ui-override: true
             memory:
               type: string
               title: Memory
               description: Memory size
               pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
-              x-ui-override: true
             cpu_limit:
               type: string
               title: CPU Limit
               description: CPU limit size
               pattern: '^[0-9]+[m]?$'
-              x-ui-override: true
             memory_limit:
               type: string
               title: Memory Limit
               description: Memory limit size
               pattern: '^[0-9]+(\.[0-9]+)?[EiKMGTP]i?'
-              x-ui-override: true
           required:
             - cpu
             - memory
         ports:
           type: object
           title: Ports
+          x-ui-override-disable: true
           description: Port mappings
           patternProperties:
             type: object
@@ -276,6 +273,7 @@ spec:
         metrics:
           type: object
           title: Metrics
+          x-ui-override-disable: true
           x-ui-toggle: true
           description: Metrics port mappings
           patternProperties:
@@ -299,6 +297,7 @@ spec:
         volumes:
           type: object
           title: Volumes
+          x-ui-override-disable: true
           x-ui-toggle: true
           description: Volume configurations
           properties:
