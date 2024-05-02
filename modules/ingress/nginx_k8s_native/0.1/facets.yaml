@@ -82,13 +82,5 @@ sample:
     basic_auth: false
     grpc: false
     domains: { }
-    rules:
-      grafana1:
-        service_name: prometheus-operator-grafana
-        path: /
-        port: 80
-        domain_prefix: grafana1
-        annotations:
-          app: ''
-        disable_auth: false
+    rules: { }
     force_ssl_redirection: true
