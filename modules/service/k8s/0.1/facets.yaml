@@ -480,11 +480,13 @@ sample:
       ports:
         http:
           port: '8080'
+          service_port: '8080'
           protocol: tcp
       size:
         cpu: 300m
         memory: 1Gi
         cpu_limit: 1000m
+        memory_limit: 5Gi
       health_checks:
         readiness_check_type: PortCheck
         readiness_timeout: '10'

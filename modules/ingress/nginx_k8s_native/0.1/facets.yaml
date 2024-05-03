@@ -50,10 +50,6 @@ spec:
             type: string
             title: Path
             description: Path of the application
-          port_name:
-            type: string
-            title: Port Name
-            description: Service port name
           port:
             type: string
             title: Port
