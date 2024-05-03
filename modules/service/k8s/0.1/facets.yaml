@@ -473,6 +473,7 @@ sample:
         name: replace-with-app-name
     runtime:
       autoscaling:
+        scaling_on: CPU
         min: '1'
         max: '1'
         cpu_threshold: '50'
@@ -485,10 +486,16 @@ sample:
         memory: 1Gi
         cpu_limit: 1000m
       health_checks:
-        timeout: '10'
-        period: '30'
-        port: '8080'
-        start_up_time: '15'
+        readiness_check_type: PortCheck
+        readiness_timeout: '10'
+        readiness_period: '30'
+        readiness_port: '8080'
+        readiness_start_up_time: '15'
+        liveness_check_type: PortCheck
+        liveness_timeout: '10'
+        liveness_period: '30'
+        liveness_port: '8080'
+        liveness_start_up_time: '15'
       volumes: { }
     env:
       LOG_LEVEL: INFO
