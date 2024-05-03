@@ -464,6 +464,7 @@ sample:
   spec:
     enable_host_anti_affinity: false
     type: application
+    restart_policy: Always
     release:
       strategy:
         type: RollingUpdate
