@@ -111,10 +111,14 @@ sample:
       writer:
         cpu: 1000m
         memory: 1000Mi
+        cpu_limit: 1000m
+        memory_limit: 1000Mi
         volume: 8G
       reader:
         cpu: 200m
         memory: 800Mi
+        cpu_limit: 200m
+        memory_limit: 800Mi
         volume: 8G
         instance_count: 1
   disabled: true
