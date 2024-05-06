@@ -127,11 +127,14 @@ sample:
     persistence_enabled: false
     size:
       writer:
+        instance_count: 1
         cpu: '1'
         memory: 512M
-        replica_count: 1
+        cpu_limit: '1'
+        memory_limit: 512M
       reader:
+        instance_count: 1
         cpu: '1'
         memory: 512M
-        replica_count: 1
-
+        cpu_limit: '1'
+        memory_limit: 512M
