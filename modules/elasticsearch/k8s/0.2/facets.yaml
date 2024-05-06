@@ -69,6 +69,8 @@ sample:
     size:
       cpu: 2001m
       memory: 2Gi
+      cpu_limit: 2001m
+      memory_limit: 2Gi
       volume: 8Gi
-      replica_count: 2
+      instance_count: 2
   disabled: true
