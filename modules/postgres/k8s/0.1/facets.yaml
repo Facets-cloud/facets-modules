@@ -104,13 +104,13 @@ sample:
     postgres_version: 15.3.0
     size:
       writer:
-        cpu: 1000m
-        memory: 1000Mi
-        cpu_limit: 1000m
-        memory_limit: 1000Mi
+        cpu: 1
+        memory: 1Gi
+        cpu_limit: 1
+        memory_limit: 1Gi
       reader:
-        cpu: 200m
-        memory: 800Mi
-        cpu_limit: 1000m
-        memory_limit: 1000Mi
+        cpu: 1
+        memory: 1Gi
+        cpu_limit: 1
+        memory_limit: 1Gi
         instance_count: 1
