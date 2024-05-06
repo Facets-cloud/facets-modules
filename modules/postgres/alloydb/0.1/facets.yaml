@@ -59,8 +59,8 @@ sample:
   spec:
     postgres_version: '12.11'
     size:
-      writer:
-        cpu: 2
       reader:
         cpu: 2
         instance_count: 1
+      writer:
+        cpu: 2
