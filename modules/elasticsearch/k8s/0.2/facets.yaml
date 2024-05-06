@@ -67,10 +67,10 @@ sample:
   spec:
     elasticsearch_version: 8.5.1
     size:
-      cpu: 2001m
+      cpu: 2
       memory: 2Gi
-      cpu_limit: 2001m
+      cpu_limit: 2
       memory_limit: 2Gi
       volume: 8Gi
-      instance_count: 2
+      instance_count: 1
   disabled: true
