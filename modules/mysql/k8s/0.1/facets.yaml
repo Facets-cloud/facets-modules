@@ -105,6 +105,7 @@ sample:
   flavor: k8s
   kind: mysql
   metadata: { }
+  version: '0.1'
   spec:
     mysql_version: 8.0.34
     size:
