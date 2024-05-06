@@ -106,9 +106,11 @@ sample:
       writer:
         cpu: 1000m
         memory: 1000Mi
-        volume: 8G
+        cpu_limit: 1000m
+        memory_limit: 1000Mi
       reader:
         cpu: 200m
         memory: 800Mi
-        volume: 8G
+        cpu_limit: 1000m
+        memory_limit: 1000Mi
         instance_count: 1
