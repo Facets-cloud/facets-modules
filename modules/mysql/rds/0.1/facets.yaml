@@ -40,14 +40,8 @@ spec:
               title: Instance Type
               description: The instance type of the node
               minLength: 1
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
           required:
             - instance
-            - instance_count
   required:
     - size
     - mysql_version
@@ -68,7 +62,6 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
-        instance_count: 1
       reader:
         instance: db.t4g.medium
         instance_count: 1
