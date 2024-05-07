@@ -56,8 +56,7 @@ spec:
               valueTemplate: "${service.{{value}}.out.attributes.service_name}"
               filterConditions:
                 - field: resourceType
-                  value: service
-       
+                  value: service      
           path:
             type: string
             title: Path
