@@ -67,11 +67,6 @@ spec:
           title: Writer
           description: Writer
           properties:
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
             cpu:
               type: string
               title: CPU
@@ -99,9 +94,14 @@ spec:
               description: Set a maximum limit on the amount of memory resources utilization
               x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"\
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume
+              minLength: 1
+              pattern: "^[0-9]+[a-zA-Z]$"
           required:
-            - instance_count
             - cpu
             - memory
   required:
@@ -127,11 +127,11 @@ sample:
     persistence_enabled: false
     size:
       writer:
-        instance_count: 1
         cpu: '1'
         memory: 1Gi
         cpu_limit: '1'
         memory_limit: 1Gi
+        volume: 10G
       reader:
         instance_count: 1
         cpu: '1'
