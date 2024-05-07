@@ -39,35 +39,21 @@ spec:
               title: Instance Count
               description: Number of reader instances
               default: 0
-            volume:
-              type: string
-              title: Volume
-              description: Volume size (e.g., '10Gi')
-              pattern: "^[0-9]+Gi$"
-              x-ui-error-message: "Use Gi format (e.g., '10Gi')."
           required:
             - instance_count
-            - volume
         writer:
           type: object
           title: Writer
           description: Writer instance settings
           properties:
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: Number of writer instances
-              minimum: 1
-              x-ui-error-message: "At least one instance required."
-            volume:
+            memory:
               type: string
-              title: Volume
-              description: Volume size (e.g., '10Gi')
+              title: Memory
+              description: Memory size (e.g., '10Gi')
               pattern: "^[0-9]+Gi$"
               x-ui-error-message: "Use Gi format (e.g., '10Gi')."
           required:
-            - instance_count
-            - volume
+            - memory
   required:
     - size
     - authenticated
@@ -92,8 +78,6 @@ sample:
     size:
       reader:
         instance_count: 1
-        volume: 5Gi
       writer:
-        instance_count: 1
-        volume: 5Gi
+        memory: 5Gi
 
