@@ -46,6 +46,17 @@ spec:
             type: string
             title: Service Name
             description: Kubernetes service name
+            x-ui-api-source: 
+              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+              method: GET
+              params: 
+                includeContent: false              
+              labelKey: resourceName
+              valueKey: resourceName 
+              filterConditions:
+                - field: resourceType
+                  value: service
+       
           path:
             type: string
             title: Path
