@@ -43,6 +43,12 @@ spec:
               x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume
+              minLength: 1
+              pattern: "^[0-9]+[a-zA-Z]$"
             instance_count:
               type: integer
               title: Instance Count
@@ -83,6 +89,12 @@ spec:
               x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume
+              minLength: 1
+              pattern: "^[0-9]+[a-zA-Z]$"
           required:
             - cpu
             - memory
@@ -108,9 +120,11 @@ sample:
         memory: 1Gi
         cpu_limit: 1
         memory_limit: 1Gi
+        volume: 10G
       reader:
         cpu: 1
         memory: 1Gi
         cpu_limit: 1
         memory_limit: 1Gi
+        volume: 10G
         instance_count: 1
