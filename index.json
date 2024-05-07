@@ -203,5 +203,19 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "helm",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/helm/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
