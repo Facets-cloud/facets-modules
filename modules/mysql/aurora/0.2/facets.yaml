@@ -110,14 +110,8 @@ spec:
                 - db.r6g.4xlarge
                 - db.r6g.8xlarge
                 - db.r6g.12xlarge
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
           required:
             - instance
-            - instance_count
   required:
     - size
     - mysql_version
@@ -138,7 +132,6 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
-        instance_count: 1
       reader:
         instance_count: 1
         instance: db.t4g.medium
