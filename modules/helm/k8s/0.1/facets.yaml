@@ -29,6 +29,7 @@ spec:
       type: object
       title: Values
       description: The values to be passed on to the chart in the form of a json object
+      x-ui-yaml-editor: true
   required: [ "helm", "values" ]
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'

@@ -28,5 +28,10 @@
     "name": "ingress",
     "type": "Loadbalancer",
     "displayName": "Ingress"
+  },
+  {
+    "name": "helm",
+    "type": "K8s",
+    "displayName": "Helm"
   }
 ]
