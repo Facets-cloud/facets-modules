@@ -53,6 +53,7 @@ spec:
                 includeContent: false              
               labelKey: resourceName
               valueKey: resourceName 
+              valueTemplate": "${service.{{value}}.out.attributes.service_name}",
               filterConditions:
                 - field: resourceType
                   value: service
