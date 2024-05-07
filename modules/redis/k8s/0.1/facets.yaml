@@ -94,7 +94,7 @@ spec:
               description: Set a maximum limit on the amount of memory resources utilization
               x-ui-placeholder: e.g '800Mi' or '1.5Gi'
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"\
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             volume:
               type: string
               title: Volume
