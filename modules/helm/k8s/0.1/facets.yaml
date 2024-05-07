@@ -1,0 +1,50 @@
+spec:
+  title: Helm
+  description: Specification of the Helm chart intent
+  type: object
+  properties:
+    helm:
+      title: Helm
+      description: Configuration for the Helm chart
+      type: object
+      properties:
+        chart:
+          type: string
+          title: Chart
+          description: URL or local path to the Helm chart package
+        repository:
+          type: string
+          title: Repository
+          description: URL for the helm repository
+        namespace:
+          type: string
+          title: Namespace
+          description: Namespace to deploy the Helm chart in
+        wait:
+          type: boolean
+          title: Wait
+          description: Whether to wait for the Helm chart deployment to complete
+      required: [ "chart", "namespace", "wait" ]
+    values:
+      type: object
+      title: Values
+      description: The values to be passed on to the chart in the form of a json object
+  required: [ "helm", "values" ]
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
+  kind: helm
+  flavor: k8s
+  disabled: true
+  metadata: { }
+  version: '0.1'
+  spec:
+    helm:
+      chart: >-
+        https://github.com/DataDog/helm-charts/releases/download/datadog-2.30.13/datadog-2.30.13.tgz
+      namespace: test-namespace
+      wait: false
+    values:
+      datadog:
+        service:
+          annotations:
+            key: value
