@@ -20,75 +20,33 @@ spec:
       title: Size
       description: Writer reader datastore sizing
       properties:
-        reader:
-          type: object
-          title: Reader
-          description: Reader
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node
-              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
-              minLength: 1
-              pattern: ^[a-zA-Z0-9-.]+$
-              enum:
-                - t2.micro
-                - Standard_DS1_v2
-                - n1-standard-2
-                - db.m5.large
-                - db.r5.large
-                - db.t3.medium
-                - db-n1-standard-1
-                - db-f1-micro
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
-          required:
-            - instance
-            - instance_count
-          x-ui-order:
-            - instance
-            - instance_count
-        writer:
-          type: object
-          title: Writer
-          description: Writer
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node
-              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
-              minLength: 1
-              pattern: ^[a-zA-Z0-9-.]+$
-              enum:
-                - t2.micro
-                - Standard_DS1_v2
-                - n1-standard-2
-                - db.m5.large
-                - db.r5.large
-                - db.t3.medium
-                - db-n1-standard-1
-                - db-f1-micro
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
-          required:
-            - instance
-            - instance_count
-          x-ui-order:
-            - instance
-            - instance_count
+        instance:
+          type: string
+          title: Instance Type
+          description: The instance type of the node
+          x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
+          minLength: 1
+          pattern: ^[a-zA-Z0-9-.]+$
+          enum:
+            - t2.micro
+            - Standard_DS1_v2
+            - n1-standard-2
+            - db.m5.large
+            - db.r5.large
+            - db.t3.medium
+            - db-n1-standard-1
+            - db-f1-micro
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: The number of instances to create
+          minimum: 1
       required:
-        - writer
+        - instance
+        - instance_count
       x-ui-order:
-        - writer
-        - reader
+        - instance
+        - instance_count
   required:
     - size
     - authenticated
@@ -113,9 +71,5 @@ sample:
     redis_version: 6.x
     persistence_enabled: false
     size:
-      reader:
         instance_count: 1
         instance: cache.t3.micro
-      writer:
-        instance: cache.t3.micro
-        instance_count: 1
