@@ -1,3 +1,11 @@
+intent: elasticsearch
+flavor: k8s
+version: '0.2'
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: K8s
   type: object

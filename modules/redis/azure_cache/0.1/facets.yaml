@@ -1,3 +1,8 @@
+intent: redis
+flavor: azure_cache
+version: 0.1
+clouds: 
+- azure
 spec:
   title: Redis Azure Cache
   type: object

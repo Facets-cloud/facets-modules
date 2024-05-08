@@ -1,3 +1,8 @@
+intent: postgres
+flavor: aurora
+version: '0.1'
+clouds:
+- aws
 spec:
   title: Aurora
   type: object

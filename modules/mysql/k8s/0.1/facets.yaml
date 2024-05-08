@@ -1,3 +1,11 @@
+intent: mysql
+flavor: k8s
+version: '0.1'
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: K8s
   type: object

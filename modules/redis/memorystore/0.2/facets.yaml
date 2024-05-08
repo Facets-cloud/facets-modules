@@ -1,3 +1,8 @@
+intent: redis
+flavor: memorystore
+version: 0.2
+clouds: 
+- gcp
 spec:
   title: Memorystore
   type: object

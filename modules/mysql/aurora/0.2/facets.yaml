@@ -1,3 +1,8 @@
+intent: mysql
+flavor: aurora
+version: '0.2'
+clouds:
+- aws
 spec:
   title: Aurora
   type: object

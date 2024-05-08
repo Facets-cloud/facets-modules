@@ -1,3 +1,8 @@
+intent: mysql
+flavor: rds
+version: '0.1'
+clouds:
+- aws
 spec:
   title: RDS
   type: object
