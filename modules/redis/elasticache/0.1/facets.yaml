@@ -1,3 +1,8 @@
+intent: redis
+flavor: elasticache
+version: 0.1
+clouds:
+- "aws"    
 spec:
   title: Redis elasticache
   type: object

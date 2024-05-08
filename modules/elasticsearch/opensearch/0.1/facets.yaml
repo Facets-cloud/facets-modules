@@ -1,3 +1,8 @@
+intent: elasticsearch
+flavor: opensearch
+version: '0.1'
+clouds:
+- aws
 spec:
   title: OpenSearch
   type: object

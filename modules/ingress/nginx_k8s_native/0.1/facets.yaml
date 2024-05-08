@@ -1,3 +1,11 @@
+intent: ingress
+flavor: nginx_k8s_native
+version: '0.1'
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: Nginx Ingress Controller
   type: object
