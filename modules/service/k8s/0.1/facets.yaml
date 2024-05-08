@@ -393,6 +393,7 @@ spec:
           type: string
           title: Image
           description: The docker image of the application that you want to run
+          x-ui-skip: true
         build:
           type: object
           title: Build
@@ -415,6 +416,7 @@ spec:
                 - Always
                 - Never
           required: [ "artifactory", "name" ]
+          x-ui-skip: true
         strategy:
           type: object
           title: Strategy
