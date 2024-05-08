@@ -1,0 +1,6 @@
+name: loki_s3
+cloud:
+- aws
+version: 0.1
+type: MULTI_INSTANCE
+group: Capabilities
