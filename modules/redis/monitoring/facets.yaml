@@ -1,7 +1,7 @@
 intent: redis_monitoring
 flavor: default
-version: 0.1
-cloud: 
+version: '0.1'
+clouds: 
 - aws
 - k8s
 - azure
