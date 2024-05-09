@@ -33,5 +33,10 @@
     "name": "helm",
     "type": "K8s",
     "displayName": "Helm"
+  },
+  {
+    "name": "redis_monitoring",
+    "type": "Monitoring",
+    "displayName": "Monitor Redis"
   }
 ]
