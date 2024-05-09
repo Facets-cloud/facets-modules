@@ -47,6 +47,20 @@
     ]
   },
   {
+    "intent": "redis_monitoring",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/redis/monitoring/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
     "intent": "postgres",
     "flavor": "aurora",
     "version": "0.1",
