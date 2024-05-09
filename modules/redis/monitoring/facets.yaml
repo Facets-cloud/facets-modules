@@ -1,5 +1,5 @@
 intent: redis_monitoring
-flavor: default
+flavor: k8s
 version: '0.1'
 clouds: 
 - aws
@@ -12,3 +12,9 @@ of:
 - intent: redis
 spec:
 sample:
+  flavor: k8s
+  metadata:
+  kind: redis_monitoring
+  disabled: true
+  version: '0.1'
+  spec:
