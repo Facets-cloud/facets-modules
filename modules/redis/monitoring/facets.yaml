@@ -1,15 +1,15 @@
 intent: redis_monitoring
 flavor: k8s
 version: '0.1'
-clouds: 
-- aws
-- k8s
-- azure
-- gcp
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
 description: Adds Monitoring to Redis
 type: INTENT_ADD_ON
-of: 
-- intent: redis
+of:
+  - intent: redis
 spec:
 sample:
   flavor: k8s
