@@ -468,7 +468,7 @@ sample:
   flavor: k8s
   metadata:
     labels:
-      deliveryType: 'Manual'
+      deliveryType: MANUAL
   kind: service
   disabled: true
   version: '0.1'
