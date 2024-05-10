@@ -1,0 +1,266 @@
+intent: kubernetes_monitoring
+flavor: k8s
+version: '0.1'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+description: Adds Monitoring to Kubernetes Cluster
+type: INTENT_ADD_ON
+of:
+  - intent: kubernetes_cluster
+spec:
+  title: Kubernetes Monitoring
+  type: object
+  properties:
+    exporters:
+      type: object
+      title: Exporters
+      description: Exporters configuration
+      properties:
+        event_exporter:
+          type: object
+          title: Event Exporter Exporter
+          description: Event Exporter Exporter configuration
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Event Exporter
+              enum:
+              - true
+              - false
+        k8s_ssl_validity_exporter:
+          type: object
+          title: K8s SSL Validity Exporter
+          description: K8s SSL Validity Exporter configuration
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable K8s SSL Validity Exporter
+              enum:
+              - true
+              - false
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        node_not_ready:
+          type: object
+          title: Node Not Ready
+          description: Node Not Ready alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        node_high_disk_pressure:
+          type: object
+          title: Node High Disk Pressure
+          description: Node High Disk Pressure alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        node_high_memory:
+          type: object
+          title: Node High Memory
+          description: Node High Memory alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        node_high_cpu:
+          type: object
+          title: Node High CPU
+          description: Node High CPU alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: A predefined limit, upon crossing which an alert condition becomes true and potentially triggers an alert
+        node_out_of_disk_space:
+          type: object
+          title: Node Out Of Disk Space
+          description: Node Out Of Disk Space alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: A predefined limit, upon crossing which an alert condition becomes true and potentially triggers an alert
+        node_unable_to_scale_up:
+          type: object
+          title: Node Unable To Scale Up
+          description: Node Unable To Scale Up alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        node_unable_to_scale_down:
+          type: object
+          title: Node Unable To Scale Down
+          description: Node Unable To Scale Down alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        ssl_expiry:
+          type: object
+          title: SSL Expiry
+          description: SSL Expiry alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+                - true
+                - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: A predefined limit, upon crossing which an alert condition becomes true and potentially triggers an alert
+        node_efficiency:
+          type: object
+          title: Node Efficiency
+          description: Node Efficiency alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+                - true
+                - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: A predefined limit, upon crossing which an alert condition becomes true and potentially triggers an alert
+        unattached_volume:
+          type: object
+          title: Unattached Volume
+          description: Unattached Volume alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+              enum:
+              - true
+              - false
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
