@@ -1,5 +1,5 @@
 name: loki_s3
-cloud:
+clouds:
   - aws
 version: 0.1
 type: MULTI_INSTANCE
