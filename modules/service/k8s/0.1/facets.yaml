@@ -467,7 +467,8 @@ sample:
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
   flavor: k8s
   metadata:
-    labels: { }
+    labels:
+      deliveryType: 'Manual'
   kind: service
   disabled: true
   version: '0.1'
