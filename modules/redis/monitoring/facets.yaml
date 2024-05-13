@@ -7,10 +7,11 @@ clouds:
   - azure
   - gcp
 description: Adds Monitoring to Redis
-type: INTENT_ADD_ON
-of:
-  - intent: redis
 spec:
+inputs: 
+  redis:
+    type: @output/redis
+    adds_capability: true 
 sample:
   flavor: k8s
   metadata:

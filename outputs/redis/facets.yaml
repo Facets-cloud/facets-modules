@@ -1,3 +1,4 @@
+name: redis
 out:
   type: object
   title: Redis
