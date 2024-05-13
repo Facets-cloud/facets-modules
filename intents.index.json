@@ -1,42 +1,42 @@
 [
   {
-    "name": "redis",
-    "type": "Database",
-    "displayName": "Redis"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/redis/"
   },
   {
-    "name": "postgres",
-    "type": "Database",
-    "displayName": "Postgres"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/postgres/"
   },
   {
-    "name": "mysql",
-    "type": "Database",
-    "displayName": "MySQL"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/mysql/"
   },
   {
-    "name": "elasticsearch",
-    "type": "Indexing",
-    "displayName": "Elasticsearch"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/elasticsearch/"
   },
   {
-    "name": "service",
-    "type": "Service",
-    "displayName": "Service"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/service/"
   },
   {
-    "name": "ingress",
-    "type": "Loadbalancer",
-    "displayName": "Ingress"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/ingress/"
   },
   {
-    "name": "helm",
-    "type": "K8s",
-    "displayName": "Helm"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/helm/"
   },
   {
-    "name": "redis_monitoring",
-    "type": "Monitoring",
-    "displayName": "Monitor Redis"
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/redis_monitoring/"
   }
 ]
