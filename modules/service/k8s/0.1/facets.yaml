@@ -425,7 +425,7 @@ spec:
             type:
               type: string
               title: Type
-              description: Your kubernetes rollout type eg: RollingUpdate or Recreate
+              description: "Your kubernetes rollout type eg: RollingUpdate or Recreate"
               enum:
                 - RollingUpdate
                 - Recreate
