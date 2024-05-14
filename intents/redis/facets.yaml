@@ -1,3 +1,5 @@
 name: redis
 type: Database
 displayName: Redis
+outputs: 
+  default: "@output/redis"
