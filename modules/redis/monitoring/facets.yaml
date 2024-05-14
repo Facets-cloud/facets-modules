@@ -10,7 +10,7 @@ description: Adds Monitoring to Redis
 spec:
 inputs: 
   redis:
-    type: @output/redis
+    type: "@output/redis"
     adds_capability: true 
 sample:
   flavor: k8s
