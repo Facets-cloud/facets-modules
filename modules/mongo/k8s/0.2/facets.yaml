@@ -1,0 +1,93 @@
+intent: mongo
+flavor: k8s
+version: '0.2'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: K8s
+  type: object
+  properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: Make this mongodb instance password protected
+    mongodb_version:
+      type: string
+      title: MongoDB Version
+      description: "Version of mongodb e.g. 6.0, see valid tags here: https://hub.docker.com/_/mongo/tags?page=1"
+      minLength: 3
+      pattern: "^(\d+\.)?(\d+\.)?(\*|\d+)$"
+    size:
+      type: object
+      title: Size
+      description: Size of the mongodb instance
+      properties:
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: The number of instances to create
+          minimum: 1
+        cpu:
+          type: string
+          title: CPU
+          description: The number of CPU cores required
+          x-ui-placeholder: e.g '1' or '1000m'
+          minLength: 1
+          pattern: "^[0-9]+[m]?$"
+        memory:
+          type: string
+          title: Memory
+          description: The amount of memory required
+          x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+          minLength: 1
+          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+        cpu_limit:
+          type: string
+          title: CPU Limit
+          description: Set a maximum limit on the amount of CPU resource utilization
+          x-ui-placeholder: e.g '1' or '1000m'
+          minLength: 1
+          pattern: "^[0-9]+[m]?$"
+        memory_limit:
+          type: string
+          title: Memory Limit
+          description: Set a maximum limit on the amount of memory resources utilization
+          x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+          minLength: 1
+          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+        volume:
+          type: string
+          title: Volume
+          description: The size of the volume. e.g '10G' or '5Gi'
+          pattern: "^[0-9]+[a-zA-Z]$"
+      required:
+        - instance_count
+        - cpu
+        - memory
+  required:
+    - size
+    - authenticated
+    - mongodb_version
+  x-ui-order:
+    - authenticated
+    - mongodb_version
+    - size
+sample:
+  flavor: k8s
+  metadata: { }
+  kind: mongo
+  disabled: true
+  version: '0.2'
+  spec:
+    authenticated: true
+    mongodb_version: '6.0.2'
+    size:
+      instance_count: 3
+      cpu: '2001m'
+      memory: '900MiB'
+      cpu_limit: '10000m'
+      memory_limit: '3Gi'
+      volume: '8G'
