@@ -38,5 +38,10 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./intents/redis_monitoring/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./intents/mongo/"
   }
 ]

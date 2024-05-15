@@ -231,5 +231,19 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "mongo",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/mongo/k8s/0.2/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
