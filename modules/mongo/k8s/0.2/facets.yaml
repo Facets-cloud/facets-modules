@@ -86,7 +86,7 @@ sample:
     size:
       instance_count: 3
       cpu: '2001m'
-      memory: '900MiB'
+      memory: '900Mi'
       cpu_limit: '10000m'
       memory_limit: '3Gi'
       volume: '8G'
