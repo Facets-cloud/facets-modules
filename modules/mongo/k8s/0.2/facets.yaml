@@ -19,7 +19,6 @@ spec:
       title: MongoDB Version
       description: "Version of mongodb e.g. 6.0, see valid tags here: https://hub.docker.com/_/mongo/tags?page=1"
       minLength: 3
-      pattern: "^(\d+\.)?(\d+\.)?(\*|\d+)$"
     size:
       type: object
       title: Size
