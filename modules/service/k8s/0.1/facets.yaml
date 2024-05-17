@@ -83,6 +83,7 @@ spec:
                 values: [ "PortCheck", "HttpCheck" ]
               description: Port for Health Checks
               x-ui-dynamic-enum: spec.runtime.ports.*.port
+              x-ui-disable-tooltip: "No Ports Added"
             readiness_url:
               type: string
               title: Readiness URL
@@ -139,6 +140,7 @@ spec:
                 values: [ "PortCheck", "HttpCheck" ]
               description: Port for Health Checks
               x-ui-dynamic-enum: spec.runtime.ports.*.port
+              x-ui-disable-tooltip: "No Ports Added"
             liveness_url:
               type: string
               title: Liveness URL
@@ -299,6 +301,7 @@ spec:
                 title: Port Name
                 description: Port name for metrics
                 x-ui-dynamic-enum: spec.runtime.ports.*
+                x-ui-disable-tooltip: "No Ports Available"
             required:
               - path
               - port_name
