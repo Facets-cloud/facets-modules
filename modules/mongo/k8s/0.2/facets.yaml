@@ -61,7 +61,7 @@ spec:
           type: string
           title: Volume
           description: The size of the volume. e.g '10G' or '5Gi'
-          pattern: "^[0-9]+[a-zA-Z]$"
+          pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
       required:
         - instance_count
         - cpu

@@ -108,7 +108,7 @@ spec:
               title: Volume
               description: The size of the volume
               minLength: 1
-              pattern: "^[0-9]+[a-zA-Z]$"
+              pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
           required:
             - cpu
             - memory
