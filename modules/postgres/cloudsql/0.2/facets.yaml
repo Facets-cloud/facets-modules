@@ -31,7 +31,7 @@ spec:
               type: string
               title: Volume
               description: The size of the volume
-              pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
             instance_count:
               type: integer
               title: Instance Count
@@ -55,7 +55,7 @@ spec:
               type: string
               title: Volume
               description: The size of the volume
-              pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
           required:
             - instance
             - volume
