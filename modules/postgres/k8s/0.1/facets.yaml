@@ -56,7 +56,7 @@ spec:
               title: Volume
               description: The size of the volume
               minLength: 1
-              pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
             instance_count:
               type: integer
               title: Instance Count
@@ -102,7 +102,7 @@ spec:
               title: Volume
               description: The size of the volume
               minLength: 1
-              pattern: "^[0-9]+(\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
           required:
             - cpu
             - memory
