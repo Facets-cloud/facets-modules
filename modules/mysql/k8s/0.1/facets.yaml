@@ -15,6 +15,8 @@ spec:
       title: MySQL Version
       description: Version of MySQL e.g. 8.0
       minLength: 1
+      x-ui-placeholder: "e.g. 8.0"
+      x-ui-error-message: "MySQL Version is required."
     size:
       type: object
       title: Size
@@ -31,34 +33,46 @@ spec:
               description: The number of CPU cores required
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g. 500m"
+              x-ui-error-message: "CPU is required and must match the pattern."
             memory:
               type: string
               title: Memory
               description: The amount of memory required
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g. 1Gi"
+              x-ui-error-message: "Memory is required and must match the pattern."
             cpu_limit:
               type: string
               title: CPU Limit
               description: The CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g. 1000m"
+              x-ui-error-message: "CPU Limit must match the pattern."
             memory_limit:
               type: string
               title: Memory Limit
               description: The memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g. 2Gi"
+              x-ui-error-message: "Memory Limit must match the pattern."
             volume:
               type: string
               title: Volume
               description: The size of the volume
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "e.g. 8Gi"
+              x-ui-error-message: "Volume size must match the pattern."
             instance_count:
               type: integer
               title: Instance Count
               description: The number of instances to create
               minimum: 1
+              x-ui-placeholder: "e.g. 1"
+              x-ui-error-message: "Instance Count is required and must be at least 1."
           required:
             - instance_count
             - cpu
@@ -75,29 +89,39 @@ spec:
               description: The number of CPU cores required
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g. 500m"
+              x-ui-error-message: "CPU is required and must match the pattern."
             memory:
               type: string
               title: Memory
               description: The amount of memory required
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g. 1Gi"
+              x-ui-error-message: "Memory is required and must match the pattern."
             cpu_limit:
               type: string
               title: CPU Limit
               description: The CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g. 1000m"
+              x-ui-error-message: "CPU Limit must match the pattern."
             memory_limit:
               type: string
               title: Memory Limit
               description: The memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g. 2Gi"
+              x-ui-error-message: "Memory Limit must match the pattern."
             volume:
               type: string
               title: Volume
               description: The size of the volume
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "e.g. 8Gi"
+              x-ui-error-message: "Volume size must match the pattern."
           required:
             - cpu
             - memory
@@ -108,6 +132,7 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+    - x-ui-error-message: "Please provide the required information for size."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   flavor: k8s
