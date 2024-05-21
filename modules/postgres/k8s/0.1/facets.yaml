@@ -2,10 +2,10 @@ intent: postgres
 flavor: k8s
 version: '0.1'
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: K8s
   type: object
@@ -13,99 +13,144 @@ spec:
     postgres_version:
       type: string
       title: Postgres Version
-      description: Version of postgres e.g. 13.3
+      description: Specifies the Postgres version to use.
       minLength: 1
+      x-ui-placeholder: "e.g., '13.3' or '15.3.0'"
+      enum:
+        - '12.11'
+        - '13.3'
+        - '14.0'
+        - '15.3.0'
+        - '16.0'
+      x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for writer and reader instances.
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Reader instance settings.
           properties:
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
+              description: Number of CPU cores required.
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g., '250m' or '1'"
+              x-ui-error-message: "CPU must be a positive integer (e.g., '250m' or '500m')."
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
+              description: Amount of memory required.
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '256Mi' or '1Gi'"
+              x-ui-error-message: "Memory must be specified in the correct format (e.g., '256Mi' or '1Gi')."
             cpu_limit:
               type: string
               title: CPU Limit
-              description: Set a maximum limit on the amount of utilization
-              x-ui-placeholder: e.g '1' or '1000m'
+              description: Set a maximum limit on CPU utilization.
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g., '500m' or '1'"
+              x-ui-error-message: "CPU limit must be a positive integer (e.g., '500m' or '1000m')."
             memory_limit:
               type: string
               title: Memory Limit
-              description: Set a maximum limit on the amount of utilization
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+              description: Set a maximum limit on memory utilization.
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '512Mi' or '1Gi'"
+              x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '512Mi' or '1Gi')."
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: The size of the volume.
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '100Mi' or '50Gi'"
+              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of instances to create.
               minimum: 1
+              maximum: 10
+              x-ui-placeholder: "e.g., 2"
+              x-ui-error-message: "Instance count must be between 1 and 10."
           required:
             - instance_count
             - cpu
             - memory
+          x-ui-order:
+            - instance_count
+            - cpu
+            - memory
+            - cpu_limit
+            - memory_limit
+            - volume
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer instance settings.
           properties:
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
+              description: Number of CPU cores required.
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g., '250m' or '1'"
+              x-ui-error-message: "CPU must be a positive integer (e.g., '250m' or '500m')."
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
+              description: Amount of memory required.
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '256Mi' or '1Gi'"
+              x-ui-error-message: "Memory must be specified in the correct format (e.g., '256Mi' or '1Gi')."
             cpu_limit:
               type: string
               title: CPU Limit
-              description: Set a maximum limit on the amount of utilization
-              x-ui-placeholder: e.g '1' or '1000m'
+              description: Set a maximum limit on CPU utilization.
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g., '500m' or '1'"
+              x-ui-error-message: "CPU limit must be a positive integer (e.g., '500m' or '1000m')."
             memory_limit:
               type: string
               title: Memory Limit
-              description: Set a maximum limit on the amount of utilization
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+              description: Set a maximum limit on memory utilization.
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '512Mi' or '1Gi'"
+              x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '512Mi' or '1Gi')."
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: The size of the volume.
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '100Mi' or '50Gi'"
+              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
           required:
             - cpu
             - memory
+          x-ui-order:
+            - cpu
+            - memory
+            - cpu_limit
+            - memory_limit
+            - volume
+      required:
+        - writer
+      x-ui-order:
+        - writer
+        - reader
   required:
     - size
     - postgres_version
@@ -119,20 +164,13 @@ sample:
   metadata: { }
   kind: postgres
   disabled: true
-  version: 0.1
+  version: '0.1'
   spec:
-    postgres_version: 15.3.0
+    postgres_version: '15.3.0'
     size:
       writer:
-        cpu: 1
-        memory: 1Gi
-        cpu_limit: 1
-        memory_limit: 1Gi
-        volume: 10G
-      reader:
-        cpu: 1
-        memory: 1Gi
-        cpu_limit: 1
-        memory_limit: 1Gi
-        volume: 10G
-        instance_count: 1
+        cpu: '250m'
+        memory: '256Mi'
+        cpu_limit: '500m'
+        memory_limit: '512Mi'
+        volume: '10Gi'

@@ -2,7 +2,7 @@ intent: postgres
 flavor: cloudsql
 version: '0.2'
 clouds:
-- gcp
+  - gcp
 spec:
   title: CloudSQL
   type: object
@@ -10,55 +10,126 @@ spec:
     postgres_version:
       type: string
       title: Postgres Version
-      description: Version of postgres e.g. 13.3
-      minLength: 1
+      description: Specifies the Postgres version to use.
+      enum:
+        - '12.11'
+        - '13.3'
+        - '14.0'
+      x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for writer and reader instances.
       properties:
-        reader:
+        writer:
           type: object
-          title: Reader
-          description: Reader
+          title: Writer
+          description: Writer instance settings.
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
+              description: The instance type of the node.
               minLength: 1
+              x-ui-placeholder: "e.g., 'db-f1-micro'"
+              enum:
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-m2-ultramem-208
+                - db-m2-ultramem-416
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
+              x-ui-error-message: "Please select a valid instance type."
             volume:
               type: string
               title: Volume
-              description: The size of the volume
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              description: The size of the volume.
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '10Gi'"
+              x-ui-error-message: "Please specify the volume size in the correct format (e.g., '10Gi')."
+          required:
+            - instance
+            - volume
+          x-ui-order:
+            - instance
+            - volume
+        reader:
+          type: object
+          title: Reader
+          description: Reader instance settings.
+          properties:
+            instance:
+              type: string
+              title: Instance Type
+              description: The instance type of the node.
+              minLength: 1
+              x-ui-placeholder: "e.g., 'db-g1-small'"
+              enum:
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-m2-ultramem-208
+                - db-m2-ultramem-416
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
+              x-ui-error-message: "Please select a valid instance type."
+            volume:
+              type: string
+              title: Volume
+              description: The size of the volume.
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "e.g., '10Gi'"
+              x-ui-error-message: "Please specify the volume size in the correct format (e.g., '10Gi')."
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of instances to create.
               minimum: 1
+              maximum: 16
+              x-ui-placeholder: "e.g., 2"
+              x-ui-error-message: "Instance count must be between 1 and 16."
           required:
             - instance
             - volume
             - instance_count
-        writer:
-          type: object
-          title: Writer
-          description: Writer
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node
-              minLength: 1
-            volume:
-              type: string
-              title: Volume
-              description: The size of the volume
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
-          required:
+          x-ui-order:
             - instance
             - volume
+            - instance_count
+      required:
+        - writer
+      x-ui-order:
+        - writer
+        - reader
   required:
     - size
     - postgres_version
@@ -77,9 +148,5 @@ sample:
     size:
       writer:
         instance: db-f1-micro
-        volume: 10G
-      reader:
-        instance_count: 2
-        instance: db-g1-small
-        volume: 10G
+        volume: 10Gi
     postgres_version: '12.11'

@@ -2,7 +2,7 @@ intent: postgres
 flavor: alloydb
 version: '0.1'
 clouds:
-- gcp
+  - gcp
 spec:
   title: AlloyDB
   type: object
@@ -10,43 +10,63 @@ spec:
     postgres_version:
       type: string
       title: Postgres Version
-      description: Version of postgres e.g. 13.3
-      minLength: 1
+      description: Specifies the Postgres version to use.
+      enum:
+        - '12.11'
+        - '13.3'
+        - '14.0'
+      x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for writer and reader instances.
       properties:
-        reader:
-          type: object
-          title: Reader
-          description: Reader
-          properties:
-            cpu:
-              type: string
-              title: CPU
-              description: The number of CPU cores required
-              minLength: 1
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
-          required:
-            - cpu
-            - instance_count
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer instance settings.
           properties:
             cpu:
-              type: string
+              type: integer
               title: CPU
-              description: The number of CPU cores required
-              minLength: 1
+              description: Number of CPU cores required.
+              minimum: 1
+              maximum: 96
+              x-ui-error-message: "CPU must be between 1 and 96."
           required:
             - cpu
+          x-ui-order:
+            - cpu
+        reader:
+          type: object
+          title: Reader
+          description: Reader instance settings.
+          properties:
+            cpu:
+              type: integer
+              title: CPU
+              description: Number of CPU cores required.
+              minimum: 1
+              maximum: 96
+              x-ui-error-message: "CPU must be between 1 and 96."
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of reader instances to create.
+              minimum: 0
+              maximum: 10
+              x-ui-error-message: "Instance count must be between 0 and 10."
+          required:
+            - cpu
+            - instance_count
+          x-ui-order:
+            - cpu
+            - instance_count
+      required:
+        - writer
+      x-ui-order:
+        - writer
+        - reader
   required:
     - size
     - postgres_version
@@ -64,8 +84,5 @@ sample:
   spec:
     postgres_version: '12.11'
     size:
-      reader:
-        cpu: 2
-        instance_count: 1
       writer:
         cpu: 2
