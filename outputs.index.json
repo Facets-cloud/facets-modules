@@ -4,5 +4,11 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./outputs/redis/"
+  },
+  {
+    "name": "kubernetes_cluster",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./outputs/kubernetes_cluster/"
   }
 ]

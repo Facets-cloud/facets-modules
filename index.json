@@ -245,5 +245,19 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "kubernetes_monitoring",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/kubernetes_cluster/monitoring/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]

@@ -8,8 +8,10 @@ clouds:
   - kubernetes
 description: Adds Monitoring to Kubernetes Cluster
 type: INTENT_ADD_ON
-of:
-  - intent: kubernetes_cluster
+inputs: 
+  kubernetes_cluster:
+    type: "@output/kubernetes_cluster"
+    adds_capability: true
 spec:
   title: Kubernetes Monitoring
   type: object
