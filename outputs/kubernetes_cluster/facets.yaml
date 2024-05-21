@@ -1,0 +1,6 @@
+out:
+  type: object
+  title: Kubernetes Cluster
+  description: Kubernetes Cluster
+  properties:
+    k8s_details:
