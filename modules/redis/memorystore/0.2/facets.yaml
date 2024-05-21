@@ -1,8 +1,8 @@
 intent: redis
 flavor: memorystore
 version: 0.2
-clouds: 
-- gcp
+clouds:
+  - gcp
 spec:
   title: Memorystore
   type: object
@@ -10,55 +10,59 @@ spec:
     authenticated:
       type: boolean
       title: Authenticated
-      description: Requires password if enabled
+      description: Enables password protection.
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
-      description: Preserves data across restarts
+      description: Ensures data is preserved across restarts.
     redis_version:
       type: string
       title: Redis Version
-      description: Version of Redis to use
+      description: Specifies the Redis version to use.
       enum:
         - '3.2'
         - '4.0'
         - '5.0'
         - '6.x'
         - '7.0'
-      x-ui-error-message: "Select a supported Redis version."
+      x-ui-error-message: "Please select a supported Redis version."
     size:
       type: object
       title: Size
-      description: Sizing for datastore components
+      description: Configuration for datastore components.
       x-ui-order:
         - writer
         - reader
+      required:
+        - writer
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader instance settings
+          description: Settings for reader instances.
+          x-ui-toggle: true
           properties:
             instance_count:
               type: integer
               title: Instance Count
-              description: Number of reader instances
+              description: Number of reader instances.
               default: 0
-          required:
-            - instance_count
+              minimum: 0
+              maximum: 10
+              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 10."
         writer:
           type: object
           title: Writer
-          description: Writer instance settings
+          description: Settings for writer instances.
+          required:
+            - memory
           properties:
             memory:
               type: string
               title: Memory
-              description: Memory size (e.g., '10Gi')
+              description: Memory size in GiB (e.g., '10Gi').
               pattern: "^[0-9]+Gi$"
-              x-ui-error-message: "Use Gi format (e.g., '10Gi')."
-          required:
-            - memory
+              x-ui-error-message: "Memory must be specified in Gi format (e.g., '10Gi')."
   required:
     - size
     - authenticated
@@ -75,14 +79,12 @@ sample:
   metadata: { }
   kind: redis
   disabled: true
+  unconfigured: true
   version: '0.2'
   spec:
     authenticated: true
-    redis_version: '5.0'
+    redis_version: '6.x'
     persistence_enabled: false
     size:
-      reader:
-        instance_count: 1
       writer:
         memory: 5Gi
-

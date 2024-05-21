@@ -1,8 +1,8 @@
 intent: redis
 flavor: azure_cache
 version: 0.1
-clouds: 
-- azure
+clouds:
+  - azure
 spec:
   title: Redis Azure Cache
   type: object
@@ -10,84 +10,68 @@ spec:
     authenticated:
       type: boolean
       title: Authenticated
-      description: Make this redis Password protected
+      description: Enables password protection.
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
-      description: Enable Persistence for this redis
+      description: Ensures data is preserved across restarts.
     redis_version:
       type: string
       title: Redis Version
-      description: Version of redis e.g. 6.3
-      minLength: 1
+      description: Specifies the Redis version to use.
+      enum:
+        - '4.0'
+        - '6.0'
+      x-ui-error-message: "Please select a supported Redis version."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for datastore components.
       properties:
-        reader:
-          type: object
-          title: Reader
-          description: Reader
-          properties:
-            instance:
-              type: string
-              title: Instance type
-              description: The instance type of the node
-              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
-              minLength: 1
-              pattern: ^[a-zA-Z0-9-.]+$
-              enum:
-                - t2.micro
-                - Standard_DS1_v2
-                - n1-standard-2
-                - db.m5.large
-                - db.r5.large
-                - db.t3.medium
-                - db-n1-standard-1
-                - db-f1-micro
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
-          required:
-            - instance
-            - instance_count
-          x-ui-order:
-            - instance
-            - instance_count
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Settings for writer instances.
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
-              x-ui-placeholder: e.g 't2.micro', 'Standard_DS1_v2', 'n1-standard-2', 'db.m5.large', 'db-n1-standard-1' or 'db-f1-micro'
-              minLength: 1
-              pattern: ^[a-zA-Z0-9-.]+$
+              description: The instance type of the node.
+              x-ui-placeholder: e.g., '1', '2', '3'
               enum:
-                - t2.micro
-                - Standard_DS1_v2
-                - n1-standard-2
-                - db.m5.large
-                - db.r5.large
-                - db.t3.medium
-                - db-n1-standard-1
-                - db-f1-micro
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+              x-ui-error-message: "Please select a valid instance type."
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of instances to create.
               minimum: 1
+              maximum: 10
+              x-ui-error-message: "Instance count must be between 1 and 10."
           required:
             - instance
             - instance_count
           x-ui-order:
             - instance
+            - instance_count
+        reader:
+          type: object
+          title: Reader
+          description: Settings for reader instances.
+          x-ui-toggle: true
+          properties:
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of reader instances to create.
+              minimum: 0
+              maximum: 10
+              x-ui-error-message: "Instance count must be between 0 and 10."
+          required:
             - instance_count
       required:
         - writer
@@ -115,13 +99,11 @@ sample:
   version: '0.1'
   spec:
     authenticated: true
-    redis_version: '6'
+    redis_version: '6.0'
     persistence_enabled: true
     size:
       reader:
         instance_count: 1
-        instance: 1
       writer:
+        instance: P1
         instance_count: 1
-        instance: 1
-
