@@ -67,6 +67,7 @@ spec:
               title: Instance Count
               description: The number of instances to create
               minimum: 1
+              maximum: 10  # Adjust maximum value based on Terraform
           required:
             - instance
             - instance_count
@@ -123,6 +124,7 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+  x-ui-error-message: "MySQL instance creation failed."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   kind: mysql
@@ -136,7 +138,4 @@ sample:
     mysql_version: 8.0.mysql_aurora.3.02.0
     size:
       writer:
-        instance: db.t4g.medium
-      reader:
-        instance_count: 1
         instance: db.t4g.medium
