@@ -27,16 +27,19 @@ spec:
               title: Instance Type
               description: The instance type of the node
               minLength: 1
+              x-ui-placeholder: Select an instance type for the reader
             volume:
               type: string
               title: Volume
               description: The size of the volume
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: Specify the volume size for the reader
             instance_count:
               type: integer
               title: Instance Count
               description: The number of instances to create
               minimum: 1
+              x-ui-placeholder: Enter the number of instances for the reader
           required:
             - instance
             - volume
@@ -51,11 +54,13 @@ spec:
               title: Instance Type
               description: The instance type of the node
               minLength: 1
+              x-ui-placeholder: Select an instance type for the writer
             volume:
               type: string
               title: Volume
               description: The size of the volume
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: Specify the volume size for the writer
           required:
             - instance
             - volume
@@ -65,6 +70,7 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+    - x-ui-error-message: "Please provide required information for the size."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   kind: mysql
@@ -84,3 +90,4 @@ sample:
         instance: db-g1-small
         volume: 10G
         instance_count: 1
+        x-ui-error-message: "Volume size must be specified for the reader."
