@@ -30,9 +30,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Event Exporter
-              enum:
-              - true
-              - false
         k8s_ssl_validity_exporter:
           type: object
           title: K8s SSL Validity Exporter
@@ -42,9 +39,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable K8s SSL Validity Exporter
-              enum:
-              - true
-              - false
     alerts:
       type: object
       title: Alerts
@@ -59,9 +53,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -79,9 +70,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -99,9 +87,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -119,9 +104,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -143,9 +125,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -167,9 +146,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -187,9 +163,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
@@ -207,9 +180,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-                - true
-                - false
             interval:
               type: string
               title: Interval
@@ -231,9 +201,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-                - true
-                - false
             interval:
               type: string
               title: Interval
@@ -255,9 +222,6 @@ spec:
               type: boolean
               title: Disabled
               description: Disable or Enable Alert
-              enum:
-              - true
-              - false
             interval:
               type: string
               title: Interval
