@@ -2,10 +2,10 @@ intent: redis
 flavor: k8s
 version: '0.1'
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: K8s
   type: object
@@ -13,58 +13,66 @@ spec:
     authenticated:
       type: boolean
       title: Authenticated
-      description: Make this Redis Password protected
+      description: Enables password protection.
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
-      description: Enable Persistence for this Redis
+      description: Ensures data is preserved across restarts.
     redis_version:
       type: string
       title: Redis Version
-      description: Version of redis e.g. 6.3
-      minLength: 1
+      description: Specifies the Redis version to use.
+      enum:
+        - '3.2'
+        - '4.0'
+        - '5.0'
+        - '6.x'
+        - '7.0'
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for datastore components.
+      x-ui-order:
+        - writer
+        - reader
+      required:
+        - writer
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Settings for reader instances.
           properties:
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
-              minimum: 1
+              description: Number of reader instances.
+              minimum: 0
+              maximum: 10
+              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 10."
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
-              x-ui-placeholder: e.g '1' or '1000m'
-              minLength: 1
+              description: Number of CPU cores required.
+              x-ui-placeholder: e.g., '1' or '1000m'
               pattern: "^[0-9]+[m]?$"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
-              minLength: 1
+              description: Amount of memory required.
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
               type: string
               title: CPU Limit
-              description: Set a maximum limit on the amount of CPU resource utilization
-              x-ui-placeholder: e.g '1' or '1000m'
-              minLength: 1
+              description: Maximum CPU resource utilization.
+              x-ui-placeholder: e.g., '1' or '1000m'
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
               title: Memory Limit
-              description: Set a maximum limit on the amount of memory resources utilization
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
-              minLength: 1
+              description: Maximum memory resource utilization.
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           required:
             - instance_count
@@ -73,42 +81,37 @@ spec:
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Settings for writer instances.
           properties:
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
-              x-ui-placeholder: e.g '1' or '1000m'
-              minLength: 1
+              description: Number of CPU cores required.
+              x-ui-placeholder: e.g., '1' or '1000m'
               pattern: "^[0-9]+[m]?$"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
-              minLength: 1
+              description: Amount of memory required.
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             cpu_limit:
               type: string
               title: CPU Limit
-              description: Set a maximum limit on the amount of CPU resources utilization
-              x-ui-placeholder: e.g '1' or '1000m'
-              minLength: 1
+              description: Maximum CPU resource utilization.
+              x-ui-placeholder: e.g., '1' or '1000m'
               pattern: "^[0-9]+[m]?$"
             memory_limit:
               type: string
               title: Memory Limit
-              description: Set a maximum limit on the amount of memory resources utilization
-              x-ui-placeholder: e.g '800Mi' or '1.5Gi'
-              minLength: 1
+              description: Maximum memory resource utilization.
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             volume:
               type: string
               title: Volume
-              description: The size of the volume
-              minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              description: Size of the volume.
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           required:
             - cpu
             - memory
@@ -136,13 +139,9 @@ sample:
     size:
       writer:
         cpu: '1'
-        memory: 1Gi
+        memory: '1Gi'
         cpu_limit: '1'
-        memory_limit: 1Gi
-        volume: 10G
+        memory_limit: '1Gi'
+        volume: '10Gi'
       reader:
-        instance_count: 1
-        cpu: '1'
-        memory: 1Gi
-        cpu_limit: '1'
-        memory_limit: 1Gi
+        instance_count: 0
