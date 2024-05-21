@@ -1,0 +1,3 @@
+name: kubernetes_monitoring
+type: Monitoring
+displayName: Kubernetes Cluster Monitoring
