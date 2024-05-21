@@ -13,55 +13,71 @@ spec:
     authenticated:
       type: boolean
       title: Authenticated
-      description: Make this mongodb instance password protected
+      description: Make this MongoDB instance password protected.
     mongodb_version:
       type: string
       title: MongoDB Version
-      description: "Version of mongodb e.g. 6.0, see valid tags here: https://hub.docker.com/_/mongo/tags?page=1"
-      minLength: 3
+      description: Specifies the MongoDB version to use.
+      enum:
+        - '4.4'
+        - '5.0'
+        - '6.0'
+        - '6.0.2'
+      x-ui-placeholder: "e.g., '6.0' or '6.0.2'"
+      x-ui-error-message: "Please select a valid MongoDB version."
     size:
       type: object
       title: Size
-      description: Size of the mongodb instance
+      description: Size of the MongoDB instance.
       properties:
         instance_count:
           type: integer
           title: Instance Count
-          description: The number of instances to create
+          description: Number of instances to create.
           minimum: 1
+          maximum: 10
+          x-ui-placeholder: "e.g., 1 or 3"
+          x-ui-error-message: "Instance count must be between 1 and 10."
         cpu:
           type: string
           title: CPU
-          description: The number of CPU cores required
-          x-ui-placeholder: e.g '1' or '1000m'
+          description: Number of CPU cores required.
           minLength: 1
           pattern: "^[0-9]+[m]?$"
+          x-ui-placeholder: "e.g., '500m' or '1'"
+          x-ui-error-message: "CPU must be specified in the correct format (e.g., '500m' or '1')."
         memory:
           type: string
           title: Memory
-          description: The amount of memory required
-          x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+          description: Amount of memory required.
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+          x-ui-error-message: "Memory must be specified in the correct format (e.g., '800Mi' or '1.5Gi')."
         cpu_limit:
           type: string
           title: CPU Limit
-          description: Set a maximum limit on the amount of CPU resource utilization
-          x-ui-placeholder: e.g '1' or '1000m'
+          description: Set a maximum limit on CPU utilization.
           minLength: 1
           pattern: "^[0-9]+[m]?$"
+          x-ui-placeholder: "e.g., '1000m' or '2'"
+          x-ui-error-message: "CPU limit must be specified in the correct format (e.g., '1000m' or '2')."
         memory_limit:
           type: string
           title: Memory Limit
-          description: Set a maximum limit on the amount of memory resources utilization
-          x-ui-placeholder: e.g '800Mi' or '1.5Gi'
+          description: Set a maximum limit on memory utilization.
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          x-ui-placeholder: "e.g., '1Gi' or '2Gi'"
+          x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '1Gi' or '2Gi')."
         volume:
           type: string
           title: Volume
-          description: The size of the volume. e.g '10G' or '5Gi'
-          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+          description: The size of the volume.
+          minLength: 1
+          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
+          x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
       required:
         - instance_count
         - cpu
@@ -75,6 +91,8 @@ spec:
     - mongodb_version
     - size
 sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json
   flavor: k8s
   metadata: { }
   kind: mongo
@@ -84,9 +102,9 @@ sample:
     authenticated: true
     mongodb_version: '6.0.2'
     size:
-      instance_count: 3
-      cpu: '2001m'
-      memory: '900Mi'
-      cpu_limit: '10000m'
-      memory_limit: '3Gi'
-      volume: '8G'
+      instance_count: 1
+      cpu: '500m'
+      memory: '800Mi'
+      cpu_limit: '1000m'
+      memory_limit: '1.5Gi'
+      volume: '10Gi'

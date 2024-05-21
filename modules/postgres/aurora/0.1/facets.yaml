@@ -2,7 +2,7 @@ intent: postgres
 flavor: aurora
 version: '0.1'
 clouds:
-- aws
+  - aws
 spec:
   title: Aurora
   type: object
@@ -10,75 +10,28 @@ spec:
     postgres_version:
       type: string
       title: Postgres Version
-      description: Version of postgres e.g. 13.3
-      minLength: 1
+      description: Specifies the Postgres version to use.
+      enum:
+        - '12.11'
+        - '13.3'
+        - '14.0'
+        - '15.2'
+        - '16.1'
+      x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Configuration for writer and reader instances.
       properties:
-        reader:
-          type: object
-          title: Reader
-          description: Reader
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node
-              enum:
-                - db.t3.micro
-                - db.t3.small
-                - db.t3.medium
-                - db.t3.large
-                - db.t4g.micro
-                - db.t4g.small
-                - db.t4g.medium
-                - db.t4g.large
-                - db.m5.large
-                - db.m5.xlarge
-                - db.m5.x2large
-                - db.m5.4xlarge
-                - db.m5.8xlarge
-                - db.m5.12xlarge
-                - db.m6g.micro
-                - db.m6g.small
-                - db.m6g.medium
-                - db.m6g.large
-                - db.m6g.xlarge
-                - db.m6g.x2large
-                - db.m6g.4xlarge
-                - db.m6g.8xlarge
-                - db.m6g.12xlarge
-                - db.r5.large
-                - db.r5.xlarge
-                - db.r5.2xlarge
-                - db.r5.4xlarge
-                - db.r5.8xlarge
-                - db.r5.12xlarge
-                - db.r6g.large
-                - db.r6g.xlarge
-                - db.r6g.2xlarge
-                - db.r6g.4xlarge
-                - db.r6g.8xlarge
-                - db.r6g.12xlarge
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: The number of instances to create
-              minimum: 1
-          required:
-            - instance
-            - instance_count
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer instance settings.
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
+              description: The instance type of the node.
               enum:
                 - db.t3.micro
                 - db.t3.small
@@ -90,7 +43,7 @@ spec:
                 - db.t4g.large
                 - db.m5.large
                 - db.m5.xlarge
-                - db.m5.x2large
+                - db.m5.2xlarge
                 - db.m5.4xlarge
                 - db.m5.8xlarge
                 - db.m5.12xlarge
@@ -99,7 +52,7 @@ spec:
                 - db.m6g.medium
                 - db.m6g.large
                 - db.m6g.xlarge
-                - db.m6g.x2large
+                - db.m6g.2xlarge
                 - db.m6g.4xlarge
                 - db.m6g.8xlarge
                 - db.m6g.12xlarge
@@ -115,14 +68,114 @@ spec:
                 - db.r6g.4xlarge
                 - db.r6g.8xlarge
                 - db.r6g.12xlarge
+                - db.r7g.large
+                - db.r7g.xlarge
+                - db.r7g.2xlarge
+                - db.r7g.4xlarge
+                - db.r7g.8xlarge
+                - db.r7g.12xlarge
+                - db.r6i.large
+                - db.r6i.xlarge
+                - db.r6i.2xlarge
+                - db.r6i.4xlarge
+                - db.r6i.8xlarge
+                - db.r6i.12xlarge
+                - db.r6i.16xlarge
+                - db.r6i.24xlarge
+                - db.r6i.32xlarge
+              x-ui-error-message: "Please select a valid instance type."
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of instances to create.
               minimum: 1
+              maximum: 16
+              x-ui-error-message: "Instance count must be between 1 and 16."
           required:
             - instance
             - instance_count
+          x-ui-order:
+            - instance
+            - instance_count
+        reader:
+          type: object
+          title: Reader
+          description: Reader instance settings.
+          properties:
+            instance:
+              type: string
+              title: Instance Type
+              description: The instance type of the node.
+              enum:
+                - db.t3.micro
+                - db.t3.small
+                - db.t3.medium
+                - db.t3.large
+                - db.t4g.micro
+                - db.t4g.small
+                - db.t4g.medium
+                - db.t4g.large
+                - db.m5.large
+                - db.m5.xlarge
+                - db.m5.2xlarge
+                - db.m5.4xlarge
+                - db.m5.8xlarge
+                - db.m5.12xlarge
+                - db.m6g.micro
+                - db.m6g.small
+                - db.m6g.medium
+                - db.m6g.large
+                - db.m6g.xlarge
+                - db.m6g.2xlarge
+                - db.m6g.4xlarge
+                - db.m6g.8xlarge
+                - db.m6g.12xlarge
+                - db.r5.large
+                - db.r5.xlarge
+                - db.r5.2xlarge
+                - db.r5.4xlarge
+                - db.r5.8xlarge
+                - db.r5.12xlarge
+                - db.r6g.large
+                - db.r6g.xlarge
+                - db.r6g.2xlarge
+                - db.r6g.4xlarge
+                - db.r6g.8xlarge
+                - db.r6g.12xlarge
+                - db.r7g.large
+                - db.r7g.xlarge
+                - db.r7g.2xlarge
+                - db.r7g.4xlarge
+                - db.r7g.8xlarge
+                - db.r7g.12xlarge
+                - db.r6i.large
+                - db.r6i.xlarge
+                - db.r6i.2xlarge
+                - db.r6i.4xlarge
+                - db.r6i.8xlarge
+                - db.r6i.12xlarge
+                - db.r6i.16xlarge
+                - db.r6i.24xlarge
+                - db.r6i.32xlarge
+              x-ui-error-message: "Please select a valid instance type."
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of instances to create.
+              minimum: 1
+              maximum: 16
+              x-ui-error-message: "Instance count must be between 1 and 16."
+          required:
+            - instance
+            - instance_count
+          x-ui-order:
+            - instance
+            - instance_count
+      required:
+        - writer
+      x-ui-order:
+        - writer
+        - reader
   required:
     - size
     - postgres_version
@@ -143,8 +196,5 @@ sample:
     postgres_version: '12.11'
     size:
       writer:
-        instance: db.t3.medium
-        instance_count: 1
-      reader:
         instance: db.t3.medium
         instance_count: 1
