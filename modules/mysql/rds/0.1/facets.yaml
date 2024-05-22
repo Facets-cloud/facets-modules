@@ -17,10 +17,10 @@ spec:
       title: Size
       description: Writer reader datastore sizing
       properties:
-        reader:
+        writer:
           type: object
-          title: Reader
-          description: Reader
+          title: Writer
+          description: Writer
           properties:
             instance:
               type: string
@@ -35,10 +35,10 @@ spec:
           required:
             - instance
             - instance_count
-        writer:
+        reader:
           type: object
-          title: Writer
-          description: Writer
+          title: Reader
+          description: Reader
           properties:
             instance:
               type: string
@@ -67,6 +67,6 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
+        instance_count: 1
       reader:
         instance: db.t4g.medium
-        instance_count: 1
