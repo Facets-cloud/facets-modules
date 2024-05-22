@@ -2,7 +2,7 @@ intent: mysql
 flavor: flexible_server
 version: '0.1'
 clouds:
-- azure
+  - azure
 spec:
   title: Flexible Server
   type: object
@@ -12,39 +12,91 @@ spec:
       title: MySQL Version
       description: Version of MySQL e.g. 8.0
       minLength: 1
+      x-ui-placeholder: "e.g. 8.0"
+      x-ui-error-message: "MySQL Version is required."
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Writer and reader datastore sizing
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Reader configuration
           properties:
             instance:
               type: string
               title: Instance Type
               description: The instance type of the node
-              minLength: 1
+              enum:
+                - GP_Standard_D2ds_v4
+                - GP_Standard_D4ds_v4
+                - GP_Standard_D8ds_v4
+                - GP_Standard_D16ds_v4
+                - GP_Standard_D32ds_v4
+                - GP_Standard_D48ds_v4
+                - GP_Standard_D64ds_v4
+                - GP_Standard_E2ds_v4
+                - GP_Standard_E4ds_v4
+                - GP_Standard_E8ds_v4
+                - GP_Standard_E16ds_v4
+                - GP_Standard_E20ds_v4
+                - GP_Standard_E32ds_v4
+                - GP_Standard_E48ds_v4
+                - GP_Standard_E64ds_v4
+                - GP_Standard_E80ds_v4
+                - Standard_B1s
+                - Standard_B1ms
+                - Standard_B2s
+                - Standard_B2ms
+                - Standard_B4ms
+                - Standard_B8ms
+              x-ui-placeholder: "Select instance type"
+              x-ui-error-message: "Instance type for reader is required."
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of reader instances
               minimum: 1
+              x-ui-placeholder: "e.g. 1"
+              x-ui-error-message: "Instance count for reader is required."
           required:
             - instance
             - instance_count
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer configuration
           properties:
             instance:
               type: string
               title: Instance Type
               description: The instance type of the node
-              minLength: 1
+              enum:
+                - GP_Standard_D2ds_v4
+                - GP_Standard_D4ds_v4
+                - GP_Standard_D8ds_v4
+                - GP_Standard_D16ds_v4
+                - GP_Standard_D32ds_v4
+                - GP_Standard_D48ds_v4
+                - GP_Standard_D64ds_v4
+                - GP_Standard_E2ds_v4
+                - GP_Standard_E4ds_v4
+                - GP_Standard_E8ds_v4
+                - GP_Standard_E16ds_v4
+                - GP_Standard_E20ds_v4
+                - GP_Standard_E32ds_v4
+                - GP_Standard_E48ds_v4
+                - GP_Standard_E64ds_v4
+                - GP_Standard_E80ds_v4
+                - Standard_B1s
+                - Standard_B1ms
+                - Standard_B2s
+                - Standard_B2ms
+                - Standard_B4ms
+                - Standard_B8ms
+              x-ui-placeholder: "Select instance type"
+              x-ui-error-message: "Instance type for writer is required."
           required:
             - instance
   required:
@@ -53,6 +105,7 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+  x-ui-error-message: "Please provide required information for size."
 sample:
   flavor: flexible_server
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
@@ -66,7 +119,4 @@ sample:
     mysql_version: 8.0.21
     size:
       writer:
-        instance: GP_Standard_D2ds_v4
-      reader:
-        instance_count: 1
         instance: GP_Standard_D2ds_v4
