@@ -10,24 +10,23 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: Version of MySQL e.g. 8.0
+      description: Version of MySQL
       minLength: 1
-      x-ui-placeholder: "e.g. 8.0"
-      x-ui-error-message: "MySQL Version is required."
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer and reader datastore sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         writer:
           type: object
           title: Writer
-          description: Writer configuration
+          description: Writer Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the writer node
+              description: Type of Instance for Reader
               enum:
                 - db.t4g.medium
                 - db.t3.medium
@@ -40,27 +39,25 @@ spec:
                 - db.t2.small
                 - db.t2.medium
                 - db.t2.large
-              x-ui-placeholder: "Select instance type"
-              x-ui-error-message: "Instance type for writer is required."
+              x-ui-placeholder: "Select reader instance type"
             instance_count:
               type: integer
               title: Instance Count
               description: Number of writer instances
               minimum: 1
-              x-ui-placeholder: "e.g. 1"
-              x-ui-error-message: "Instance count for writer is required."
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance
             - instance_count
         reader:
           type: object
           title: Reader
-          description: Reader configuration
+          description: Reader Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the reader node
+              description: Type of Instance for Reader
               enum:
                 - db.t4g.medium
                 - db.t3.medium
@@ -73,8 +70,7 @@ spec:
                 - db.t2.small
                 - db.t2.medium
                 - db.t2.large
-              x-ui-placeholder: "Select instance type"
-              x-ui-error-message: "Instance type for reader is required."
+              x-ui-placeholder: "Select reader instance type"
           required:
             - instance
   required:
@@ -83,7 +79,6 @@ spec:
   x-ui-order:
     - mysql_version
     - size
-  x-ui-error-message: "Please provide required information for size."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   kind: mysql
