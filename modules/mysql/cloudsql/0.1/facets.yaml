@@ -2,7 +2,7 @@ intent: mysql
 flavor: cloudsql
 version: '0.1'
 clouds:
-- gcp
+  - gcp
 spec:
   title: CloudSQL
   type: object
@@ -10,33 +10,65 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: Version of MySQL e.g. 8.0
+      description: Version of MySQL
       minLength: 1
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Reader Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
-              minLength: 1
+              description: Type of Instance for Reader
+              enum:
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-standard-64
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-n1-highmem-64
+                - db-n1-highcpu-2
+                - db-n1-highcpu-4
+                - db-n1-highcpu-8
+                - db-n1-highcpu-16
+                - db-n1-highcpu-32
+                - db-n1-highcpu-64
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
+              x-ui-placeholder: "Select reader instance type"
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: Volume Size for Reader
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "Specify reader volume size"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of Reader Instances
               minimum: 1
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance
             - volume
@@ -44,18 +76,48 @@ spec:
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
-              minLength: 1
+              description: Type of Instance for Writer
+              enum:
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-standard-64
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-n1-highmem-64
+                - db-n1-highcpu-2
+                - db-n1-highcpu-4
+                - db-n1-highcpu-8
+                - db-n1-highcpu-16
+                - db-n1-highcpu-32
+                - db-n1-highcpu-64
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
+              x-ui-placeholder: "Select writer instance type"
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: Volume Size for Writer
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "Specify writer volume size"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
           required:
             - instance
             - volume
@@ -80,7 +142,3 @@ sample:
       writer:
         instance: db-f1-micro
         volume: 10G
-      reader:
-        instance: db-g1-small
-        volume: 10G
-        instance_count: 1
