@@ -10,23 +10,23 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: MySQL version e.g., 8.0
+      description: Version of MySQL
       minLength: 1
-      x-ui-placeholder: "e.g. 8.0"
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer and reader datastore sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader node configuration
+          description: Reader Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: Type of instance for reader
+              description: Type of Instance for Reader
               enum:
                 - db-f1-micro
                 - db-g1-small
@@ -59,14 +59,14 @@ spec:
             volume:
               type: string
               title: Volume
-              description: Volume size for reader
+              description: Volume Size for Reader
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
               x-ui-placeholder: "Specify reader volume size"
               x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
             instance_count:
               type: integer
               title: Instance Count
-              description: Number of reader instances
+              description: Number of Reader Instances
               minimum: 1
               x-ui-placeholder: "Enter reader instance count"
           required:
@@ -76,12 +76,12 @@ spec:
         writer:
           type: object
           title: Writer
-          description: Writer node configuration
+          description: Writer Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: Type of instance for writer
+              description: Type of Instance for Writer
               enum:
                 - db-f1-micro
                 - db-g1-small
@@ -114,7 +114,7 @@ spec:
             volume:
               type: string
               title: Volume
-              description: Volume size for writer
+              description: Volume Size for Writer
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
               x-ui-placeholder: "Specify writer volume size"
               x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
