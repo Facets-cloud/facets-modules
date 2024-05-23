@@ -13,7 +13,6 @@ spec:
       description: MySQL version e.g., 8.0
       minLength: 1
       x-ui-placeholder: "e.g. 8.0"
-      x-ui-error-message: "MySQL Version is required."
     size:
       type: object
       title: Size
@@ -57,21 +56,19 @@ spec:
                 - db-custom-16-61440
                 - db-custom-32-122880
               x-ui-placeholder: "Select reader instance type"
-              x-ui-error-message: "Instance type for reader is required."
             volume:
               type: string
               title: Volume
               description: Volume size for reader
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
               x-ui-placeholder: "Specify reader volume size"
-              x-ui-error-message: "Volume size for reader is required."
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
             instance_count:
               type: integer
               title: Instance Count
               description: Number of reader instances
               minimum: 1
               x-ui-placeholder: "Enter reader instance count"
-              x-ui-error-message: "Instance count for reader is required."
           required:
             - instance
             - volume
@@ -114,14 +111,13 @@ spec:
                 - db-custom-16-61440
                 - db-custom-32-122880
               x-ui-placeholder: "Select writer instance type"
-              x-ui-error-message: "Instance type for writer is required."
             volume:
               type: string
               title: Volume
               description: Volume size for writer
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
               x-ui-placeholder: "Specify writer volume size"
-              x-ui-error-message: "Volume size for writer is required."
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
           required:
             - instance
             - volume
@@ -131,7 +127,6 @@ spec:
   x-ui-order:
     - mysql_version
     - size
-  x-ui-error-message: "Please provide required information for the size."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   kind: mysql
