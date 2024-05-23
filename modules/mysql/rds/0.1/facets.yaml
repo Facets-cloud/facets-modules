@@ -2,7 +2,7 @@ intent: mysql
 flavor: rds
 version: '0.1'
 clouds:
-- aws
+  - aws
 spec:
   title: RDS
   type: object
@@ -10,41 +10,67 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: Version of MySQL e.g. 8.0
+      description: Version of MySQL
       minLength: 1
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
-              minLength: 1
+              description: Type of Instance for Reader
+              enum:
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+              x-ui-placeholder: "Select reader instance type"
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of writer instances
               minimum: 1
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance
             - instance_count
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Reader Node Configuration
           properties:
             instance:
               type: string
               title: Instance Type
-              description: The instance type of the node
-              minLength: 1
+              description: Type of Instance for Reader
+              enum:
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+              x-ui-placeholder: "Select reader instance type"
           required:
             - instance
   required:
@@ -68,5 +94,3 @@ sample:
       writer:
         instance: db.t4g.medium
         instance_count: 1
-      reader:
-        instance: db.t4g.medium
