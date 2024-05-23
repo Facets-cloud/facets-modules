@@ -13,19 +13,18 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: MySQL version e.g., 8.0
+      description: Version of MySQL
       minLength: 1
-      x-ui-placeholder: "e.g. 8.0"
-      x-ui-error-message: "MySQL Version is required."
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer and reader sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader node configuration
+          description: Reader Node Configuration
           properties:
             cpu:
               type: string
@@ -34,45 +33,44 @@ spec:
               minLength: 1
               pattern: "^[0-9]+[m]?$"
               x-ui-placeholder: "e.g. 1000m"
-              x-ui-error-message: "CPU for reader is required."
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory:
               type: string
               title: Memory
               description: Amount of memory
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
-              x-ui-placeholder: "e.g. 1Gi"
-              x-ui-error-message: "Memory for reader is required."
+              x-ui-placeholder: "Ex. 1Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             cpu_limit:
               type: string
               title: CPU Limit
               description: CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
-              x-ui-placeholder: "e.g. 2000m"
-              x-ui-error-message: "CPU limit for reader is required."
+              x-ui-placeholder: "Ex. 2000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory_limit:
               type: string
               title: Memory Limit
               description: Memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
-              x-ui-placeholder: "e.g. 2Gi"
-              x-ui-error-message: "Memory limit for reader is required."
+              x-ui-placeholder: "Ex. 2Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             volume:
               type: string
               title: Volume
               description: Volume size
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
-              x-ui-placeholder: "e.g. 8Gi"
-              x-ui-error-message: "Volume size for reader is required."
+              x-ui-placeholder: "Ex. 8Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
-              description: Number of instances
+              description: Number of Reader Instances
               minimum: 1
-              x-ui-placeholder: "e.g. 1"
-              x-ui-error-message: "Instance count for reader is required."
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance_count
             - cpu
@@ -81,47 +79,47 @@ spec:
         writer:
           type: object
           title: Writer
-          description: Writer node configuration
+          description: Writer Node Configuration
           properties:
             cpu:
               type: string
               title: CPU
-              description: Number of CPU cores
+              description: Number of CPU Cores
               minLength: 1
               pattern: "^[0-9]+[m]?$"
-              x-ui-placeholder: "e.g. 1000m"
-              x-ui-error-message: "CPU for writer is required."
+              x-ui-placeholder: "Ex. 1000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory:
               type: string
               title: Memory
               description: Amount of memory
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
-              x-ui-placeholder: "e.g. 1Gi"
-              x-ui-error-message: "Memory for writer is required."
+              x-ui-placeholder: "Ex. 1Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             cpu_limit:
               type: string
               title: CPU Limit
               description: CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
-              x-ui-placeholder: "e.g. 2000m"
-              x-ui-error-message: "CPU limit for writer is required."
+              x-ui-placeholder: "Ex. 2000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory_limit:
               type: string
               title: Memory Limit
               description: Memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
-              x-ui-placeholder: "e.g. 2Gi"
-              x-ui-error-message: "Memory limit for writer is required."
+              x-ui-placeholder: "Ex. 2Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             volume:
               type: string
               title: Volume
-              description: Volume size
+              description: Volume Size
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
-              x-ui-placeholder: "e.g. 8Gi"
-              x-ui-error-message: "Volume size for writer is required."
+              x-ui-placeholder: "Ex. 8Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
           required:
             - cpu
             - memory
