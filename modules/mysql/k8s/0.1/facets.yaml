@@ -2,10 +2,10 @@ intent: mysql
 flavor: k8s
 version: '0.1'
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: K8s
   type: object
@@ -13,52 +13,64 @@ spec:
     mysql_version:
       type: string
       title: MySQL Version
-      description: Version of MySQL e.g. 8.0
+      description: Version of MySQL
       minLength: 1
+      x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
       title: Size
-      description: Writer reader datastore sizing
+      description: Writer and Reader Datastore Sizing
       properties:
         reader:
           type: object
           title: Reader
-          description: Reader
+          description: Reader Node Configuration
           properties:
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
+              description: Number of CPU cores
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "e.g. 1000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
+              description: Amount of memory
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Ex. 1Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             cpu_limit:
               type: string
               title: CPU Limit
-              description: The CPU limit
+              description: CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Ex. 2000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory_limit:
               type: string
               title: Memory Limit
-              description: The memory limit
+              description: Memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Ex. 2Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: Volume size
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "Ex. 8Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
-              description: The number of instances to create
+              description: Number of Reader Instances
               minimum: 1
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance_count
             - cpu
@@ -67,37 +79,47 @@ spec:
         writer:
           type: object
           title: Writer
-          description: Writer
+          description: Writer Node Configuration
           properties:
             cpu:
               type: string
               title: CPU
-              description: The number of CPU cores required
+              description: Number of CPU Cores
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Ex. 1000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory:
               type: string
               title: Memory
-              description: The amount of memory required
+              description: Amount of memory
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Ex. 1Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             cpu_limit:
               type: string
               title: CPU Limit
-              description: The CPU limit
+              description: CPU limit
               minLength: 1
               pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Ex. 2000m"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
             memory_limit:
               type: string
               title: Memory Limit
-              description: The memory limit
+              description: Memory limit
               minLength: 1
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Ex. 2Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
             volume:
               type: string
               title: Volume
-              description: The size of the volume
+              description: Volume Size
               pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "Ex. 8Gi"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
           required:
             - cpu
             - memory
@@ -108,11 +130,12 @@ spec:
   x-ui-order:
     - mysql_version
     - size
+  x-ui-error-message: "Please provide required information for the size."
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
   flavor: k8s
   kind: mysql
-  metadata: { }
+  metadata: {}
   version: '0.1'
   spec:
     mysql_version: 8.0.34
@@ -123,11 +146,4 @@ sample:
         cpu_limit: 1
         memory_limit: 1Gi
         volume: 8G
-      reader:
-        cpu: 1
-        memory: 1Gi
-        cpu_limit: 1
-        memory_limit: 1Gi
-        volume: 8G
-        instance_count: 1
   disabled: true
