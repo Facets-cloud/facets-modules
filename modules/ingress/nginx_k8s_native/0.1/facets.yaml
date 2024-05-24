@@ -73,6 +73,13 @@ spec:
             type: string
             title: Port
             description: Service port number
+            x-ui-api-source:
+              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview"
+              dynamicProperties:
+                serviceName: service_name
+              method: GET
+              labelKey: port
+              valueKey: port
           domain_prefix:
             type: string
             title: Domain Prefix
