@@ -2,10 +2,10 @@ intent: helm
 flavor: k8s
 version: '0.1'
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: Helm
   description: Specification of the Helm chart intent
@@ -20,31 +20,34 @@ spec:
           type: string
           title: Chart
           description: URL or local path to the Helm chart package
+          x-ui-placeholder: Enter URL or local path
         repository:
           type: string
           title: Repository
           description: URL for the helm repository
+          x-ui-placeholder: Enter repository URL
         namespace:
           type: string
           title: Namespace
           description: Namespace to deploy the Helm chart in
+          x-ui-placeholder: Enter namespace
         wait:
           type: boolean
           title: Wait
           description: Whether to wait for the Helm chart deployment to complete
-      required: [ "chart", "namespace", "wait" ]
     values:
       type: object
       title: Values
-      description: The values to be passed on to the chart in the form of a json object
+      description: The values to be passed on to the chart in the form of a JSON object
       x-ui-yaml-editor: true
+      x-ui-placeholder: Enter values in JSON format
   required: [ "helm", "values" ]
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
   kind: helm
   flavor: k8s
   disabled: true
-  metadata: { }
+  metadata: {}
   version: '0.1'
   spec:
     helm:
