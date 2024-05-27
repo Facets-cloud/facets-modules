@@ -1,5 +1,6 @@
 name: redis
 type: Cache
 displayName: Redis
-outputs: 
-  default: "@output/redis"
+outputs:
+  - name: default
+    type: "@output/redis"
