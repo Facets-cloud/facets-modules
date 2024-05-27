@@ -4,5 +4,11 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./outputs/redis/"
+  },
+  {
+    "name": "service",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./outputs/service/"
   }
 ]
