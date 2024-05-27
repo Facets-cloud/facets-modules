@@ -35,8 +35,8 @@ spec:
             description: Service Port Name Which Exposes the Metric
           scrape_interval:
             type: string
-            title: Scrape Intervel
-            description: Intervel At Which The Metrics Should Be Scraped
+            title: Scrape Interval
+            description: Interval At Which The Metrics Should Be Scraped
     alerts:
       type: object
       title: Alerts
