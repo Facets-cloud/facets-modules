@@ -1,0 +1,323 @@
+intent: service_monitoring
+flavor: k8s
+version: '0.1'
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Service
+spec:
+inputs: 
+  service_attributes:
+    type: "@output/service"
+    adds_capability: true 
+sample:
+  flavor: k8s
+  metadata:
+  kind: service_monitoring
+  disabled: true
+  version: '0.1'
+  spec:
+    title: Service Monitoring
+    type: object
+    properties:
+      metrics:
+        type: object
+        title: Metrics
+        description: Service Metrics Configuration
+        patternProperties:
+          "^[a-zA-Z0-9-_]*$":
+            type: object
+            title: Metrics Configuration
+            description: Service Metrics Configuration
+            properties:
+              path:
+                type: string
+                title: Metrics Path
+                description: Path Which Exposes the Metric
+              port_name:
+                type: string
+                title: Metrics Port Name
+                description: Service Port Name Which Exposes the Metric
+              scrape_interval:
+                type: string
+                title: Scrape Intervel
+                description: Intervel At Which The Metrics Should Be Scraped
+      alerts:
+        type: object
+        title: Alerts
+        description: Alerts configuration
+        properties:
+          pod_pending_alert:
+            type: object
+            title: Pod Pending
+            description: Pod Pending Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          pod_crashlooping_alert:
+            type: object
+            title: Pod Crashlooping
+            description: Pod Crashlooping Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          invalid_image_name_alert:
+            type: object
+            title: Invalid Image Name
+            description: Invalid Image Name Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          pod_waiting_alert:
+            type: object
+            title: Pod Waiting
+            description: Pod Waiting Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          cpu_throttling_alert:
+            type: object
+            title: CPU Throttling
+            description: CPU Throttling Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              threshold:
+                type: string
+                title: Threshold
+                description: The threshold cpu throttling percentage at which the alert is triggered
+          high_memory_utilization_alert:
+            type: object
+            title: High Memory Utilization
+            description: High Memory Utilization Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              threshold:
+                type: string
+                title: Threshold
+                description: The threshold memory utilization percentage at which the alert is triggered
+          pod_not_ready_alert:
+            type: object
+            title: Pod Not Ready
+            description: Pod Not Ready Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          pod_evicted_alert:
+            type: object
+            title: Pod Evicted
+            description: Pod Evicted Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          failed_http_requests_alert:
+            type: object
+            title: Failed HTTP Requests
+            description: Failed HTTP Requests Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              threshold:
+                type: string
+                title: Threshold
+                description: The threshold percentage at which the alert is triggered
+          ingress_endpoints_alert:
+            type: object
+            title: Ingress Endpoints
+            description: Ingress Endpoints Not Active Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+          service_vpa_cpu:
+            type: object
+            title: Vertical Pod Autoscaler CPU
+            description: Vertical Pod Autoscaler CPU Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              threshold:
+                type: string
+                title: Threshold
+                description: The threshold percentage at which the alert is triggered
+          service_vpa_memory:
+            type: object
+            title: Vertical Pod Autoscaler Memory
+            description: Vertical Pod Autoscaler Memory Alert
+            properties:
+              disabled:
+                type: boolean
+                title: Disabled
+                description: Disable or Enable Alert
+              interval:
+                type: string
+                title: Interval
+                description: The duration an alert condition must persist before the alert is triggered
+              team:
+                type: string
+                title: Team
+                description: The Name of the team managing the service
+              severity:
+                type: string
+                title: Severity
+                description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              threshold:
+                type: string
+                title: Threshold
+                description: The threshold percentage at which the alert is triggered
