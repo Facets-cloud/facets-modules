@@ -1,0 +1,9 @@
+name: service
+out:
+  type: object
+  title: Service
+  description: Service
+  properties:
+    attributes:
+    interfaces:
+
