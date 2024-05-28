@@ -15,13 +15,13 @@ spec:
       title: Postgres Version
       description: Specifies the Postgres version to use.
       minLength: 1
-      x-ui-placeholder: "e.g., '13.3' or '15.3.0'"
+      x-ui-placeholder: "e.g., '13.3.0' or '15.3.0'"
       enum:
-        - '12.11'
-        - '13.3'
-        - '14.0'
+        - '12.11.0'
+        - '13.3.0'
+        - '14.0.0'
         - '15.3.0'
-        - '16.0'
+        - '16.0.0'
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
