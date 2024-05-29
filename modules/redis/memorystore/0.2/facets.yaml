@@ -23,7 +23,7 @@ spec:
         - '3.2'
         - '4.0'
         - '5.0'
-        - '6.x'
+        - '6.2'
         - '7.0'
       x-ui-error-message: "Please select a supported Redis version."
     size:
@@ -48,8 +48,8 @@ spec:
               description: Number of reader instances.
               default: 0
               minimum: 0
-              maximum: 10
-              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 10."
+              maximum: 5
+              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 5."
         writer:
           type: object
           title: Writer
@@ -83,8 +83,10 @@ sample:
   version: '0.2'
   spec:
     authenticated: true
-    redis_version: '6.x'
+    redis_version: '6.2'
     persistence_enabled: false
     size:
       writer:
         memory: 5Gi
+      reader:
+        instance_count: 0
