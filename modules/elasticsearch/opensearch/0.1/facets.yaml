@@ -2,7 +2,7 @@ intent: elasticsearch
 flavor: opensearch
 version: '0.1'
 clouds:
-- aws
+  - aws
 spec:
   title: OpenSearch
   type: object
@@ -10,17 +10,18 @@ spec:
     elasticsearch_version:
       type: string
       title: Elasticsearch Version
-      description: Version of Elasticsearch e.g. 7.10
+      description: Version of Elasticsearch
       minLength: 1
+      x-ui-placeholder: "Ex. 7.10"
     size:
       type: object
       title: Size
-      description: Datastore sizing
+      description: Datastore Sizing
       properties:
         instance:
           type: string
           title: Instance Type
-          description: The instance type of the node
+          description: Instance type of the node
           enum:
             - or1.medium.search
             - or1.large.search
@@ -115,16 +116,20 @@ spec:
             - t2.micro.search
             - t2.small.search
             - t2.medium.search
+          x-ui-placeholder: "Select instance type"
         instance_count:
           type: integer
           title: Instance Count
           description: The number of instances to create
           minimum: 1
+          x-ui-placeholder: "Minimum value 1"
         volume:
           type: string
           title: Volume
           description: The size of the volume
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+          x-ui-placeholder: "Enter volume size"
+          x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
       required:
         - instance
         - instance_count
@@ -136,8 +141,7 @@ spec:
     - elasticsearch_version
     - size
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
   kind: elasticsearch
   metadata: { }
