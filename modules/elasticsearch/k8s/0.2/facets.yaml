@@ -27,7 +27,7 @@ spec:
           minLength: 1
           pattern: "^[0-9]+[m]?$"
           x-ui-placeholder: "Enter CPU cores"
-          x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
         memory:
           type: string
           title: Memory
