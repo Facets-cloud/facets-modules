@@ -38,9 +38,9 @@ spec:
     values:
       type: object
       title: Values
-      description: The values to be passed on to the chart in the form of a JSON object
+      description: The values to be passed on to the chart in the form of a YAML object
       x-ui-yaml-editor: true
-      x-ui-placeholder: Enter values in JSON format
+      x-ui-placeholder: Enter values in YAML format
   required: [ "helm", "values" ]
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
