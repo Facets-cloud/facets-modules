@@ -181,8 +181,6 @@ spec:
                 - None
                 - CPU
                 - RAM
-                - RPS
-                - PPS
             cpu_threshold:
               type: string
               title: CPU Threshold
