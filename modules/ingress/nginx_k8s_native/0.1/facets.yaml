@@ -80,6 +80,7 @@ spec:
               method: GET
               labelKey: port
               valueKey: port
+            x-ui-disable-tooltip: "No Ports Added"
           domain_prefix:
             type: string
             title: Domain Prefix
