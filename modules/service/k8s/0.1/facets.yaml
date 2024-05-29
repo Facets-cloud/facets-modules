@@ -13,7 +13,7 @@ spec:
     type:
       type: string
       title: Service Type
-      description: Type- Application, Statefulset, Cronjob, Job
+      description: Just application for now
       x-ui-override-disable: true
       enum:
         - application
