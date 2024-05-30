@@ -13,7 +13,7 @@ spec:
     type:
       type: string
       title: Service Type
-      description: Just application for now
+      description: Type - Application, (Statefulset, Cronjob, Job)-coming soon
       x-ui-override-disable: true
       enum:
         - application
@@ -29,16 +29,16 @@ spec:
     enable_host_anti_affinity:
       type: boolean
       title: Enable Host Anti-Affinity
-      description: Enable/disable host anti-affinity
+      description: Distribute instances across different physical hosts within cluster
     runtime:
       type: object
       title: Runtime
-      description: Runtime configuration
+      description: Customize service runtime settings like ports, healthchecks etc.
       properties:
         health_checks:
           type: object
           title: Health Checks
-          description: Health check key value pairs
+          description: Ensure service remains responsive and operational. Assess its status and performance.
           x-ui-override-disable: true
           x-ui-toggle: true
           properties:
@@ -158,7 +158,7 @@ spec:
         autoscaling:
           type: object
           title: Autoscaling
-          description: Autoscaling configuration
+          description: Automatically adjust resources based on demand for optimal performance
           x-ui-toggle: true
           properties:
             min:
@@ -198,7 +198,7 @@ spec:
         size:
           type: object
           title: Size
-          description: Size configuration
+          description: Configure container size to meet resource requirements
           properties:
             cpu:
               type: string
@@ -231,7 +231,7 @@ spec:
           patternProperties:
             type: object
             title: Port Name
-            description: Port details
+            description: Define port allocation to facilitate communication with service
             keyPattern: '^[0-9]+[m]?$'
             properties:
               port:
@@ -261,7 +261,7 @@ spec:
           patternProperties:
             type: object
             title: Metrics Name
-            description: Metrics details
+            description: Track and analyze performance metrics to monitor service health and efficiency
             keyPattern: '^[a-zA-Z0-9_.-]*$'
             properties:
               path:
@@ -283,7 +283,7 @@ spec:
           title: Volumes
           x-ui-override-disable: true
           x-ui-toggle: true
-          description: Volume configurations
+          description: Manage data storage volumes to ensure access and persistence
           properties:
             config_maps:
               type: object
@@ -362,7 +362,7 @@ spec:
         - volumes
     release:
       title: Release
-      description: Map of all release keys
+      description: Manage version releases to deploy updates and maintain software integrity
       type: object
       properties:
         image:
