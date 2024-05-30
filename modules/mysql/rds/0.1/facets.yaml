@@ -39,16 +39,9 @@ spec:
                 - db.t2.small
                 - db.t2.medium
                 - db.t2.large
-              x-ui-placeholder: "Select reader instance type"
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: Number of writer instances
-              minimum: 1
-              x-ui-placeholder: "Enter reader instance count"
+              x-ui-placeholder: "Select writer instance type"
           required:
             - instance
-            - instance_count
         reader:
           type: object
           title: Reader
@@ -93,4 +86,3 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
-        instance_count: 1
