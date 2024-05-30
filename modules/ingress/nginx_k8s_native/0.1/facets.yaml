@@ -61,7 +61,10 @@ spec:
                 includeContent: false
               labelKey: resourceName
               valueKey: resourceName
-              valueTemplate: "${service.{{value}}.out.interfaces.http.name}"
+              valueTemplate: "${service.{{value}}.out.interfaces.{{port}}.name}"
+              dynamicProperties:
+                port:
+                  key: port
               filterConditions:
                 - field: resourceType
                   value: service
