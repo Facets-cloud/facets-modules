@@ -78,7 +78,7 @@ spec:
     - size
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
-  version: '0.2'
+  version: '0.1'
   flavor: k8s
   kind: elasticsearch
   metadata: { }
