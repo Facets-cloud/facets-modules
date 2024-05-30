@@ -54,17 +54,17 @@ spec:
             type: string
             title: Service Name
             description: Kubernetes service name
-            x-ui-api-source: 
+            x-ui-api-source:
               endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
               method: GET
-              params: 
-                includeContent: false              
+              params:
+                includeContent: false
               labelKey: resourceName
-              valueKey: resourceName 
+              valueKey: resourceName
               valueTemplate: "${service.{{value}}.out.interfaces.http.name}"
               filterConditions:
                 - field: resourceType
-                  value: service      
+                  value: service
           path:
             type: string
             title: Path
@@ -76,11 +76,14 @@ spec:
             x-ui-api-source:
               endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview"
               dynamicProperties:
-                serviceName: service_name
+                serviceName:
+                  key: service_name
+                  value: label
               method: GET
               labelKey: port
               valueKey: port
-            x-ui-disable-tooltip: "No Ports Added"
+              path: ports
+            x-ui-disable-tooltip: "No Ports Found or Service not selected"
           domain_prefix:
             type: string
             title: Domain Prefix
