@@ -168,6 +168,20 @@
   {
     "intent": "elasticsearch",
     "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/elasticsearch/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "elasticsearch",
+    "flavor": "k8s",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
