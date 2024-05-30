@@ -195,32 +195,6 @@ spec:
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "RAM" ]
-            packets_per_second:
-              type: string
-              title: Packets Per Second
-              description: Max packets per second
-              x-ui-visible-if:
-                field: "spec.runtime.autoscaling.scaling_on"
-                values: [ "PPS" ]
-            requests_per_second:
-              type: object
-              title: Requests Per Second
-              description: Requests per second RPS
-              x-ui-visible-if:
-                field: "spec.runtime.autoscaling.scaling_on"
-                values: [ "RPS" ]
-              properties:
-                threshold:
-                  type: string
-                  title: Threshold
-                  description: RPS threshold
-                ingress_name:
-                  type: string
-                  title: Ingress Name
-                  description: Ingress name for autoscaling
-              required:
-                - threshold
-                - ingress_name
         size:
           type: object
           title: Size
