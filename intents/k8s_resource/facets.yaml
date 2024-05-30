@@ -1,0 +1,3 @@
+name: k8s_resource
+type: K8s
+displayName: K8s resource
