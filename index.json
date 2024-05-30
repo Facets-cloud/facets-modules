@@ -134,7 +134,7 @@
     "flavor": "cloudsql",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-patches",
     "relativePath": "./modules/mysql/cloudsql/0.1/",
     "clouds": [
       "gcp"
