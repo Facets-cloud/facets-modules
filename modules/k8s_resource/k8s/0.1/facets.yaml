@@ -7,12 +7,16 @@ clouds:
   - gcp
   - kubernetes
 spec:
-  resource:
-    type: object
-    title: Resource
-    description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
-    x-ui-yaml-editor: true
-    x-ui-placeholder: Enter kubernetes manifest in YAML format
+  title: K8s resource
+  description: Specification of the K8s resource intent
+  type: object
+  properties:
+    resource:
+      type: object
+      title: Resource
+      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter kubernetes manifest in YAML format
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
