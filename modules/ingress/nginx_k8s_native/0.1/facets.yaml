@@ -78,7 +78,7 @@ spec:
               dynamicProperties:
                 serviceName:
                   key: service_name
-                  value: label
+                  lookup: label
               method: GET
               labelKey: port
               valueKey: port
