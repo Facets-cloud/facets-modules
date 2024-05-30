@@ -1,21 +1,113 @@
 intent: redis_monitoring
 flavor: k8s
-version: '0.1'
+version: "0.1"
 clouds:
   - aws
   - k8s
   - azure
   - gcp
 description: Adds Monitoring to Redis
-spec:
-inputs: 
+inputs:
   redis:
     type: "@output/redis"
-    adds_capability: true 
+    adds_capability: true
+spec:
+  title: Redis Monitoring
+  type: object
+  properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exporter Configuration
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Disable or Enable Exporter
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        redis_down:
+          type: object
+          title: Redis Down
+          description: Redis Down Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        redis_out_of_configured_max_memory:
+          type: object
+          title: Redis Out Of Configured Max Memory
+          description: Redis Out Of Configured Max Memory Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+        redis_too_many_connections:
+          type: object
+          title: Redis Too Many Connections
+          description: Redis Too Many Connections Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
 sample:
-  flavor: k8s
-  metadata:
   kind: redis_monitoring
+  flavor: k8s
+  version: "0.1"
   disabled: true
-  version: '0.1'
   spec:
+    exporter:
+      disabled: false
+    alerts:
+      redis_down:
+        disabled: false
+        interval: 10m
+        severity: critical
+      redis_out_of_configured_max_memory:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 90
+      redis_too_many_connections:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 8000
