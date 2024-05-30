@@ -133,5 +133,3 @@ sample:
       writer:
         instance_count: 1
         instance: cache.t3.micro
-      reader:
-        instance_count: 1

@@ -88,5 +88,3 @@ sample:
     size:
       writer:
         memory: 5Gi
-      reader:
-        instance_count: 0

@@ -143,7 +143,3 @@ sample:
         cpu_limit: '1'
         memory_limit: '1G'
         volume: '10Gi'
-      reader:
-        instance_count: 0
-        cpu: '1'
-        memory: '1G'
