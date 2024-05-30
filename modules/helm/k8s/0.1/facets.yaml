@@ -59,6 +59,6 @@ sample:
       wait: false
     values:
       datadog:
-        service:
-          annotations:
-            key: value
+        podLabelsAsTags:
+          managed_by: facets
+          env: dev
