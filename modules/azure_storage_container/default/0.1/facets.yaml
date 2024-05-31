@@ -1,0 +1,15 @@
+intent: azure_storage_container
+flavor: default
+version: '0.1'
+clouds:
+  - azure
+spec: {}
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/azure_storage_container/azure_storage_container.schema.json
+  disabled: true
+  flavor: default
+  kind: azure_storage_container
+  metadata: { }
+  version: '0.1'
+  spec: { }

@@ -298,5 +298,16 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "azure_storage_container",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/azure_storage_container/default/0.1/",
+    "clouds": [
+      "azure"
+    ]
   }
 ]
