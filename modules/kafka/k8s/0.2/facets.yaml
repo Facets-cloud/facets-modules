@@ -37,10 +37,12 @@ spec:
               type: string
               title: CPU
               description: CPU request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu
+              pattern: "^[0-9]+[m]?$"
             memory:
               type: string
               title: Memory
               description: Memory request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
             volume:
               type: string
               title: Volume
@@ -85,7 +87,6 @@ sample:
     authenticated: true
     kafka_version: 2.8.0
     persistence_enabled: true
-    zookeeper_version: 3.8.0
     size:
       kafka:
         cpu: '1'
