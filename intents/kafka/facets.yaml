@@ -1,0 +1,3 @@
+name: kafka
+type: Queue
+displayName: Kafka

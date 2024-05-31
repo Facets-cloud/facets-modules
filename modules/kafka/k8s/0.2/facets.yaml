@@ -1,0 +1,100 @@
+intent: kafka
+flavor: k8s
+version: '0.2'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Kafka Spec
+  type: object
+  properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: Make this kafka password protected
+    kafka_version:
+      type: string
+      title: Kafka Version
+      description: Version of kafka e.g. 3.2.3
+      minLength: 3
+    persistence_enabled:
+      type: boolean
+      title: Persistence Enabled
+      description: Enable Persistence for this redis
+    size:
+      type: object
+      title: Size
+      description: The size details
+      properties:
+        zookeeper:
+          type: object
+          title: Zookeeper
+          description: The zookeeper details
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: CPU request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu
+            memory:
+              type: string
+              title: Memory
+              description: Memory request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory
+            volume:
+              type: string
+              title: Volume
+              description: Volume request in kubernetes persistent volumes
+            replica_count:
+              type: integer
+              title: Replica Count
+              description: Number of zookeeper instances needs to be deployed
+          required: [ "cpu", "memory", "replica_count" ]
+        kafka:
+          type: object
+          title: Kafka
+          description: The kafka details
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: CPU request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu
+            memory:
+              type: string
+              title: Memory
+              description: Memory request in format mentioned @ https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory
+            volume:
+              type: string
+              title: Volume
+              description: Volume request in kubernetes persistent volumes
+            replica_count:
+              type: integer
+              title: Replica Count
+              description: Number of kafka instances needs to be deployed
+          required: [ "cpu", "memory", "replica_count" ]
+      required: [ "zookeeper", "kafka" ]
+  required: [ "authenticated", "kafka_version", "persistence_enabled", "size" ]
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json'
+  kind: kafka
+  version: '0.2'
+  flavor: k8s
+  disabled: true
+  metadata: { }
+  spec:
+    authenticated: true
+    kafka_version: 2.8.0
+    persistence_enabled: true
+    zookeeper_version: 3.8.0
+    size:
+      kafka:
+        cpu: '1'
+        memory: 1G
+        replica_count: 1
+        volume: 10Gi
+      zookeeper:
+        cpu: '1'
+        memory: 1G
+        replica_count: 1
+        volume: 10Gi
+
