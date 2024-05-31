@@ -19,11 +19,11 @@ spec:
       title: MongoDB Version
       description: Specifies the MongoDB version to use.
       enum:
-        - '4.4'
-        - '5.0'
-        - '6.0'
-        - '6.0.2'
-      x-ui-placeholder: "e.g., '6.0' or '6.0.2'"
+        - '4.4.14'
+        - '5.0.23'
+        - '6.0.13'
+        - '7.0.11'
+      x-ui-placeholder: "e.g., '7.0' or '7.0.11'"
       x-ui-error-message: "Please select a valid MongoDB version."
     size:
       type: object
@@ -40,7 +40,7 @@ spec:
           x-ui-error-message: "Instance count must be between 1 and 10."
         cpu:
           type: string
-          title: CPU
+          title: CPU Request
           description: Number of CPU cores required.
           minLength: 1
           pattern: "^[0-9]+[m]?$"
@@ -48,7 +48,7 @@ spec:
           x-ui-error-message: "CPU must be specified in the correct format (e.g., '500m' or '1')."
         memory:
           type: string
-          title: Memory
+          title: Memory Request
           description: Amount of memory required.
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
@@ -69,7 +69,7 @@ spec:
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           x-ui-placeholder: "e.g., '1Gi' or '2Gi'"
-          x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '1Gi' or '2Gi')."
+          x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '800Mi' or '2Gi')."
         volume:
           type: string
           title: Volume
