@@ -10,7 +10,7 @@ spec:
   title: Nginx Ingress Controller
   type: object
   properties:
-    basicAuth:
+    basic_auth:
       type: boolean
       title: Basic Authentication
       description: Enable/disable basic auth
