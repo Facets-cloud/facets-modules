@@ -150,6 +150,6 @@ sample:
     size:
       instance: r4.large.elasticsearch
       instance_count: 2
-      volume: 100G
+      volume: 100
   version: '0.1'
   disabled: true
