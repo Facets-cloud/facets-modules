@@ -1,6 +1,6 @@
 intent: mongo
 flavor: k8s
-version: '0.2'
+version: '0.3'
 clouds:
   - aws
   - azure
@@ -97,7 +97,7 @@ sample:
   metadata: { }
   kind: mongo
   disabled: true
-  version: '0.2'
+  version: '0.3'
   spec:
     authenticated: true
     mongodb_version: '6.0.2'
