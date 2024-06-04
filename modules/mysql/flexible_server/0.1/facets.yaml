@@ -1,6 +1,6 @@
 intent: mysql
 flavor: flexible_server
-version: '0.1'
+version: "0.1"
 clouds:
   - azure
 spec:
@@ -106,13 +106,13 @@ spec:
     - size
 sample:
   flavor: flexible_server
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
   metadata:
     tags:
       managed-by: facets
   kind: mysql
   disabled: true
-  version: '0.1'
+  version: "0.1"
   spec:
     mysql_version: 8.0.21
     size:
