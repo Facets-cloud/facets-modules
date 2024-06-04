@@ -409,10 +409,12 @@ spec:
               type: string
               title: Max Available
               description: If type RollingUpdate, this is the max number of pods that can be created from the default replicas
+              pattern: "^[0-9]+$"
             max_unavailable:
               type: string
               title: Max Unavailable
               description: If type RollingUpdate, this is the max number of pods that can be unavailable from the default replicas
+              pattern: "^[0-9]+$"
         disruption_policy:
           type: object
           title: Disruption Policy
@@ -422,10 +424,12 @@ spec:
               type: string
               title: Min Available
               description: This is the min number of pods should be available in case of failures
+              pattern: "^[0-9]+$"
             max_unavailable:
               type: string
               title: Max Unavailable
               description: This is the max number of pods that can be unavailable during a failure.
+              pattern: "^[0-9]+$"
   required:
     - type
     - restart_policy
