@@ -47,11 +47,11 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-            replica_count:
+            instance_count:
               type: integer
-              title: Replica Count
+              title: Instance Count
               description: Number of zookeeper instances needs to be deployed
-          required: [ "cpu", "memory", "replica_count" ]
+          required: [ "cpu", "memory", "instance_count" ]
         kafka:
           type: object
           title: Kafka
@@ -69,11 +69,11 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-            replica_count:
+            instance_count:
               type: integer
-              title: Replica Count
+              title: Instance Count
               description: Number of kafka instances needs to be deployed
-          required: [ "cpu", "memory", "replica_count" ]
+          required: [ "cpu", "memory", "instance_count" ]
       required: [ "zookeeper", "kafka" ]
   required: [ "authenticated", "kafka_version", "persistence_enabled", "size" ]
 sample:
@@ -91,11 +91,11 @@ sample:
       kafka:
         cpu: '1'
         memory: 1G
-        replica_count: 1
+        instance_count: 1
         volume: 10Gi
       zookeeper:
         cpu: '1'
         memory: 1G
-        replica_count: 1
+        instance_count: 1
         volume: 10Gi
 
