@@ -463,11 +463,7 @@ sample:
         min: '1'
         max: '1'
         cpu_threshold: '50'
-      ports:
-        http:
-          port: '8080'
-          service_port: '8080'
-          protocol: tcp
+      ports: { }
       size:
         cpu: 300m
         memory: 1Gi
@@ -487,4 +483,3 @@ sample:
       volumes: { }
     env:
       LOG_LEVEL: INFO
-
