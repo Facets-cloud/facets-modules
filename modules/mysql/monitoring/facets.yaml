@@ -1,0 +1,113 @@
+intent: mysql_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Mysql
+inputs:
+  mysql_outputs:
+    type: "@outputs/mysql"
+    adds_capability: true
+spec:
+  title: Mysql Monitoring
+  type: object
+  properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exporter Configuration
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Disable or Enable Exporter
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        mysql_down:
+          type: object
+          title: Mysql Down
+          description: Mysql Down Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        mysql_too_many_connections:
+          type: object
+          title: Mysql Too Many Connections
+          description: Mysql Too Many Connections Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+        mysql_restarted:
+          type: object
+          title: Mysql Restarted
+          description: Mysql Restarted Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+sample:
+  kind: mysql_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    exporter:
+      disabled: false
+    alerts:
+      mysql_down:
+        disabled: false
+        interval: 10m
+        severity: critical
+      mysql_too_many_connections:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 80
+      mysql_restarted:
+        disabled: false
+        interval: 0m
+        severity: critical
+        threshold: 60
