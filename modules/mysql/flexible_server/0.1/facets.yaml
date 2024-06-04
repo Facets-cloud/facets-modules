@@ -12,7 +12,10 @@ spec:
       title: MySQL Version
       description: Version of MySQL
       minLength: 1
-      x-ui-placeholder: "Ex. 8.0"
+      x-ui-placeholder: "Ex. 8.0.21"
+      enum:
+        - "5.7"
+        - "8.0.21"
     size:
       type: object
       title: Size
