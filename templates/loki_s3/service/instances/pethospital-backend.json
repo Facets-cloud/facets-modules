@@ -1,0 +1,62 @@
+{
+  "flavor": "k8s",
+  "metadata": {
+    "labels": {
+      "deliveryType": "MANUAL"
+    }
+  },
+  "kind": "service",
+  "disabled": false,
+  "version": "0.1",
+  "spec": {
+    "enable_host_anti_affinity": false,
+    "type": "application",
+    "restart_policy": "Always",
+    "release": {
+      "strategy": {
+        "type": "RollingUpdate"
+      },
+      "build": {
+        "artifactory": "helplater",
+        "name": "chatbot"
+      }
+    },
+    "runtime": {
+      "autoscaling": {
+        "scaling_on": "CPU",
+        "min": "1",
+        "max": "1",
+        "cpu_threshold": "50"
+      },
+      "ports": {
+        "http": {
+          "port": "3000",
+          "service_port": "3000",
+          "protocol": "tcp"
+        }
+      },
+      "size": {
+        "cpu": "300m",
+        "memory": "1Gi",
+        "cpu_limit": "1000m",
+        "memory_limit": "5Gi"
+      },
+      "health_checks": {
+        "readiness_check_type": "PortCheck",
+        "readiness_timeout": "10",
+        "readiness_period": "30",
+        "readiness_port": "3000",
+        "readiness_start_up_time": "15",
+        "liveness_check_type": "PortCheck",
+        "liveness_timeout": "10",
+        "liveness_period": "30",
+        "liveness_port": "3000",
+        "liveness_start_up_time": "15"
+      },
+      "volumes": {}
+    },
+    "env": {
+      "SPRING_ACTIVE_PROFILES": "${blueprint.self.variables.SPRING_ACTIVE_PROFILES}"
+    }
+  }
+}
