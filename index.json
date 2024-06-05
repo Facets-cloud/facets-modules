@@ -112,7 +112,7 @@
     "flavor": "aurora",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-patches",
     "relativePath": "./modules/mysql/aurora/0.2/",
     "clouds": [
       "aws"
@@ -123,7 +123,7 @@
     "flavor": "rds",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-patches",
     "relativePath": "./modules/mysql/rds/0.1/",
     "clouds": [
       "aws"
@@ -145,7 +145,7 @@
     "flavor": "flexible_server",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-patches",
     "relativePath": "./modules/mysql/flexible_server/0.1/",
     "clouds": [
       "azure"
