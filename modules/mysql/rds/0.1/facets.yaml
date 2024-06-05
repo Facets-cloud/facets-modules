@@ -13,6 +13,9 @@ spec:
       description: Version of MySQL
       minLength: 1
       x-ui-placeholder: "Ex. 8.0"
+      enum:
+        - "8.0"
+        - "5.7"
     size:
       type: object
       title: Size
