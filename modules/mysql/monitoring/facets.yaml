@@ -8,7 +8,7 @@ clouds:
   - gcp
 description: Adds Monitoring to Mysql
 inputs:
-  mysql_outputs:
+  default:
     type: "@outputs/mysql"
     adds_capability: true
 spec:
