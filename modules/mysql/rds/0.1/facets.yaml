@@ -1,6 +1,6 @@
 intent: mysql
 flavor: rds
-version: '0.1'
+version: "0.1"
 clouds:
   - aws
 spec:
@@ -83,16 +83,16 @@ spec:
     - mysql_version
     - size
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
   kind: mysql
   flavor: rds
-  version: '0.1'
+  version: "0.1"
   disabled: true
   metadata:
     tags:
       managed-by: facets
   spec:
-    mysql_version: '8.0'
+    mysql_version: "8.0"
     size:
       writer:
         instance: db.t4g.medium
