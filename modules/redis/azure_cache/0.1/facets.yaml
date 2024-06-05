@@ -51,6 +51,7 @@ spec:
               description: Number of instances to create.
               minimum: 1
               maximum: 10
+              pattern: "^[0-9]+$"
               x-ui-error-message: "Instance count must be between 1 and 10."
           required:
             - instance
@@ -70,6 +71,7 @@ spec:
               description: Number of reader instances to create.
               minimum: 0
               maximum: 10
+              pattern: "^[0-9]+$"
               x-ui-error-message: "Instance count must be between 0 and 10."
           required:
             - instance_count
