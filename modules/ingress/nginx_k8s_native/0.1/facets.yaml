@@ -93,7 +93,7 @@ spec:
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
   required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basicAuth", "grpc", "private", "domains", "rules", "force_ssl_redirection"]
+  x-ui-order: ["basic_auth", "grpc", "private", "domains", "rules", "force_ssl_redirection"]
 sample:
   kind: ingress
   flavor: nginx_k8s_native
