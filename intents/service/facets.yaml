@@ -1,3 +1,6 @@
 name: service
 type: Service
 displayName: Service
+outputs:
+  - name: default
+    type: "@output/service"
