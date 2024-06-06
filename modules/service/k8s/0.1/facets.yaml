@@ -537,7 +537,6 @@ sample:
         max: '1'
         cpu_threshold: '50'
       ports: { }
-      metrics: { }
       size:
         cpu: 300m
         memory: 1Gi
