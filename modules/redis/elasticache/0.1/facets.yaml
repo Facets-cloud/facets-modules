@@ -22,8 +22,6 @@ spec:
       enum:
         - '5.0.6'
         - '6.x'
-        - '7.0'
-        - '7.1'
       x-ui-error-message: "Please select a supported Redis version."
     size:
       type: object
