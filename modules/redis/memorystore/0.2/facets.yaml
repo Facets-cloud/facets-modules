@@ -48,8 +48,8 @@ spec:
               description: Number of reader instances.
               default: 0
               minimum: 0
-              maximum: 10
-              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 10."
+              maximum: 5
+              x-ui-error-message: "Instance count must be a non-negative integer not exceeding 5."
         writer:
           type: object
           title: Writer
