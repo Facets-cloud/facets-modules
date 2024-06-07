@@ -431,7 +431,6 @@ spec:
           title: Image
           description: The docker image of the application that you want to run
           x-ui-skip: true
-          pattern: '^(?:[a-zA-Z0-9.-]+(?::[0-9]+)?\/)?[a-z0-9]+(?:[._-][a-z0-9]+)*(?:\/[a-z0-9]+(?:[._-][a-z0-9]+)*)*(:[a-z0-9]+(?:[._-][a-z0-9]+)*)?(?:@[A-Fa-f0-9]{64})?$'
           x-ui-error-message: "Value doesn't match pattern for a container image"
         build:
           type: object
