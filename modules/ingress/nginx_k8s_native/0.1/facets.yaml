@@ -36,6 +36,9 @@ spec:
             type: string
             title: Domain
             description: Host name of the domain
+            pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
+            x-ui-placeholder: "Enter the domain you want to map this ingress"
+            x-ui-error-message: "Value doesn't match pattern for domain"
           alias:
             type: string
             title: Alias
@@ -69,6 +72,9 @@ spec:
             type: string
             title: Path
             description: Path of the application
+            pattern: '^(/[^/]+)*(/)?$'
+            x-ui-placeholder: "Enter path to which your application will be accessible"
+            x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
           port:
             type: string
             title: Port
@@ -88,6 +94,9 @@ spec:
             type: string
             title: Domain Prefix
             description: Subdomain prefix
+            pattern: '^[a-z0-9-]{1,20}$'
+            x-ui-placeholder: "Enter the subdomain you want to expose your application"
+            x-ui-error-message: "Value doesn't match pattern, max characters of 20 and only hyphen special characters is accepted with numbers and alphabets"
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
