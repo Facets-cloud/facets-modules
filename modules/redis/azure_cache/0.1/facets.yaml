@@ -28,36 +28,6 @@ spec:
       title: Size
       description: Configuration for datastore components.
       properties:
-        writer:
-          type: object
-          title: Writer
-          description: Settings for writer instances.
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node.
-              x-ui-placeholder: e.g., '1', '2', '3'
-              enum:
-                - 1
-                - 2
-                - 3
-                - 4
-                - 5
-              x-ui-error-message: "Please select a valid instance type."
-            instance_count:
-              type: integer
-              title: Instance Count
-              description: Number of instances to create.
-              minimum: 1
-              maximum: 10
-              x-ui-error-message: "Instance count must be between 1 and 10."
-          required:
-            - instance
-            - instance_count
-          x-ui-order:
-            - instance
-            - instance_count
         reader:
           type: object
           title: Reader
@@ -69,14 +39,13 @@ spec:
               title: Instance Count
               description: Number of reader instances to create.
               minimum: 0
-              maximum: 10
-              x-ui-error-message: "Instance count must be between 0 and 10."
+              maximum: 3
+              x-ui-error-message: "Instance count must be between 0 and 3."
           required:
             - instance_count
       required:
-        - writer
+        - reader
       x-ui-order:
-        - writer
         - reader
   required:
     - size
@@ -103,7 +72,4 @@ sample:
     persistence_enabled: true
     size:
       reader:
-        instance_count: 1
-      writer:
-        instance: P1
         instance_count: 1
