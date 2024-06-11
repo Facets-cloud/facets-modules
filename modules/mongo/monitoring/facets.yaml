@@ -1,4 +1,4 @@
-intent: redis_monitoring
+intent: mongo_monitoring
 flavor: k8s
 version: "0.1"
 clouds:
@@ -6,13 +6,13 @@ clouds:
   - k8s
   - azure
   - gcp
-description: Adds Monitoring to Redis
+description: Adds Monitoring to Mongodb
 inputs:
   default:
-    type: "@output/redis"
+    type: "@output/mongo"
     adds_capability: true
 spec:
-  title: Redis Monitoring
+  title: Mongo Monitoring
   type: object
   properties:
     exporter:
@@ -29,10 +29,10 @@ spec:
       title: Alerts
       description: Alerts configuration
       properties:
-        redis_down:
+        mongodb-down:
           type: object
-          title: Redis Down
-          description: Redis Down Alert
+          title: MongoDB Down
+          description: MongoDB Down Alert
           properties:
             disabled:
               type: boolean
@@ -46,10 +46,10 @@ spec:
               type: string
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
-        redis_out_of_configured_max_memory:
+        mongodb_too_many_connections:
           type: object
-          title: Redis Out Of Configured Max Memory
-          description: Redis Out Of Configured Max Memory Alert
+          title: Mongo Too Many Connections
+          description: Mongo Too Many Connections
           properties:
             disabled:
               type: boolean
@@ -67,10 +67,10 @@ spec:
               type: string
               title: Threshold
               description: The threshold cpu throttling percentage at which the alert is triggered
-        redis_too_many_connections:
+        mongodb_virtual_memory_usage:
           type: object
-          title: Redis Too Many Connections
-          description: Redis Too Many Connections Alert
+          title: Mongo High Memory Usage
+          description: Mongo High Memory Usage
           properties:
             disabled:
               type: boolean
@@ -89,7 +89,7 @@ spec:
               title: Threshold
               description: The threshold cpu throttling percentage at which the alert is triggered
 sample:
-  kind: redis_monitoring
+  kind: mongo_monitoring
   flavor: k8s
   version: "0.1"
   disabled: true
@@ -97,17 +97,17 @@ sample:
     exporter:
       disabled: false
     alerts:
-      redis_down:
+      mongodb_down:
         disabled: false
         interval: 10m
         severity: critical
-      redis_out_of_configured_max_memory:
+      mongodb_virtual_memory_usage:
         disabled: false
         interval: 5m
         severity: critical
-        threshold: 90
-      redis_too_many_connections:
+        threshold: 3
+      mongodb_too_many_connections:
         disabled: false
         interval: 5m
         severity: critical
-        threshold: 8000
+        threshold: 80
