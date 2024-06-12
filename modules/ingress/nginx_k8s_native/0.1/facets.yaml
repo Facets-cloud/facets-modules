@@ -37,8 +37,8 @@ spec:
             title: Domain
             description: Host name of the domain
             pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
-            x-ui-placeholder: "Enter the domain you want to map this ingress"
-            x-ui-error-message: "Value doesn't match pattern for domain"
+            x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk"
+            x-ui-error-message: "Value doesn't match the format. Eg: example.com, my-domain.co.uk"
           alias:
             type: string
             title: Alias
