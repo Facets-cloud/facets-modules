@@ -66,7 +66,7 @@ spec:
             threshold:
               type: string
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: Percentage of maximum connections that the mongodb can have
         mongodb_virtual_memory_usage:
           type: object
           title: Mongo High Memory Usage
@@ -87,7 +87,45 @@ spec:
             threshold:
               type: string
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: The maximum memory for the ratio of virtual memory to mapped memory for each MongoDB instance
+        mongodb_replication_lag:
+          type: object
+          title: Mongo Replication Lag
+          description: Mongo Replication Lag
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: A threshold for the difference in the average operation timestamp (optime) between the primary and secondary MongoDB instances.
+        mongodb_replica_member_unhealthy:
+          type: object
+          title: Mongo Replica Member Unhealthy
+          description: Mongo Replica Member Unhealthy
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
 sample:
   kind: mongo_monitoring
   flavor: k8s
@@ -111,3 +149,13 @@ sample:
         interval: 5m
         severity: critical
         threshold: 80
+      mongodb_replication_lag:
+        disabled: false
+        interval: 0m
+        severity: critical
+        threshold: 10
+      mongodb_replica_member_unhealthy:
+        disabled: false
+        interval: 0m
+        severity: critical
+        threshold: 10
