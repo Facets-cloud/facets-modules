@@ -528,9 +528,6 @@ sample:
     release:
       strategy:
         type: RollingUpdate
-      build:
-        artifactory: default
-        name: replace-with-app-name
     runtime:
       autoscaling:
         scaling_on: CPU
