@@ -158,4 +158,3 @@ sample:
         disabled: false
         interval: 0m
         severity: critical
-        threshold: 10
