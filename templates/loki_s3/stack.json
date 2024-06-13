@@ -1,9 +1,3 @@
 {
-  "clusterVariablesMeta": {
-    "SPRING_ACTIVE_PROFILES": {
-      "secret": false,
-      "value": "prod",
-      "global": false
-    }
-  }
+  "clusterVariablesMeta": {}
 }
