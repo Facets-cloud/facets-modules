@@ -46,6 +46,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
         redis_out_of_configured_max_memory:
           type: object
           title: Redis Out Of Configured Max Memory
@@ -63,6 +66,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
@@ -84,6 +90,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
