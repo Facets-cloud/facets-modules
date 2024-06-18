@@ -46,6 +46,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
         mysql_too_many_connections:
           type: object
           title: Mysql Too Many Connections
@@ -63,6 +66,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
@@ -88,6 +94,9 @@ spec:
               type: integer
               title: Threshold
               description: Time (seconds) in which mysql has restarted
+              enum:
+                - 'critical'
+                - 'warning'
 sample:
   kind: mysql_monitoring
   flavor: k8s
