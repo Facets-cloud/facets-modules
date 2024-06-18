@@ -18,114 +18,114 @@ spec:
     exporter:
       type: object
       title: Exporter
-      description: Exporter Configuration
+      description: Exports MongoDB metrics for monitoring purposes
       properties:
         disabled:
           type: boolean
           title: Disabled
-          description: Disable or Enable Exporter
+          description: Toggle to enable or disable exporter
     alerts:
       type: object
       title: Alerts
-      description: Alerts configuration
+      description: Defines alert rules for MongoDB monitoring conditions
       properties:
         mongodb-down:
           type: object
           title: MongoDB Down
-          description: MongoDB Down Alert
+          description: Triggers an alert if MongoDB becomes unavailable
           properties:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
         mongodb_too_many_connections:
           type: object
           title: Mongo Too Many Connections
-          description: Mongo Too Many Connections
+          description: Alerts when MongoDB exceeds connection limits
           properties:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
             threshold:
-              type: string
+              type: integer
               title: Threshold
               description: Percentage of maximum connections that the mongodb can have
         mongodb_virtual_memory_usage:
           type: object
           title: Mongo High Memory Usage
-          description: Mongo High Memory Usage
+          description: Triggers when MongoDB's memory usage exceeds thresholds
           properties:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
             threshold:
-              type: string
+              type: integer
               title: Threshold
               description: The maximum memory for the ratio of virtual memory to mapped memory for each MongoDB instance
         mongodb_replication_lag:
           type: object
           title: Mongo Replication Lag
-          description: Mongo Replication Lag
+          description: Triggers an alert when replication lag surpasses defined limits
           properties:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
             threshold:
-              type: string
+              type: integer
               title: Threshold
               description: A threshold for the difference in the average operation timestamp (optime) between the primary and secondary MongoDB instances.
         mongodb_replica_member_unhealthy:
           type: object
           title: Mongo Replica Member Unhealthy
-          description: Mongo Replica Member Unhealthy
+          description: Triggers if a replica set member becomes unhealthy or fails
           properties:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
 sample:
   kind: mongo_monitoring
   flavor: k8s
