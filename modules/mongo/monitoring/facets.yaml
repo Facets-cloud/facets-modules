@@ -46,6 +46,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
         mongodb_too_many_connections:
           type: object
           title: Mongo Too Many Connections
@@ -63,6 +66,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
@@ -84,6 +90,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
@@ -105,6 +114,9 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
               type: integer
               title: Threshold
@@ -126,7 +138,10 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
-sample:
+              enum:
+                - 'critical'
+                - 'warning'
+sample: 
   kind: mongo_monitoring
   flavor: k8s
   version: "0.1"
