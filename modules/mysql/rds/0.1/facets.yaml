@@ -89,3 +89,6 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
+      reader:
+        instance: db.t4g.medium
+        instance_count: 0

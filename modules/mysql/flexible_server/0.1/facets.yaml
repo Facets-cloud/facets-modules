@@ -118,3 +118,6 @@ sample:
     size:
       writer:
         instance: GP_Standard_D2ds_v4
+      reader:
+        instance: GP_Standard_D2ds_v4
+        instance_count: 0

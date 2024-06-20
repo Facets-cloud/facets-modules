@@ -1,8 +1,8 @@
 intent: mysql
 flavor: aurora
-version: '0.2'
+version: "0.2"
 clouds:
-- aws
+  - aws
 spec:
   title: Aurora
   type: object
@@ -128,10 +128,10 @@ spec:
     - mysql_version
     - size
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
   kind: mysql
   flavor: aurora
-  version: '0.2'
+  version: "0.2"
   disabled: true
   metadata:
     tags:
@@ -140,4 +140,7 @@ sample:
     mysql_version: 8.0.mysql_aurora.3.02.0
     size:
       writer:
+        instance: db.t4g.medium
+      reader:
+        instance_count: 0
         instance: db.t4g.medium
