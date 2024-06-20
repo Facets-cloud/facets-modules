@@ -1,6 +1,6 @@
 intent: mysql
 flavor: k8s
-version: '0.1'
+version: "0.1"
 clouds:
   - aws
   - azure
@@ -132,11 +132,12 @@ spec:
     - size
   x-ui-error-message: "Please provide required information for the size."
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
   flavor: k8s
   kind: mysql
   metadata: {}
-  version: '0.1'
+  version: "0.1"
+  disabled: true
   spec:
     mysql_version: 8.0.34
     size:
@@ -146,4 +147,10 @@ sample:
         cpu_limit: 1
         memory_limit: 1Gi
         volume: 8G
-  disabled: true
+      reader:
+        cpu: 200m
+        memory: 800Mi
+        cpu_limit: 200m
+        memory_limit: 800Mi
+        volume: 8G
+        instance_count: 0
