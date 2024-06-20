@@ -12,17 +12,6 @@
   },
   {
     "intent": "redis",
-    "flavor": "azure_cache",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
-    "relativePath": "./modules/redis/azure_cache/0.1/",
-    "clouds": [
-      "azure"
-    ]
-  },
-  {
-    "intent": "redis",
     "flavor": "memorystore",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
