@@ -96,7 +96,7 @@ spec:
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage of maximum connections that the redis can have
+              description: The Percentage of maximum connections at which the alert is triggered
 sample:
   kind: redis_monitoring
   flavor: k8s
