@@ -113,10 +113,10 @@ spec:
               type: integer
               title: Instance Count
               description: Number of instances to create.
-              minimum: 1
+              minimum: 0
               maximum: 16
               x-ui-placeholder: "e.g., 2"
-              x-ui-error-message: "Instance count must be between 1 and 16."
+              x-ui-error-message: "Instance count must be between 0 and 16."
           required:
             - instance
             - volume
@@ -149,4 +149,8 @@ sample:
       writer:
         instance: db-f1-micro
         volume: 10Gi
+      reader:
+        instance: db-f1-micro
+        volume: 10Gi
+        instance_count: 0
     postgres_version: '12.11'
