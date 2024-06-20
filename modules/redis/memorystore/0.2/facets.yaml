@@ -88,3 +88,6 @@ sample:
     size:
       writer:
         memory: 5Gi
+      reader:
+        memory: 5Gi
+        instance_count: 0
