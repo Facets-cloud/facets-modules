@@ -72,7 +72,7 @@ spec:
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage value of maximum mysql connections that are in use
+              description: The Percentage value of maximum mysql connections at which the alert is triggered
         mysql_restarted:
           type: object
           title: Mysql Restarted
@@ -90,10 +90,6 @@ spec:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
-            threshold:
-              type: integer
-              title: Threshold
-              description: Time (seconds) in which mysql has restarted
               enum:
                 - 'critical'
                 - 'warning'
@@ -119,4 +115,3 @@ sample:
         disabled: false
         interval: 0m
         severity: critical
-        threshold: 60
