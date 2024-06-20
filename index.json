@@ -112,7 +112,7 @@
     "flavor": "aurora",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "sample-updates",
     "relativePath": "./modules/mysql/aurora/0.2/",
     "clouds": [
       "aws"
@@ -123,7 +123,7 @@
     "flavor": "rds",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "sample-updates",
     "relativePath": "./modules/mysql/rds/0.1/",
     "clouds": [
       "aws"
@@ -134,7 +134,7 @@
     "flavor": "cloudsql",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "sample-updates",
     "relativePath": "./modules/mysql/cloudsql/0.1/",
     "clouds": [
       "gcp"
@@ -145,7 +145,7 @@
     "flavor": "flexible_server",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "sample-updates",
     "relativePath": "./modules/mysql/flexible_server/0.1/",
     "clouds": [
       "azure"
@@ -156,7 +156,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "sample-updates",
     "relativePath": "./modules/mysql/k8s/0.1/",
     "clouds": [
       "aws",
