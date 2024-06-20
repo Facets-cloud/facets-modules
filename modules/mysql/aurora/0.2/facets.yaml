@@ -137,7 +137,7 @@ sample:
     tags:
       managed-by: facets
   spec:
-    mysql_version: 8.0.mysql_aurora.3.02.0
+    mysql_version: 8.0.mysql_aurora.3.05.2
     size:
       writer:
         instance: db.t4g.medium
