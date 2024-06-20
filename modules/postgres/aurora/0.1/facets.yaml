@@ -162,9 +162,9 @@ spec:
               type: integer
               title: Instance Count
               description: Number of instances to create.
-              minimum: 1
+              minimum: 0
               maximum: 16
-              x-ui-error-message: "Instance count must be between 1 and 16."
+              x-ui-error-message: "Instance count must be between 0 and 16."
           required:
             - instance
             - instance_count
@@ -198,3 +198,6 @@ sample:
       writer:
         instance: db.t3.medium
         instance_count: 1
+      reader:
+        instance: db.t3.medium
+        instance_count: 0
