@@ -43,7 +43,7 @@ spec:
               title: Reader Count
               description: Number of reader instances to create.
               default: 1
-              minimum: 1
+              minimum: 0
               maximum: 10
               x-ui-error-message: "Reader count must be between 1 and 10."
         writer:
@@ -131,3 +131,5 @@ sample:
       writer:
         instance_count: 1
         instance: cache.t3.micro
+      reader:
+        instance_count: 0
