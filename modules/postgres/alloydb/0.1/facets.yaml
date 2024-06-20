@@ -86,3 +86,6 @@ sample:
     size:
       writer:
         cpu: 2
+      reader:
+        cpu: 2
+        instance_count: 0
