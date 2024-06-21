@@ -47,7 +47,7 @@ spec:
               title: Instance Count
               description: Number of reader instances.
               default: 0
-              minimum: 0
+              minimum: 1
               maximum: 5
               x-ui-error-message: "Instance count must be a non-negative integer not exceeding 5."
         writer:
@@ -90,4 +90,4 @@ sample:
         memory: 5Gi
       reader:
         memory: 5Gi
-        instance_count: 0
+        instance_count: 1
