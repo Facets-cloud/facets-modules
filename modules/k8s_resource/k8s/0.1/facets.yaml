@@ -1,6 +1,6 @@
 intent: k8s_resource
 flavor: k8s
-version: '0.1'
+version: '0.2'
 clouds:
   - aws
   - azure
@@ -23,7 +23,7 @@ sample:
   kind: k8s_resource
   metadata: { }
   flavor: k8s
-  version: 0.1
+  version: '0.2'
   disabled: true
   spec:
     resource:
@@ -42,4 +42,3 @@ sample:
           - port: 80
             name: http
             targetPort: 80
-
