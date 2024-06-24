@@ -101,7 +101,7 @@
     "flavor": "aurora",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-monitoring-facets-yaml",
     "relativePath": "./modules/mysql/aurora/0.2/",
     "clouds": [
       "aws"
