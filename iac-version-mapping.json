@@ -1,0 +1,32 @@
+{
+  "DEV": {
+    "tfStream": "stage",
+    "majorVersion": "3",
+    "minorVersion": "2.9"
+  },
+  "QA": {
+    "tfStream": "stage",
+    "majorVersion": "3",
+    "minorVersion": "2.9"
+  },
+  "QA2": {
+    "tfStream": "stage",
+    "majorVersion": "3",
+    "minorVersion": "2.9"
+  },
+  "STAGING": {
+    "tfStream": "stage",
+    "majorVersion": "3",
+    "minorVersion": "2.9"
+  },
+  "UAT": {
+    "tfStream": "stage",
+    "majorVersion": "3",
+    "minorVersion": "2.9"
+  },
+  "default": {
+    "tfStream": "production",
+    "majorVersion": "3",
+    "minorVersion": "2.8"
+  }
+}
