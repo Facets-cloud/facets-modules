@@ -97,7 +97,7 @@ spec:
             pattern: '^[a-z0-9-]{1,20}$'
             x-ui-placeholder: "Enter the subdomain you want to expose your application"
             x-ui-error-message: "Value doesn't match pattern, max characters of 20 and only hyphen special characters is accepted with numbers and alphabets"
-        required: ["service_name", "path", "port", "domain_prefix"]
+        required: ["service_name", "path", "port"]
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
