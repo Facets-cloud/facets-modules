@@ -1,32 +1,32 @@
 {
   "DEV": {
-    "tfStream": "stage",
-    "majorVersion": "3",
-    "minorVersion": "2.9"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   },
   "QA": {
-    "tfStream": "stage",
-    "majorVersion": "3",
-    "minorVersion": "2.9"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   },
   "QA2": {
-    "tfStream": "stage",
-    "majorVersion": "3",
-    "minorVersion": "2.9"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   },
   "STAGING": {
-    "tfStream": "stage",
-    "majorVersion": "3",
-    "minorVersion": "2.9"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   },
   "UAT": {
-    "tfStream": "stage",
-    "majorVersion": "3",
-    "minorVersion": "2.9"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   },
   "default": {
-    "tfStream": "production",
-    "majorVersion": "3",
-    "minorVersion": "2.8"
+    "tfStream": "saas-fixes-3.2.8",
+    "majorVersion": "50",
+    "minorVersion": "latest"
   }
 }
