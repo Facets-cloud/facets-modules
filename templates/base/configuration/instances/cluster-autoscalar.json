@@ -1,0 +1,8 @@
+{
+  "kind" : "configuration",
+  "flavor": "default",
+  "for"  : "cluster-autoscaler",
+  "version" : "0.1",
+  "spec": {
+  }
+}

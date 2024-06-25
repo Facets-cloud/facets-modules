@@ -1,0 +1,8 @@
+name: base
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+type: AUTO_INJECT
+group: Base

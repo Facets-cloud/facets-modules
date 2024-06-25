@@ -1,0 +1,6 @@
+{
+  "kind": "configuration",
+  "for": "prometheus",
+  "version": "latest",
+  "spec": {}
+}

@@ -1,0 +1,6 @@
+{
+	"kind": "configuration",
+	"for": "aws_alb_controller",
+	"spec":{},
+	"disabled": false
+}
