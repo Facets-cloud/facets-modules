@@ -1,0 +1,6 @@
+{
+	"kind": "configuration",
+	"for": "cert_manager",
+	"spec":{},
+	"disabled": false
+}

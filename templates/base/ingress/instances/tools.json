@@ -1,0 +1,72 @@
+{
+	"flavor": "nginx_ingress_controller",
+	"kind": "ingress",
+	"metadata": {
+		"name": "tools",
+		"annotations": {}
+	},
+	"advanced": {
+		"inherit_from_base": true,
+		"nginx_ingress_controller": {
+			"values": {
+				"controller": {
+					"autoscaling": {
+						"minReplicas": 1
+					},
+					"config": {
+						"use-forwarded-headers": true
+					}
+				}
+			}
+		}
+	},
+	"spec": {
+		"private": false,
+		"basicAuth": true,
+		"grpc": false,
+		"domains": {},
+		"rules": {
+			"grafana": {
+				"service_name": "prometheus-operator-grafana",
+				"path": "/",
+				"port": 80,
+				"domain_prefix": "grafana"
+			},
+			"prometheus": {
+				"service_name": "prometheus-operator-prometheus",
+				"path": "/",
+				"port": 9090,
+				"domain_prefix": "prometheus"
+			},
+			"alertmanager": {
+				"service_name": "prometheus-operator-alertmanager",
+				"path": "/",
+				"port": 9093,
+				"domain_prefix": "alertmanager"
+			},
+			"wetty": {
+				"service_name": "wetty",
+				"path": "/",
+				"port": 3000,
+				"domain_prefix": "wetty"
+			},
+			"argo": {
+				"service_name": "argo-facets-argo-rollouts-dashboard",
+				"path": "/",
+				"port": "3100",
+				"domain_prefix": "argo-rollouts"
+			},
+			"k8s": {
+				"service_name": "k8s-dashboard-new-kubernetes-dashboard",
+				"path": "/",
+				"port": 443,
+				"domain_prefix": "k8s",
+				"annotations": {
+					"nginx.ingress.kubernetes.io/backend-protocol": "HTTPS"
+				},
+				"disable_auth": true
+			}
+		},
+		"force_ssl_redirection": true
+	}
+}

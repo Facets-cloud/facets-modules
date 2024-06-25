@@ -1,0 +1,13 @@
+{
+    "kind": "network",
+    "flavor": "default",
+    "version": "0.1",
+    "spec": {},
+    "provided": false,
+    "disabled": false,
+    "out": {
+      "attributes": {
+      
+      }
+    }
+  }
