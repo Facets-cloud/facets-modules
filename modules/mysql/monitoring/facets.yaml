@@ -1,0 +1,117 @@
+intent: mysql_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Mysql
+inputs:
+  default:
+    type: "@outputs/mysql"
+    adds_capability: true
+spec:
+  title: Mysql Monitoring
+  type: object
+  properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exports Mysql metrics for monitoring purposes
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Toggle to enable or disable exporter
+    alerts:
+      type: object
+      title: Alerts
+      description: Defines alert rules for Mysql monitoring conditions
+      properties:
+        mysql_down:
+          type: object
+          title: Mysql Down
+          description: Triggers an alert if Mysql becomes unavailable
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+        mysql_too_many_connections:
+          type: object
+          title: Mysql Too Many Connections
+          description: Alerts when Mysql exceeds connection limits
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+            threshold:
+              type: integer
+              title: Threshold
+              description: The Percentage value of maximum mysql connections at which the alert is triggered
+        mysql_restarted:
+          type: object
+          title: Mysql Restarted
+          description: Alerts when Mysql Restarts
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+sample:
+  kind: mysql_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    exporter:
+      disabled: false
+    alerts:
+      mysql_down:
+        disabled: false
+        interval: 10m
+        severity: critical
+      mysql_too_many_connections:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 80
+      mysql_restarted:
+        disabled: false
+        interval: 0m
+        severity: critical
