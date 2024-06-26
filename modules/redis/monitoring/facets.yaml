@@ -8,7 +8,7 @@ clouds:
   - gcp
 description: Adds Monitoring to Redis
 inputs:
-  redis:
+  default:
     type: "@output/redis"
     adds_capability: true
 spec:
@@ -18,12 +18,12 @@ spec:
     exporter:
       type: object
       title: Exporter
-      description: Exporter Configuration
+      description: Exports Redis metrics for monitoring purposes
       properties:
         disabled:
           type: boolean
           title: Disabled
-          description: Disable or Enable Exporter
+          description: Toggle to enable or disable exporter
     alerts:
       type: object
       title: Alerts
@@ -37,15 +37,18 @@ spec:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
         redis_out_of_configured_max_memory:
           type: object
           title: Redis Out Of Configured Max Memory
@@ -54,19 +57,22 @@ spec:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
-              type: string
+              type: integer
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: The Percentage of maximum memory usage triggering alert
         redis_too_many_connections:
           type: object
           title: Redis Too Many Connections
@@ -75,19 +81,22 @@ spec:
             disabled:
               type: boolean
               title: Disabled
-              description: Disable or Enable Alert
+              description: Toggle to enable or disable this specific alert
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the alert is triggered
+              description: Time duration before triggering the alert
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
             threshold:
-              type: string
+              type: integer
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: The Percentage of maximum connections at which the alert is triggered
 sample:
   kind: redis_monitoring
   flavor: k8s
