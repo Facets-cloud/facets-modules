@@ -1,0 +1,175 @@
+intent: mongo_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Mongodb
+inputs:
+  default:
+    type: "@output/mongo"
+    adds_capability: true
+spec:
+  title: Mongo Monitoring
+  type: object
+  properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exports MongoDB metrics for monitoring purposes
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Toggle to enable or disable exporter
+    alerts:
+      type: object
+      title: Alerts
+      description: Defines alert rules for MongoDB monitoring conditions
+      properties:
+        mongodb-down:
+          type: object
+          title: MongoDB Down
+          description: Triggers an alert if MongoDB becomes unavailable
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+        mongodb_too_many_connections:
+          type: object
+          title: Mongo Too Many Connections
+          description: Alerts when MongoDB exceeds connection limits
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+            threshold:
+              type: integer
+              title: Threshold
+              description: Percentage of maximum connections at which the alert is triggered
+        mongodb_virtual_memory_usage:
+          type: object
+          title: Mongo High Memory Usage
+          description: Triggers when MongoDB's memory usage exceeds thresholds
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+            threshold:
+              type: integer
+              title: Threshold
+              description: The maximum memory for each MongoDB instance at which the alert is triggered
+        mongodb_replication_lag:
+          type: object
+          title: Mongo Replication Lag
+          description: Triggers an alert when replication lag surpasses defined limits
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+            threshold:
+              type: integer
+              title: Threshold
+              description: A threshold for replication lag at which the alert is triggered.
+        mongodb_replica_member_unhealthy:
+          type: object
+          title: Mongo Replica Member Unhealthy
+          description: Triggers if a replica set member becomes unhealthy or fails
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Toggle to enable or disable this specific alert
+            interval:
+              type: string
+              title: Interval
+              description: Time duration before triggering the alert
+            severity:
+              type: string
+              title: Severity
+              description: Categorizes the urgency and impact of an alert
+              enum:
+                - 'critical'
+                - 'warning'
+sample: 
+  kind: mongo_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    exporter:
+      disabled: false
+    alerts:
+      mongodb_down:
+        disabled: false
+        interval: 10m
+        severity: critical
+      mongodb_virtual_memory_usage:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 3
+      mongodb_too_many_connections:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 80
+      mongodb_replication_lag:
+        disabled: false
+        interval: 0m
+        severity: critical
+        threshold: 10
+      mongodb_replica_member_unhealthy:
+        disabled: false
+        interval: 0m
+        severity: critical
