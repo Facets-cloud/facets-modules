@@ -298,5 +298,16 @@
     "clouds": [
       "azure"
     ]
+  },
+  {
+    "intent": "google_cloud_storage",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./modules/google_cloud_storage/default/0.1/",
+    "clouds": [
+      "gcp"
+    ]
   }
 ]
