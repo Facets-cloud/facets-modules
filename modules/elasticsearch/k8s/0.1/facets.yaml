@@ -15,6 +15,11 @@ spec:
       title: Elasticsearch Version
       description: Version of Elasticsearch
       minLength: 1
+      enum:
+        - 8.14.1
+        - 7.16.3
+        - 6.4.3
+        - 5.6.12
     size:
       type: object
       title: Size
@@ -83,7 +88,7 @@ sample:
   kind: elasticsearch
   metadata: { }
   spec:
-    elasticsearch_version: 8.5.1
+    elasticsearch_version: '8.5.1'
     size:
       cpu: 2
       memory: 2Gi

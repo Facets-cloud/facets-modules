@@ -10,9 +10,15 @@ spec:
     elasticsearch_version:
       type: string
       title: Elasticsearch Version
-      description: Version of Elasticsearch
+      description: Version of Elasticsearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
       minLength: 1
       x-ui-placeholder: "Ex. 7.10"
+      enum:
+        - 7.10
+        - 6.8
+        - 5.6
+        - 2.3
+        - 1.5
     size:
       type: object
       title: Size
