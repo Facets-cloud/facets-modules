@@ -1,0 +1,42 @@
+name: mysql
+out:
+  type: object
+  title: Mysql
+  description: Mysql
+  properties:
+    interfaces:
+      reader:
+        host:
+          required: true
+          type: string
+        port:
+          required: true
+          type: string
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          secret: true
+          type: string
+        connection_string:
+          required: true
+          type: string
+      writer:
+        host:
+          required: true
+          type: string
+        port:
+          required: true
+          type: string
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          secret: true
+          type: string
+        connection_string:
+          required: true
+          type: string
+    attributes: null
