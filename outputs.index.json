@@ -10,5 +10,17 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./outputs/service/"
+  },
+  {
+    "name": "mongo",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./outputs/mongo/"
+  },
+  {
+    "name": "mysql",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./outputs/mysql/"
   }
 ]
