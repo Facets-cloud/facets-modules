@@ -1,0 +1,11 @@
+{
+    "advanced": {},
+    "kind": "configuration",
+    "for": "vpa",
+    "disabled": false,
+    "version": "0.1",
+    "ui": {
+        "base_resource": true
+    },
+    "spec": {}
+}

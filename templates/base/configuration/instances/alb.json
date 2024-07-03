@@ -1,0 +1,9 @@
+{
+	"kind": "configuration",
+	"for": "aws_alb_controller",
+	"spec":{},
+	"ui": {
+		"base_resource": true
+	},
+	"disabled": false
+}
