@@ -1,0 +1,118 @@
+intent: postgres_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Postgres
+inputs:
+  postgres_outputs:
+    type: "@output/postgres"
+    adds_capability: true
+spec:
+  title: Postgres Monitoring
+  type: object
+  properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exporter Configuration
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Disable or Enable Exporter
+        include_databases:
+          type: array
+          title: Include Databases
+          description: A list of databases to include for collecting metrics.
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        postgresql_down:
+          type: object
+          title: PostgreSQL Down
+          description: PostgreSQL Down Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        postgresql_too_many_dead_tuples:
+          type: object
+          title: Postgresql too many dead tuples
+          description: Postgresql too many dead tuples Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+        postgresql_too_many_connections:
+          type: object
+          title: PostgreSQL Too Many Connections
+          description: PostgreSQL Too Many Connections Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+sample:
+  kind: postgres_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    exporter:
+      disabled: false
+      include_databases: ["postgres"]
+    alerts:
+      poatgresql_down:
+        disabled: false
+        interval: 10m
+        severity: critical
+      postgresql_too_many_dead_tuples:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 90
+      postgresql_too_many_connections:
+        disabled: false
+        interval: 5m
+        severity: critical
+        threshold: 8000
