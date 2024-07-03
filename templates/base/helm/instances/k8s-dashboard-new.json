@@ -1,0 +1,40 @@
+{
+  "$schema":"https://docs.facets.cloud/schemas/helm/instances/helm.schema",
+  "disabled":false,
+  "flavor":"helm_simple",
+  "ui": {
+    "base_resource": true
+  },
+  "spec":{
+    "helm":{
+      "version":"5.1.1",
+      "chart":"https://kubernetes.github.io/dashboard/kubernetes-dashboard-5.1.1.tgz",
+      "wait":true,
+      "namespace":"default",
+      "recreate_pods":false
+    },
+    "env":[
+    ],
+    "values": {
+      "tolerations": [
+        {
+          "key": "kubernetes.azure.com/scalesetpriority",
+          "value": "spot",
+          "operator": "Equal",
+          "effect": "NoSchedule"
+        }
+      ],
+      "resources": {
+        "requests": {
+          "memory": "512Mi"
+        },
+        "limits": {
+          "memory": "512Mi"
+        }
+      }
+    }
+  },
+  "advanced": {
+    "inherit_from_base": true
+  }
+}

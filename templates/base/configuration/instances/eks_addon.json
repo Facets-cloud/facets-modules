@@ -1,0 +1,19 @@
+{
+  "kind": "configuration",
+  "for": "eks_addon",
+  "flavor": "default",
+  "version": "0.2",
+  "ui": {
+    "base_resource": true
+  },
+  "lifecycle": "ENVIRONMENT",
+  "disabled": false,
+  "provided": false,
+  "depends_on": [],
+  "metadata": {
+    "name": "eks_addon"
+  },
+  "spec": {},
+  "advanced": {},
+  "out": {}
+}

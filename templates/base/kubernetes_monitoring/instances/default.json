@@ -1,0 +1,20 @@
+{
+  "kind": "kubernetes_monitoring",
+  "flavor": "k8s",
+  "version": "0.1",
+  "lifecycle": "ENVIRONMENT",
+  "ui": {
+    "base_resource": true
+  },
+  "disabled": true,
+  "provided": false,
+  "depends_on": [],
+  "metadata": {
+    "name": "kubernetes_monitoring"
+  },
+  "spec": {},
+  "advanced": {
+    "k8s": {}
+  },
+  "out": {}
+}

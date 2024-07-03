@@ -1,0 +1,12 @@
+{
+    "kind": "kubernetes_cluster",
+    "flavor": "default",
+    "version": "0.1",
+    "ui": {
+        "base_resource": true
+    },
+    "spec": {},
+    "provided": false,
+    "disabled": false,
+    "inputs": {}
+  }

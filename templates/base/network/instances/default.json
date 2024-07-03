@@ -1,0 +1,15 @@
+{
+  "kind": "network",
+  "flavor": "default",
+  "version": "0.1",
+  "ui": {
+    "base_resource": true
+  },
+  "spec": {},
+  "provided": false,
+  "disabled": false,
+  "out": {
+    "attributes": {
+    }
+  }
+}

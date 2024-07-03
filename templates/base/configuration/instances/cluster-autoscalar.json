@@ -1,0 +1,11 @@
+{
+  "kind" : "configuration",
+  "flavor": "default",
+  "for"  : "cluster-autoscaler",
+  "version" : "0.1",
+  "ui": {
+    "base_resource": true
+  },
+  "spec": {
+  }
+}
