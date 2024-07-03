@@ -1,3 +1,6 @@
 name: mongo
 type: Database
 displayName: MongoDB
+outputs:
+  - name: default
+    type: "@output/mongo"
