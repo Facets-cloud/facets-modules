@@ -2,5 +2,8 @@
   "kind": "configuration",
   "for": "prometheus",
   "version": "latest",
+  "ui": {
+    "base_resource": true
+  },
   "spec": {}
 }
