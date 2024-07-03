@@ -1,3 +1,6 @@
 name: mysql
 type: Database
 displayName: MySQL
+outputs:
+  - name: default
+    type: "@output/mysql"
