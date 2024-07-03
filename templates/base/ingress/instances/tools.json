@@ -5,6 +5,9 @@
 		"name": "tools",
 		"annotations": {}
 	},
+	"ui": {
+		"base_resource": true
+	},
 	"advanced": {
 		"inherit_from_base": true,
 		"nginx_ingress_controller": {
