@@ -1,6 +1,7 @@
 name: mongo
 type: Database
 displayName: MongoDB
+description: A NoSQL database that uses a flexible, JSON-like format to store data, making it ideal for handling large volumes of unstructured data.
 outputs:
   - name: default
     type: "@output/mongo"

@@ -1,3 +1,4 @@
 name: elasticsearch
 type: Indexing
 displayName: Elasticsearch
+description: A distributed, RESTful search and analytics engine capable of handling large-scale data and providing near real-time search capabilities.
