@@ -170,9 +170,9 @@ sample:
     size:
       writer:
         cpu: '250m'
-        memory: '256Mi'
+        memory: '500Mi'
         cpu_limit: '500m'
-        memory_limit: '512Mi'
+        memory_limit: '1Gi'
         volume: '10Gi'
       reader:
         cpu: '250m'
