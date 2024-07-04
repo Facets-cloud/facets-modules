@@ -1,3 +1,5 @@
 name: google_cloud_storage
 type: Storage
 displayName: Google Cloud Storage
+description: A unified, scalable, and highly durable object storage solution by Google Cloud for storing and retrieving any amount of data at any time.
+

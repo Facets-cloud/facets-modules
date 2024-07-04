@@ -1,3 +1,4 @@
 name: ingress
 type: Loadbalancer
 displayName: Ingress
+description: A Kubernetes resource that manages external access to services within a cluster, typically HTTP and HTTPS routes.

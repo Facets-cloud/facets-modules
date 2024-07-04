@@ -1,6 +1,7 @@
 name: redis
 type: Cache
 displayName: Redis
+description: A high-performance, in-memory data structure store used as a database, cache, and message broker. Ideal for real-time applications needing fast data access.
 outputs:
   - name: default
     type: "@output/redis"
