@@ -1,3 +1,4 @@
 name: kafka
 type: Queue
 displayName: Kafka
+description: A distributed streaming platform designed for building real-time data pipelines and streaming applications, known for its high throughput and fault tolerance.
