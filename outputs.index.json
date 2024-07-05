@@ -22,5 +22,11 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
     "relativePath": "./outputs/mysql/"
+  },
+  {
+    "name": "mysql",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "master",
+    "relativePath": "./outputs/elasticsearch/"
   }
 ]
