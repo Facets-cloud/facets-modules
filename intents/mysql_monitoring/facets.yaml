@@ -1,3 +1,4 @@
 name: mysql_monitoring
 type: Monitoring
 displayName: Mysql Monitoring
+description: Monitoring for MySQL
