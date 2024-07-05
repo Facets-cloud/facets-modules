@@ -90,7 +90,7 @@ sample:
     size:
       kafka:
         cpu: '1'
-        memory: 1G
+        memory: 2G
         instance_count: 1
         volume: 10Gi
       zookeeper:
