@@ -1,6 +1,7 @@
 {
 	"flavor": "nginx_ingress_controller",
 	"kind": "ingress",
+	"version": "0.2",
 	"metadata": {
 		"name": "tools",
 		"annotations": {}
