@@ -6,7 +6,7 @@
   "ui": {
     "base_resource": true
   },
-  "disabled": true,
+  "disabled": false,
   "provided": false,
   "depends_on": [],
   "metadata": {
