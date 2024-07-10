@@ -329,7 +329,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "mysql-monitoring-dev",
     "relativePath": "./modules/mysql/monitoring/",
     "clouds": [
       "aws",
