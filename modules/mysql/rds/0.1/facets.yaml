@@ -67,6 +67,11 @@ spec:
                 - db.t2.medium
                 - db.t2.large
               x-ui-placeholder: "Select reader instance type"
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of Reader Instances
+              x-ui-placeholder: "Enter reader instance count"
           required:
             - instance
   required:
