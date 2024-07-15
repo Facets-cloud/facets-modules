@@ -1,6 +1,7 @@
 intent: postgres
 flavor: aurora
 version: '0.1'
+description: Adds Postgres module of flavor aurora
 clouds:
   - aws
 spec:

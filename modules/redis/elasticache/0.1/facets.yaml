@@ -1,6 +1,7 @@
 intent: redis
 flavor: elasticache
 version: 0.1
+description: Adds redis module of flavor elasticache
 clouds:
   - aws
 spec:

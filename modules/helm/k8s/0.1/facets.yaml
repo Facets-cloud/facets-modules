@@ -1,6 +1,7 @@
 intent: helm
 flavor: k8s
 version: '0.1'
+description: Adds Helm module
 clouds:
   - aws
   - azure
