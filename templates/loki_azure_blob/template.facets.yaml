@@ -1,0 +1,6 @@
+name: loki_azure_blob
+clouds:
+  - azure
+version: 0.2
+type: MULTI_INSTANCE
+group: Capabilities
