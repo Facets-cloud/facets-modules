@@ -88,5 +88,10 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
     "relativePath": "./intents/postgres_monitoring/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./intents/s3/"
   }
 ]
