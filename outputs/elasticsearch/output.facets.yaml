@@ -25,18 +25,4 @@ out:
         connection_string:
           required: true
           type: string
-      cluster:
-        endpoint:
-          required: true
-          type: string
-        username:
-          required: true
-          type: string
-        password:
-          required: true
-          secret: true
-          type: string
-        connection_string:
-          required: true
-          type: string
     attributes: null
