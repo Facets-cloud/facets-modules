@@ -15,15 +15,6 @@ spec:
   title: Elasticsearch Monitoring
   type: object
   properties:
-    exporter:
-      type: object
-      title: Exporter
-      description: Exporter Configuration
-      properties:
-        disabled:
-          type: boolean
-          title: Disabled
-          description: Disable or Enable Exporter
     alerts:
       type: object
       title: Alerts
@@ -145,8 +136,6 @@ sample:
   version: "0.1"
   disabled: true
   spec:
-    exporter:
-      disabled: false
     alerts:
       elasticsearch_down:
         disabled: false
