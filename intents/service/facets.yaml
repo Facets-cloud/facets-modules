@@ -1,7 +1,7 @@
 name: service
-type: Service
+type: Application
 displayName: Application
-description: A Helm chart to deploy stateless applications. Supports HPA, Healthchecks, etc.
+description: Easily deploy your applications. 
 outputs:
   - name: default
     type: "@output/service"
