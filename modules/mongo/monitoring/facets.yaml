@@ -15,15 +15,6 @@ spec:
   title: Mongo Monitoring
   type: object
   properties:
-    exporter:
-      type: object
-      title: Exporter
-      description: Exports MongoDB metrics for monitoring purposes
-      properties:
-        disabled:
-          type: boolean
-          title: Disabled
-          description: Toggle to enable or disable exporter
     alerts:
       type: object
       title: Alerts
