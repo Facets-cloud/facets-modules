@@ -1,12 +1,12 @@
 [
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "develop",
     "relativePath": "./templates/loki_s3/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "develop",
     "relativePath": "./templates/base/"
   }
 ]
