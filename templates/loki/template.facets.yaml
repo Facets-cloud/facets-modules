@@ -1,0 +1,9 @@
+name: loki
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+version: 0.2
+type: MULTI_INSTANCE
+group: Capabilities
