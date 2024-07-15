@@ -344,7 +344,8 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
-    "relativePath": "./modules/elasticsearch_monitoring/",
+    
+    "relativePath": "./modules/elasticsearch/monitoring/",
     "clouds": [
       "aws",
       "azure",
@@ -369,7 +370,7 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
-    "relativePath": "./modules/postgres_monitoring/",
+    "relativePath": "./modules/postgres/monitoring/",
     "clouds": [
       "aws",
       "azure",
