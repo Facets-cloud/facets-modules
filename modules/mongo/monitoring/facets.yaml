@@ -138,8 +138,6 @@ sample:
   version: "0.1"
   disabled: true
   spec:
-    exporter:
-      disabled: false
     alerts:
       mongodb_down:
         disabled: false
