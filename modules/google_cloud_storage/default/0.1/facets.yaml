@@ -1,9 +1,13 @@
 intent: google_cloud_storage
 flavor: default
 version: '0.1'
+description: Adds Storage module of flavor Google Cloud Storage
 clouds:
   - gcp
-spec: {}
+spec:
+  title: Google cloud storage
+  description: Specification of the google cloud storage resource
+  type: object
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/google_cloud_storage/google_cloud_storage.schema.json

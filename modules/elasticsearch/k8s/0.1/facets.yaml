@@ -1,13 +1,14 @@
 intent: elasticsearch
 flavor: k8s
 version: '0.1'
+description: Adds elasticsearch k8s module
 clouds:
   - aws
   - azure
   - gcp
   - kubernetes
 spec:
-  title: K8s
+  title: K8s elasticsearch
   type: object
   properties:
     elasticsearch_version:
