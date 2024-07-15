@@ -1,3 +1,4 @@
 name: postgres_monitoring
 type: Monitoring
 displayName: Postgres Monitoring
+description: Monitoring capabilities for PostgreSQL

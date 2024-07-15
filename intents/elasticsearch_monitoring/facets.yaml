@@ -1,3 +1,4 @@
 name: elasticsearch_monitoring
 type: Monitoring
 displayName: Elasticsearch Monitoring
+description: Monitoring capabilities for Elasticsearch
