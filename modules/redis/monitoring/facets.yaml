@@ -15,15 +15,6 @@ spec:
   title: Redis Monitoring
   type: object
   properties:
-    exporter:
-      type: object
-      title: Exporter
-      description: Exports Redis metrics for monitoring purposes
-      properties:
-        disabled:
-          type: boolean
-          title: Disabled
-          description: Toggle to enable or disable exporter
     alerts:
       type: object
       title: Alerts
@@ -103,8 +94,6 @@ sample:
   version: "0.1"
   disabled: true
   spec:
-    exporter:
-      disabled: false
     alerts:
       redis_down:
         disabled: false
