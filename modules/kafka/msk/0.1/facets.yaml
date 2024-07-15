@@ -1,6 +1,7 @@
 intent: kafka
 flavor: msk
 version: '0.1'
+description: Adds Kafka module of MSK flavor
 clouds:
   - aws
 spec:

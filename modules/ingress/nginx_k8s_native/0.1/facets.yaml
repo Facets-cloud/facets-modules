@@ -1,6 +1,7 @@
 intent: ingress
 flavor: nginx_k8s_native
 version: '0.1'
+description: Adds Ingress module
 clouds:
 - aws
 - azure
