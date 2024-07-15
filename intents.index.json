@@ -22,6 +22,11 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
+    "relativePath": "./intents/elasticsearch_monitoring/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
     "relativePath": "./intents/service/"
   },
   {
