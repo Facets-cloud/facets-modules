@@ -369,7 +369,7 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
-    "relativePath": "./modules/postgres/monitoring/",
+    "relativePath": "./modules/postgres_monitoring/",
     "clouds": [
       "aws",
       "azure",
