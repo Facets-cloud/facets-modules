@@ -362,5 +362,19 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "postgres_monitoring",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./modules/postgres/monitoring/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]

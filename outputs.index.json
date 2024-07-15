@@ -26,7 +26,12 @@
   {
     "name": "elasticsearch",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "develop",
     "relativePath": "./outputs/elasticsearch/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./intents/postgres_monitoring/"
   }
 ]
