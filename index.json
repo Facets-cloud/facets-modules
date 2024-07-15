@@ -351,5 +351,16 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "s3",
+    "flavor": "default",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./modules/s3/default/0.2",
+    "clouds": [
+      "aws"
+    ]
   }
 ]

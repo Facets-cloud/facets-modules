@@ -1,0 +1,16 @@
+intent: s3
+flavor: default
+version: '0.2'
+clouds:
+  - aws
+spec:
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
+  disabled: true
+  flavor: default
+  kind: s3
+  metadata: {}
+  version: '0.2'
+  spec: {}
+  advanced: {}
