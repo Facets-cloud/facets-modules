@@ -1,6 +1,7 @@
 intent: kafka
 flavor: k8s
 version: '0.2'
+description: Adds Kafka module of kubernetes flavor
 clouds:
   - aws
   - azure

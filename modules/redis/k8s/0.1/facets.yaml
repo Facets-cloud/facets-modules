@@ -1,6 +1,7 @@
 intent: redis
 flavor: k8s
 version: '0.1'
+description: Adds redis module of flavor kubernetes
 clouds:
   - aws
   - azure
