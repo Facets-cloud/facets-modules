@@ -1,6 +1,7 @@
 intent: s3
 flavor: default
 version: '0.2'
+description: Adds S3 module
 clouds:
   - aws
 spec:

@@ -1,9 +1,13 @@
 intent: azure_storage_container
 flavor: default
 version: '0.1'
+description: Adds Azure storage container
 clouds:
   - azure
-spec: {}
+spec:
+  title: Azure storage container
+  description: Specification of the azure storage container resource intent
+  type: object
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/azure_storage_container/azure_storage_container.schema.json

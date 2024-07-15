@@ -1,6 +1,7 @@
 intent: service
 flavor: k8s
 version: '0.1'
+description: Adds service module
 clouds:
 - aws
 - azure

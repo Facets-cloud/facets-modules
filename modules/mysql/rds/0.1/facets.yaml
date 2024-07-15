@@ -1,6 +1,7 @@
 intent: mysql
 flavor: rds
 version: "0.1"
+description: Adds MYSQL module of flavor rds
 clouds:
   - aws
 spec:
