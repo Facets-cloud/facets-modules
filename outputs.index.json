@@ -28,5 +28,11 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
     "relativePath": "./outputs/elasticsearch/"
+  },
+    {
+    "name": "postgres",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./outputs/postgres/"
   }
 ]
