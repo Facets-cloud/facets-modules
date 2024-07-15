@@ -1,6 +1,7 @@
 intent: mongo
 flavor: k8s
 version: '0.3'
+description: Adds Mongo module of kubernetes flavor
 clouds:
   - aws
   - azure

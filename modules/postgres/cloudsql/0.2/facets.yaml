@@ -1,6 +1,7 @@
 intent: postgres
 flavor: cloudsql
 version: '0.2'
+description: Adds Postgres module of flavor cloudsql
 clouds:
   - gcp
 spec:
