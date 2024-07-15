@@ -15,19 +15,6 @@ spec:
   title: Postgres Monitoring
   type: object
   properties:
-    exporter:
-      type: object
-      title: Exporter
-      description: Exporter Configuration
-      properties:
-        disabled:
-          type: boolean
-          title: Disabled
-          description: Disable or Enable Exporter
-        include_databases:
-          type: array
-          title: Include Databases
-          description: A list of databases to include for collecting metrics.
     alerts:
       type: object
       title: Alerts
