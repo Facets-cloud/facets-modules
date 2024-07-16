@@ -1,6 +1,10 @@
 intent: service
 flavor: k8s
 version: '0.1'
+artifact_inputs: 
+  primary: 
+    attribute_path: "spec.release.image" 
+    artifact_type: "docker_image"
 clouds:
 - aws
 - azure
