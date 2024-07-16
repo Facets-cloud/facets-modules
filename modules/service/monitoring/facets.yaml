@@ -279,28 +279,57 @@ sample:
         scrape_interval: 30s
     alerts:
       pod_pending_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
       pod_crashlooping_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
       invalid_image_name_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
       pod_waiting_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
       cpu_throttling_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
+        threshold: 25
       high_memory_utilization_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: warning
+        threshold: 95
       pod_not_ready_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
       pod_evicted_alert:
-        disabled: true
+        disabled: false
+        interval: 0m
+        severity: critical
       failed_http_requests_alert:
-        disabled: true
+        disabled: false
+        interval: 15m
+        severity: critical
+        threshold: 25
       ingress_endpoints_alert:
-        disabled: true
+        disabled: false
+        interval: 5m
+        severity: critical
       service_vpa_cpu:
-        disabled: true
+        disabled: false
+        interval: 60m
+        severity: critical
+        threshold: 0.25
       service_vpa_memory:
-        disabled: true
+        disabled: false
+        interval: 60m
+        severity: critical
+        threshold: 0.25
 
     
