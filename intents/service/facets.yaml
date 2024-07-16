@@ -1,7 +1,7 @@
 name: service
 type: Application
 displayName: Service
-description: Easily deploy your applications. 
+description: Easily deploy your applications using our Helm charts
 outputs:
   - name: default
     type: "@output/service"
