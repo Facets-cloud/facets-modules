@@ -1,7 +1,7 @@
 name: service
 type: Application
 displayName: Service
-description: Easily deploy your applications using our Helm charts
+description: Modular unit of an application that provides a specific functionality, designed to be independently deployable and scalable
 outputs:
   - name: default
     type: "@output/service"
