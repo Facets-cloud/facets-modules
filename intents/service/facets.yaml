@@ -1,6 +1,6 @@
 name: service
 type: Application
-displayName: Application
+displayName: Service
 description: Easily deploy your applications. 
 outputs:
   - name: default
