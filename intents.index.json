@@ -1,82 +1,82 @@
 [
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/redis/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/postgres/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/mysql/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/elasticsearch/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/service/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/ingress/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/helm/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/redis_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/mongo/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/service_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/k8s_resource/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/kafka/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/azure_storage_container/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/google_cloud_storage/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/mongo_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./intents/mysql_monitoring/"
   }
 ]
