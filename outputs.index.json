@@ -2,25 +2,25 @@
   {
     "name": "redis",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./outputs/redis/"
   },
   {
     "name": "service",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./outputs/service/"
   },
   {
     "name": "mongo",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./outputs/mongo/"
   },
   {
     "name": "mysql",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "akshay-test",
     "relativePath": "./outputs/mysql/"
   }
 ]
