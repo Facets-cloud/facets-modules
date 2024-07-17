@@ -1,6 +1,10 @@
 intent: helm
 flavor: k8s
 version: '0.1'
+artifact_inputs: 
+  primary: 
+    attribute_path: "spec.zip_path" 
+    artifact_type: "freestyle"
 clouds:
   - aws
   - azure
