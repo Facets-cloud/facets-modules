@@ -8,5 +8,10 @@
     "spec": {},
     "provided": false,
     "disabled": false,
-    "inputs": {}
+    "inputs": {},
+    "advanced": {
+        "default": {
+            "include_cluster_code_in_name": true
+        }
+    }
   }
