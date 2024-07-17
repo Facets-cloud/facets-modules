@@ -10,9 +10,6 @@
   "metadata": {
     "name": "node-resource-summary"
   },
-  "ui": {
-    "base_resource": true
-  },
   "spec": {
     "dashboard": {
       "__inputs": [
