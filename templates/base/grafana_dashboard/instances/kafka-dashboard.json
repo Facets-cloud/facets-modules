@@ -12,9 +12,6 @@
   "metadata":{
      "name":"kafka-dashboard"
   },
-  "ui": {
-    "base_resource": true
-  },
   "spec":{
      "dashboard":{
       "annotations": {
