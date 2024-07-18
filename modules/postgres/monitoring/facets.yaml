@@ -87,9 +87,9 @@ sample:
   spec:
     exporter:
       disabled: false
-      include_databases: ["postgres"]
+      include_databases: []
     alerts:
-      poatgresql_down:
+      postgresql_down:
         disabled: false
         interval: 10m
         severity: critical
