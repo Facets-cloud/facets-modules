@@ -10,7 +10,7 @@ def response(url, params):
     return response.json()
 
 def get_aws_instance_types(vcpu, region):
-    def fetch_data(region, vcpu):
+    def fetch_data(region, vcpu, payment_type):
         url = "https://cloudprice.net/api/v2/aws/ec2/instances"
         params = {
             "currency": "USD",
@@ -48,10 +48,17 @@ def get_aws_instance_types(vcpu, region):
             instances[0]['tags'].append('cheapest')
         return instances
 
-    standard_data = fetch_data(region, vcpu)
-    
+    ondemand_data = fetch_data(region, vcpu, "OnDemand")
+    spot_data = fetch_data(region, vcpu, "Spot")
+
+    on_demand_options = filter_and_format(ondemand_data, vcpu)
+    spot_options = filter_and_format(spot_data, vcpu)
+
     return {
-        f"{vcpu}Cores": filter_and_format(standard_data, vcpu)
+        f"{vcpu}Cores": {
+            "onDemand": on_demand_options,
+            "spot": spot_options
+        }
     }
 
 def save_instance_data(vcpu_list, region):
