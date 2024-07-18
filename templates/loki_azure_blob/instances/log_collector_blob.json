@@ -1,0 +1,18 @@
+{
+	"flavor": "loki_azure_blob",
+	"metadata": {
+		"name": "facets-loki"
+	},
+	"advanced": {
+		"loki_blob": {
+			"container_name": "${azure_storage_container.loki-blob-storage.out.attributes.container_name}",
+			"storage_account_name": "${azure_storage_container.loki-blob-storage.out.attributes.storage_account_name}",
+			"primary_access_key": "${azure_storage_container.loki-blob-storage.out.attributes.primary_access_key}"
+		}
+	},
+	"kind": "log_collector",
+	"provided": false,
+	"disabled": true,
+	"version": "0.2",
+	"spec": {}
+}

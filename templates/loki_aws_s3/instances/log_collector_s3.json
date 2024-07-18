@@ -1,0 +1,19 @@
+{
+	"flavor": "loki_aws_s3",
+	"lifecycle": "ENVIRONMENT",
+	"metadata": {
+		"name": "log-collector-s3"
+	},
+	"depends_on": [],
+	"advanced": {
+		"loki_s3": {
+			"bucket_name": "${s3.loki.bucket_name}"
+        }
+	},
+	"kind": "log_collector",
+	"provided": false,
+	"disabled": true,
+	"version": "0.2",
+	"spec": {},
+	"out": {}
+}
