@@ -1,6 +1,6 @@
 intent: redis
 flavor: elasticache
-version: 0.1
+version: 0.2
 description: Adds redis module of flavor elasticache
 clouds:
   - aws
@@ -123,14 +123,11 @@ sample:
       managed-by: facets
   kind: redis
   disabled: true
-  version: '0.1'
+  version: '0.2'
   spec:
     authenticated: true
     redis_version: '6.x'
     persistence_enabled: false
     size:
-      writer:
-        instance_count: 1
-        instance: cache.t3.micro
-      reader:
-        instance_count: 0
+      instance_count: 1
+      instance: cache.t3.micro
