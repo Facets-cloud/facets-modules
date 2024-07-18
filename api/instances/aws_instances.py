@@ -69,7 +69,7 @@ def save_instance_data(vcpu_list, region):
 
     output_filename = f"aws/{region}.json"
     with open(output_filename, "w") as outfile:
-        json.dump(result, outfile)
+        json.dump(result, outfile, indent=4, sort_keys=True)
     print(f"Output written to {output_filename}")
 
 if __name__ == "__main__":
