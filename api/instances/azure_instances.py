@@ -37,7 +37,7 @@ def get_instance_types(vcpu, region):
                     "modifiedDate": instance['modifiedDate']
                 }
                 instances.append(instance_info)
-        instances = sorted(instances, key=lambda x: x['price'])[:4]
+        instances = sorted(instances, key=lambda x: x['price'])
         if instances:
             instances[0]['tags'].append('cheapest')
         return instances
