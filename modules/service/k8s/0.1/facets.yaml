@@ -36,6 +36,20 @@ spec:
       title: Runtime
       description: Customize service runtime settings like ports, healthchecks etc.
       properties:
+        command:
+          type: array
+          title: Command
+          description: Command to run in the container
+          items:
+            type: string
+          pattern: '^\[.*\]$'
+        args:
+          type: array
+          title: Arguments
+          description: Arguments to pass to the command
+          items:
+            type: string
+          pattern: '^\[.*\]$'
         health_checks:
           type: object
           title: Health Checks
