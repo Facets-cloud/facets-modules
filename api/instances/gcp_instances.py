@@ -9,14 +9,14 @@ def response(url, params):
     print(f"Queried URL: {response.url}")
     return response.json()
 
-def get_aws_instance_types(vcpu, region):
-    def fetch_data(region, vcpu):
+def get_gcp_instance_types(vcpu, region):
+    def fetch_data(region, vcpu, payment_type):
         url = "https://cloudprice.net/api/v2/gcp/compute/instances"
         params = {
             "currency": "USD",
             "region": region,
             "OSandSoftware": "Linux",
-            "paymentType": "OnDemand",
+            "paymentType": payment_type,
             "sortField": "InstanceType",
             "sortOrder": "true",
             "columns": "InstanceType,InstanceFamily,ProcessorVCPUCount,MemorySizeInMB,ProcessorArchitecture,HasGPU,PricePerHour,__AlternativeInstances,__SavingsOptions,BestOnDemandHourPriceDiff",
@@ -45,16 +45,23 @@ def get_aws_instance_types(vcpu, region):
             instances[0]['tags'].append('cheapest')
         return instances
 
-    standard_data = fetch_data(region, vcpu)
+    ondemand_data = fetch_data(region, vcpu, "OnDemand")
+    spot_data = fetch_data(region, vcpu, "Spot")
+
+    on_demand_options = filter_and_format(ondemand_data, vcpu)
+    spot_options = filter_and_format(spot_data, vcpu)
 
     return {
-        f"{vcpu}Cores": filter_and_format(standard_data, vcpu)
+        f"{vcpu}Cores": {
+            "onDemand": on_demand_options,
+            "spot": spot_options
+        }
     }
 
 def save_instance_data(vcpu_list, region):
     result = {}
     for vcpu in vcpu_list:
-        result.update(get_aws_instance_types(vcpu, region))
+        result.update(get_gcp_instance_types(vcpu, region))
 
     output_filename = f"gcp/{region}.json"
     with open(output_filename, "w") as outfile:
@@ -70,7 +77,7 @@ if __name__ == "__main__":
     input_regions = sys.argv[1]
     vcpu_list = [4, 8, 16]
 
-    # List of all AWS regions (sample list; please use the actual list of regions you need)
+    # List of all GCP regions (sample list; please use the actual list of regions you need)
     all_regions = response("https://cloudprice.net/api/v2/gcp/compute/regions", {}).get("Data", {})
 
     if input_regions == "all":
