@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import threading
+instances_length = 4
 
 def response(url, params):
     response = requests.get(url, params=params)
@@ -37,7 +38,7 @@ def get_instance_types(vcpu, region):
                     "modifiedDate": instance['modifiedDate']
                 }
                 instances.append(instance_info)
-        instances = sorted(instances, key=lambda x: x['price'])
+        instances = sorted(instances, key=lambda x: x['price'])[:instances_length]
         if instances:
             instances[0]['tags'].append('cheapest')
         return instances

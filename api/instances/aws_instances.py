@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import threading
+instances_length = 4
 
 def response(url, params):
     response = requests.get(url, params=params)
@@ -19,7 +20,7 @@ def get_aws_instance_types(vcpu, region):
             "timeoption": "hour",
             "operatingSystem": "Linux",
             "bringYourOwnLicense": "false",
-            "paymentType": "OnDemand",
+            "paymentType": payment_type,
             "sortField": "InstanceType",
             "sortOrder": "true",
             "columns": "InstanceType,InstanceFamily,ProcessorVCPUCount,MemorySizeInMB,ProcessorArchitecture,HasGPU,PricePerHour,__AlternativeInstances,__SavingsOptions,BestOnDemandHourPriceDiff",
@@ -43,7 +44,7 @@ def get_aws_instance_types(vcpu, region):
                     "ModifiedDate": data['Data']['UpdatedAt']
                 }
                 instances.append(instance_info)
-        instances = sorted(instances, key=lambda x: x['PricePerHour'])
+        instances = sorted(instances, key=lambda x: x['PricePerHour'])[:instances_length]
         if instances:
             instances[0]['tags'].append('cheapest')
         return instances
