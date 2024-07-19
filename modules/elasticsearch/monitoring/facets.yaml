@@ -33,6 +33,10 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: |
+                Time duration must be in the format <code>^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$</code>
             severity:
               type: string
               title: Severity
