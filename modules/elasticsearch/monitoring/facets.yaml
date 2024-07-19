@@ -35,8 +35,7 @@ spec:
               description: The duration an alert condition must persist before the alert is triggered
               pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: |
-                The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 100us, 1µs, 50ns, or a combination like 1h1m or 5m30s.
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -54,10 +53,13 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization      
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         elasticsearch_red:
           type: object
           title: Elasticsearch Cluster Red
@@ -71,10 +73,13 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization      
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         elasticsearch_disk_out_of_space:
           type: object
           title: Elasticsearch Disk Out Of Space
@@ -88,6 +93,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -109,6 +117,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -130,6 +141,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity

@@ -1,6 +1,6 @@
 intent: service_monitoring
 flavor: k8s
-version: '0.1'
+version: "0.1"
 clouds:
   - aws
   - k8s
@@ -23,7 +23,7 @@ spec:
         type: object
         title: Metrics Configuration
         description: Service Metrics Configuration
-        keyPattern: '^[a-zA-Z0-9-_]*$'
+        keyPattern: "^[a-zA-Z0-9-_]*$"
         properties:
           path:
             type: string
@@ -37,6 +37,9 @@ spec:
             type: string
             title: Scrape Interval
             description: Interval At Which The Metrics Should Be Scraped
+            pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+            x-ui-placeholder: "eg. 1m5s"
+            x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
     alerts:
       type: object
       title: Alerts
@@ -55,6 +58,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -72,6 +78,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -89,6 +98,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -106,6 +118,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -123,6 +138,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -144,6 +162,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -165,6 +186,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -182,6 +206,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -199,6 +226,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -220,6 +250,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -237,6 +270,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -258,6 +294,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -269,7 +308,7 @@ spec:
 sample:
   kind: service_monitoring
   flavor: k8s
-  version: '0.1'
+  version: "0.1"
   disabled: true
   spec:
     metrics:
@@ -331,5 +370,3 @@ sample:
         interval: 60m
         severity: critical
         threshold: 0.25
-
-    
