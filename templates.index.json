@@ -2,11 +2,21 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
-    "relativePath": "./templates/loki_s3/"
+    "relativePath": "./templates/loki_aws_s3/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
     "relativePath": "./templates/base/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./templates/loki_azure_blob/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./templates/loki_gcp_gcs/"
   }
 ]
