@@ -36,7 +36,7 @@ spec:
               pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
               x-ui-placeholder: "eg. 1m5s"
               x-ui-error-message: |
-                Time duration must be in the format <code>^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$</code>
+                The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 100us, 1µs, 50ns, or a combination like 1h1m or 5m30s.
             severity:
               type: string
               title: Severity
