@@ -544,6 +544,8 @@ sample:
       strategy:
         type: RollingUpdate
     runtime:
+      args: []
+      command: []
       autoscaling:
         scaling_on: CPU
         min: '1'
