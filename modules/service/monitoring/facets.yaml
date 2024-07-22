@@ -284,7 +284,7 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: number
               title: Threshold
               description: The threshold percentage at which the alert is triggered
               minimum: 0
@@ -310,7 +310,7 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: number
               title: Threshold
               description: The threshold percentage at which the alert is triggered
               minimum: 0
