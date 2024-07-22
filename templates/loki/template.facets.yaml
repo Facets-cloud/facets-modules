@@ -7,3 +7,5 @@ clouds:
 version: 0.2
 type: MULTI_INSTANCE
 group: Capabilities
+displayName: Log Collector
+description: Log Collector with k8s flavor
