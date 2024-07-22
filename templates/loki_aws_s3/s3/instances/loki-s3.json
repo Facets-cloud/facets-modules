@@ -1,0 +1,10 @@
+{
+	"flavor": "default",
+	"metadata": {},
+	"advanced": {},
+	"kind": "s3",
+	"provides": "s3",
+	"disabled": true,
+	"version": "0.2",
+	"spec": {}
+}
