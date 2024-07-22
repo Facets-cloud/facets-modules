@@ -10,7 +10,7 @@
     "spec": {},
     "advanced": {
       "loki_gcs": {
-        "bucket_name": "${google_cloud_storage.gcs.name}"
+        "bucket_name": "${google_cloud_storage.loki-gcs.out.attributes.name}"
       }
     }
 }
