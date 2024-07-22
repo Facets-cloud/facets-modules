@@ -70,6 +70,8 @@ spec:
               type: integer
               title: Threshold
               description: The Percentage value of maximum mysql connections at which the alert is triggered
+              minimum: 0
+              maximum: 100
         mysql_restarted:
           type: object
           title: Mysql Restarted
