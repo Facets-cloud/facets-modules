@@ -284,10 +284,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-              minimum: 0
 
         service_vpa_memory:
           type: object
@@ -310,10 +309,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-              minimum: 0
 sample:
   kind: service_monitoring
   flavor: k8s
