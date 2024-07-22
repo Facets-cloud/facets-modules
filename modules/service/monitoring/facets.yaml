@@ -146,11 +146,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: number
+              type: string
               title: Threshold
               description: The threshold cpu throttling percentage at which the alert is triggered
-              minimum: 0
-              maximum: 100
         high_memory_utilization_alert:
           type: object
           title: High Memory Utilization
@@ -175,8 +173,6 @@ spec:
               type: string
               title: Threshold
               description: The threshold memory utilization percentage at which the alert is triggered
-              minimum: 0
-              maximum: 100
         pod_not_ready_alert:
           type: object
           title: Pod Not Ready
@@ -238,11 +234,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-              minimum: 0
-              maximum: 100
         ingress_endpoints_alert:
           type: object
           title: Ingress Endpoints
@@ -284,11 +278,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-              minimum: 0
-
         service_vpa_memory:
           type: object
           title: Vertical Pod Autoscaler Memory
@@ -310,10 +302,9 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: integer
+              type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-              minimum: 0
 sample:
   kind: service_monitoring
   flavor: k8s
