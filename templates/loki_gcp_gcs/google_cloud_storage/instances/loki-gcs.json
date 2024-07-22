@@ -1,0 +1,9 @@
+{
+	"flavor": "default",
+	"metadata": {},
+	"advanced": {},
+	"kind": "google_cloud_storage",
+	"disabled": true,
+	"version": "0.1",
+	"spec": {}
+}
