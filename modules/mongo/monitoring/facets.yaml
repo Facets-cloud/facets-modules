@@ -70,6 +70,8 @@ spec:
               type: integer
               title: Threshold
               description: Percentage of maximum connections at which the alert is triggered
+              minimum: 0
+              maximum: 100
         mongodb_virtual_memory_usage:
           type: object
           title: Mongo High Memory Usage
@@ -97,6 +99,8 @@ spec:
               type: integer
               title: Threshold
               description: The maximum memory for each MongoDB instance at which the alert is triggered
+              minimum: 0
+              maximum: 100
         mongodb_replication_lag:
           type: object
           title: Mongo Replication Lag
@@ -123,7 +127,8 @@ spec:
             threshold:
               type: integer
               title: Threshold
-              description: A threshold for replication lag at which the alert is triggered.
+              description: A threshold in seconds for replication lag at which the alert is triggered.
+              minimum: 0.1
         mongodb_replica_member_unhealthy:
           type: object
           title: Mongo Replica Member Unhealthy

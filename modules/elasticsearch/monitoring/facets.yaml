@@ -103,9 +103,9 @@ spec:
             threshold:
               type: number
               title: Threshold
+              description: The percentage threshold to trigger an alert when available storage falls below this value.
               minimum: 0
               maximum: 100
-              description: The percentage threshold to trigger an alert when available storage falls below this value.
         elasticsearch_heap_too_high:
           type: object
           title: Elasticsearch Heap Too High
@@ -130,6 +130,8 @@ spec:
               type: number
               title: Threshold
               description: Threshold for heap size must be between (0-100)
+              minimum: 0
+              maximum: 100
         elasticsearch_unassinged_shards:
           type: object
           title: Elasticsearch Cluster has Unassigned Shards
