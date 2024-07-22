@@ -240,7 +240,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
+    "gitRef": "validations",
     "relativePath": "./modules/service/monitoring/",
     "clouds": [
       "aws",
