@@ -69,7 +69,9 @@ spec:
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage of maximum memory usage triggering alert
+              description: The Percentage of maximum memory usage at which alert is triggered
+              minimum: 0
+              maximum: 100
         redis_too_many_connections:
           type: object
           title: Redis Too Many Connections
@@ -96,7 +98,8 @@ spec:
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage of maximum connections at which the alert is triggered
+              description: The absolute number of connections after which an alert is triggered
+              minimum: 1
 sample:
   kind: redis_monitoring
   flavor: k8s

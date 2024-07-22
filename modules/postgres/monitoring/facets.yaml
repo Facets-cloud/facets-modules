@@ -63,7 +63,7 @@ spec:
             threshold:
               type: string
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: The percentage of dead tuples compared to total tuples (live + dead) at which the alert is triggered
         postgresql_too_many_connections:
           type: object
           title: PostgreSQL Too Many Connections
@@ -85,9 +85,11 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: string
+              type: integer
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert is triggered
+              description: The percentage of maximum allowable PostgreSQL connections in use at which the alert is triggered
+              minimum: 0
+              maximum: 100
 sample:
   kind: postgres_monitoring
   flavor: k8s
