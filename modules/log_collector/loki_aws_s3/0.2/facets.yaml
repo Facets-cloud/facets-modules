@@ -1,0 +1,21 @@
+intent: log_collector
+flavor: loki_aws_s3
+version: '0.2'
+description: Adds log collector module for AWS
+clouds:
+  - aws
+  - kubernetes
+spec:
+  title: Log Collector Spec
+  type: object
+  description: Specification of the Loki AWS s3
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.loki_aws_s3.sample.json'
+  kind: log_collector
+  version: '0.2'
+  flavor: loki_aws_s3
+  disabled: true
+  metadata: { }
+  spec: { }
+  advanced: 
+    loki_s3: { }
