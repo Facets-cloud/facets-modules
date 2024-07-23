@@ -4,7 +4,7 @@
     "flavor": "elasticache",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/redis/elasticache/0.2/",
     "clouds": [
       "aws"
@@ -15,7 +15,7 @@
     "flavor": "memorystore",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/redis/memorystore/0.2/",
     "clouds": [
       "gcp"
@@ -26,7 +26,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/redis/k8s/0.1/",
     "clouds": [
       "aws",
@@ -40,7 +40,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/redis/monitoring/",
     "clouds": [
       "aws",
@@ -54,7 +54,7 @@
     "flavor": "aurora",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/postgres/aurora/0.1/",
     "clouds": [
       "aws"
@@ -65,7 +65,7 @@
     "flavor": "cloudsql",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/postgres/cloudsql/0.2/",
     "clouds": [
       "gcp"
@@ -76,7 +76,7 @@
     "flavor": "alloydb",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/postgres/alloydb/0.1/",
     "clouds": [
       "gcp"
@@ -87,7 +87,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/postgres/k8s/0.1/",
     "clouds": [
       "aws",
@@ -101,7 +101,7 @@
     "flavor": "aurora",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/aurora/0.2/",
     "clouds": [
       "aws"
@@ -112,7 +112,7 @@
     "flavor": "rds",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/rds/0.1/",
     "clouds": [
       "aws"
@@ -123,7 +123,7 @@
     "flavor": "cloudsql",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/cloudsql/0.1/",
     "clouds": [
       "gcp"
@@ -134,7 +134,7 @@
     "flavor": "flexible_server",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/flexible_server/0.1/",
     "clouds": [
       "azure"
@@ -145,7 +145,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/k8s/0.1/",
     "clouds": [
       "aws",
@@ -159,7 +159,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/elasticsearch/k8s/0.1/",
     "clouds": [
       "aws",
@@ -173,7 +173,7 @@
     "flavor": "opensearch",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/elasticsearch/opensearch/0.1/",
     "clouds": [
       "aws"
@@ -184,7 +184,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/service/k8s/0.1/",
     "clouds": [
       "aws",
@@ -198,7 +198,7 @@
     "flavor": "nginx_k8s_native",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/ingress/nginx_k8s_native/0.1/",
     "clouds": [
       "aws",
@@ -212,7 +212,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/helm/k8s/0.1/",
     "clouds": [
       "aws",
@@ -226,7 +226,7 @@
     "flavor": "k8s",
     "version": "0.3",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mongo/k8s/0.3/",
     "clouds": [
       "aws",
@@ -240,7 +240,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validationss",
+    "gitRef": "develop",
     "relativePath": "./modules/service/monitoring/",
     "clouds": [
       "aws",
@@ -254,7 +254,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/k8s_resource/k8s/0.1/",
     "clouds": [
       "aws",
@@ -268,7 +268,7 @@
     "flavor": "k8s",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/kafka/k8s/0.2/",
     "clouds": [
       "aws",
@@ -282,7 +282,7 @@
     "flavor": "msk",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/kafka/msk/0.1/",
     "clouds": [
       "aws"
@@ -293,7 +293,7 @@
     "flavor": "default",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/azure_storage_container/default/0.1/",
     "clouds": [
       "azure"
@@ -304,7 +304,7 @@
     "flavor": "default",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/google_cloud_storage/default/0.1/",
     "clouds": [
       "gcp"
@@ -315,7 +315,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validationss",
+    "gitRef": "develop",
     "relativePath": "./modules/mongo/monitoring/",
     "clouds": [
       "aws",
@@ -329,7 +329,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/mysql/monitoring/",
     "clouds": [
       "aws",
@@ -343,7 +343,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validationss",
+    "gitRef": "develop",
     "relativePath": "./modules/elasticsearch/monitoring/",
     "clouds": [
       "aws",
@@ -357,7 +357,7 @@
     "flavor": "default",
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/s3/default/0.2/",
     "clouds": [
       "aws"
@@ -368,7 +368,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develop",
     "relativePath": "./modules/postgres/monitoring/",
     "clouds": [
       "aws",
