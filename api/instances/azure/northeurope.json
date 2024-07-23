@@ -1,0 +1,320 @@
+{
+    "16Cores": {
+        "onDemand": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -39.6",
+                "canonicalname": "B16als_v2",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:03:52",
+                "name": "Standard_B16als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.578,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 2 / -8.8",
+                "canonicalname": "B16ls_v2",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:04:11",
+                "name": "Standard_B16ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.646,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -39.7",
+                "canonicalname": "B16as_v2",
+                "memory": 65536,
+                "modifiedDate": "07/19/2024 01:06:03",
+                "name": "Standard_B16as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.653,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US 2 / -8.5",
+                "canonicalname": "B16ms",
+                "memory": 65536,
+                "modifiedDate": "07/19/2024 01:04:43",
+                "name": "Standard_B16ms",
+                "paymentType": "payasyougo",
+                "perfScore": 276669,
+                "price": 0.728,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -29.4",
+                "canonicalname": "D16ls_v5",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:02:02",
+                "name": "Standard_D16ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.09636,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -33.2",
+                "canonicalname": "F16s_v2",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:03:44",
+                "name": "Standard_F16s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 271369,
+                "price": 0.10138,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -56.3",
+                "canonicalname": "D16as_v5",
+                "memory": 65536,
+                "modifiedDate": "07/19/2024 01:04:53",
+                "name": "Standard_D16as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 304560,
+                "price": 0.10153,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -16.6",
+                "canonicalname": "NV16as_v4",
+                "memory": 57344,
+                "modifiedDate": "07/19/2024 01:05:01",
+                "name": "Standard_NV16as_v4",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.1118,
+                "tags": []
+            }
+        ]
+    },
+    "4Cores": {
+        "onDemand": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -39.9",
+                "canonicalname": "B4als_v2",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:05:27",
+                "name": "Standard_B4als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.145,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -9.3",
+                "canonicalname": "B4ls_v2",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:06:13",
+                "name": "Standard_B4ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.162,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -39.6",
+                "canonicalname": "B4as_v2",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:03:56",
+                "name": "Standard_B4as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.163,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -12.6",
+                "canonicalname": "A4_v2",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:04:25",
+                "name": "Standard_A4_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.182,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -33.8",
+                "canonicalname": "A4_v2",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:04:25",
+                "name": "Standard_A4_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.02402,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -29.2",
+                "canonicalname": "D4ls_v5",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:03:31",
+                "name": "Standard_D4ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.02402,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -33.3",
+                "canonicalname": "F4s_v2",
+                "memory": 8192,
+                "modifiedDate": "07/19/2024 01:02:26",
+                "name": "Standard_F4s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 65819,
+                "price": 0.02534,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -56.3",
+                "canonicalname": "D4as_v5",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:03:53",
+                "name": "Standard_D4as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 72928,
+                "price": 0.02538,
+                "tags": []
+            }
+        ]
+    },
+    "8Cores": {
+        "onDemand": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -39.8",
+                "canonicalname": "B8als_v2",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:04:41",
+                "name": "Standard_B8als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.289,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 2 / -8.7",
+                "canonicalname": "B8ls_v2",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:03:51",
+                "name": "Standard_B8ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.323,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -39.6",
+                "canonicalname": "B8as_v2",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:03:41",
+                "name": "Standard_B8as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.326,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -8.5",
+                "canonicalname": "B8ms",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:04:10",
+                "name": "Standard_B8ms",
+                "paymentType": "payasyougo",
+                "perfScore": 144753,
+                "price": 0.364,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -29.4",
+                "canonicalname": "D8ls_v5",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:06:31",
+                "name": "Standard_D8ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.04818,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -33.6",
+                "canonicalname": "A8_v2",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:06:28",
+                "name": "Standard_A8_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "price": 0.05016,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -33.3",
+                "canonicalname": "F8s_v2",
+                "memory": 16384,
+                "modifiedDate": "07/19/2024 01:05:50",
+                "name": "Standard_F8s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 136027,
+                "price": 0.05069,
+                "tags": []
+            },
+            {
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -56.3",
+                "canonicalname": "D8as_v5",
+                "memory": 32768,
+                "modifiedDate": "07/19/2024 01:03:35",
+                "name": "Standard_D8as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 153842,
+                "price": 0.05076,
+                "tags": []
+            }
+        ]
+    }
+}
