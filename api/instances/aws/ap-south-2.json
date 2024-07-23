@@ -1,0 +1,344 @@
+{
+    "16Cores": {
+        "onDemand": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.4xlarge",
+                "InstanceType": "m6a.4xlarge",
+                "Memory": 65536,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.4444,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.4xlarge",
+                "InstanceType": "c5.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.68,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.4xlarge",
+                "InstanceType": "c6i.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.68,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "c5d.4xlarge",
+                "InstanceType": "c5d.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.792,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.4xlarge",
+                "InstanceType": "m6a.4xlarge",
+                "Memory": 65536,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.15969090909090908,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.4xlarge",
+                "InstanceType": "c6i.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.20937027027027028,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.4xlarge",
+                "InstanceType": "c5.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.21917027027027025,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "c5d.4xlarge",
+                "InstanceType": "c5d.4xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.23341944444444446,
+                "tags": []
+            }
+        ]
+    },
+    "4Cores": {
+        "onDemand": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.xlarge",
+                "InstanceType": "m6a.xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.1111,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.xlarge",
+                "InstanceType": "c5.xlarge",
+                "Memory": 8192,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.17,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.xlarge",
+                "InstanceType": "c6i.xlarge",
+                "Memory": 8192,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.17,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "t3.xlarge",
+                "InstanceType": "t3.xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.1792,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.xlarge",
+                "InstanceType": "m6a.xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.03644736842105263,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.xlarge",
+                "InstanceType": "c5.xlarge",
+                "Memory": 8192,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.051090625,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.xlarge",
+                "InstanceType": "c6i.xlarge",
+                "Memory": 8192,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.05284324324324324,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "t3.xlarge",
+                "InstanceType": "t3.xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.05529411764705883,
+                "tags": []
+            }
+        ]
+    },
+    "8Cores": {
+        "onDemand": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.2xlarge",
+                "InstanceType": "m6a.2xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.2222,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.2xlarge",
+                "InstanceType": "c5.2xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.34,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.2xlarge",
+                "InstanceType": "c6i.2xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.34,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "t3.2xlarge",
+                "InstanceType": "t3.2xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.3584,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "m6a.2xlarge",
+                "InstanceType": "m6a.2xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.08582000000000001,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c5.2xlarge",
+                "InstanceType": "c5.2xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.09916410256410256,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "us-east-1",
+                "CanonicalName": "t3.2xlarge",
+                "InstanceType": "t3.2xlarge",
+                "Memory": 32768,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.1038939393939394,
+                "tags": []
+            },
+            {
+                "Architecture": [
+                    "x86_64"
+                ],
+                "BestOnDemandHourPriceRegion": "ap-south-2",
+                "CanonicalName": "c6i.2xlarge",
+                "InstanceType": "c6i.2xlarge",
+                "Memory": 16384,
+                "ModifiedDate": "2024-07-22 00:24:51",
+                "PaymentType": "OnDemand",
+                "PricePerHour": 0.10793684210526316,
+                "tags": []
+            }
+        ]
+    }
+}
