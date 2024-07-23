@@ -240,7 +240,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develops",
     "relativePath": "./modules/service/monitoring/",
     "clouds": [
       "aws",
@@ -315,7 +315,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develops",
     "relativePath": "./modules/mongo/monitoring/",
     "clouds": [
       "aws",
@@ -343,7 +343,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "validations",
+    "gitRef": "develops",
     "relativePath": "./modules/elasticsearch/monitoring/",
     "clouds": [
       "aws",
