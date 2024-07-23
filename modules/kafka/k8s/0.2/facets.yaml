@@ -109,11 +109,11 @@ sample:
     size:
       kafka:
         cpu: "1"
-        memory: 2G
+        memory: 2Gi
         instance_count: 1
         volume: 10Gi
       zookeeper:
         cpu: "1"
-        memory: 1G
+        memory: 1Gi
         instance_count: 1
         volume: 10Gi
