@@ -1,6 +1,6 @@
 intent: mongo
 flavor: k8s
-version: '0.3'
+version: "0.3"
 description: Adds Mongo module of kubernetes flavor
 clouds:
   - aws
@@ -20,10 +20,10 @@ spec:
       title: MongoDB Version
       description: Specifies the MongoDB version to use.
       enum:
-        - '4.4.14'
-        - '5.0.23'
-        - '6.0.13'
-        - '7.0.11'
+        - "4.4.14"
+        - "5.0.23"
+        - "6.0.13"
+        - "7.0.11"
       x-ui-placeholder: "e.g., '7.0' or '7.0.11'"
       x-ui-error-message: "Please select a valid MongoDB version."
     size:
@@ -44,9 +44,10 @@ spec:
           title: CPU Request
           description: Number of CPU cores required.
           minLength: 1
-          pattern: "^[0-9]+[m]?$"
+          pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
           x-ui-placeholder: "e.g., '500m' or '1'"
-          x-ui-error-message: "CPU must be specified in the correct format (e.g., '500m' or '1')."
+          x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
+
         memory:
           type: string
           title: Memory Request
@@ -54,23 +55,23 @@ spec:
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
-          x-ui-error-message: "Memory must be specified in the correct format (e.g., '800Mi' or '1.5Gi')."
+          x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
         cpu_limit:
           type: string
           title: CPU Limit
           description: Set a maximum limit on CPU utilization.
           minLength: 1
-          pattern: "^[0-9]+[m]?$"
-          x-ui-placeholder: "e.g., '1000m' or '2'"
-          x-ui-error-message: "CPU limit must be specified in the correct format (e.g., '1000m' or '2')."
+          pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+          x-ui-placeholder: "e.g., '500m' or '1'"
+          x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
         memory_limit:
           type: string
           title: Memory Limit
           description: Set a maximum limit on memory utilization.
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
-          x-ui-placeholder: "e.g., '1Gi' or '2Gi'"
-          x-ui-error-message: "Memory limit must be specified in the correct format (e.g., '800Mi' or '2Gi')."
+          x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+          x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
         volume:
           type: string
           title: Volume
@@ -95,17 +96,17 @@ sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json
   flavor: k8s
-  metadata: { }
+  metadata: {}
   kind: mongo
   disabled: true
-  version: '0.3'
+  version: "0.3"
   spec:
     authenticated: true
-    mongodb_version: '6.0.2'
+    mongodb_version: "6.0.2"
     size:
       instance_count: 1
-      cpu: '500m'
-      memory: '800Mi'
-      cpu_limit: '1000m'
-      memory_limit: '1.5Gi'
-      volume: '10Gi'
+      cpu: "500m"
+      memory: "800Mi"
+      cpu_limit: "1000m"
+      memory_limit: "1.5Gi"
+      volume: "10Gi"
