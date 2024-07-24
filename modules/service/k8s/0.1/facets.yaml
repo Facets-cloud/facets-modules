@@ -43,6 +43,7 @@ spec:
           items:
             type: string
           pattern: '^\[.*\]$'
+          x-ui-command: true
         args:
           type: array
           title: Arguments
@@ -50,6 +51,7 @@ spec:
           items:
             type: string
           pattern: '^\[.*\]$'
+          x-ui-command: true
         health_checks:
           type: object
           title: Health Checks
@@ -436,6 +438,8 @@ spec:
         - health_checks
         - autoscaling
         - volumes
+        - command
+        - args
     release:
       title: Release
       description: Manage version releases to deploy updates and maintain software integrity
