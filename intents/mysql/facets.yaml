@@ -2,6 +2,7 @@ name: mysql
 type: Database
 displayName: MySQL
 description: A widely-used open-source relational database management system known for its speed, reliability, and ease of use.
+iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cf8ac4a664f1e283eb_mysql.svg
 outputs:
   - name: default
     type: "@output/mysql"
