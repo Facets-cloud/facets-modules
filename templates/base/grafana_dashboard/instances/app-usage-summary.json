@@ -10,6 +10,9 @@
   "metadata": {
     "name": "app-usage-summary"
   },
+  "ui": {
+    "base_resource": true
+  },
   "spec": {
     "dashboard": {
       "annotations": {
