@@ -1,0 +1,838 @@
+{
+    "kind": "grafana_dashboard",
+    "conditional_on_intent": "mysql",
+    "flavor": "default",
+    "version": "latest",
+    "lifecycle": "ENVIRONMENT",
+    "disabled": true,
+    "provided": false,
+    "depends_on": [],
+    "metadata": {
+      "name": "mysql-overview"
+    },
+    "ui": {
+      "base_resource": true
+    },
+    "spec": {
+      "dashboard": {
+        "annotations": {
+          "list": [
+            {
+              "builtIn": 1,
+              "datasource": {
+                "type": "datasource",
+                "uid": "grafana"
+              },
+              "enable": true,
+              "hide": true,
+              "iconColor": "rgba(0, 211, 255, 1)",
+              "name": "Annotations & Alerts",
+              "target": {
+                "limit": 100,
+                "matchAny": false,
+                "tags": [],
+                "type": "dashboard"
+              },
+              "type": "dashboard"
+            }
+          ]
+        },
+        "description": "Mysql dashboard to get the overview of mysql instances.",
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "gnetId": 14057,
+        "graphTooltip": 1,
+        "id": 30,
+        "links": [],
+        "liveNow": false,
+        "panels": [
+          {
+            "collapsed": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 0
+            },
+            "id": 382,
+            "panels": [],
+            "targets": [
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "refId": "A"
+              }
+            ],
+            "type": "row"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "description": "**Uptime**\n\nThe amount of time since the last restart of the MySQL server process.",
+            "fieldConfig": {
+              "defaults": {
+                "decimals": 1,
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(237, 129, 40, 0.89)",
+                      "value": 300
+                    },
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": 3600
+                    }
+                  ]
+                },
+                "unit": "s"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 8,
+              "x": 0,
+              "y": 1
+            },
+            "id": 12,
+            "interval": "1m",
+            "links": [],
+            "maxDataPoints": 100,
+            "options": {
+              "colorMode": "value",
+              "fieldOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ]
+              },
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "mean"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.3.1",
+            "targets": [
+              {
+                "calculatedInterval": "10m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "mysql_global_status_uptime{job=~\"$job\", instance=~\"$instance\"}",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "{{instance}}",
+                "metric": "",
+                "refId": "A",
+                "step": 300
+              }
+            ],
+            "title": "Uptime",
+            "type": "stat"
+          },
+          {
+            "collapsed": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 4
+            },
+            "id": 383,
+            "panels": [],
+            "targets": [
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "refId": "A"
+              }
+            ],
+            "title": "Connections",
+            "type": "row"
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "decimals": 0,
+            "description": "**Max Connections** \n\nMax Connections is the maximum permitted number of simultaneous client connections. By default, this is 151. Increasing this value increases the number of file descriptors that mysqld requires. If the required number of descriptors are not available, the server reduces the value of Max Connections.\n\nmysqld actually permits Max Connections + 1 clients to connect. The extra connection is reserved for use by accounts that have the SUPER privilege, such as root.\n\nMax Used Connections is the maximum number of connections that have been in use simultaneously since the server started.\n\nConnections is the number of connection attempts (successful or not) to the MySQL server.",
+            "editable": true,
+            "error": false,
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 5
+            },
+            "height": "250px",
+            "hiddenSeries": false,
+            "id": 92,
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": false,
+              "max": true,
+              "min": true,
+              "show": true,
+              "sort": "avg",
+              "sortDesc": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [
+              {
+                "targetBlank": true,
+                "title": "MySQL Server System Variables",
+                "url": "https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connections"
+              }
+            ],
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.1",
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+              {
+                "alias": "Max Connections",
+                "fill": 0
+              }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "calculatedInterval": "2m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "sum(max_over_time(mysql_global_status_threads_connected{job=~\"$job\", instance=~\"$instance\"}[$__interval]))",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Connections",
+                "metric": "",
+                "refId": "A",
+                "step": 20
+              },
+              {
+                "calculatedInterval": "2m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "sum(mysql_global_status_max_used_connections{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Max Used Connections",
+                "metric": "",
+                "refId": "C",
+                "step": 20,
+                "target": ""
+              },
+              {
+                "calculatedInterval": "2m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "sum(mysql_global_variables_max_connections{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Max Connections",
+                "metric": "",
+                "refId": "B",
+                "step": 20,
+                "target": ""
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "MySQL Connections",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": 0,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          },
+          {
+            "collapsed": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 12
+            },
+            "id": 388,
+            "panels": [],
+            "targets": [
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "refId": "A"
+              }
+            ],
+            "title": "Network",
+            "type": "row"
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "decimals": 2,
+            "description": "**MySQL Network Traffic**\n\nHere we can see how much network traffic is generated by MySQL. Outbound is network traffic sent from MySQL and Inbound is network traffic MySQL has received.",
+            "editable": true,
+            "error": false,
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 6,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 13
+            },
+            "hiddenSeries": false,
+            "id": 9,
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": false,
+              "max": true,
+              "min": true,
+              "rightSide": false,
+              "show": true,
+              "sort": "avg",
+              "sortDesc": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.1",
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "calculatedInterval": "2m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "sum(rate(mysql_global_status_bytes_received{job=~\"$job\", instance=~\"$instance\"}[$__interval]))",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Inbound",
+                "metric": "",
+                "refId": "A",
+                "step": 20
+              },
+              {
+                "calculatedInterval": "2m",
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "datasourceErrors": {},
+                "errors": {},
+                "expr": "sum(rate(mysql_global_status_bytes_sent{job=~\"$job\", instance=~\"$instance\"}[$__interval]))",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Outbound",
+                "metric": "",
+                "refId": "B",
+                "step": 20
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "MySQL Network Traffic",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "Bps",
+                "logBase": 1,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "none",
+                "logBase": 1,
+                "min": 0,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          },
+          {
+            "collapsed": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 20
+            },
+            "id": 389,
+            "panels": [],
+            "targets": [
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "refId": "A"
+              }
+            ],
+            "title": "Memory",
+            "type": "row"
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "decimals": 0,
+            "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB ‘s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
+            "editable": true,
+            "error": false,
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 6,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 21
+            },
+            "hiddenSeries": false,
+            "id": 50,
+            "legend": {
+              "alignAsTable": true,
+              "avg": true,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": true,
+              "rightSide": true,
+              "show": true,
+              "sort": "avg",
+              "sortDesc": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [
+              {
+                "title": "Detailed descriptions about metrics",
+                "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
+              }
+            ],
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "9.3.1",
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+              {
+                "alias": "System Memory",
+                "fill": 0,
+                "stack": false
+              }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_status_innodb_page_size{job=~\"$job\", instance=~\"$instance\"} * on (instance) mysql_global_status_buffer_pool_pages{job=~\"$job\", instance=~\"$instance\", state=\"data\"})",
+                "format": "time_series",
+                "hide": false,
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "InnoDB Buffer Pool Data",
+                "refId": "A",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_variables_innodb_log_buffer_size{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "InnoDB Log Buffer Size",
+                "refId": "D",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_variables_innodb_additional_mem_pool_size{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 2,
+                "legendFormat": "InnoDB Additional Memory Pool Size",
+                "refId": "H",
+                "step": 40
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_status_innodb_mem_dictionary{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "InnoDB Dictionary Size",
+                "refId": "F",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_variables_key_buffer_size{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Key Buffer Size",
+                "refId": "B",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_variables_query_cache_size{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Query Cache Size",
+                "refId": "C",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_status_innodb_mem_adaptive_hash{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "Adaptive Hash Index Size",
+                "refId": "E",
+                "step": 20
+              },
+              {
+                "datasource": {
+                  "uid": "$datasource"
+                },
+                "expr": "sum(mysql_global_variables_tokudb_cache_size{job=~\"$job\", instance=~\"$instance\"})",
+                "format": "time_series",
+                "interval": "1m",
+                "intervalFactor": 1,
+                "legendFormat": "TokuDB Cache Size",
+                "refId": "I",
+                "step": 20
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "MySQL Internal Memory Overview",
+            "tooltip": {
+              "msResolution": false,
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "bytes",
+                "label": "",
+                "logBase": 1,
+                "min": 0,
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          }
+        ],
+        "refresh": "10s",
+        "schemaVersion": 37,
+        "style": "dark",
+        "tags": [],
+        "templating": {
+          "list": [
+            {
+              "current": {
+                "selected": false,
+                "text": "Prometheus",
+                "value": "Prometheus"
+              },
+              "hide": 0,
+              "includeAll": false,
+              "multi": false,
+              "name": "datasource",
+              "options": [],
+              "query": "prometheus",
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "type": "datasource"
+            },
+            {
+              "current": {
+                "selected": false,
+                "text": "All",
+                "value": "$__all"
+              },
+              "datasource": {
+                "type": "Prometheus",
+                "uid": "$datasource"
+              },
+              "definition": "label_values(mysql_up, job)",
+              "hide": 0,
+              "includeAll": true,
+              "multi": true,
+              "name": "job",
+              "options": [],
+              "query": {
+                "query": "label_values(mysql_up, job)",
+                "refId": "Prometheus-job-Variable-Query"
+              },
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "sort": 0,
+              "tagValuesQuery": "",
+              "tagsQuery": "",
+              "type": "query",
+              "useTags": false
+            },
+            {
+              "current": {
+                "selected": true,
+                "text": [
+                  "All"
+                ],
+                "value": [
+                  "$__all"
+                ]
+              },
+              "datasource": {
+                "type": "Prometheus",
+                "uid": "$datasource"
+              },
+              "definition": "label_values(mysql_up, instance)",
+              "hide": 0,
+              "includeAll": true,
+              "multi": true,
+              "name": "instance",
+              "options": [],
+              "query": {
+                "query": "label_values(mysql_up, instance)",
+                "refId": "Prometheus-instance-Variable-Query"
+              },
+              "refresh": 1,
+              "regex": "",
+              "skipUrlSync": false,
+              "sort": 0,
+              "tagValuesQuery": "",
+              "tagsQuery": "",
+              "type": "query",
+              "useTags": false
+            }
+          ]
+        },
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "timepicker": {
+          "collapse": false,
+          "enable": true,
+          "hidden": false,
+          "notice": false,
+          "now": true,
+          "refresh_intervals": [
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+          ],
+          "status": "Stable",
+          "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+          ],
+          "type": "timepicker"
+        },
+        "timezone": "",
+        "title": "MySQL Overview Dashboard",
+        "version": 1,
+        "weekStart": ""
+      }
+    }
+  }

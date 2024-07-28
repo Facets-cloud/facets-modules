@@ -1,0 +1,1449 @@
+{
+  "kind":"grafana_dashboard",
+  "flavor":"default",
+  "version":"latest",
+  "lifecycle":"ENVIRONMENT",
+  "disabled":false,
+  "conditional_on_intent": "kafka",
+  "provided":false,
+  "depends_on":[
+     
+  ],
+  "metadata":{
+     "name":"kafka-dashboard"
+  },
+  "ui": {
+    "base_resource": true
+  },
+  "spec":{
+     "dashboard":{
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "datasource",
+              "uid": "grafana"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Kafka Cluster Metrics Dashboard",
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "gnetId": 14505,
+      "graphTooltip": 0,
+      "id": 28,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 52,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "Genral Metrics",
+          "type": "row"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 4,
+            "x": 0,
+            "y": 1
+          },
+          "id": 68,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "first"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_controller_kafkacontroller_activecontrollercount_value{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Active Brokers",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "yellow",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 3,
+            "x": 4,
+            "y": 1
+          },
+          "id": 24,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_replicamanager_total_partitioncount_value{pod=~\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "ClusterPartitionCount",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 3,
+            "x": 7,
+            "y": 1
+          },
+          "id": 22,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_controller_kafkacontroller_offlinepartitionscount_value{pod=~\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OfflinePartitionsCount",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 4,
+            "x": 10,
+            "y": 1
+          },
+          "id": 82,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_controller_kafkacontroller_globaltopiccount_value{pod=~\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Topic Topics Per Broker",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 5,
+            "x": 14,
+            "y": 1
+          },
+          "id": 75,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "textMode": "auto"
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_messagesinpersec_oneminuterate{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Broker Message In / Minute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 11
+          },
+          "id": 77,
+          "options": {
+            "displayMode": "basic",
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showUnfilled": true
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_messagesinpersec_count{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total Message In Per Broker",
+          "transformations": [
+            {
+              "id": "seriesToColumns",
+              "options": {}
+            }
+          ],
+          "type": "bargauge"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": [],
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 18
+          },
+          "hiddenSeries": false,
+          "id": 18,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "java_lang_operatingsystem_cpuload{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "CPUUsed(%)",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "format": "percent",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {
+            "Buffered Memory %": "yellow",
+            "Memory Used %": "red",
+            "Total Memory Used %": "red",
+            "{env=\"prod\", exported_env=\"prod\", host=\"3.138.123.32\", instance=\"172.31.45.27:9273\", job=\"telegraf\"}": "dark-green"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": [],
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 18
+          },
+          "hiddenSeries": false,
+          "id": 16,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "java_lang_operatingsystem_totalmemorysize{pod=\"$kafka_pods\"}",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{host}} - Total Memory Used ",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "java_lang_operatingsystem_freememorysize{pod=\"$kafka_pods\"}",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "MemoryUsed",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2346",
+              "format": "decbytes",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2347",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": [],
+              "unit": "binBps"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 27
+          },
+          "hiddenSeries": false,
+          "id": 79,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "broker Bytes Sent by 1 Minute",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2423",
+              "format": "binBps",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2424",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 27
+          },
+          "hiddenSeries": false,
+          "id": 80,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_bytesoutpersec_oneminuterate{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Broker Bytes out by 1 min",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2423",
+              "format": "decbytes",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2424",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {
+            "172.31.45.27:9273": "light-green"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 0,
+            "y": 35
+          },
+          "hiddenSeries": false,
+          "id": 48,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_replicafetchermanager_maxlag_value{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Cluster Lag",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:121",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:122",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 10,
+            "w": 12,
+            "x": 12,
+            "y": 35
+          },
+          "hiddenSeries": false,
+          "id": 56,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_controller_controllerchannelmanager_totalqueuesize_value{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Total Queue Size",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1778",
+              "format": "bytes",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1779",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 45
+          },
+          "id": 8,
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "Partition Metrics",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 10,
+            "x": 0,
+            "y": 46
+          },
+          "hiddenSeries": false,
+          "id": 42,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_replicamanager_total_underreplicatedpartitions_value{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{topic}}-{{partition}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "UnderReplicatedPartitions by topic-partition",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:1990",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:1991",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": [],
+              "unit": "reqps"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 46
+          },
+          "hiddenSeries": false,
+          "id": 54,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_failedproducerequestspersec_oneminuterate{pod=\"$kafka_pods\"}",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Produce Rquests Failed/Sec by [1m]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:711",
+              "format": "reqps",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:712",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        },
+        {
+          "collapsed": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 54
+          },
+          "id": 6,
+          "panels": [],
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "refId": "A"
+            }
+          ],
+          "title": "Request Metrics",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 55
+          },
+          "hiddenSeries": false,
+          "id": 46,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "9.2.15",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "datasource": {
+                "uid": "$datasource"
+              },
+              "editorMode": "code",
+              "expr": "kafka_server_brokertopicmetrics_total_totalproducerequestspersec_oneminuterate{pod=\"$kafka_pods\"}",
+              "format": "time_series",
+              "interval": "",
+              "legendFormat": "{{host}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeRegions": [],
+          "title": "Producer Request Bytes/1 Minute",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:639",
+              "format": "decbytes",
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:640",
+              "format": "short",
+              "logBase": 1,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false
+          }
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "current": {
+              "selected": false,
+              "text": "Prometheus",
+              "value": "Prometheus"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Datasource",
+            "multi": false,
+            "name": "datasource",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          },
+          {
+            "current": {
+              "selected": true,
+              "text": "kafka-alpha-kafka-0",
+              "value": "kafka-alpha-kafka-0"
+            },
+            "definition": "label_values(kafka_controller_kafkacontroller_activecontrollercount_value, pod)",
+            "hide": 0,
+            "includeAll": false,
+            "multi": false,
+            "name": "kafka_pods",
+            "options": [],
+            "query": {
+              "query": "label_values(kafka_controller_kafkacontroller_activecontrollercount_value, pod)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "type": "query"
+          }
+        ]
+      },
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ]
+      },
+      "timezone": "",
+      "title": "Kafka Cluster Metrics",
+      "uid": "yOH8IoQMD",
+      "version": 11,
+      "weekStart": ""
+    }
+  }
+}

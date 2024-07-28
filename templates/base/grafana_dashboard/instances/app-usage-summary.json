@@ -1,0 +1,657 @@
+{
+  "$schema": "https://facets-cloud.github.io/facets-schemas/schemas/grafana_dashboard/grafana_dashboard.schema.json",
+  "kind": "grafana_dashboard",
+  "flavor": "default",
+  "version": "latest",
+  "lifecycle": "ENVIRONMENT",
+  "disabled": false,
+  "provided": false,
+  "depends_on": [],
+  "metadata": {
+    "name": "app-usage-summary"
+  },
+  "ui": {
+    "base_resource": true
+  },
+  "spec": {
+    "dashboard": {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A (max)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Current Requests"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A (max) / Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Max utilization over a week"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A * 1 (mean)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A * 1 (mean) / Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg utilization over a week"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max utilization over a week"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 197
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Current Requests"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 258
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "owner_name"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 431
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 2,
+          "maxDataPoints": 15000,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Current Requests"
+              }
+            ]
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "max(\n  (\n    label_replace(\n      (\n        rate(container_cpu_usage_seconds_total[1m])\n      )\n      * on (pod) group_left(created_by_name) kube_pod_info{created_by_kind=\"ReplicaSet\"}\n    , \"replicaset\", \"$1\", \"created_by_name\", \"(.*)\")\n    * on (replicaset) group_left(owner_name) kube_replicaset_owner\n  )\n) by (owner_name)",
+              "format": "table",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(kube_pod_container_resource_requests{container=~\".+\", resource=\"cpu\"}, \"owner_name\", \"$1\", \"container\", \"(.*)\")",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "B"
+            }
+          ],
+          "title": "CPU Utilization",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "owner_name",
+                    "Value #A",
+                    "Value #B"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A",
+                  "operator": "*",
+                  "reducer": "sum",
+                  "right": "1"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Value #A": {
+                    "aggregations": [
+                      "max"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Value #A * 1": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Value #B": {
+                    "aggregations": [
+                      "max"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "owner_name": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "owner_name",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A (max)",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Value #B (max)"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A * 1 (mean)",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Value #B (max)"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "center",
+                "displayMode": "auto",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A (max)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Current Requests"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "decgbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A (max) / Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Max utilization over a week"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Max utilization over a week"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 295
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Current Requests"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 255
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "% age"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 139
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A * 1 (mean)"
+                },
+                "properties": [
+                  {
+                    "id": "custom.hidden",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #A * 1 (mean) / Value #B (max)"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Avg utilization over a week"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 10
+          },
+          "id": 3,
+          "maxDataPoints": 15000,
+          "options": {
+            "footer": {
+              "enablePagination": true,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Current Requests"
+              }
+            ]
+          },
+          "pluginVersion": "9.2.15",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "max(\n  (\n    label_replace(\n      (\n        container_memory_usage_bytes{container=~\".+\"}/(1024*1024*1024)\n      )\n      * on (pod) group_left(created_by_name) kube_pod_info{created_by_kind=\"ReplicaSet\"}\n    , \"replicaset\", \"$1\", \"created_by_name\", \"(.*)\")\n    * on (replicaset) group_left(owner_name) kube_replicaset_owner\n  )\n) by (owner_name)",
+              "format": "table",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(kube_pod_container_resource_requests{container=~\".+\", resource=\"memory\"}/(1024*1024*1024), \"owner_name\", \"$1\", \"container\", \"(.*)\")",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "B"
+            }
+          ],
+          "title": "Memory Utilization",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "owner_name",
+                    "Value #A",
+                    "Value #B"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A",
+                  "operator": "*",
+                  "reducer": "sum",
+                  "right": "1"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "groupBy",
+              "options": {
+                "fields": {
+                  "Value #A": {
+                    "aggregations": [
+                      "max"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Value #A * 1": {
+                    "aggregations": [
+                      "mean"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "Value #B": {
+                    "aggregations": [
+                      "max"
+                    ],
+                    "operation": "aggregate"
+                  },
+                  "owner_name": {
+                    "aggregations": [],
+                    "operation": "groupby"
+                  }
+                }
+              }
+            },
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "owner_name",
+                "mode": "inner"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A (max)",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Value #B (max)"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": "Value #A * 1 (mean)",
+                  "operator": "/",
+                  "reducer": "sum",
+                  "right": "Value #B (max)"
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "schemaVersion": 37,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-7d",
+        "to": "now"
+      },
+      "timepicker": {
+        "hidden": true
+      },
+      "timezone": "",
+      "title": "Application Resource Usage Summary",
+      "uid": "3JT0w0x296zTY5t0",
+      "version": 3,
+      "weekStart": ""
+    }
+  },
+  "out": {},
+  "advanced": {
+    "inherit_from_base": true
+  }
+}
