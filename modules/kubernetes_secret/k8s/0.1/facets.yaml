@@ -1,0 +1,31 @@
+intent: kubernetes_secret
+flavor: k8s
+version: '0.1'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Kubernetes secret resource
+  description: Specification of the kubernetes secret resource intent
+  type: object
+  properties:
+    resource:
+      type: object
+      title: Resource
+      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter kubernetes manifest in YAML format
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
+  kind: kubernetes_secret
+  disabled: true
+  flavor: k8s
+  version: '0.1'
+  metadata: {}
+  spec:
+    data:
+      ssl.crt: base64 encoded data
+      ssl2.crt: base64 encoded data
