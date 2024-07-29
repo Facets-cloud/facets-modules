@@ -1,0 +1,4 @@
+name: config_map
+type: K8s
+displayName: Config map
+description: A Kubernetes resource that defines workloads, services, and configurations, enabling orchestration of containerized applications.
