@@ -98,5 +98,15 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
     "relativePath": "./intents/s3/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "saas-cm-sec",
+    "relativePath": "./intents/config_map/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "saas-cm-sec",
+    "relativePath": "./intents/kubernetes_secret/"
   }
 ]

@@ -24,6 +24,18 @@
     "relativePath": "./outputs/mysql/"
   },
   {
+    "name": "config_map",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "saas-cm-sec",
+    "relativePath": "./outputs/config_map/"
+  },
+  {
+    "name": "kubernetes_secret",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "saas-cm-sec",
+    "relativePath": "./outputs/kubernetes_secret/"
+  },
+  {
     "name": "elasticsearch",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "develop",
