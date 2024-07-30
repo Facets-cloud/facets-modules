@@ -27,5 +27,5 @@ sample:
   metadata: {}
   spec:
     data:
-      ssl.crt: base64 encoded data
-      ssl2.crt: base64 encoded data
+      username: dXNlcm5hbWU=
+      password: cGFzc3dvcmQ=
