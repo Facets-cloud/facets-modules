@@ -33,13 +33,16 @@ spec:
               type: string
               title: Interval
               description: Time duration before triggering the alert
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
               enum:
-                - 'critical'
-                - 'warning'
+                - "critical"
+                - "warning"
         redis_out_of_configured_max_memory:
           type: object
           title: Redis Out Of Configured Max Memory
@@ -53,17 +56,22 @@ spec:
               type: string
               title: Interval
               description: Time duration before triggering the alert
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
               enum:
-                - 'critical'
-                - 'warning'
+                - "critical"
+                - "warning"
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage of maximum memory usage triggering alert
+              description: The Percentage of maximum memory usage at which alert is triggered
+              minimum: 0
+              maximum: 100
         redis_too_many_connections:
           type: object
           title: Redis Too Many Connections
@@ -77,17 +85,21 @@ spec:
               type: string
               title: Interval
               description: Time duration before triggering the alert
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
               description: Categorizes the urgency and impact of an alert
               enum:
-                - 'critical'
-                - 'warning'
+                - "critical"
+                - "warning"
             threshold:
               type: integer
               title: Threshold
-              description: The Percentage of maximum connections at which the alert is triggered
+              description: The absolute number of connections after which an alert is triggered
+              minimum: 1
 sample:
   kind: redis_monitoring
   flavor: k8s

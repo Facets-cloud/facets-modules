@@ -1,6 +1,6 @@
 intent: kafka
 flavor: msk
-version: '0.1'
+version: "0.1"
 description: Adds Kafka module of MSK flavor
 clouds:
   - aws
@@ -81,20 +81,24 @@ spec:
               type: integer
               title: Instance Count
               description: Number of kafka instances needs to be deployed
+              minimum: 0
             volume:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-          required: [ "instance", "instance_count", "volume" ]
-      required: [ "kafka" ]
-  required: [ "authenticated", "kafka_version", "persistence_enabled", "size" ]
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              x-ui-placeholder: "Enter volume size"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+          required: ["instance", "instance_count", "volume"]
+      required: ["kafka"]
+  required: ["authenticated", "kafka_version", "persistence_enabled", "size"]
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json"
   kind: kafka
   flavor: msk
-  version: '0.1'
+  version: "0.1"
   disabled: true
-  metadata: { }
+  metadata: {}
   spec:
     authenticated: false
     kafka_version: 2.8.0
@@ -104,4 +108,3 @@ sample:
         instance: kafka.t3.small
         instance_count: 2
         volume: 10Gi
-
