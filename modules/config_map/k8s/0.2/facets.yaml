@@ -11,16 +11,13 @@ spec:
   description: Specification of the config map resource intent
   type: object
   properties:
-    resource:
+    data:
       type: object
-      title: Resource
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-      required:
-        - data
+      additionalProperties:
+        type: string
+  required:
+    - data
+
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
