@@ -6,11 +6,12 @@ clouds:
   - k8s
   - azure
   - gcp
-description: Adds Monitoring to nginx ingress
+description: Adds monitoring to nginx ingress
 inputs:
   ngnix_k8s:
     type: "@outputs/ngnix_k8s"
     adds_capability: true
+
 spec:
   title: Ingress Monitoring
   type: object
