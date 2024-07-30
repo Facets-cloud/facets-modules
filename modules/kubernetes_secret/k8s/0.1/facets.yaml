@@ -14,9 +14,14 @@ spec:
     resource:
       type: object
       title: Resource
-      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
-      x-ui-yaml-editor: true
-      x-ui-placeholder: Enter kubernetes manifest in YAML format
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - data
+
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
