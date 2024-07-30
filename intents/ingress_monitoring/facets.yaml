@@ -1,0 +1,4 @@
+name: ingress_monitoring
+type: Monitoring
+displayName: Ingress Monitoring
+description: Monitoring for nginx ingress
