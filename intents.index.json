@@ -101,12 +101,12 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "saas-cm-sec",
     "relativePath": "./intents/config_map/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "master",
+    "gitRef": "saas-cm-sec",
     "relativePath": "./intents/kubernetes_secret/"
   }
 ]
