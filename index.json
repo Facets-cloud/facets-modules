@@ -382,7 +382,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "saas-cm-sec",
+    "gitRef": "master",
     "relativePath": "./modules/kubernetes_secret/k8s/0.1/",
     "clouds": [
       "aws",
@@ -394,9 +394,9 @@
   {
     "intent": "config_map",
     "flavor": "k8s",
-    "version": "0.1",
+    "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "saas-cm-sec",
+    "gitRef": "master",
     "relativePath": "./modules/config_map/k8s/0.2/",
     "clouds": [
       "aws",
