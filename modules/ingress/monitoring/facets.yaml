@@ -1,0 +1,72 @@
+intent: ingress_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to nginx ingress
+inputs:
+  ngnix_k8s:
+    type: "@outputs/ngnix_k8s"
+    adds_capability: true
+spec:
+  title: Ingress Monitoring
+  type: object
+  properties:
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        IngressReloadConfig:
+          type: object
+          title: Ingress reload config
+          description: Invalid ingress configuration
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        sslExpiry:
+          type: object
+          title: SSL expiry
+          description: ssl expiry
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+
+sample:
+  kind: ingress_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    alerts:
+      IngressReloadConfig:
+        disabled: false
+        interval: 1m
+        severity: warning
+      sslExpiry:
+        disabled: false
+        interval: 1m
+        severity: warning
