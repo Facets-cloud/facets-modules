@@ -404,5 +404,19 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "ingress_monitoring",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "cm-secret-rmq",
+    "relativePath": "./modules/ingress/monitoring/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
