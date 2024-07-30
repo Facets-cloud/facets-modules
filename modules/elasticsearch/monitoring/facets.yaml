@@ -33,6 +33,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -50,10 +53,13 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization      
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         elasticsearch_red:
           type: object
           title: Elasticsearch Cluster Red
@@ -67,10 +73,13 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization      
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         elasticsearch_disk_out_of_space:
           type: object
           title: Elasticsearch Disk Out Of Space
@@ -84,6 +93,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -91,7 +103,9 @@ spec:
             threshold:
               type: number
               title: Threshold
-              description: Threshold to for heap size must be between (0-99)
+              description: The percentage threshold to trigger an alert when available storage falls below this value.
+              minimum: 0
+              maximum: 100
         elasticsearch_heap_too_high:
           type: object
           title: Elasticsearch Heap Too High
@@ -105,6 +119,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
@@ -112,7 +129,9 @@ spec:
             threshold:
               type: number
               title: Threshold
-              description: Threshold to for heap size must be between (0-100)
+              description: Threshold for heap size must be between (0-100)
+              minimum: 0
+              maximum: 100
         elasticsearch_unassinged_shards:
           type: object
           title: Elasticsearch Cluster has Unassigned Shards
@@ -126,6 +145,9 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
               type: string
               title: Severity
