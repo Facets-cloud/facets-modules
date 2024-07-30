@@ -24,7 +24,8 @@ sample:
   disabled: true
   flavor: k8s
   version: '0.1'
-  metadata: {}
+  metadata:
+    name: sample-config
   spec:
     data:
       ssl.crt: base64 encoded data
