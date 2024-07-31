@@ -31,7 +31,6 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/ingress/"
   },
   {
