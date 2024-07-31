@@ -6,5 +6,5 @@ iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc6167de
 outputs:
   - name: default
     type: "@output/ingress"
-  - name: ngnix_k8s
-    type: "@output/ngnix_k8s"
+  - name: nginx_k8s
+    type: "@output/nginx_k8s"

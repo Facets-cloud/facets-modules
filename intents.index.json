@@ -101,17 +101,14 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "cm-secret-rmq",
     "relativePath": "./intents/config_map/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "cm-secret-rmq",
     "relativePath": "./intents/kubernetes_secret/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "cm-secret-rmq",
     "relativePath": "./intents/ingress_monitoring/"
   }
 ]

@@ -8,8 +8,8 @@ clouds:
   - gcp
 description: Adds monitoring to nginx ingress
 inputs:
-  ngnix_k8s:
-    type: "@output/ngnix_k8s"
+  nginx_k8s:
+    type: "@output/nginx_k8s"
     adds_capability: true
 
 spec:
