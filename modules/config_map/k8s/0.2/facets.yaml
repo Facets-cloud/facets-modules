@@ -11,10 +11,10 @@ spec:
   title: data
   description: Random data
   patternProperties:
-    '^[0-9]+[m]?$':
       type: object
       title: Data Name
       description: data name
+      keyPattern: '^[0-9]+[m]?$'
       properties:
         value:
           type: string
