@@ -50,5 +50,10 @@
     "name": "ingress",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ingress/"
+  },
+  {
+    "name": "nginx_k8s",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ingress/ngnix_k8s/"
   }
 ]

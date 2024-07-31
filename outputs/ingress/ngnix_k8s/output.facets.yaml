@@ -1,0 +1,45 @@
+name: nginx_k8s
+out:
+  type: object
+  properties:
+    interfaces:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      description: The output for your ingress module, this can be generated or provided
+      patternProperties:
+        "^[a-zA-Z0-9_.-]*$":
+          description: This is the name of the output interface this can be any name depending on the number of prefix domains in the domains block
+          $schema: http://json-schema.org/draft-04/schema#
+          type: object
+          definition: Any Interface
+          properties:
+            username:
+              type: string
+              description: Username to connect (if any)
+            password:
+              type: string
+              description: Password to connect (if any)
+            host:
+              type: string
+              description: Host for service discovery
+            port:
+              type: string
+              description: Port for service discovery
+            name:
+              type: string
+              description: Name of interface, same as key
+            connection_string:
+              type: string
+              description: Connection string to connect
+    attributes:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      description: The output for your ingress module, this can be generated or provided
+      properties:
+        base_domain:
+          type: string
+          description: base domain
+  required: []
+
