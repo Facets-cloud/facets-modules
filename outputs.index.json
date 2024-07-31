@@ -55,5 +55,10 @@
     "name": "nginx_k8s",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ingress/nginx_k8s/"
+  },
+  {
+    "name": "rabbitmq",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ingress/rabbitmq/"
   }
 ]
