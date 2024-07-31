@@ -1,6 +1,6 @@
 intent: rabbitmq
 flavor: k8s
-version: '0.1'
+version: "0.1"
 description: Adds rabbitmq k8s module
 clouds:
   - aws
