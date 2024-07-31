@@ -8,18 +8,21 @@ clouds:
   - kubernetes
 spec:
   type: object
-  properties:
-    data:
+  title: data
+  description: Random data
+  patternProperties:
+    '^[0-9]+[m]?$':
       type: object
-      additionalProperties:
-        type: object
-        properties:
-          value:
-            type: string
-        required:
-          - value
-  required:
-    - data
+      title: Data Name
+      description: data name
+      properties:
+        value:
+          type: string
+          title: Value
+          description: Value of Data
+      required:
+        - value
+  additionalProperties: false
 
 sample:
   $schema: >-
