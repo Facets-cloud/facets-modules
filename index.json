@@ -415,5 +415,19 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "rabbitmq",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitRef": "develop",
+    "relativePath": "./modules/rabbitmq/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
