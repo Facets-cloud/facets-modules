@@ -45,12 +45,12 @@
     "name": "postgres",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "cm-secret-rmq",
-    "relativePath": "./outputs/ingress/"
+    "relativePath": "./outputs/postgres/"
   },
   {
     "name": "ingress",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
-    "relativePath": "./outputs/postgres/"
+    "gitRef": "cm-secret-rmq",
+    "relativePath": "./outputs/ingress/"
   }
 ]
