@@ -1,6 +1,6 @@
 intent: rabbitmq
 flavor: k8s
-version: "0.1"
+version: '0.1'
 description: Adds rabbitmq k8s module
 clouds:
   - aws
@@ -13,8 +13,8 @@ spec:
   properties:
     rabbitmq_version:
       type: string
-      title: RabbitMQ Version
-      description: Version of RabbitMQ
+      title: Rabbitmq Version
+      description: Version of Rabbitmq
       minLength: 1
       enum:
         - 3.8.23
@@ -86,12 +86,12 @@ spec:
     - size
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/rabbitmq/rabbitmq.schema.json"
-  version: "0.1"
+  version: '0.1'
   flavor: k8s
   kind: rabbitmq
   metadata: { }
   spec:
-    rabbitmq_version: "3.10.7"
+    rabbitmq_version: '3.10.7'
     size:
       cpu: 2
       memory: 2Gi
