@@ -7,7 +7,7 @@
                 "CanonicalName": "e2-highcpu-16",
                 "InstanceType": "e2-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.43570464000000003,
                 "tags": [
@@ -20,7 +20,7 @@
                 "CanonicalName": "n2d-highcpu-16",
                 "InstanceType": "n2d-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.549376,
                 "tags": []
@@ -31,7 +31,7 @@
                 "CanonicalName": "e2-standard-16",
                 "InstanceType": "e2-standard-16",
                 "Memory": 65536,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.59017632,
                 "tags": []
@@ -42,7 +42,7 @@
                 "CanonicalName": "n1-highcpu-16",
                 "InstanceType": "n1-highcpu-16",
                 "Memory": 14746,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.623995421875,
                 "tags": []
@@ -55,7 +55,7 @@
                 "CanonicalName": "n2-highcpu-16",
                 "InstanceType": "n2-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.056784,
                 "tags": [
@@ -68,7 +68,7 @@
                 "CanonicalName": "n2-standard-16",
                 "InstanceType": "n2-standard-16",
                 "Memory": 65536,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.07689599999999999,
                 "tags": []
@@ -79,7 +79,7 @@
                 "CanonicalName": "n2-highmem-16",
                 "InstanceType": "n2-highmem-16",
                 "Memory": 131072,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.103712,
                 "tags": []
@@ -90,7 +90,7 @@
                 "CanonicalName": "e2-highcpu-16",
                 "InstanceType": "e2-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.12537600000000002,
                 "tags": []
@@ -105,7 +105,7 @@
                 "CanonicalName": "e2-highcpu-4",
                 "InstanceType": "e2-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.10892616000000001,
                 "tags": [
@@ -118,7 +118,7 @@
                 "CanonicalName": "n2d-highcpu-4",
                 "InstanceType": "n2d-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.137344,
                 "tags": []
@@ -129,7 +129,7 @@
                 "CanonicalName": "e2-standard-4",
                 "InstanceType": "e2-standard-4",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.14754408,
                 "tags": []
@@ -140,7 +140,7 @@
                 "CanonicalName": "n1-highcpu-4",
                 "InstanceType": "n1-highcpu-4",
                 "Memory": 3686,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.155996578125,
                 "tags": []
@@ -153,7 +153,7 @@
                 "CanonicalName": "n2-highcpu-4",
                 "InstanceType": "n2-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.014196,
                 "tags": [
@@ -166,7 +166,7 @@
                 "CanonicalName": "n2-standard-4",
                 "InstanceType": "n2-standard-4",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.019223999999999998,
                 "tags": []
@@ -177,7 +177,7 @@
                 "CanonicalName": "n2-highmem-4",
                 "InstanceType": "n2-highmem-4",
                 "Memory": 32768,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.025928,
                 "tags": []
@@ -188,7 +188,7 @@
                 "CanonicalName": "e2-highcpu-4",
                 "InstanceType": "e2-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.031344000000000004,
                 "tags": []
@@ -203,7 +203,7 @@
                 "CanonicalName": "e2-highcpu-8",
                 "InstanceType": "e2-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.21785232000000002,
                 "tags": [
@@ -216,7 +216,7 @@
                 "CanonicalName": "n2d-highcpu-8",
                 "InstanceType": "n2d-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.274688,
                 "tags": []
@@ -227,7 +227,7 @@
                 "CanonicalName": "e2-standard-8",
                 "InstanceType": "e2-standard-8",
                 "Memory": 32768,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.29508816,
                 "tags": []
@@ -238,7 +238,7 @@
                 "CanonicalName": "n1-highcpu-8",
                 "InstanceType": "n1-highcpu-8",
                 "Memory": 7373,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.3119977109375,
                 "tags": []
@@ -251,7 +251,7 @@
                 "CanonicalName": "n2-highcpu-8",
                 "InstanceType": "n2-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.028392,
                 "tags": [
@@ -264,7 +264,7 @@
                 "CanonicalName": "n2-standard-8",
                 "InstanceType": "n2-standard-8",
                 "Memory": 32768,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.038447999999999996,
                 "tags": []
@@ -275,7 +275,7 @@
                 "CanonicalName": "n2-highmem-8",
                 "InstanceType": "n2-highmem-8",
                 "Memory": 65536,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.051856,
                 "tags": []
@@ -286,7 +286,7 @@
                 "CanonicalName": "e2-highcpu-8",
                 "InstanceType": "e2-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-17 00:02:36",
+                "ModifiedDate": "2024-07-22 00:02:04",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.06268800000000001,
                 "tags": []
