@@ -416,7 +416,7 @@ spec:
                     title: Sub Path
                     description: Optional. The path within the PVC to mount a specific subdirectory
                 required:
-                  - name
+                  - claim_name
                   - mount_path
             host_path:
               type: object
