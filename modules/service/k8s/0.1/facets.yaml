@@ -353,7 +353,7 @@ spec:
               patternProperties:
                 type: object
                 title: Config Map Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   name:
                     type: string
@@ -363,6 +363,9 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for config maps
+                  sub_path:
+                    type: string
+                    description: The path within the ConfigMap volume to mount. This is useful when you only need to mount a specific key or file from the ConfigMap.
             secrets:
               type: object
               title: Secrets
@@ -370,7 +373,7 @@ spec:
               patternProperties:
                 type: object
                 title: Secret name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   name:
                     type: string
@@ -380,6 +383,9 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for secrets
+                  sub_path:
+                    type: string
+                    description: The path within the Secret volume to mount. This is useful when you only need to mount a specific key or file from the Secret.
             pvc:
               type: object
               title: PVC
@@ -387,7 +393,7 @@ spec:
               patternProperties:
                 type: object
                 title: PVC Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   claim_name:
                     type: string
@@ -397,6 +403,9 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for PVC
+                  sub_path:
+                    type: string
+                    description: The path within the PersistentVolumeClaim to mount. This allows you to mount a specific subdirectory of the PVC.
             host_path:
               type: object
               title: Host Path
@@ -404,12 +413,15 @@ spec:
               patternProperties:
                 type: object
                 title: Host Path Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   mount_path:
                     type: string
                     title: Mount Path
                     description: Mount path for host path
+                  sub_path:
+                    type: string
+                    description: The path within the host filesystem to mount. This can be used to mount a specific directory or file from the host.
       required:
         - ports
         - size
