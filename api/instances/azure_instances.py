@@ -27,7 +27,7 @@ def get_instance_types(vcpu, region):
             if instance['numberOfCores'] == vcpu and instance['cpuArchitecture'] == 'x64':
                 instance_info = {
                     "name": instance['name'],
-                    "price": instance['linuxPrice'],
+                    "PricePerHour": instance['linuxPrice'],
                     "tags": [],
                     "architecture": instance['cpuArchitecture'],
                     "memory": instance['memoryInMB'],
@@ -38,7 +38,7 @@ def get_instance_types(vcpu, region):
                     "modifiedDate": instance['modifiedDate']
                 }
                 instances.append(instance_info)
-        instances = sorted(instances, key=lambda x: x['price'])[:instances_length]
+        instances = sorted(instances, key=lambda x: x['PricePerHour'])[:instances_length]
         if instances:
             instances[0]['tags'].append('cheapest')
         return instances
