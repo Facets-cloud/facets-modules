@@ -1,102 +1,86 @@
 [
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/redis/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/postgres/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/mysql/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/elasticsearch/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/elasticsearch_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/service/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/ingress/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/helm/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/redis_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/mongo/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/service_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/k8s_resource/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/kafka/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/azure_storage_container/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/google_cloud_storage/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/mongo_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/mysql_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/elasticsearch/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/postgres_monitoring/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
     "relativePath": "./intents/s3/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/rabbitmq/"
   }
 ]
