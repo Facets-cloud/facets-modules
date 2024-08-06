@@ -2,105 +2,105 @@
     "16Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.608,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / -42.6",
                 "canonicalname": "B16als_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:52",
+                "modifiedDate": "08/02/2024 01:03:59",
                 "name": "Standard_B16als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.608,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.679,
                 "architecture": "x64",
                 "bestPriceRegion": "West US 2 / -13.3",
                 "canonicalname": "B16ls_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:04:11",
+                "modifiedDate": "08/02/2024 01:03:55",
                 "name": "Standard_B16ls_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.679,
                 "tags": []
             },
             {
+                "PricePerHour": 0.686,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / -42.6",
                 "canonicalname": "B16as_v2",
                 "memory": 65536,
-                "modifiedDate": "07/19/2024 01:06:03",
+                "modifiedDate": "08/02/2024 01:02:55",
                 "name": "Standard_B16as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.686,
                 "tags": []
             },
             {
+                "PricePerHour": 0.766,
                 "architecture": "x64",
                 "bestPriceRegion": "East US / -13.1",
                 "canonicalname": "B16s_v2",
                 "memory": 65536,
-                "modifiedDate": "07/19/2024 01:14:07",
+                "modifiedDate": "08/02/2024 01:02:48",
                 "name": "Standard_B16s_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.766,
                 "tags": []
             }
         ],
         "spot": [
             {
+                "PricePerHour": 0.13655,
                 "architecture": "x64",
-                "bestPriceRegion": "Central India / -42.6",
-                "canonicalname": "B16als_v2",
+                "bestPriceRegion": "West US 3 / -45.5",
+                "canonicalname": "F16s_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:52",
-                "name": "Standard_B16als_v2",
+                "modifiedDate": "08/02/2024 01:03:49",
+                "name": "Standard_F16s_v2",
                 "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.152,
+                "perfScore": 271369,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.1428,
                 "architecture": "x64",
-                "bestPriceRegion": "East US 2 / -28.7",
-                "canonicalname": "NC16as_T4_v3",
-                "memory": 112640,
-                "modifiedDate": "07/19/2024 01:06:02",
-                "name": "Standard_NC16as_T4_v3",
+                "bestPriceRegion": "West US 3 / -47.6",
+                "canonicalname": "D16ls_v5",
+                "memory": 32768,
+                "modifiedDate": "08/02/2024 01:04:02",
+                "name": "Standard_D16ls_v5",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.16885,
                 "tags": []
             },
             {
+                "PricePerHour": 0.15142,
                 "architecture": "x64",
-                "bestPriceRegion": "West US 2 / -13.3",
-                "canonicalname": "B16ls_v2",
-                "memory": 32768,
-                "modifiedDate": "07/19/2024 01:04:11",
-                "name": "Standard_B16ls_v2",
+                "bestPriceRegion": "East US / -44.2",
+                "canonicalname": "D16_v3",
+                "memory": 65536,
+                "modifiedDate": "08/02/2024 01:04:53",
+                "name": "Standard_D16_v3",
                 "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.16975,
+                "perfScore": 198362,
                 "tags": []
             },
             {
+                "PricePerHour": 0.15142,
                 "architecture": "x64",
-                "bestPriceRegion": "West US 3 / -60.3",
-                "canonicalname": "F16s_v2",
-                "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:44",
-                "name": "Standard_F16s_v2",
+                "bestPriceRegion": "East US / -44.2",
+                "canonicalname": "D16_v4",
+                "memory": 65536,
+                "modifiedDate": "08/02/2024 01:03:23",
+                "name": "Standard_D16_v4",
                 "paymentType": "payasyougo",
-                "perfScore": 271369,
-                "price": 0.17065,
+                "perfScore": 271203,
                 "tags": []
             }
         ]
@@ -108,105 +108,105 @@
     "4Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.152,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / -42.6",
                 "canonicalname": "B4als_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:05:27",
+                "modifiedDate": "08/02/2024 01:03:09",
                 "name": "Standard_B4als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.152,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.17,
                 "architecture": "x64",
                 "bestPriceRegion": "East US / -13.5",
                 "canonicalname": "B4ls_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:06:13",
+                "modifiedDate": "08/02/2024 01:04:52",
                 "name": "Standard_B4ls_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.17,
                 "tags": []
             },
             {
+                "PricePerHour": 0.172,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / -42.8",
                 "canonicalname": "B4as_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:03:56",
+                "modifiedDate": "08/02/2024 01:03:50",
                 "name": "Standard_B4as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.172,
                 "tags": []
             },
             {
+                "PricePerHour": 0.192,
                 "architecture": "x64",
                 "bestPriceRegion": "West US 3 / -17.2",
                 "canonicalname": "A4_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:04:25",
+                "modifiedDate": "08/02/2024 01:02:08",
                 "name": "Standard_A4_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.192,
                 "tags": []
             }
         ],
         "spot": [
             {
+                "PricePerHour": 0.03245,
                 "architecture": "x64",
-                "bestPriceRegion": "Central India / -42.6",
-                "canonicalname": "B4als_v2",
+                "bestPriceRegion": "West US 3 / -46.1",
+                "canonicalname": "A4_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:05:27",
-                "name": "Standard_B4als_v2",
+                "modifiedDate": "08/02/2024 01:02:08",
+                "name": "Standard_A4_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.038,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.03414,
                 "architecture": "x64",
-                "bestPriceRegion": "West US 3 / -60.8",
-                "canonicalname": "A4_v2",
-                "memory": 8192,
-                "modifiedDate": "07/19/2024 01:04:25",
-                "name": "Standard_A4_v2",
-                "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.04055,
-                "tags": []
-            },
-            {
-                "architecture": "x64",
-                "bestPriceRegion": "East US / -13.5",
-                "canonicalname": "B4ls_v2",
-                "memory": 8192,
-                "modifiedDate": "07/19/2024 01:06:13",
-                "name": "Standard_B4ls_v2",
-                "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.0425,
-                "tags": []
-            },
-            {
-                "architecture": "x64",
-                "bestPriceRegion": "West US 3 / -60.4",
+                "bestPriceRegion": "West US 3 / -45.5",
                 "canonicalname": "F4s_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:02:26",
+                "modifiedDate": "08/02/2024 01:03:35",
                 "name": "Standard_F4s_v2",
                 "paymentType": "payasyougo",
                 "perfScore": 65819,
-                "price": 0.04266,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.03566,
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -47.6",
+                "canonicalname": "D4ls_v5",
+                "memory": 8192,
+                "modifiedDate": "08/02/2024 01:05:44",
+                "name": "Standard_D4ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.03786,
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -44.2",
+                "canonicalname": "D4_v3",
+                "memory": 16384,
+                "modifiedDate": "08/02/2024 01:01:57",
+                "name": "Standard_D4_v3",
+                "paymentType": "payasyougo",
+                "perfScore": 49708,
                 "tags": []
             }
         ]
@@ -214,105 +214,105 @@
     "8Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.304,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / -42.8",
                 "canonicalname": "B8als_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:04:41",
+                "modifiedDate": "08/02/2024 01:02:35",
                 "name": "Standard_B8als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.304,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.339,
                 "architecture": "x64",
                 "bestPriceRegion": "West US 2 / -13",
                 "canonicalname": "B8ls_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:03:51",
+                "modifiedDate": "08/02/2024 01:05:01",
                 "name": "Standard_B8ls_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.339,
                 "tags": []
             },
             {
+                "PricePerHour": 0.343,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / -42.6",
                 "canonicalname": "B8as_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:41",
+                "modifiedDate": "08/02/2024 01:02:14",
                 "name": "Standard_B8as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.343,
                 "tags": []
             },
             {
+                "PricePerHour": 0.383,
                 "architecture": "x64",
                 "bestPriceRegion": "West US 3 / -13.1",
                 "canonicalname": "B8s_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:04:06",
+                "modifiedDate": "08/02/2024 01:02:38",
                 "name": "Standard_B8s_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.383,
                 "tags": []
             }
         ],
         "spot": [
             {
+                "PricePerHour": 0.06777,
                 "architecture": "x64",
-                "bestPriceRegion": "Central India / -42.8",
-                "canonicalname": "B8als_v2",
+                "bestPriceRegion": "West US 3 / -45.9",
+                "canonicalname": "A8_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:04:41",
-                "name": "Standard_B8als_v2",
+                "modifiedDate": "08/02/2024 01:00:03",
+                "name": "Standard_A8_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.076,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.06828,
                 "architecture": "x64",
-                "bestPriceRegion": "West US 3 / -60.7",
-                "canonicalname": "A8_v2",
-                "memory": 16384,
-                "modifiedDate": "07/19/2024 01:06:28",
-                "name": "Standard_A8_v2",
-                "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.08469,
-                "tags": []
-            },
-            {
-                "architecture": "x64",
-                "bestPriceRegion": "East US / -13",
-                "canonicalname": "B8ls_v2",
-                "memory": 16384,
-                "modifiedDate": "07/19/2024 01:03:51",
-                "name": "Standard_B8ls_v2",
-                "paymentType": "payasyougo",
-                "perfScore": null,
-                "price": 0.08475,
-                "tags": []
-            },
-            {
-                "architecture": "x64",
-                "bestPriceRegion": "West US 3 / -60.4",
+                "bestPriceRegion": "West US 3 / -45.5",
                 "canonicalname": "F8s_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:05:50",
+                "modifiedDate": "08/02/2024 01:05:59",
                 "name": "Standard_F8s_v2",
                 "paymentType": "payasyougo",
                 "perfScore": 136027,
-                "price": 0.08532,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.07132,
+                "architecture": "x64",
+                "bestPriceRegion": "East US / -47.6",
+                "canonicalname": "D8ls_v5",
+                "memory": 16384,
+                "modifiedDate": "08/02/2024 01:03:01",
+                "name": "Standard_D8ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.07571,
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -44.2",
+                "canonicalname": "D8_v3",
+                "memory": 32768,
+                "modifiedDate": "08/02/2024 01:03:56",
+                "name": "Standard_D8_v3",
+                "paymentType": "payasyougo",
+                "perfScore": 100422,
                 "tags": []
             }
         ]
