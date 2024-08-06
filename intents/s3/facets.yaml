@@ -3,3 +3,8 @@ type: Storage
 displayName: AWS S3
 description: Amazon Simple Storage Service (Amazon S3) is an object storage service offering industry-leading scalability, data availability, security, and performance.
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0ccf06a571b7290fef5_s3.svg
+outputs:
+  - name: read_only_iam_policy_arn
+    type: "@outputs/iam_policy_arn"
+  - name: read_write_iam_policy_arn
+    type: "@outputs/iam_policy_arn"
