@@ -2,53 +2,53 @@
     "16Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.349,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "B16als_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:52",
+                "modifiedDate": "07/31/2024 01:14:49",
                 "name": "Standard_B16als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.349,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.394,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "B16as_v2",
                 "memory": 65536,
-                "modifiedDate": "07/19/2024 01:06:03",
+                "modifiedDate": "07/31/2024 01:04:42",
                 "name": "Standard_B16as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.394,
                 "tags": []
             },
             {
+                "PricePerHour": 0.444,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "D16as_v5",
                 "memory": 65536,
-                "modifiedDate": "07/19/2024 01:04:53",
+                "modifiedDate": "07/31/2024 01:13:44",
                 "name": "Standard_D16as_v5",
                 "paymentType": "payasyougo",
                 "perfScore": 304560,
-                "price": 0.444,
                 "tags": []
             },
             {
+                "PricePerHour": 0.493,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "D16a_v4",
                 "memory": 65536,
-                "modifiedDate": "07/19/2024 01:02:44",
+                "modifiedDate": "07/31/2024 01:04:11",
                 "name": "Standard_D16a_v4",
                 "paymentType": "payasyougo",
                 "perfScore": 293654,
-                "price": 0.493,
                 "tags": []
             }
         ],
@@ -57,53 +57,53 @@
     "4Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.0872,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "B4als_v2",
                 "memory": 8192,
-                "modifiedDate": "07/19/2024 01:05:27",
+                "modifiedDate": "07/31/2024 01:04:30",
                 "name": "Standard_B4als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.0872,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.0984,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "B4as_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:03:56",
+                "modifiedDate": "07/31/2024 01:04:39",
                 "name": "Standard_B4as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.0984,
                 "tags": []
             },
             {
+                "PricePerHour": 0.111,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "D4as_v5",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:03:53",
+                "modifiedDate": "07/31/2024 01:05:44",
                 "name": "Standard_D4as_v5",
                 "paymentType": "payasyougo",
                 "perfScore": 72928,
-                "price": 0.111,
                 "tags": []
             },
             {
+                "PricePerHour": 0.123,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "D4a_v4",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:05:42",
+                "modifiedDate": "07/31/2024 01:04:41",
                 "name": "Standard_D4a_v4",
                 "paymentType": "payasyougo",
                 "perfScore": 70996,
-                "price": 0.123,
                 "tags": []
             }
         ],
@@ -112,53 +112,53 @@
     "8Cores": {
         "onDemand": [
             {
+                "PricePerHour": 0.174,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "B8als_v2",
                 "memory": 16384,
-                "modifiedDate": "07/19/2024 01:04:41",
+                "modifiedDate": "07/31/2024 01:06:08",
                 "name": "Standard_B8als_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.174,
                 "tags": [
                     "cheapest"
                 ]
             },
             {
+                "PricePerHour": 0.197,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "B8as_v2",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:41",
+                "modifiedDate": "07/31/2024 01:05:45",
                 "name": "Standard_B8as_v2",
                 "paymentType": "payasyougo",
                 "perfScore": null,
-                "price": 0.197,
                 "tags": []
             },
             {
+                "PricePerHour": 0.222,
                 "architecture": "x64",
                 "bestPriceRegion": "Jio India West / 0",
                 "canonicalname": "D8as_v5",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:03:35",
+                "modifiedDate": "07/31/2024 01:13:55",
                 "name": "Standard_D8as_v5",
                 "paymentType": "payasyougo",
                 "perfScore": 153842,
-                "price": 0.222,
                 "tags": []
             },
             {
+                "PricePerHour": 0.246,
                 "architecture": "x64",
                 "bestPriceRegion": "Central India / 0",
                 "canonicalname": "D8a_v4",
                 "memory": 32768,
-                "modifiedDate": "07/19/2024 01:04:50",
+                "modifiedDate": "07/31/2024 01:04:40",
                 "name": "Standard_D8a_v4",
                 "paymentType": "payasyougo",
                 "perfScore": 151379,
-                "price": 0.246,
                 "tags": []
             }
         ],
