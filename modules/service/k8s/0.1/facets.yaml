@@ -11,6 +11,39 @@ spec:
   title: K8s flavor of service
   type: object
   properties:
+    cloud_permissions:
+      type: object
+      title: Cloud Permissions
+      description: Cloud Permissions Required for the Service
+      properties:
+        aws:
+          type: object
+          title: AWS Permissions
+          description: AWS Permissions
+          x-ui-visible-if: # to be done
+            field: cloud
+            values: [ "AWS"]
+          properties:
+            enable_irsa:
+              type: boolean
+              title: Enable IRSA
+              description: Enable IRSA
+            iam_policies:
+              type: object
+              title: IAM Policies
+              description: IAM Policies Required for the Service
+              patternProperties:
+                type: object
+                title: IAM Policy Name
+                description: Define port allocation to facilitate communication with service
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                properties:
+                  arn:
+                    type: string
+                    title: IAM Policy Arn
+                    description: IAM Policy Arn
+                    pattern: '^(arn:(?:aws|aws-cn|aws-us-gov):[\w\d-]+:[\w\d-]*:\d{0,12}:[\w\d-]*\/?[\w\d-]*)(\/.*)?.*$'
+                    x-ui-output-type: "iam_policy_arn"
     type:
       type: string
       title: Service Type
@@ -571,5 +604,6 @@ sample:
         liveness_port: '8080'
         liveness_start_up_time: '15'
       volumes: { }
+      cloud_permissions: {}
     env:
       LOG_LEVEL: INFO
