@@ -5,6 +5,8 @@ description: Amazon Simple Storage Service (Amazon S3) is an object storage serv
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0ccf06a571b7290fef5_s3.svg
 outputs:
   - name: read_only_iam_policy_arn
+    title: "IAM Role with S3 Read Permission"
     type: "@outputs/iam_policy_arn"
   - name: read_write_iam_policy_arn
+    title: "IAM Role with S3 Read Write Permission"
     type: "@outputs/iam_policy_arn"
