@@ -8,11 +8,14 @@ clouds:
   - kubernetes
 spec:
   type: object
+  title: Config-map
+  description: Specification of the config-map resource intent
   properties:
     data:
       type: object
       title: Data
       description: Random data
+      x-ui-key-value: true
       patternProperties:
           type: object
           title: Data Name
