@@ -1,0 +1,32 @@
+intent: kubernetes_secret
+flavor: k8s
+version: '0.1'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Kubernetes secret resource
+  description: Specification of the kubernetes secret resource intent
+  type: object
+  properties:
+    data:
+      type: object
+      additionalProperties:
+        type: string
+  required:
+    - data
+
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
+  kind: kubernetes_secret
+  disabled: true
+  flavor: k8s
+  version: '0.1'
+  metadata: {}
+  spec:
+    data:
+      username: dXNlcm5hbWU=
+      password: cGFzc3dvcmQ=
