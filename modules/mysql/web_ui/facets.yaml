@@ -12,7 +12,7 @@ inputs:
     type: "@output/mysql"
     adds_capability: true
   ingress_details:
-    type: "@outputs/ingress"
+    type: "@output/ingress"
     default:
       resource_type: ingress
       resource_name: tools
