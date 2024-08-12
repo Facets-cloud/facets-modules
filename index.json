@@ -372,5 +372,18 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "mysql_web",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql/web_ui/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
