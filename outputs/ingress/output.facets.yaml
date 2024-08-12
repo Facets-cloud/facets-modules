@@ -1,0 +1,9 @@
+name: ingress
+out:
+  type: object
+  title: Ingress
+  description: Ingress
+  properties:
+    attributes:
+    interfaces:
+

@@ -43,5 +43,10 @@
     "name": "rabbitmq",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ingress/rabbitmq/"
+  },
+  {
+    "name": "ingress",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ingress/"
   }
 ]
