@@ -24,7 +24,7 @@ spec:
       type: string
       title: Ui version
       description: Version of Mysql Ui 
-      x-ui-placeholder: "Ex. "5.2.1-debian-12-r35"
+      x-ui-placeholder: "Ex. 5.2.1-debian-12-r35"
     size:
       type: object
       title: Size
