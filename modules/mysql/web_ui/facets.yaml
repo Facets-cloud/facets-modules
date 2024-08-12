@@ -11,11 +11,6 @@ inputs:
   default:
     type: "@output/mysql"
     adds_capability: true
-  ingress_details:
-    type: "@output/ingress"
-    default:
-      resource_type: ingress
-      resource_name: tools
 spec:
   title: Mysql Web Ui
   type: object
@@ -67,10 +62,6 @@ sample:
   flavor: k8s
   version: "0.1"
   disabled: true
-  inputs:
-    ingress_details:
-      resource_type: ingress
-      resource_name: tools
   spec:
     mysql_version: "5.2.1-debian-12-r35"
     size:
