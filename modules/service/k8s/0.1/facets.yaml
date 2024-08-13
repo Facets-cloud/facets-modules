@@ -436,6 +436,7 @@ spec:
           type: string
           title: Image Pull Policy
           description: Specifies when the image should be pulled from the registry.
+          default: IfNotPresent
           enum:
             - IfNotPresent
             - Always
