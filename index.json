@@ -186,7 +186,6 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "gitRef": "master",
     "relativePath": "./modules/service/k8s/0.1/",
-    "gitRef": "conditional-healthchecks",
     "clouds": [
       "aws",
       "azure",
