@@ -554,17 +554,6 @@ sample:
         memory: 1Gi
         cpu_limit: 1000m
         memory_limit: 5Gi
-      health_checks:
-        readiness_check_type: PortCheck
-        readiness_timeout: '10'
-        readiness_period: '30'
-        readiness_port: '8080'
-        readiness_start_up_time: '15'
-        liveness_check_type: PortCheck
-        liveness_timeout: '10'
-        liveness_period: '30'
-        liveness_port: '8080'
-        liveness_start_up_time: '15'
       volumes: { }
     env:
       LOG_LEVEL: INFO
