@@ -1,0 +1,34 @@
+intent: log_collector
+flavor: loki
+version: '0.2'
+description: Adds log collector module
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Log Collector Spec
+  type: object
+  description: Specification of the Loki
+  properties:
+    retentation_days:
+      type: integer
+      title: Retention Days
+      description: Retention days after which the logs should be deleted
+    storage_size:
+      type: string
+      title: Storage Size
+      description: Storage size for minio where the logs are stored
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json'
+  kind: log_collector
+  version: '0.2'
+  flavor: loki
+  disabled: true
+  metadata: { }
+  spec: 
+    retention_days: 7
+    storage_size: "5Gi"
+  advanced: 
+    loki: { }

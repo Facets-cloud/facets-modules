@@ -1,0 +1,20 @@
+intent: s3
+flavor: default
+version: '0.2'
+description: Adds S3 module
+clouds:
+  - aws
+spec:
+  title: AWS S3
+  type: object
+  description: Specification of the K8s resource intent
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
+  disabled: true
+  flavor: default
+  kind: s3
+  metadata: {}
+  version: '0.2'
+  spec: {}
+  advanced: {}

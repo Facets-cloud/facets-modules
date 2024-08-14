@@ -2,3 +2,4 @@ name: azure_storage_container
 type: Storage
 displayName: Azure Storage Container
 description: A scalable, durable, and secure cloud storage solution by Azure for storing large amounts of unstructured data, such as text or binary data.
+iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc559c9e751ef1eaa6_azure_storage_container.svg

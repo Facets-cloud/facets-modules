@@ -1,0 +1,13 @@
+{
+	"flavor": "default",
+	"metadata": {
+		"name": "test-azure-container"
+	},
+	"advanced": {
+		"azure_storage_container": {}
+	},
+	"kind": "azure_storage_container",
+	"disabled": true,
+	"version": "latest",
+	"spec": {}
+}

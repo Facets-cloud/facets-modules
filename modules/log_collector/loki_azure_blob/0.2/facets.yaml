@@ -1,0 +1,21 @@
+intent: log_collector
+flavor: loki_azure_blob
+version: '0.2'
+description: Adds log collector module for Azure
+clouds:
+  - azure
+  - kubernetes
+spec:
+  title: Log Collector Spec
+  type: object
+  description: Specification of the Loki Azure Blob
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.loki_azure_blob.sample.json'
+  kind: log_collector
+  version: '0.2'
+  flavor: loki_azure_blob
+  disabled: true
+  metadata: { }
+  spec: { }
+  advanced: 
+    loki_blob: { }

@@ -1,0 +1,8 @@
+name: loki_azure_blob
+clouds:
+  - azure
+version: 0.2
+type: MULTI_INSTANCE
+group: Capabilities
+displayName: Log Collection Loki Azure
+description: Log Collector for Azure

@@ -1,0 +1,8 @@
+name: loki_gcp_gcs
+clouds:
+  - gcp
+version: 0.2
+type: MULTI_INSTANCE
+group: Capabilities
+displayName: Log Collection Loki GCP
+description: Log Collector for GCP

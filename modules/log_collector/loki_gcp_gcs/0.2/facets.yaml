@@ -1,0 +1,21 @@
+intent: log_collector
+flavor: loki_gcp_gcs
+version: '0.2'
+description: Adds log collector module for GCP
+clouds:
+  - gcp
+  - kubernetes
+spec:
+  title: Log Collector Spec
+  type: object
+  description: Specification of the Loki GCP GCS
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.loki_gcp_gcs.sample.json'
+  kind: log_collector
+  version: '0.2'
+  flavor: loki_gcp_gcs
+  disabled: true
+  metadata: { }
+  spec: { }
+  advanced: 
+    loki_gcs: { }

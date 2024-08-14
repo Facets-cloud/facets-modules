@@ -1,6 +1,7 @@
 intent: elasticsearch
 flavor: opensearch
 version: '0.1'
+description: Adds Opensearch module of intent Elasticsearch
 clouds:
   - aws
 spec:

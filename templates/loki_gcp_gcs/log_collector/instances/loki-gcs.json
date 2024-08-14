@@ -1,0 +1,16 @@
+{
+    "flavor": "loki_gcp_gcs",
+    "metadata": {
+      "name": "loki-gcs-log-collector"
+    },
+    "kind": "log_collector",
+    "provided": false,
+    "disabled": true,
+    "version": "0.2",
+    "spec": {},
+    "advanced": {
+      "loki_gcs": {
+        "bucket_name": "${google_cloud_storage.loki-gcs.out.attributes.name}"
+      }
+    }
+}

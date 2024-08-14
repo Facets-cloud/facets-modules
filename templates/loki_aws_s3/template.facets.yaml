@@ -1,0 +1,8 @@
+name: loki_aws_s3
+clouds:
+  - aws
+version: 0.2
+type: MULTI_INSTANCE
+group: Capabilities
+displayName: Log Collection Loki AWS
+description: Log Collector for AWS
