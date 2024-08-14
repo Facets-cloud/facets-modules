@@ -45,7 +45,7 @@ spec:
             readiness_check_type:
               type: string
               title: Readiness Check Type
-              default: PortCheck
+              default: None
               enum:
                 - PortCheck
                 - HttpCheck
