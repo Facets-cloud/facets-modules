@@ -1,6 +1,7 @@
 intent: helm
 flavor: k8s
 version: '0.1'
+description: Adds Helm module
 clouds:
   - aws
   - azure
@@ -26,6 +27,11 @@ spec:
           title: Repository
           description: URL for the helm repository
           x-ui-placeholder: Enter repository URL
+        version:
+          type: string
+          title: Version
+          description: Version for the helm chart
+          x-ui-placeholder: Enter the valid chart version
         namespace:
           type: string
           title: Namespace
@@ -55,7 +61,7 @@ sample:
       repository: >-
         https://helm.datadoghq.com
       chart: datadog
-      namespace: datadog
+      namespace: default
       wait: false
     values:
       datadog:

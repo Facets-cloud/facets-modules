@@ -1,6 +1,7 @@
 intent: mysql
 flavor: aurora
 version: "0.2"
+description: Adds MYSQL module of flavor aurora
 clouds:
   - aws
 spec:
@@ -119,6 +120,12 @@ spec:
                 - db.r6g.8xlarge
                 - db.r6g.12xlarge
               x-ui-placeholder: "Select writer instance type"
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of Writer Instances
+              minimum: 1
+              x-ui-placeholder: "Enter writer instance count"
           required:
             - instance
   required:
@@ -141,6 +148,7 @@ sample:
     size:
       writer:
         instance: db.t4g.medium
+        instance_count: 1
       reader:
         instance_count: 0
         instance: db.t4g.medium

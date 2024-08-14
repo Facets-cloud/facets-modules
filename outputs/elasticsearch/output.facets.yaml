@@ -1,0 +1,28 @@
+name: elasticsearch
+out:
+  type: object
+  title: Elasticsearch
+  description: Elasticsearch
+  properties:
+    interfaces:
+      http:
+        host:
+          required: true
+          type: string
+        port:
+          required: true
+          type: string
+        connection_string:
+          required: true
+          type: string
+      cluster:
+        host:
+          required: true
+          type: string
+        port:
+          required: true
+          type: string
+        connection_string:
+          required: true
+          type: string
+    attributes: null

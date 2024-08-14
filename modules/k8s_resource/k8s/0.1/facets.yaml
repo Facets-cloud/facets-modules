@@ -1,6 +1,7 @@
 intent: k8s_resource
 flavor: k8s
 version: '0.2'
+description: Adds k8s_resource module
 clouds:
   - aws
   - azure

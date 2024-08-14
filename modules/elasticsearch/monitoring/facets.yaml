@@ -1,0 +1,187 @@
+intent: elasticsearch_monitoring
+flavor: k8s
+version: "0.1"
+clouds:
+  - aws
+  - k8s
+  - azure
+  - gcp
+description: Adds Monitoring to Elasticsearch
+inputs:
+  default:
+    type: "@output/elasticsearch"
+    adds_capability: true
+spec:
+  title: Elasticsearch Monitoring
+  type: object
+  properties:
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        elasticsearch_down:
+          type: object
+          title: Elasticsearch Down
+          description: Elasticsearch Down Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        elasticsearch_yellow:
+          type: object
+          title: Elasticsearch Cluster Yellow
+          description: Elasticsearch Cluster Yellow Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        elasticsearch_red:
+          type: object
+          title: Elasticsearch Cluster Red
+          description: Elasticsearch Cluster Red Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        elasticsearch_disk_out_of_space:
+          type: object
+          title: Elasticsearch Disk Out Of Space
+          description: Elasticsearch Disk is out of Space Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: number
+              title: Threshold
+              description: The percentage threshold to trigger an alert when available storage falls below this value.
+              minimum: 0
+              maximum: 100
+        elasticsearch_heap_too_high:
+          type: object
+          title: Elasticsearch Heap Too High
+          description: Elasticsearch Heap Too High Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: number
+              title: Threshold
+              description: Threshold for heap size must be between (0-100)
+              minimum: 0
+              maximum: 100
+        elasticsearch_unassinged_shards:
+          type: object
+          title: Elasticsearch Cluster has Unassigned Shards
+          description: Elasticsearch Cluster has Unassigned Shards Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+sample:
+  kind: elasticsearch_monitoring
+  flavor: k8s
+  version: "0.1"
+  disabled: true
+  spec:
+    alerts:
+      elasticsearch_down:
+        disabled: false
+        interval: 0m
+        severity: critical
+      elasticsearch_yellow:
+        disabled: false
+        interval: 0m
+        severity: warning
+      elasticsearch_red:
+        disabled: false
+        interval: 0m
+        severity: critical
+      elasticsearch_disk_out_of_space:
+        disabled: false
+        interval: 0m
+        severity: critical
+        threshold: 10
+      elasticsearch_unassinged_shards:
+        disabled: false
+        interval: 0m
+        severity: warning
+      elasticsearch_heap_too_high:
+        disabled: false
+        interval: 15m
+        severity: warning
+        threshold: 60

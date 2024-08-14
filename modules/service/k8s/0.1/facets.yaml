@@ -1,6 +1,7 @@
 intent: service
 flavor: k8s
 version: '0.1'
+description: Adds service module
 clouds:
 - aws
 - azure
@@ -41,14 +42,14 @@ spec:
           description: Command to run in the container
           items:
             type: string
-          pattern: '^\[.*\]$'
+          x-ui-command: true
         args:
           type: array
           title: Arguments
           description: Arguments to pass to the command
           items:
             type: string
-          pattern: '^\[.*\]$'
+          x-ui-command: true
         health_checks:
           type: object
           title: Health Checks
@@ -435,6 +436,8 @@ spec:
         - health_checks
         - autoscaling
         - volumes
+        - command
+        - args
     release:
       title: Release
       description: Manage version releases to deploy updates and maintain software integrity
@@ -543,6 +546,8 @@ sample:
       strategy:
         type: RollingUpdate
     runtime:
+      args: []
+      command: []
       autoscaling:
         scaling_on: CPU
         min: '1'

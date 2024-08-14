@@ -1,6 +1,7 @@
 intent: postgres
 flavor: cloudsql
-version: '0.2'
+version: "0.2"
+description: Adds Postgres module of flavor cloudsql
 clouds:
   - gcp
 spec:
@@ -12,9 +13,9 @@ spec:
       title: Postgres Version
       description: Specifies the Postgres version to use.
       enum:
-        - '12.11'
-        - '13.3'
-        - '14.0'
+        - "12.11"
+        - "13.3"
+        - "14.0"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
@@ -59,9 +60,9 @@ spec:
               type: number
               title: Volume
               description: The size of the volume in GB.
-              minimum: 0
+              minimum: 10
               x-ui-placeholder: "e.g., 10"
-              x-ui-error-message: "Please specify the volume size as a number in GB."
+              x-ui-error-message: "Please specify the volume size as a number in GB. The minimum is 10GB."
           required:
             - instance
             - volume
@@ -106,9 +107,9 @@ spec:
               type: number
               title: Volume
               description: The size of the volume in GB.
-              minimum: 0
+              minimum: 10
               x-ui-placeholder: "e.g., 10"
-              x-ui-error-message: "Please specify the volume size as a number in GB."
+              x-ui-error-message: "Please specify the volume size as a number in GB. The minimum is 10GB."
             instance_count:
               type: integer
               title: Instance Count
@@ -141,9 +142,9 @@ sample:
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
   flavor: cloudsql
   disabled: true
-  version: '0.2'
+  version: "0.2"
   kind: postgres
-  metadata: { }
+  metadata: {}
   spec:
     size:
       writer:
@@ -153,4 +154,4 @@ sample:
         instance: db-f1-micro
         volume: 10
         instance_count: 0
-    postgres_version: '12.11'
+    postgres_version: "12.11"
