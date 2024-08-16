@@ -184,7 +184,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "gitRef": "develop",
+    "gitRef": "master",
     "relativePath": "./modules/service/k8s/0.1/",
     "clouds": [
       "aws",
