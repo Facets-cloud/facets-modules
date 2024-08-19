@@ -1,6 +1,6 @@
 intent: k8s_resource
 flavor: k8s
-version: '0.2'
+version: '0.3'
 description: Adds k8s_resource module
 clouds:
   - aws
@@ -24,7 +24,7 @@ sample:
   kind: k8s_resource
   metadata: { }
   flavor: k8s
-  version: '0.2'
+  version: '0.3'
   disabled: true
   spec:
     resource:

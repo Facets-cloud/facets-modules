@@ -234,7 +234,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/k8s_resource/k8s/0.1/",
+    "relativePath": "./modules/k8s_resource/k8s/0.3/",
     "clouds": [
       "aws",
       "azure",
