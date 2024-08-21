@@ -366,7 +366,7 @@ spec:
                   sub_path:
                     type: string
                     title: Sub Path
-                    description: Optional. The path within the ConfigMap to mount a specific key or file
+                    description: Path within the ConfigMap to mount a specific key or file
                 required:
                   - name
                   - mount_path
@@ -390,7 +390,7 @@ spec:
                   sub_path:
                     type: string
                     title: Sub Path
-                    description: Optional. The path within the Secret to mount a specific key or file
+                    description: Path within the Secret to mount a specific key or file
                 required:
                   - name
                   - mount_path
@@ -414,7 +414,7 @@ spec:
                   sub_path:
                     type: string
                     title: Sub Path
-                    description: Optional. The path within the PVC to mount a specific subdirectory
+                    description: Path within the PVC to mount a specific subdirectory
                 required:
                   - claim_name
                   - mount_path
@@ -434,7 +434,7 @@ spec:
                   sub_path:
                     type: string
                     title: Sub Path
-                    description: Optional. The path within the host filesystem to mount a specific directory or file
+                    description: Path within the host filesystem to mount a specific directory or file
                 required:
                   - name
                   - mount_path
