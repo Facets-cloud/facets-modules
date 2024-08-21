@@ -8,10 +8,6 @@ spec:
   title: Redis ElastiCache
   type: object
   properties:
-    authenticated:
-      type: boolean
-      title: Authenticated
-      description: Enables password protection.
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
@@ -102,7 +98,6 @@ sample:
   disabled: true
   version: '0.2'
   spec:
-    authenticated: false
     redis_version: '6.x'
     persistence_enabled: false
     size:
