@@ -79,6 +79,7 @@ spec:
   x-ui-order:
     - postgres_version
     - size
+    - db_names
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
