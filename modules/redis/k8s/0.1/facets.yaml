@@ -62,9 +62,9 @@ spec:
               type: string
               title: Memory
               description: Amount of memory required.
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)M$"
-              x-ui-placeholder: "e.g., '800M' or '1.5G'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
+              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+              x-ui-error-message: "Value doesn't match pa ttern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
             cpu_limit:
               type: string
               title: CPU Limit
@@ -76,9 +76,9 @@ spec:
               type: string
               title: Memory Limit
               description: Maximum memory resource utilization.
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)M$"
-              x-ui-placeholder: "e.g., '800M' or '1.5G'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
+              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
           required:
             - instance_count
             - cpu
@@ -99,9 +99,9 @@ spec:
               type: string
               title: Memory
               description: Amount of memory required.
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)M$"
-              x-ui-placeholder: "e.g., '800M' or '1.5G'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
+              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
             cpu_limit:
               type: string
               title: CPU Limit
@@ -113,9 +113,9 @@ spec:
               type: string
               title: Memory Limit
               description: Maximum memory resource utilization.
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)M$"
-              x-ui-placeholder: "e.g., '800M' or '1.5G'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
+              pattern: "^([1-9]|[1-5][0-9]|6[0-4])G$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
             volume:
               type: string
               title: Volume
