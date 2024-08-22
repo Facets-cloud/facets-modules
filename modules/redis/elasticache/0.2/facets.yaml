@@ -80,9 +80,11 @@ spec:
             - instance_count
   required:
     - size
+    - authenticated
     - persistence_enabled
     - redis_version
   x-ui-order:
+    - authenticated
     - persistence_enabled
     - redis_version
     - size
