@@ -69,7 +69,7 @@ spec:
               type: integer
               title: Instance Count
               description: Number of Reader Instances
-              minimum: 1
+              minimum: 0
               x-ui-placeholder: "Enter reader instance count"
           required:
             - instance
