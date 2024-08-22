@@ -149,14 +149,14 @@ sample:
     size:
       writer:
         cpu: "1"
-        memory: "1Gi"
+        memory: "1G"
         cpu_limit: "1"
-        memory_limit: "1Gi"
+        memory_limit: "1G"
         volume: "10Gi"
       reader:
         cpu: "1"
-        memory: "1Gi"
+        memory: "1G"
         cpu_limit: "1"
-        memory_limit: "1Gi"
+        memory_limit: "1G"
         volume: "10Gi"
         instance_count: 0
