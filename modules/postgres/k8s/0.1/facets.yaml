@@ -11,6 +11,11 @@ spec:
   title: K8s
   type: object
   properties:
+    db_names:
+      type: array
+      title: Database Names
+      description: List of database names
+      x-ui-placeholder: "e.g., 'my_database'"
     postgres_version:
       type: string
       title: Postgres Version
@@ -158,6 +163,7 @@ spec:
   x-ui-order:
     - postgres_version
     - size
+    - db_names
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
