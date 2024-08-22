@@ -8,6 +8,10 @@ spec:
   title: Redis ElastiCache
   type: object
   properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: Enables password protection.
     persistence_enabled:
       type: boolean
       title: Persistence Enabled
@@ -24,78 +28,55 @@ spec:
       type: object
       title: Size
       description: Configuration for datastore components.
-      x-ui-order:
-        - writer
-        - reader
-      required:
-        - writer
       properties:
-        reader:
-          type: object
-          title: Reader
-          description: Settings for reader instances.
-          properties:
-            instance_count:
-              type: integer
-              title: Reader Count
-              description: Number of reader instances to create.
-              default: 1
-              minimum: 0
-              maximum: 10
-              x-ui-error-message: "Reader count must be between 1 and 10."
-        writer:
-          type: object
-          title: Writer
-          description: Settings for writer instances.
-          properties:
-            instance:
-              type: string
-              title: Instance Type
-              description: The instance type of the node.
-              x-ui-placeholder: e.g., 'cache.t3.micro', 'cache.m5.large', 'cache.r5.xlarge'
-              enum:
-                - cache.t4g.micro
-                - cache.t4g.small
-                - cache.t4g.medium
-                - cache.t3.micro
-                - cache.t3.small
-                - cache.t3.medium
-                - cache.m5.large
-                - cache.m5.xlarge
-                - cache.m5.2xlarge
-                - cache.m5.4xlarge
-                - cache.m5.12xlarge
-                - cache.m5.24xlarge
-                - cache.r6g.large
-                - cache.r6g.xlarge
-                - cache.r6g.2xlarge
-                - cache.r6g.4xlarge
-                - cache.r6g.8xlarge
-                - cache.r6g.12xlarge
-                - cache.r6g.16xlarge
-                - cache.r7g.large
-                - cache.r7g.xlarge
-                - cache.r7g.2xlarge
-                - cache.r7g.4xlarge
-                - cache.r7g.8xlarge
-                - cache.r7g.12xlarge
-                - cache.r7g.16xlarge
-                - cache.c7gn.large
-                - cache.c7gn.xlarge
-                - cache.c7gn.2xlarge
-                - cache.c7gn.4xlarge
-                - cache.c7gn.8xlarge
-                - cache.c7gn.12xlarge
-                - cache.c7gn.16xlarge
-              x-ui-error-message: "Please select a valid instance type."
-            instance_count:
-              type: integer
-              title: Writer Count
-              description: Number of writer instances to create.
-              default: 1
-              minimum: 1
-              maximum: 10
-              x-ui-error-message: "Writer count must be between 1 and 10."
+        instance:
+          type: string
+          title: Instance Type
+          description: The instance type of the node.
+          x-ui-placeholder: e.g., 'cache.t3.micro', 'cache.m5.large', 'cache.r5.xlarge'
+          enum:
+            - cache.t4g.micro
+            - cache.t4g.small
+            - cache.t4g.medium
+            - cache.t3.micro
+            - cache.t3.small
+            - cache.t3.medium
+            - cache.m5.large
+            - cache.m5.xlarge
+            - cache.m5.2xlarge
+            - cache.m5.4xlarge
+            - cache.m5.12xlarge
+            - cache.m5.24xlarge
+            - cache.r6g.large
+            - cache.r6g.xlarge
+            - cache.r6g.2xlarge
+            - cache.r6g.4xlarge
+            - cache.r6g.8xlarge
+            - cache.r6g.12xlarge
+            - cache.r6g.16xlarge
+            - cache.r7g.large
+            - cache.r7g.xlarge
+            - cache.r7g.2xlarge
+            - cache.r7g.4xlarge
+            - cache.r7g.8xlarge
+            - cache.r7g.12xlarge
+            - cache.r7g.16xlarge
+            - cache.c7gn.large
+            - cache.c7gn.xlarge
+            - cache.c7gn.2xlarge
+            - cache.c7gn.4xlarge
+            - cache.c7gn.8xlarge
+            - cache.c7gn.12xlarge
+            - cache.c7gn.16xlarge
+          x-ui-error-message: "Please select a valid instance type."
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: Number of instances to create.
+          default: 1
+          minimum: 1
+          maximum: 10
+          x-ui-error-message: "Instance count must be between 1 and 10."
           required:
             - instance
           x-ui-order:
@@ -121,6 +102,7 @@ sample:
   disabled: true
   version: '0.2'
   spec:
+    authenticated: false
     redis_version: '6.x'
     persistence_enabled: false
     size:
