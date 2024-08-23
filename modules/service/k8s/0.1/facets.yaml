@@ -227,7 +227,7 @@ spec:
               description: Min replicas
               x-ui-placeholder: "Enter Min replicas for you application"
               pattern: '^(1?[0-9]?[0-9]|200)$'
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
             max:
               type: integer
               title: Max
@@ -238,7 +238,7 @@ spec:
               x-ui-placeholder: "Enter Max replicas for you application"
               pattern: '^(1?[0-9]?[0-9]|200)$'
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200 and Max should be more than Min"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
               type: string
               title: Scale based on
@@ -252,7 +252,7 @@ spec:
               description: Max CPU threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter cpu threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "CPU" ]
@@ -262,7 +262,7 @@ spec:
               description: Max RAM threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter memory threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "RAM" ]
