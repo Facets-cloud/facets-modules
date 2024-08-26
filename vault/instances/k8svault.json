@@ -1,0 +1,30 @@
+{
+  "kind": "vault",
+  "flavor": "k8s",
+  "version": "0.1",
+  "lifecycle": "ENVIRONMENT",
+  "disabled": true,
+  "provided": false,
+  "metadata": {
+    "namespace": "default"
+  },
+  "spec": {
+    "vault_version": "1.17.2",
+    "size": {
+      "volume": "20Gi",
+      "cpu": "250m",
+      "memory": "256Mi",
+      "cpu_limit": "250m",
+      "memory_limit": "256Mi",
+      "instance_count": 1
+    }
+  },
+  "advanced": {
+    "k8s": {
+      "vault": {
+        "values": {}
+      }
+    }
+  },
+  "out": {}
+}
