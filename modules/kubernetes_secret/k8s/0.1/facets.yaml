@@ -17,7 +17,8 @@ spec:
       description: Random data
       x-ui-key-value: true
       patternProperties:
-        type: object
+        type: string
+        x-ui-key-value: true
         title: Data Name
         description: data name
         keyPattern: '^[0-9]+[m]?$'
