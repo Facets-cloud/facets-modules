@@ -22,7 +22,8 @@
   "advanced": {
     "k8s": {
       "vault": {
-        "values": {}
+        "values": {
+        }
       }
     }
   },
