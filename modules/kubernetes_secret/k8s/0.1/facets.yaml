@@ -8,13 +8,11 @@ clouds:
   - kubernetes
 spec:
   type: object
-  title: Kubernetes secret
-  description: Specification of the kubernetes secret resource intent
   properties:
     data:
       type: object
       title: Data
-      description: Random data
+      description: Data in key, value pair for config-map to be added in string
       x-ui-key-value: true
       patternProperties:
         type: string
@@ -32,7 +30,6 @@ spec:
             x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 0-65535"
         required:
           - value
-    additionalProperties: false
 
 sample:
   $schema: >-
