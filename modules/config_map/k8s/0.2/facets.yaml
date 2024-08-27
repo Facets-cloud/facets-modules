@@ -10,23 +10,11 @@ spec:
   type: object
   properties:
     data:
+      title: data
       type: object
-      title: Data
-      description: Data in key, value pair for config-map to be added in string
-      x-ui-key-value: true
-      patternProperties:
-          type: string
-          x-ui-key-value: true
-          title: Data Name
-          description: data name
-          properties:
-            value:
-              type: string
-              title: Value
-              description: Value of Data
-              x-ui-placeholder: "Enter the value of config-map"
-          required:
-            - value
+      description: Enter the key value pair for config in string format
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter the value of the config. Eg 'key':'config_value'
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
