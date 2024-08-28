@@ -72,7 +72,8 @@ spec:
               type: integer
               title: Instance Count
               description: Number of Reader Instances
-              minimum: 1
+              minimum: 0
+              maximum: 20
               x-ui-placeholder: "Enter reader instance count"
               x-ui-error-message: "Instance count must be a non-negative integer"
           required:

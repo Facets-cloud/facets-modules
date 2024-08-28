@@ -129,6 +129,7 @@ spec:
           title: Instance Count
           description: The number of instances to create
           minimum: 1
+          maximum: 20
           x-ui-placeholder: "Minimum value 1"
         volume:
           type: string
