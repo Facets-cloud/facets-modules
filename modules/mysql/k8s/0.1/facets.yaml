@@ -73,6 +73,7 @@ spec:
               x-ui-placeholder: "Enter reader instance count"
               x-ui-error-message: "Instance count must be a non-negative integer"
               minimum: 0
+              maximum: 100
           required:
             - instance_count
             - cpu

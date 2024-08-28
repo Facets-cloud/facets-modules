@@ -72,6 +72,7 @@ spec:
           title: Instance Count
           description: Number of instances to create
           minimum: 1
+          maximum: 100
           x-ui-placeholder: "Enter instance count"
       required:
         - cpu
