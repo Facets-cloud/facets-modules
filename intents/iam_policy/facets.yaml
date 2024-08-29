@@ -1,0 +1,5 @@
+name: iam_policy
+type: Security, Identity, & Compliance
+displayName: AWS IAM Policy
+description: An IAM Policy is a document defining permissions about what actions are allowed or denied on specific AWS resources. These can be attached to users, groups, or roles in IAM.
+iconUrl: https://w7.pngwing.com/pngs/918/167/png-transparent-aws-iam-hd-logo.png
