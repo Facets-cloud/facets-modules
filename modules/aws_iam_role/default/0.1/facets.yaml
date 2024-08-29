@@ -1,0 +1,77 @@
+intent: aws_iam_role
+flavor: default
+version: '0.1'
+description: Adds AWS IAM Role
+clouds:
+  - aws
+spec:
+  title: AWS IAM Role
+  description: Specification of the aws iam role resource intent
+  type: object
+  properties:
+    irsa:
+      type: object
+      description: IRSA block which required to attach EKS OIDC to service accounts for allowing applications to get cloud credentials
+      properties:
+        service_accounts:
+          type: object
+          additionalProperties: false
+          description: the map of all service accounts that you want to attach IRSA
+          patternProperties:
+            '^[a-zA-Z0-9_.-]*$':
+              type: object
+              minProperties: 1
+              description: An arbitrary name given to the service account which is not used anywhere
+              properties:
+                name:
+                  type: string
+                  description: The name of the service account that you want to attach the role to with the trust relationship
+        oidc_providers:
+          type: object
+          additionalProperties: false
+          description: the map of all OIDC arns that you want to attach IRSA
+          patternProperties:
+            '^[a-zA-Z0-9_.-]*$':
+              type: object
+              minProperties: 1
+              description: An arbitrary name given to the OIDC provider which is not used anywhere
+              properties:
+                arn:
+                  type: string
+                  description: The arn of the OIDC that you want to attach the role to with the trust relationship
+      required:
+        - service_accounts
+    policies:
+      type: object
+      additionalProperties: false
+      description: the map of all policies arns that you want to attach to the role
+      patternProperties:
+        '^[a-zA-Z0-9_.-]*$':
+          type: object
+          minProperties: 1
+          description: An arbitrary name given to the policies which is not used anywhere
+          properties:
+            arn:
+              type: string
+              description: The arn of the policy that you want to attach the role
+    required:
+      - policies
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
+  version: '0.1'
+  disabled: true
+  flavor: default
+  metadata: { }
+  kind: aws_iam_role
+  spec:
+    irsa:
+      service_accounts:
+        arbitrary_name:
+          name: sa_name
+      oidc_providers:
+        arbitrary_name:
+          arn: oidc_arn
+    policies:
+      external_policy:
+        arn: external_policy arn
