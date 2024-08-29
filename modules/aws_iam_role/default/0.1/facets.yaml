@@ -15,25 +15,21 @@ spec:
       properties:
         service_accounts:
           type: object
-          additionalProperties: false
           description: the map of all service accounts that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
-              type: object
-              minProperties: 1
-              description: An arbitrary name given to the service account which is not used anywhere
-              properties:
-                name:
-                  type: string
-                  description: The name of the service account that you want to attach the role to with the trust relationship
+            type: object
+            keyPattern: '^[a-zA-Z0-9_.-]*$'
+            description: An arbitrary name given to the service account which is not used anywhere
+            properties:
+              name:
+                type: string
+                description: The name of the service account that you want to attach the role to with the trust relationship
         oidc_providers:
           type: object
-          additionalProperties: false
           description: the map of all OIDC arns that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
               type: object
-              minProperties: 1
+              keyPattern: '^[a-zA-Z0-9_.-]*$'
               description: An arbitrary name given to the OIDC provider which is not used anywhere
               properties:
                 arn:
@@ -43,17 +39,15 @@ spec:
         - service_accounts
     policies:
       type: object
-      additionalProperties: false
       description: the map of all policies arns that you want to attach to the role
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
-          type: object
-          minProperties: 1
-          description: An arbitrary name given to the policies which is not used anywhere
-          properties:
-            arn:
-              type: string
-              description: The arn of the policy that you want to attach the role
+        type: object
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        description: An arbitrary name given to the policies which is not used anywhere
+        properties:
+          arn:
+            type: string
+            description: The arn of the policy that you want to attach the role
     required:
       - policies
 sample:
