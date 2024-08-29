@@ -29,6 +29,7 @@ sample:
     https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
   kind: iam_policy
   flavor: aws_iam_policy
+  version: '0.2'
   disabled: true
   metadata:
     annotations: { }
