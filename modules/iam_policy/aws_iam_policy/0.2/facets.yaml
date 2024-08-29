@@ -1,0 +1,48 @@
+intent: aws_iam_policy
+flavor: default
+version: '0.2'
+description: Adds AWS IAM Policy
+clouds:
+  - aws
+spec:
+  title: AWS IAM Policy
+  description: Specification of the aws iam policy resource intent
+  type: object
+  properties:
+    name:
+      type: string
+    policy:
+      type: object
+      properties:
+        Version:
+          type: string
+        Statement:
+          type: object
+      required:
+        - Version
+        - Statement
+  required:
+    - name
+    - policy
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
+  kind: iam_policy
+  flavor: aws_iam_policy
+  disabled: true
+  metadata:
+    annotations: { }
+  spec:
+    name: test_aws_iam_policy
+    policy:
+      Version: '2012-10-17'
+      Statement:
+        - Sid: ListYourObjects
+          Effect: Allow
+          Action: s3:ListBucket
+          Resource:
+            - arn:aws:s3:::bucket-name
+          Condition:
+            StringLike:
+              s3:prefix:
+                - 'cognito/application-name/${cognito-identity.amazonaws.com:sub}/*'
