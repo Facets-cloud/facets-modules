@@ -135,7 +135,7 @@ spec:
           type: string
           title: Volume
           description: The size of the volume
-          pattern: "^[0-9]+(\\.[0-9]+)"
+          pattern: "^[0-9]+(\\.[0-9]+)?"
           x-ui-placeholder: "Enter volume size"
           x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?' pattern"
       required:
@@ -154,7 +154,7 @@ sample:
   kind: elasticsearch
   metadata: { }
   spec:
-    elasticsearch_version: "7.10"
+    elasticsearch_version: '7.10'
     size:
       instance: r4.large.elasticsearch
       instance_count: 2
