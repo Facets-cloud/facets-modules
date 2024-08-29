@@ -90,7 +90,7 @@ sample:
   kind: elasticsearch
   metadata: { }
   spec:
-    elasticsearch_version: 8.14.1
+    elasticsearch_version: '8.14.1'
     size:
       cpu: 2
       memory: 2Gi
