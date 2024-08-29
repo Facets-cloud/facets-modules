@@ -76,6 +76,7 @@ spec:
             pattern: '^(/[^/]+)*(/)?$'
             x-ui-placeholder: "Enter path to which your application will be accessible"
             x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
+            default: '/'
           port:
             type: string
             title: Port
