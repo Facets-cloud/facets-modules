@@ -15,6 +15,7 @@ spec:
       properties:
         service_accounts:
           type: object
+          title: Service Accounts
           description: the map of all service accounts that you want to attach IRSA
           patternProperties:
             type: object
@@ -27,6 +28,7 @@ spec:
                 description: The name of the service account that you want to attach the role to with the trust relationship
         oidc_providers:
           type: object
+          title: OIDC Providers
           description: the map of all OIDC arns that you want to attach IRSA
           patternProperties:
               type: object
