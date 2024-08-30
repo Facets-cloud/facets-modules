@@ -385,5 +385,25 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "iam_policy",
+    "flavor": "aws_iam_policy",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/iam_policy/aws_iam_policy/0.2/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "aws_iam_role",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_iam_role/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
   }
 ]
