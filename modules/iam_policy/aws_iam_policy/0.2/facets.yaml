@@ -37,9 +37,4 @@ sample:
         - Sid: ListYourObjects
           Effect: Allow
           Action: s3:ListBucket
-          Resource:
-            - arn:aws:s3:::bucket-name
-          Condition:
-            StringLike:
-              s3:prefix:
-                - 'cognito/application-name/${cognito-identity.amazonaws.com:sub}/*'
+          Resource: []

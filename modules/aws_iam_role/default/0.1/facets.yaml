@@ -68,10 +68,10 @@ sample:
     irsa:
       service_accounts:
         arbitrary_name:
-          name: sa_name
+          name: ''
       oidc_providers:
         arbitrary_name:
-          arn: oidc_arn
+          arn: ''
     policies:
       external_policy:
-        arn: external_policy arn
+        arn: ''
