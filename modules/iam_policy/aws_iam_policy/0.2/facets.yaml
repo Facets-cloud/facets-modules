@@ -17,7 +17,31 @@ spec:
         Version:
           type: string
         Statement:
-          type: object
+          type: array
+          items:
+            type: object
+            properties:
+              Sid:
+                type: string
+              Effect:
+                type: string
+                enum: [ "Allow", "Deny" ]
+              Action:
+                type: array
+                items:
+                  type: string
+              Resource:
+                type: array
+                items:
+                  type: string
+              Condition:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    type: [ string, array ]
+                    items:
+                      type: string
       required:
         - Version
         - Statement
