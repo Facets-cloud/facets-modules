@@ -62,6 +62,7 @@ spec:
               title: Readiness Check Type
               default: None
               enum:
+                - None
                 - PortCheck
                 - HttpCheck
                 - ExecCheck
@@ -135,6 +136,7 @@ spec:
               title: Liveness Check Type
               default: None
               enum:
+                - None
                 - PortCheck
                 - HttpCheck
                 - ExecCheck
