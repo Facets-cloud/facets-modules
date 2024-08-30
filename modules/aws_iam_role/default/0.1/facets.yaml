@@ -43,6 +43,7 @@ spec:
         - service_accounts
     policies:
       type: object
+      title: Policies
       description: the map of all policies arns that you want to attach to the role
       patternProperties:
         type: object
