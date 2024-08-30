@@ -13,38 +13,10 @@ spec:
       type: string
     policy:
       type: object
-      properties:
-        Version:
-          type: string
-        Statement:
-          type: array
-          items:
-            type: object
-            properties:
-              Sid:
-                type: string
-              Effect:
-                type: string
-                enum: [ "Allow", "Deny" ]
-              Action:
-                type: array
-                items:
-                  type: string
-              Resource:
-                type: array
-                items:
-                  type: string
-              Condition:
-                type: object
-                additionalProperties:
-                  type: object
-                  additionalProperties:
-                    type: [ string, array ]
-                    items:
-                      type: string
-      required:
-        - Version
-        - Statement
+      title: policy
+      description: Enter the policy in YAML format.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter the policy document in YAML.
   required:
     - name
     - policy
