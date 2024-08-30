@@ -384,19 +384,6 @@
     ]
   },
   {
-    "intent": "config_map",
-    "flavor": "k8s",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/config_map/k8s/0.2/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
-    ]
-  },
-  {
     "intent": "aws_iam_role",
     "flavor": "default",
     "version": "0.1",
