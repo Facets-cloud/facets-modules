@@ -1,5 +1,5 @@
 name: aws_iam_role
-type: Security, Identity, & Compliance
+type: IAM
 displayName: AWS IAM Role
 description: An IAM Role is a set of permissions that grant access to AWS services and resources.
 iconUrl: https://w7.pngwing.com/pngs/918/167/png-transparent-aws-iam-hd-logo.png
