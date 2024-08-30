@@ -394,8 +394,7 @@
     "relativePath": "./modules/iam_policy/aws_iam_policy/0.2/",
     "clouds": [
       "aws"
-    ],
-    "gitRef": "simplismart-fixes"
+    ]
   },
   {
     "intent": "aws_iam_role",
@@ -405,7 +404,6 @@
     "relativePath": "./modules/aws_iam_role/default/0.1/",
     "clouds": [
       "aws"
-    ],
-    "gitRef": "simplismart-fixes"
+    ]
   }
 ]
