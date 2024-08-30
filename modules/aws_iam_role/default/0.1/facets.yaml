@@ -18,6 +18,7 @@ spec:
           description: the map of all service accounts that you want to attach IRSA
           patternProperties:
             type: object
+            title: Service Account Name
             keyPattern: '^[a-zA-Z0-9_.-]*$'
             description: An arbitrary name given to the service account which is not used anywhere
             properties:
@@ -29,6 +30,7 @@ spec:
           description: the map of all OIDC arns that you want to attach IRSA
           patternProperties:
               type: object
+              title: OIDC Provider ARN
               keyPattern: '^[a-zA-Z0-9_.-]*$'
               description: An arbitrary name given to the OIDC provider which is not used anywhere
               properties:
@@ -42,6 +44,7 @@ spec:
       description: the map of all policies arns that you want to attach to the role
       patternProperties:
         type: object
+        title: Policy ARN
         keyPattern: '^[a-zA-Z0-9_.-]*$'
         description: An arbitrary name given to the policies which is not used anywhere
         properties:
