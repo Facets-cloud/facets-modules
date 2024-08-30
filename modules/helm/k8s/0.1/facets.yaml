@@ -41,6 +41,16 @@ spec:
           type: boolean
           title: Wait
           description: Whether to wait for the Helm chart deployment to complete
+        repository_username:
+          type: string
+          title: Repository Username
+          description: Username to authenticate to private helm repository
+          x-ui-placeholder: Enter repository username
+        repository_password:
+          type: string
+          title: Repository Password
+          description: Password to authenticate to private helm repository
+          x-ui-placeholder: Enter repository password
       required: [ "chart" ]
     values:
       type: object

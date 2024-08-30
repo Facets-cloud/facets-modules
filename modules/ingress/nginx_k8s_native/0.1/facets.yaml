@@ -76,6 +76,7 @@ spec:
             pattern: '^(/[^/]+)*(/)?$'
             x-ui-placeholder: "Enter path to which your application will be accessible"
             x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
+            default: '/'
           port:
             type: string
             title: Port
@@ -98,6 +99,13 @@ spec:
             pattern: '^[a-z0-9-]{1,20}$'
             x-ui-placeholder: "Enter the subdomain you want to expose your application"
             x-ui-error-message: "Value doesn't match pattern, max characters of 20 and only hyphen special characters is accepted with numbers and alphabets"
+          grpc:
+            type: boolean
+            title: GRPC
+            description: Enable/disable GRPC protocol
+            x-ui-visible-if:
+              field: spec.grpc
+              values: ["false"]
         required: ["service_name", "path", "port"]
     force_ssl_redirection:
       type: boolean
