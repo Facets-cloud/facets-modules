@@ -61,6 +61,7 @@ spec:
               type: string
               title: Readiness Check Type
               default: None
+              x-ui-no-sort: true
               enum:
                 - None
                 - PortCheck
@@ -135,6 +136,7 @@ spec:
               type: string
               title: Liveness Check Type
               default: None
+              x-ui-no-sort: true
               enum:
                 - None
                 - PortCheck
