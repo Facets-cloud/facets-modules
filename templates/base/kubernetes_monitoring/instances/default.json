@@ -14,6 +14,7 @@
   },
   "spec": {},
   "advanced": {
+    "inherit_from_base": true,
     "k8s": {}
   },
   "out": {}
