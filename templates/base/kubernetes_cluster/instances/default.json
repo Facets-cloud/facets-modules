@@ -10,6 +10,7 @@
     "disabled": false,
     "inputs": {},
     "advanced": {
+        "inherit_from_base": true,
         "default": {
             "include_cluster_code_in_name": true
         }
