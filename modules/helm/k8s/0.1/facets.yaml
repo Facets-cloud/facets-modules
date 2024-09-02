@@ -51,6 +51,7 @@ spec:
           title: Repository Password
           description: Password to authenticate to private helm repository
           x-ui-placeholder: Enter repository password
+          x-ui-mask-content: true
       required: [ "chart" ]
     values:
       type: object
