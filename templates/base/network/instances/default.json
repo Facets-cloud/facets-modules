@@ -8,6 +8,9 @@
   "spec": {},
   "provided": false,
   "disabled": false,
+  "advanced": {
+    "inherit_from_base": true
+  },
   "out": {
     "attributes": {
     }
