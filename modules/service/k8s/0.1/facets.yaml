@@ -61,7 +61,7 @@ spec:
           properties:
             roles:
               type: object
-              title: GCP Roles
+              title: GCP Role
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
@@ -95,7 +95,7 @@ spec:
           properties:
             roles:
               type: object
-              title: Azure Roles
+              title: Azure Role
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
