@@ -60,15 +60,15 @@ spec:
           title: GCP
           properties:
             roles:
-              x-ui-overrides-only: true
               type: object
+              title: GCP Roles
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
-                tittle: roles
+                tittle: Roles
                 properties:
                   role:
-                    title: GCP Roles
+                    title: role
                     type: string
                     description: role to add for the service
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
@@ -94,16 +94,15 @@ spec:
           title: Azure
           properties:
             roles:
-              x-ui-overrides-only: true
               type: object
               title: Azure Roles
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
-                tittle: roles
+                tittle: Roles
                 properties:
                   role:
-                    title: Role
+                    title: role
                     type: string
                     description: role to add for the service
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
