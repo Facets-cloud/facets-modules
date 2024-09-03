@@ -33,25 +33,31 @@ spec:
       description: Distribute instances across different physical hosts within cluster
     cloud_permissions:
       type: object
+      title: Cloud Permissions
       properties:
         aws:
           type: object
+          title: AWS
           properties:
             enable_irsa:
               type: boolean
+              title: Enable IRSA
             iam_policies:
               type: object
+              title: IAM policies
               description: IAM policy to add
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
                 tittle: policy_name
                 properties:
                   arn:
+                    title: ARN
                     type: string
                     description: arn of the iam policy
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
         gcp:
           type: object
+          title: GCP
           properties:
             roles:
               x-ui-overrides-only: true
@@ -62,34 +68,42 @@ spec:
                 tittle: roles
                 properties:
                   role:
+                    title: GCP Roles
                     type: string
                     description: role to add for the service
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
                   condition:
                     type: object
+                    title: Condition
                     description: Optional condition for the role
                     properties:
                       expression:
+                        title: expression
                         type: string
                         description: The condition's expression
                       title:
+                        title: title
                         type: string
                         description: The condition's title
                       description:
+                        title: description
                         type: string
                         description: The condition's description
         azure:
           type: object
+          title: Azure
           properties:
             roles:
               x-ui-overrides-only: true
               type: object
+              title: Azure Roles
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
                 tittle: roles
                 properties:
                   role:
+                    title: Role
                     type: string
                     description: role to add for the service
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
