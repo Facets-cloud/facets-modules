@@ -31,6 +31,68 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
+    cloud_permissions:
+      type: object
+      properties:
+        aws:
+          type: object
+          properties:
+            enable_irsa:
+              type: boolean
+            iam_policies:
+              type: object
+              description: IAM policy to add
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                tittle: policy_name
+                properties:
+                  arn:
+                    type: string
+                    description: arn of the iam policy
+                    x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
+        gcp:
+          type: object
+          properties:
+            roles:
+              x-ui-overrides-only: true
+              type: object
+              description: Roles to add for the service
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                tittle: roles
+                properties:
+                  role:
+                    type: string
+                    description: role to add for the service
+                    x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
+                  condition:
+                    type: object
+                    description: Optional condition for the role
+                    properties:
+                      expression:
+                        type: string
+                        description: The condition's expression
+                      title:
+                        type: string
+                        description: The condition's title
+                      description:
+                        type: string
+                        description: The condition's description
+        azure:
+          type: object
+          properties:
+            roles:
+              x-ui-overrides-only: true
+              type: object
+              description: Roles to add for the service
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                tittle: roles
+                properties:
+                  role:
+                    type: string
+                    description: role to add for the service
+                    x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
     runtime:
       type: object
       title: Runtime
