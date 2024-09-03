@@ -620,6 +620,7 @@ spec:
     - enable_host_anti_affinity
     - runtime
     - release
+    - cloud_permissions
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
