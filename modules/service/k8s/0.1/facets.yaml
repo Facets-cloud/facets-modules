@@ -48,12 +48,13 @@ spec:
               description: IAM policy to add
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
-                tittle: policy_name
+                title: policy_name
                 properties:
                   arn:
                     title: ARN
                     type: string
                     description: arn of the iam policy
+                    pattern: "^arn:aws:iam::\\d{12}:role\\/[a-zA-Z_0-9+=,.@\\-_/]+$"
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
         gcp:
           type: object
@@ -65,12 +66,13 @@ spec:
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
-                tittle: Roles
+                title: Roles
                 properties:
                   role:
                     title: role
                     type: string
                     description: role to add for the service
+                    pattern: "^roles\\/[a-zA-Z_0-9]+$"
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
                   condition:
                     type: object
@@ -99,7 +101,7 @@ spec:
               description: Roles to add for the service
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
-                tittle: Roles
+                title: Roles
                 properties:
                   role:
                     title: role
