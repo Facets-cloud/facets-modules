@@ -22,7 +22,6 @@ sample:
   flavor: k8s
   version: '0.2'
   disabled: false
-  provided: false
   metadata:
     name: sample-config
   spec:
