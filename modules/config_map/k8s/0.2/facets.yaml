@@ -19,7 +19,7 @@ sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
   kind: config_map
-  flavor: default
+  flavor: k8s
   version: '0.2'
   disabled: false
   provided: true
