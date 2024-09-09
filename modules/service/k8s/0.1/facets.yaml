@@ -370,7 +370,7 @@ spec:
               patternProperties:
                 type: object
                 title: Config Map Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   name:
                     type: string
@@ -380,6 +380,13 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for config maps
+                  sub_path:
+                    type: string
+                    title: Sub Path
+                    description: Path within the ConfigMap to mount a specific key or file
+                required:
+                  - name
+                  - mount_path
             secrets:
               type: object
               title: Secrets
@@ -387,7 +394,7 @@ spec:
               patternProperties:
                 type: object
                 title: Secret name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   name:
                     type: string
@@ -397,6 +404,13 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for secrets
+                  sub_path:
+                    type: string
+                    title: Sub Path
+                    description: Path within the Secret to mount a specific key or file
+                required:
+                  - name
+                  - mount_path
             pvc:
               type: object
               title: PVC
@@ -404,7 +418,7 @@ spec:
               patternProperties:
                 type: object
                 title: PVC Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   claim_name:
                     type: string
@@ -414,6 +428,13 @@ spec:
                     type: string
                     title: Mount Path
                     description: Mount path for PVC
+                  sub_path:
+                    type: string
+                    title: Sub Path
+                    description: Path within the PVC to mount a specific subdirectory
+                required:
+                  - claim_name
+                  - mount_path
             host_path:
               type: object
               title: Host Path
@@ -421,12 +442,19 @@ spec:
               patternProperties:
                 type: object
                 title: Host Path Name
-                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   mount_path:
                     type: string
                     title: Mount Path
                     description: Mount path for host path
+                  sub_path:
+                    type: string
+                    title: Sub Path
+                    description: Path within the host filesystem to mount a specific directory or file
+                required:
+                  - name
+                  - mount_path
       required:
         - ports
         - size
