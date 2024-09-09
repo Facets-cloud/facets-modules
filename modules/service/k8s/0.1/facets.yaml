@@ -54,7 +54,7 @@ spec:
                     title: ARN
                     type: string
                     description: arn of the iam policy
-                    pattern: "^arn:aws:iam::\\d{12}:role\\/[a-zA-Z_0-9+=,.@\\-_/]+$"
+                    pattern: ^arn:aws:iam::[0-9]{12}:role\/[A-Za-z0-9+=,.@_-]+$
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
         gcp:
           type: object
@@ -65,7 +65,7 @@ spec:
               title: GCP Role
               description: Roles to add for the service
               patternProperties:
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                keyPattern: roles\/[a-zA-Z0-9_.-]+
                 title: Roles
                 properties:
                   role:
