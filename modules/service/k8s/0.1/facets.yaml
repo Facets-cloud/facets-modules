@@ -226,7 +226,7 @@ spec:
               maximum: 200
               description: Min replicas
               x-ui-placeholder: "Enter Min replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
+              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
             max:
               type: integer
@@ -236,7 +236,7 @@ spec:
               maximum: 200
               description: Max replicas
               x-ui-placeholder: "Enter Max replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
+              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
