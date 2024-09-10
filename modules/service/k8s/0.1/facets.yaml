@@ -31,6 +31,85 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
+    cloud_permissions:
+      type: object
+      title: Cloud Permissions
+      properties:
+        aws:
+          type: object
+          title: AWS
+          properties:
+            enable_irsa:
+              type: boolean
+              title: Enable IRSA
+            iam_policies:
+              type: object
+              title: IAM policies
+              description: IAM policy to add
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                title: policy_name
+                properties:
+                  arn:
+                    title: ARN
+                    type: string
+                    description: arn of the iam policy
+                    pattern: ^arn:aws:iam::[0-9]{12}:role\/[A-Za-z0-9+=,.@_-]+$
+                    x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1 "
+        gcp:
+          type: object
+          title: GCP
+          properties:
+            roles:
+              type: object
+              title: GCP Role
+              description: Roles to add for the service
+              patternProperties:
+                keyPattern: roles\/[a-zA-Z0-9_.-]+
+                title: Roles
+                properties:
+                  role:
+                    title: role
+                    type: string
+                    description: role to add for the service
+                    pattern: "^roles\\/[a-zA-Z_0-9]+$"
+                    x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: roles/firestore.serviceAgent"
+                  condition:
+                    type: object
+                    title: Condition
+                    description: Optional condition for the role
+                    properties:
+                      expression:
+                        title: expression
+                        type: string
+                        description: The condition's expression
+                      title:
+                        title: title
+                        type: string
+                        description: The condition's title
+                      description:
+                        title: description
+                        type: string
+                        description: The condition's description
+        azure:
+          type: object
+          title: Azure
+          properties:
+            roles:
+              type: object
+              title: Azure Role
+              description: Roles to add for the service
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                title: Roles
+                properties:
+                  role:
+                    title: role
+                    type: string
+                    description: role to add for the service
+                    x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
     runtime:
       type: object
       title: Runtime
@@ -576,6 +655,7 @@ spec:
     - enable_host_anti_affinity
     - runtime
     - release
+    - cloud_permissions
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
