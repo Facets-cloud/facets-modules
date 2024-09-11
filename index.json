@@ -418,5 +418,18 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "vault",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/vault/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
