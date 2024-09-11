@@ -51,14 +51,13 @@ spec:
               title: IAM policies
               description: IAM policy to add
               patternProperties:
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
                 title: policy_name
                 properties:
                   arn:
                     title: ARN
                     type: string
-                    description: arn of the iam policy
-                    pattern: ^arn:aws:iam::[0-9]{12}:role\/[A-Za-z0-9+=,.@_-]+$
+                    pattern: '^arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_/]+$'
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1 "
         gcp:
@@ -70,14 +69,13 @@ spec:
               title: GCP Role
               description: Roles to add for the service
               patternProperties:
-                keyPattern: roles\/[a-zA-Z0-9_.-]+
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
                 title: Roles
                 properties:
                   role:
                     title: role
                     type: string
-                    description: role to add for the service
-                    pattern: "^roles\\/[a-zA-Z_0-9]+$"
+                    pattern: '^roles\/[A-Za-z_]+$'
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: roles/firestore.serviceAgent"
                   condition:
