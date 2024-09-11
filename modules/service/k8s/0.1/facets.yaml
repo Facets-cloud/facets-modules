@@ -38,18 +38,22 @@ spec:
     cloud_permissions:
       type: object
       title: Cloud Permissions
+      description: Assign roles, define access levels, and enforce conditions for managing resource security and compliance
+      x-ui-toggle: true
       properties:
         aws:
           type: object
           title: AWS
+          x-ui-toggle: true
           properties:
             enable_irsa:
               type: boolean
               title: Enable IRSA
+              description: Enable this to grant fine-grained AWS permissions to Kubernetes workloads using service accounts.
             iam_policies:
               type: object
               title: IAM policies
-              description: IAM policy to add
+              description: Define IAM policies to manage permissions, control-access and secure resources
               patternProperties:
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 title: policy_name
@@ -59,21 +63,24 @@ spec:
                     type: string
                     pattern: '^arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_/]+$'
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
-                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1 "
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
+                required:
+                  - arn
         gcp:
           type: object
           title: GCP
+          x-ui-toggle: true
           properties:
             roles:
               type: object
               title: GCP Role
-              description: Roles to add for the service
+              description: Assign GCP roles to define access and permissions for managing resources.
               patternProperties:
                 keyPattern: '^[a-zA-Z0-9_.-]*$'
                 title: Roles
                 properties:
                   role:
-                    title: role
+                    title: Role
                     type: string
                     pattern: '^roles\/[A-Za-z_.-]+$'
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
@@ -81,28 +88,31 @@ spec:
                   condition:
                     type: object
                     title: Condition
-                    description: Optional condition for the role
+                    x-ui-toggle: true
+                    description: Define conditional logic to grant the role based on specific attributes or criteria, such as time or request context.
                     properties:
                       expression:
-                        title: expression
+                        title: Expression
                         type: string
-                        description: The condition's expression
                       title:
-                        title: title
+                        title: Title
                         type: string
-                        description: The condition's title
                       description:
-                        title: description
+                        title: Description
                         type: string
-                        description: The condition's description
+                    required:
+                      - expression
+                required:
+                  - role
         azure:
           type: object
           title: Azure
+          x-ui-toggle: true
           properties:
             roles:
               type: object
               title: Azure Role
-              description: Roles to add for the service
+              description: Assign Azure roles to define access and permissions for managing resources.
               patternProperties:
                 keyPattern: "^[a-zA-Z0-9_.-]*$"
                 title: Roles
@@ -110,8 +120,9 @@ spec:
                   role:
                     title: role
                     type: string
-                    description: role to add for the service
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
+                required:
+                  - role
     runtime:
       type: object
       title: Runtime
