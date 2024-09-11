@@ -1,0 +1,109 @@
+intent: postgres
+falvor: rds
+version: '0.1'
+description: Adds postgres module of flavor rds
+clouds:
+  - aws
+spec:
+  title: RDS
+  type: object
+  properties:
+    postgres_version:
+      type: string
+      title: Postgres Version
+      description: Specifies the Postgres version to use.
+      minLength: 1
+      x-ui-placeholder: "Ex. 14"
+      enum:
+        - "16"
+        - "15"
+        - "14"
+        - "13"
+        - "12"
+    size:
+      type: object
+      title: Size
+      description: Writer and Reader Datastore Sizing
+      properties:
+        writer:
+          type: object
+          title: Writer
+          description: Writer Node Configuration
+          properties:
+            instance:
+              type: string
+              title: Instance Type
+              description: Type of Instance for Reader
+              enum:
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+              x-ui-placeholder: "Select writer instance type"
+          required:
+            - instance
+        reader:
+          type: object
+          title: Reader
+          description: Reader Node Configuration
+          properties:
+            instance:
+              type: string
+              title: Instance Type
+              description: Type of Instance for Reader
+              enum:
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+              x-ui-placeholder: "Select reader instance type"
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of Reader Instances
+              x-ui-placeholder: "Enter reader instance count"
+              minimum: 0
+          required:
+            - instance
+    db_names:
+      type: array
+      title: Database Names
+      description: List of database names
+      x-ui-placeholder: "e.g., 'my_database'"
+  required:
+    - size
+    - postgres_version
+  x-ui-order:
+    - postgres_version
+    - size
+    - db_names
+sample:
+  kind: postgres
+  flavor: rds
+  version: "0.1"
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+  spec:
+    postgres_version: "14"
+    size:
+      writer:
+        instance: db.t4g.medium
+      reader:
+        instance: db.t4g.medium
+        instance_count: 0
