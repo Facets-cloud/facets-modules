@@ -1,0 +1,7 @@
+name: vault
+type: KMS
+displayName: Vault
+description: Vault is a tool for securely accessing secrets.
+outputs:
+  - name: default
+    type: "@output/vault"
