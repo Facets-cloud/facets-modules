@@ -52,9 +52,9 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
@@ -85,9 +85,9 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count

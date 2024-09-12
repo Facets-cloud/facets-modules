@@ -71,7 +71,7 @@ spec:
               title: Volume
               description: The size of the volume.
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "e.g., '100Mi' or '50Gi'"
               x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
             instance_count:
@@ -135,7 +135,7 @@ spec:
               title: Volume
               description: The size of the volume.
               minLength: 1
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "e.g., '100Mi' or '50Gi'"
               x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
           required:
