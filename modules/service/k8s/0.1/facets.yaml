@@ -143,7 +143,7 @@ spec:
             readiness_check_type:
               type: string
               title: Readiness Check Type
-              default: PortCheck
+              default: None
               enum:
                 - None
                 - PortCheck
@@ -152,7 +152,7 @@ spec:
             readiness_start_up_time:
               type: integer
               title: Readiness Start-Up Time
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -163,7 +163,7 @@ spec:
             readiness_timeout:
               type: integer
               title: Readiness Timeout
-              default: 5
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -174,7 +174,7 @@ spec:
             readiness_period:
               type: integer
               title: Readiness Check Interval
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -213,7 +213,7 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "ExecCheck" ]
               description: Commands for readiness check
-              
+
             liveness_check_type:
               type: string
               title: Liveness Check Type
@@ -225,7 +225,7 @@ spec:
                 - ExecCheck
             liveness_start_up_time:
               type: integer
-              default: 30
+              default: 10
               title: Liveness Start-Up Time
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness start up time for the Pod"
@@ -236,7 +236,7 @@ spec:
               description: Wait time for liveness (in sec)
             liveness_timeout:
               type: integer
-              default: 5
+              default: 10
               title: Liveness Timeout
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness timeout for the Pod"
@@ -248,7 +248,7 @@ spec:
             liveness_period:
               type: integer
               title: Liveness Check Interval
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -287,6 +287,13 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "ExecCheck" ]
               description: Commands for liveness
+          required:
+            - readiness_port
+            - readiness_url
+            - readiness_exec_command
+            - liveness_port
+            - liveness_url
+            - liveness_exec_command
         autoscaling:
           type: object
           title: Autoscaling
@@ -301,8 +308,8 @@ spec:
               maximum: 200
               description: Min replicas
               x-ui-placeholder: "Enter Min replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200"
+              pattern: '^(1?[1-9]?[1-9]|200)$'
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
             max:
               type: integer
               title: Max
@@ -311,9 +318,9 @@ spec:
               maximum: 200
               description: Max replicas
               x-ui-placeholder: "Enter Max replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
+              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200 and Max should be more than Min"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
               type: string
               title: Scale based on
@@ -327,7 +334,7 @@ spec:
               description: Max CPU threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter cpu threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "CPU" ]
@@ -337,7 +344,7 @@ spec:
               description: Max RAM threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter memory threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "RAM" ]

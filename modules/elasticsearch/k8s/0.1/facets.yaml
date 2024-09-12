@@ -70,6 +70,7 @@ spec:
           title: Instance Count
           description: Number of instances to create
           minimum: 1
+          maximum: 100
           x-ui-placeholder: "Enter instance count"
       required:
         - cpu
@@ -89,7 +90,7 @@ sample:
   kind: elasticsearch
   metadata: { }
   spec:
-    elasticsearch_version: '8.5.1'
+    elasticsearch_version: '8.14.1'
     size:
       cpu: 2
       memory: 2Gi
