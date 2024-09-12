@@ -7,6 +7,10 @@ clouds:
   - azure
   - gcp
   - kubernetes
+artifact_inputs: 
+  primary: 
+    attribute_path: "spec.zip_path" 
+    artifact_type: "freestyle"
 spec:
   title: Helm
   description: Specification of the Helm chart intent
