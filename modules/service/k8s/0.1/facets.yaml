@@ -11,10 +11,6 @@ clouds:
 - azure
 - gcp
 - kubernetes
-artifact_inputs: 
-  primary: 
-    attribute_path: "spec.release.image" 
-    artifact_type: "docker_image"
 spec:
   title: K8s flavor of service
   type: object
