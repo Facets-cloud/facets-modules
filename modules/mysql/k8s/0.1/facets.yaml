@@ -63,15 +63,17 @@ spec:
               type: string
               title: Volume
               description: Volume size
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[1-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Ex. 8Gi"
-              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$' pattern"
+              x-ui-error-message: "Value doesn't match '^[1-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
               description: Number of Reader Instances
               x-ui-placeholder: "Enter reader instance count"
+              x-ui-error-message: "Instance count must be a non-negative integer"
               minimum: 0
+              maximum: 100
           required:
             - instance_count
             - cpu
