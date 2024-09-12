@@ -60,6 +60,7 @@ spec:
               title: Instance Count
               description: Number of zookeeper instances needs to be deployed
               minimum: 0
+              maximum: 100
           required: ["cpu", "memory", "instance_count"]
         kafka:
           type: object
@@ -92,6 +93,7 @@ spec:
               title: Instance Count
               description: Number of kafka instances needs to be deployed
               minimum: 0
+              maximum: 100
           required: ["cpu", "memory", "instance_count"]
       required: ["zookeeper", "kafka"]
   required: ["authenticated", "kafka_version", "persistence_enabled", "size"]
