@@ -2,10 +2,6 @@ intent: helm
 flavor: k8s
 version: '0.1'
 description: Adds Helm module
-artifact_inputs: 
-  primary: 
-    attribute_path: "spec.release.image" 
-    artifact_type: "freestyle"
 clouds:
   - aws
   - azure
