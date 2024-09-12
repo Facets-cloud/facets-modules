@@ -82,6 +82,7 @@ spec:
               title: Instance Count
               description: Number of kafka instances needs to be deployed
               minimum: 0
+              maximum: 20
             volume:
               type: string
               title: Volume

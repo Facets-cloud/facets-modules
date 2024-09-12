@@ -101,11 +101,11 @@ sample:
   version: "0.3"
   spec:
     authenticated: true
-    mongodb_version: "6.0.2"
+    mongodb_version: "6.0.13"
     size:
       instance_count: 1
       cpu: "500m"
       memory: "800Mi"
       cpu_limit: "1000m"
-      memory_limit: "1.5Gi"
+      memory_limit: "1Gi"
       volume: "10Gi"
