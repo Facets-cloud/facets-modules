@@ -1,0 +1,26 @@
+intent: config_map
+flavor: k8s
+version: '0.2'
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  type: object
+  properties:
+    data:
+      title: Data
+      type: object
+      description: "Enter a valid key-value pair for config-map in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter the value of the config. Eg. key: config_value"
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
+  kind: config_map
+  flavor: k8s
+  version: '0.2'
+  disabled: true
+  spec:
+    data:
