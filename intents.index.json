@@ -94,5 +94,9 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/iam_policy/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/config_map/"
   }
 ]
