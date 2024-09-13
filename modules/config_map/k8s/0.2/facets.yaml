@@ -12,7 +12,7 @@ spec:
     data:
       title: Data
       type: object
-      description: Enter the key value pair for config-map in YAML format. Eg. key:value
+      description: Enter a valid key-value pair for config-map in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter the value of the config. Eg 'key':'config_value'
 sample:
@@ -23,4 +23,4 @@ sample:
   version: '0.2'
   disabled: true
   spec:
-    data:
+    data: ''
