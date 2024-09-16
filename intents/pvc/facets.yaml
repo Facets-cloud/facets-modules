@@ -1,0 +1,7 @@
+name: pvc
+type: Volume
+displayName: PVC
+description: A PersistentVolumeClaim (PVC) is a request for storage in k8s and can be attached to a pod.
+outputs:
+  - name: default
+    type: "@output/pvc"
