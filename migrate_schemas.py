@@ -6,9 +6,11 @@ import glob
 from pprint import pprint
 
 class SchemaMigrator:
-    def __init__(self, schema_metadata_url, local_filename):
+    def __init__(self, schema_metadata_url, local_filename, index_filename, intents_index_filename):
         self.schema_metadata_url = schema_metadata_url
         self.local_filename = local_filename
+        self.index_filename = index_filename
+        self.intents_index_filename = intents_index_filename
 
     def download_schema_metadata(self):
         try:
@@ -83,25 +85,61 @@ class SchemaMigrator:
         
         return filtered_list
 
-    def migrate_schemas(self):
-        # Download and save the schema metadata
-        self.download_schema_metadata()
+    def update_index_file(self, unique_schema_intents):
+        try:
+            with open(self.index_filename, "r") as file:
+                index_data = json.load(file)
+        except FileNotFoundError:
+            index_data = []
 
-        # Read through all the directories inside modules
-        intent_and_flavors = self.read_intent_and_flavors()
-        # pprint(intent_and_flavors)
+        for value in unique_schema_intents:
+            intent = value.get('intent')
+            flavor = value.get('flavor_name')
+            version = value.get('version')
+            clouds = value.get('cloud')
+            git_url = "https://github.com/Facets-cloud/facets-modules"
+            relative_path = f"./modules/{intent}/{flavor}/{version}/"
 
-        # Load the downloaded file into memory and read the data inside it
-        schema_metadata = self.load_schema_metadata()
+            new_entry = {
+                "intent": intent,
+                "flavor": flavor,
+                "version": version,
+                "gitUrl": git_url,
+                "relativePath": relative_path,
+                "clouds": clouds
+            }
 
-        # Extract intent and flavor names from the schema metadata
-        schema_intents = self.extract_schema_intents(schema_metadata)
-        # pprint(schema_intents)
+            index_data.append(new_entry)
 
-        # Compare and filter lists
-        unique_schema_intents = self.compare_and_filter_lists(schema_intents, intent_and_flavors)
-        # pprint(unique_schema_intents)
+        with open(self.index_filename, "w") as file:
+            json.dump(index_data, file, indent=2)
+        print(f"Index file {self.index_filename} updated successfully.")
 
+    def update_intents_index_file(self, unique_schema_intents):
+        try:
+            with open(self.intents_index_filename, "r") as file:
+                intents_index_data = json.load(file)
+        except FileNotFoundError:
+            intents_index_data = []
+
+        for value in unique_schema_intents:
+            intent = value.get('intent')
+            git_url = "https://github.com/Facets-cloud/facets-modules"
+            relative_path = f"./intents/{intent}/"
+
+            new_entry = {
+                "gitUrl": git_url,
+                "relativePath": relative_path
+            }
+
+            if new_entry not in intents_index_data:
+                intents_index_data.append(new_entry)
+
+        with open(self.intents_index_filename, "w") as file:
+            json.dump(intents_index_data, file, indent=2)
+        print(f"Intents index file {self.intents_index_filename} updated successfully.")
+
+    def create_yaml_files(self, unique_schema_intents):
         for value in unique_schema_intents:
             intent = value.get('intent')
             flavor = value.get('flavor_name')
@@ -124,6 +162,33 @@ class SchemaMigrator:
             with open(filename, 'w') as yaml_file:
                 yaml.dump(template_yaml, yaml_file, default_flow_style=False)
 
+    def migrate_schemas(self):
+        # Download and save the schema metadata
+        self.download_schema_metadata()
+
+        # Read through all the directories inside modules
+        intent_and_flavors = self.read_intent_and_flavors()
+        # pprint(intent_and_flavors)
+
+        # Load the downloaded file into memory and read the data inside it
+        schema_metadata = self.load_schema_metadata()
+
+        # Extract intent and flavor names from the schema metadata
+        schema_intents = self.extract_schema_intents(schema_metadata)
+        # pprint(schema_intents)
+
+        # Compare and filter lists
+        unique_schema_intents = self.compare_and_filter_lists(schema_intents, intent_and_flavors)
+
+        # Create YAML files for the unique schema intents
+        self.create_yaml_files(unique_schema_intents)
+
+        # Update the index file with new modules
+        self.update_index_file(unique_schema_intents)
+
+        # Update the intents index file with new intents
+        self.update_intents_index_file(unique_schema_intents)
+
 if __name__ == "__main__":
     # URL of the schema metadata
     schema_metadata_url = (
@@ -131,7 +196,11 @@ if __name__ == "__main__":
     )
     # Local filename to save the downloaded file
     local_filename = "schema-metadata.json"
+    # Index filename to update
+    index_filename = "index.json"
+    # Intents index filename to update
+    intents_index_filename = "intents.index.json"
 
-    migrator = SchemaMigrator(schema_metadata_url, local_filename)
+    migrator = SchemaMigrator(schema_metadata_url, local_filename, index_filename, intents_index_filename)
     migrator.migrate_schemas()
     os.remove(local_filename)
