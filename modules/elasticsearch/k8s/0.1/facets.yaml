@@ -62,14 +62,15 @@ spec:
           type: string
           title: Volume
           description: Size of the volume
-          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+          pattern: "^[0-9]+[EiKMGTP]i?$"
           x-ui-placeholder: "Enter volume size"
-          x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
         instance_count:
           type: integer
           title: Instance Count
           description: Number of instances to create
           minimum: 1
+          maximum: 100
           x-ui-placeholder: "Enter instance count"
       required:
         - cpu
@@ -89,7 +90,7 @@ sample:
   kind: elasticsearch
   metadata: { }
   spec:
-    elasticsearch_version: '8.5.1'
+    elasticsearch_version: '8.14.1'
     size:
       cpu: 2
       memory: 2Gi
