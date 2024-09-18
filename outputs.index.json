@@ -38,10 +38,5 @@
     "name": "ingress",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ingress/"
-  },
-  {
-    "name": "vault",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/vault/"
   }
 ]

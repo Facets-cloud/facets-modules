@@ -1,8 +1,0 @@
-name: vault
-out:
-  type: object
-  title: Vault
-  description: Vault
-  properties:
-    attributes:
-    interfaces:
