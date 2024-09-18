@@ -35,6 +35,94 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
+    cloud_permissions:
+      type: object
+      title: Cloud Permissions
+      description: Assign roles, define access levels, and enforce conditions for managing resource security and compliance
+      x-ui-toggle: true
+      properties:
+        aws:
+          type: object
+          title: AWS
+          x-ui-toggle: true
+          properties:
+            enable_irsa:
+              type: boolean
+              title: Enable IRSA
+              description: Enable this to grant fine-grained AWS permissions to Kubernetes workloads using service accounts.
+            iam_policies:
+              type: object
+              title: IAM policies
+              description: Define IAM policies to manage permissions, control-access and secure resources
+              patternProperties:
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                title: policy_name
+                properties:
+                  arn:
+                    title: ARN
+                    type: string
+                    pattern: '^arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_/]+$'
+                    x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
+                required:
+                  - arn
+        gcp:
+          type: object
+          title: GCP
+          x-ui-toggle: true
+          properties:
+            roles:
+              type: object
+              title: GCP Role
+              description: Assign GCP roles to define access and permissions for managing resources.
+              patternProperties:
+                keyPattern: '^[a-zA-Z0-9_.-]*$'
+                title: Roles
+                properties:
+                  role:
+                    title: Role
+                    type: string
+                    pattern: '^roles\/[A-Za-z_.-]+$'
+                    x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: roles/firestore.serviceAgent"
+                  condition:
+                    type: object
+                    title: Condition
+                    x-ui-toggle: true
+                    description: Define conditional logic to grant the role based on specific attributes or criteria, such as time or request context.
+                    properties:
+                      expression:
+                        title: Expression
+                        type: string
+                      title:
+                        title: Title
+                        type: string
+                      description:
+                        title: Description
+                        type: string
+                    required:
+                      - expression
+                required:
+                  - role
+        azure:
+          type: object
+          title: Azure
+          x-ui-toggle: true
+          properties:
+            roles:
+              type: object
+              title: Azure Role
+              description: Assign Azure roles to define access and permissions for managing resources.
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                title: Roles
+                properties:
+                  role:
+                    title: role
+                    type: string
+                    x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
+                required:
+                  - role
     runtime:
       type: object
       title: Runtime
@@ -64,7 +152,8 @@ spec:
             readiness_check_type:
               type: string
               title: Readiness Check Type
-              default: PortCheck
+              default: None
+              x-ui-no-sort: true
               enum:
                 - None
                 - PortCheck
@@ -73,7 +162,7 @@ spec:
             readiness_start_up_time:
               type: integer
               title: Readiness Start-Up Time
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -84,7 +173,7 @@ spec:
             readiness_timeout:
               type: integer
               title: Readiness Timeout
-              default: 5
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -95,7 +184,7 @@ spec:
             readiness_period:
               type: integer
               title: Readiness Check Interval
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter readiness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -134,11 +223,12 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: [ "ExecCheck" ]
               description: Commands for readiness check
-              
+
             liveness_check_type:
               type: string
               title: Liveness Check Type
               default: None
+              x-ui-no-sort: true
               enum:
                 - None
                 - PortCheck
@@ -146,7 +236,7 @@ spec:
                 - ExecCheck
             liveness_start_up_time:
               type: integer
-              default: 30
+              default: 10
               title: Liveness Start-Up Time
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness start up time for the Pod"
@@ -157,7 +247,7 @@ spec:
               description: Wait time for liveness (in sec)
             liveness_timeout:
               type: integer
-              default: 5
+              default: 10
               title: Liveness Timeout
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness timeout for the Pod"
@@ -169,7 +259,7 @@ spec:
             liveness_period:
               type: integer
               title: Liveness Check Interval
-              default: 30
+              default: 10
               pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
               x-ui-placeholder: "Enter liveness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
@@ -208,6 +298,13 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: [ "ExecCheck" ]
               description: Commands for liveness
+          required:
+            - readiness_port
+            - readiness_url
+            - readiness_exec_command
+            - liveness_port
+            - liveness_url
+            - liveness_exec_command
         autoscaling:
           type: object
           title: Autoscaling
@@ -222,8 +319,8 @@ spec:
               maximum: 200
               description: Min replicas
               x-ui-placeholder: "Enter Min replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200"
+              pattern: '^(1?[1-9]?[1-9]|200)$'
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
             max:
               type: integer
               title: Max
@@ -232,9 +329,9 @@ spec:
               maximum: 200
               description: Max replicas
               x-ui-placeholder: "Enter Max replicas for you application"
-              pattern: '^(1?[0-9]?[0-9]|200)$'
+              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-200 and Max should be more than Min"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
               type: string
               title: Scale based on
@@ -248,7 +345,7 @@ spec:
               description: Max CPU threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter cpu threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "CPU" ]
@@ -258,7 +355,7 @@ spec:
               description: Max RAM threshold
               pattern: '^(1?[0-9]?[0-9]|100)$'
               x-ui-placeholder: "Enter memory threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 0-100"
+              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
                 values: [ "RAM" ]
@@ -571,6 +668,7 @@ spec:
     - enable_host_anti_affinity
     - runtime
     - release
+    - cloud_permissions
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json

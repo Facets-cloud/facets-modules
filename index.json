@@ -361,19 +361,6 @@
     ]
   },
   {
-    "intent": "mysql",
-    "flavor": "k8s",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mysql/k8s/0.2/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
-    ]
-  },
-  {
     "intent": "mysql_web",
     "flavor": "k8s",
     "version": "0.1",
@@ -417,6 +404,32 @@
     "relativePath": "./modules/aws_iam_role/default/0.1/",
     "clouds": [
       "aws"
+    ]
+  },
+  {
+    "intent": "config_map",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/config_map/k8s/0.2/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "kubernetes_secret",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_secret/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
     ]
   }
 ]

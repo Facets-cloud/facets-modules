@@ -65,15 +65,17 @@ spec:
               type: string
               title: Volume
               description: Volume Size for Reader
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Specify reader volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
               description: Number of Reader Instances
-              minimum: 1
+              minimum: 0
+              maximum: 20
               x-ui-placeholder: "Enter reader instance count"
+              x-ui-error-message: "Instance count must be a non-negative integer"
           required:
             - instance
             - volume
@@ -120,9 +122,9 @@ spec:
               type: string
               title: Volume
               description: Volume Size for Writer
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Specify writer volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
           required:
             - instance
             - volume
