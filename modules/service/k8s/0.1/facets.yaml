@@ -61,7 +61,7 @@ spec:
                   arn:
                     title: ARN
                     type: string
-                    pattern: '^arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_/]+$'
+                    pattern: '^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_/]+|\$\{[A-Za-z0-9._-]+\})$'
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
                 required:
