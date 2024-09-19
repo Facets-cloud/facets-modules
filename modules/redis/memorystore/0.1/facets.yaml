@@ -1,0 +1,24 @@
+intent: redis
+flavor: memorystore
+version: '0.1'
+description: Adds redis - memorystore flavor
+clouds:
+- gcp
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/redis/redis.schema.json
+  flavor: memorystore
+  metadata: {}
+  kind: redis
+  disabled: true
+  version: '0.2'
+  spec:
+    authenticated: true
+    redis_version: '5.0'
+    persistence_enabled: false
+    size:
+      reader:
+        instance_count: 1
+        volume: 5Gi
+      writer:
+        instance_count: 1
+        memory: 5Gi

@@ -1,0 +1,23 @@
+intent: service_bus
+flavor: azure_service_bus
+version: '0.1'
+description: Adds service_bus - azure_service_bus flavor
+clouds:
+- azure
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/service_bus/service_bus.schema.json
+  kind: service_bus
+  flavor: azure_service_bus
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags: {}
+  spec:
+    size:
+      sku: ''
+      capacity: ''
+    topics:
+      test:
+        name: ''
+        status: Active
+      test2: {}

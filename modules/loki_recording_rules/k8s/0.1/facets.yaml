@@ -1,0 +1,33 @@
+intent: loki_recording_rules
+flavor: k8s
+version: '0.1'
+description: Adds loki_recording_rules - k8s flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/loki_recording_rules/loki_recording_rules.schema.json
+  kind: loki_recording_rules
+  flavor: k8s
+  version: '0.1'
+  disabled: true
+  lifecycle: ENVIRONMENT
+  metadata:
+    name: sample-loki-log-recording
+  depends_on: []
+  spec:
+    rules:
+      flog:requests:rate1m:
+        expr: sum(rate({app="flog"} | json[1m])) by (app, pod, job)
+        disabled: false
+        labels:
+          cluster: infra-dev
+      flog:requests:rate5m:
+        expr: sum(rate({app="flog"} | json[5m])) by (app, pod, job)
+        disabled: false
+        labels:
+          cluster: infra-dev
+  advanced: {}
+  out: {}

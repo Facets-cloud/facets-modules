@@ -1,0 +1,29 @@
+intent: postgres_user
+flavor: default
+version: '0.1'
+description: Adds postgres_user - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres_user/postgres_user.schema.json
+  kind: postgres_user
+  flavor: default
+  version: '0.1'
+  metadata: {}
+  spec:
+    endpoint: postgres:testPostgresPassword@test-postgresql.default.svc.cluster.local:5432
+    permissions:
+      permission1:
+        permission: ADMIN
+        database: test_db1
+        schema: public
+        table: test1
+      permission2:
+        permission: ADMIN
+        database: test_db1
+        schema: public
+        table: '*'
+  disabled: true

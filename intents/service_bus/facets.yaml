@@ -1,0 +1,3 @@
+name: service_bus
+type: azure_service_bus
+displayName: service bus
