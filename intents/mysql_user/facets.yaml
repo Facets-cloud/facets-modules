@@ -1,0 +1,3 @@
+name: mysql_user
+type: sharded_user
+displayName: mysql user

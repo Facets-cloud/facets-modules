@@ -1,0 +1,3 @@
+name: zookeeper
+type: k8s
+displayName: zookeeper

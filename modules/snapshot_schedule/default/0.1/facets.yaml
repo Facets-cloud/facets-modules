@@ -1,0 +1,26 @@
+intent: snapshot_schedule
+flavor: default
+version: '0.1'
+description: Adds snapshot_schedule - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/snapshot_schedule/snapshot_schedule.schema.json
+  kind: snapshot_schedule
+  conditional_on_intent: kafka
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    schedule: '@hourly'
+    retention_policy:
+      expiry: 2160h
+      count: 10
+    resource_name: kafka-alpha
+    resource_type: kafka
+    additional_claim_selector_labels:
+      key: value

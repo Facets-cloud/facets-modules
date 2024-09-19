@@ -1,0 +1,3 @@
+name: kubernetes_node_pool
+type: aks
+displayName: kubernetes node pool

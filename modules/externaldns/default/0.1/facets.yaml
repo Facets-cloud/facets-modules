@@ -1,0 +1,21 @@
+intent: externaldns
+flavor: default
+version: '0.1'
+description: Adds externaldns - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/externaldns/externaldns.schema.json
+  kind: externaldns
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    provider: aws
+    domains:
+    - abc.com
+    aws: {}

@@ -1,0 +1,3 @@
+name: loki_alerting_rules
+type: k8s
+displayName: loki alerting rules
