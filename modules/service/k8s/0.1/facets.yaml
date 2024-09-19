@@ -82,7 +82,7 @@ spec:
                   role:
                     title: Role
                     type: string
-                    pattern: '^roles\/[A-Za-z_.-]+$'
+                    pattern: '(^roles\/[A-Za-z_.-]+$)|(^\${.+}$)'
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: roles/firestore.serviceAgent"
                   condition:
