@@ -1,3 +1,4 @@
 name: externaldns
 type: default
-displayName: externaldns
+displayName: ExternalDNS
+description: Automates DNS record management for Kubernetes Ingresses and services.

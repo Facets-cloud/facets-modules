@@ -1,3 +1,4 @@
 name: schemahero_table
 type: K8s
-displayName: schemahero table
+displayName: Schemahero Table
+description: Manages table schema migrations and modifications with declarative configuration.

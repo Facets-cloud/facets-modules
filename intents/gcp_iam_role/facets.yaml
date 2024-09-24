@@ -1,3 +1,4 @@
 name: gcp_iam_role
 type: default
-displayName: gcp iam role
+displayName: GCP IAM Role
+description: Role-based access control in Google Cloud, managing permissions for users and services.

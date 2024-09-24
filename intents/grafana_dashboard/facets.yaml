@@ -1,3 +1,4 @@
 name: grafana_dashboard
 type: default
-displayName: grafana dashboard
+displayName: Grafana Dashboard
+description: Visualization tool for monitoring and analytics, integrating data from multiple sources.

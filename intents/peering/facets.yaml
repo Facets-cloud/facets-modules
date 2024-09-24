@@ -1,3 +1,4 @@
 name: peering
 type: default
-displayName: peering
+displayName: Peering
+description: Networking connection between VPCs, enabling private communication across environments.

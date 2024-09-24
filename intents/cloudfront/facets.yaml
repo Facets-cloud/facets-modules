@@ -1,3 +1,4 @@
 name: cloudfront
 type: default
-displayName: cloudfront
+displayName: CloudFront
+description: Content delivery network (CDN) that securely delivers data, videos, and applications to users globally.

@@ -1,3 +1,4 @@
 name: aws_eventbridge
 type: default
-displayName: aws eventbridge
+displayName: AWS EventBridge
+description: Event-driven service that enables integration across AWS services and custom applications.
