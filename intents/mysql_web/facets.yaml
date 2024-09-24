@@ -1,4 +1,4 @@
 name: mysql_web
 type: Ui
-displayName: Mysql Web Ui
-description: Ui for Users to connect to Mysql
+displayName: MySQL Web UI
+description: UI for Users to connect to MySQL

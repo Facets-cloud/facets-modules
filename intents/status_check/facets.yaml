@@ -1,3 +1,4 @@
 name: status_check
 type: default
-displayName: status check
+displayName: Status Check
+description: Health monitoring tool that continuously checks the operational status of resources.

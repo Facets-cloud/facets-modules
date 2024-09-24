@@ -1,3 +1,4 @@
 name: alb
 type: default
-displayName: alb
+displayName: ALB
+description: Application Load Balancer that distributes traffic to improve availability, security, and fault tolerance.

@@ -1,3 +1,4 @@
 name: azure_functions
 type: default
-displayName: azure functions
+displayName: Azure Functions
+description: Serverless compute service that runs code without infrastructure management, triggered by events.
