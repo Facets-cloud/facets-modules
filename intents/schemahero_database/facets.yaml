@@ -1,4 +1,4 @@
 name: schemahero_database
 type: K8s
 displayName: Schemahero Database
-description: Tool for managing database schema migrations with version control and automation.
+description: Intent to configure a database for schema migrations.

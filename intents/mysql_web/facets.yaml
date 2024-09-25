@@ -1,4 +1,4 @@
 name: mysql_web
 type: Ui
 displayName: MySQL Web UI
-description: UI for Users to connect to MySQL
+description: UI for MySQL instance, which can be used for reading, debugging purposes.

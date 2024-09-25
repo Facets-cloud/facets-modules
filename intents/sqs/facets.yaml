@@ -1,4 +1,4 @@
 name: sqs
 type: default
 displayName: SQS
-description: Fully managed message queuing service that enables decoupling and scaling microservices.
+description: Fully managed AWS message queuing service.
