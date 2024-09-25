@@ -1,5 +1,5 @@
 name: pvc
-type: Volume
+type: k8s
 displayName: PVC
 description: Persistent Volume Claim for storage in Kubernetes, dynamically requesting storage resources.
 outputs:
