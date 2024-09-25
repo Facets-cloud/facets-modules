@@ -1,0 +1,24 @@
+intent: gcp_iam_role
+flavor: default
+version: '0.1'
+description: Adds gcp_iam_role - default flavor
+clouds:
+- gcp
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/gcp_iam_role/gcp_iam_role.schema.json
+  kind: gcp_iam_role
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    role_id: roleId
+    stage: GA
+    base_roles:
+    - roles/artifactregistry.createOnPushWriter
+    permissions:
+    - iam.roles.list
+    - iam.roles.create
+    - iam.roles.delete
+    excluded_permissions: []
+    title: random title

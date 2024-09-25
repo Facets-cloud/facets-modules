@@ -1,0 +1,21 @@
+intent: aws_lambda
+flavor: default
+version: '0.1'
+description: Adds aws_lambda - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json
+  kind: aws_lambda
+  flavor: default
+  disabled: true
+  metadata:
+    description: some desc
+  version: '0.1'
+  spec:
+    release:
+      s3_path: ''
+    description: ''
+    env: {}
+    handler: ''
+    runtime: ''

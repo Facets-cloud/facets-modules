@@ -1,0 +1,38 @@
+intent: status_check
+flavor: default
+version: '0.1'
+description: Adds status_check - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/status_check/status_check.schema.json
+  kind: status_check
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    http:
+      http-check:
+        url: https://www.google.com
+        method: GET
+        expected_status_code: '200'
+        disabled: false
+    mongo:
+      mongo-check:
+        disabled: false
+        url: mongodb://localhost:27017
+      mongo-check2:
+        disabled: false
+        url: mongodb://localhost:27017
+    redis:
+      redis-check:
+        disabled: false
+        url: redis://localhost:6379
+    tcp:
+      tcp-check:
+        disabled: false
+        url: google.com:443

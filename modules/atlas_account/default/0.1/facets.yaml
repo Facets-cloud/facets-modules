@@ -1,0 +1,24 @@
+intent: atlas_account
+flavor: default
+version: '0.1'
+description: Adds atlas_account - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  flavor: default
+  lifecycle: ENVIRONMENT
+  metadata: {}
+  depends_on: []
+  advanced: {}
+  kind: atlas_account
+  provided: false
+  disabled: false
+  version: '0.1'
+  spec:
+    project_id: ${blueprint.self.variables.ATLAS_PROJECT_ID}
+    public_key: ${blueprint.self.secrets.ATLAS_PUBLIC_KEY}
+    private_key: ${blueprint.self.secrets.ATLAS_PRIVATE_KEY}
+  out: {}

@@ -1,0 +1,44 @@
+intent: aws_dlm_lifecycle_policy
+flavor: default
+version: '0.1'
+description: Adds aws_dlm_lifecycle_policy - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_dlm_lifecycle_policy/aws_dlm_lifecycle_policy.schema.json
+  kind: aws_dlm_lifecycle_policy
+  flavor: default
+  version: '0.1'
+  spec:
+    schedules:
+      schedule1:
+        copy_tags: true
+        create_rule:
+          interval: 1
+          interval_unit: HOURS
+          times:
+          - 07:00
+        cross_region_copy_rules:
+          us-west-1-copy:
+            copy_tags: true
+            encrypted: true
+            retain_rule:
+              interval: 1
+              interval_unit: DAYS
+            target: us-west-1
+        retain_rule:
+          count: 14
+        tags_to_add:
+          ManagedBy: Terraform
+      schedule_custom_cron:
+        copy_tags: true
+        create_rule:
+          cron_expression: cron(15 10 ? * 6L *)
+        cross_region_copy_rules: {}
+        retain_rule:
+          count: 4
+        tags_to_add:
+          ManagedBy: Terraform
+    target_tags:
+      FacetsClusterName: dev
+      FacetsControlPlane: demo.root.console.facets.cloud

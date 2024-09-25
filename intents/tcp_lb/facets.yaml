@@ -1,0 +1,4 @@
+name: tcp_lb
+type: nlb
+displayName: TCP LB
+description: TCP Load Balancer that distributes TCP traffic across backend servers.

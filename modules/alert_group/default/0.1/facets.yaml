@@ -1,0 +1,57 @@
+intent: alert_group
+flavor: default
+version: '0.1'
+description: Adds alert_group - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
+  kind: alert_group
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    rules:
+      KubernetesPodCrashLooping1:
+        expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m])
+          * 1200 > 5
+        for: 5m
+        summary: Kubernetes pod crash looping
+        message: Kubernetes pod crash looping since last 5 minutes for {{ $labels.instance
+          }}
+        severity: critical
+        resource_name: '{{ $labels.pod }}'
+        resource_type: pod
+        labels:
+          team: stack_owner
+        annotations:
+          k1: v1
+      StatefulSetNonReadyPods1:
+        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
+        message: StatefuleSet has non-ready pods for longer than a 15m
+        summary: StatefuleSet has non-ready pods
+        for: 15m
+        labels:
+          team: stack_owner
+        annotations:
+          k2: v2
+        severity: warning
+        resource_name: '{{ $labels.statefulset }}'
+        resource_type: statefulset
+      StatefulSetNonReadyPods2:
+        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
+        message: StatefuleSet has non-ready pods for longer than a 15m
+        summary: StatefuleSet has non-ready pods
+        for: 15m
+        disabled: true
+        labels:
+          team: stack_owner
+        annotations:
+          k2: v2
+        severity: warning
+        resource_name: '{{ $labels.statefulset }}'
+        resource_type: statefulset
