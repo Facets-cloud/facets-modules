@@ -21,6 +21,16 @@
   },
   {
     "intent": "redis",
+    "flavor": "azure_cache",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/redis/azure_cache/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "redis",
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -106,6 +116,19 @@
     "relativePath": "./modules/mysql/rds/0.1/",
     "clouds": [
       "aws"
+    ]
+  },
+  {
+    "intent": "mysql_web",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql/web_ui/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
     ]
   },
   {
@@ -687,6 +710,29 @@
     "relativePath": "./modules/log_collector/loki_azure_blob/0.1/",
     "clouds": [
       "azure"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki_gcp_gcs",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki_gcp_gcs/0.2/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
     ]
   },
   {
