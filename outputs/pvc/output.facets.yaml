@@ -1,8 +1,8 @@
 name: pvc
 out:
   type: object
-  title: Vault
-  description: Vault
+  title: PVC
+  description: PVC
   properties:
     attributes:
     interfaces:
