@@ -1,0 +1,24 @@
+intent: kubernetes_node_pool
+flavor: aks
+version: '0.1'
+description: Adds kubernetes_node_pool - aks flavor
+clouds:
+- azure
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
+  flavor: aks
+  kind: kubernetes_node_pool
+  metadata:
+    tags:
+      managed-by: facets
+    annotations: {}
+  disabled: true
+  version: '0.1'
+  spec:
+    instance: Spot
+    instance_type: Standard_F8
+    min_node_count: 0
+    max_node_count: 100
+    disk_size: 50Gi
+    taints: {}
+    labels: {}

@@ -1,0 +1,15 @@
+intent: sqs
+flavor: default
+version: '0.2'
+description: Adds sqs - default flavor
+clouds:
+- aws
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/sqs/sqs.schema.json
+  version: '0.2'
+  flavor: default
+  kind: sqs
+  metadata: {}
+  spec: {}
+  disabled: true

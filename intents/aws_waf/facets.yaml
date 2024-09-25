@@ -1,0 +1,4 @@
+name: aws_waf
+type: default
+displayName: AWS WAF
+description: Web Application Firewall that protects applications against common web exploits.

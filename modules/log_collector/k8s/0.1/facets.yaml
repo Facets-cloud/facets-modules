@@ -1,0 +1,207 @@
+intent: log_collector
+flavor: k8s
+version: '0.1'
+description: Adds log_collector - k8s flavor
+clouds:
+- gcp
+- kubernetes
+- azure
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/log-collector/log-collector.schema.json
+  kind: log_collector
+  flavor: k8s
+  version: '0.2'
+  lifecycle: ENVIRONMENT_BOOTSTRAP
+  disabled: true
+  provided: false
+  depends_on: []
+  metadata:
+    name: loki-log-collector
+  spec:
+    retentation_days: 7
+    storage_size: 5Gi
+  advanced:
+    loki:
+      loki:
+        values:
+          loki:
+            structuredConfig:
+              ruler:
+                storage:
+                  type: local
+                  local:
+                    directory: /etc/loki/rules
+                rule_path: /tmp/loki/rules-temp
+                alertmanager_url: http://prometheus-operator-alertmanager.default.svc.cluster.local:9093
+                ring:
+                  kvstore:
+                    store: inmemory
+                enable_api: true
+                enable_alertmanager_v2: true
+              server:
+                http_server_read_timeout: 310s
+                http_server_write_timeout: 310s
+                http_server_idle_timeout: 300s
+              ingester:
+                chunk_target_size: 1572864
+                chunk_encoding: snappy
+                max_chunk_age: 2h
+                chunk_idle_period: 2h
+              schema_config:
+                configs:
+                - from: '2022-06-21'
+                  store: boltdb-shipper
+                  object_store: s3
+                  schema: v12
+                  index:
+                    prefix: index_
+                    period: 24h
+              compactor:
+                working_directory: /data/compactor
+                shared_store: s3
+                compaction_interval: 10m
+              querier:
+                query_timeout: 300s
+                engine:
+                  timeout: 300s
+              ingester_client:
+                grpc_client_config:
+                  max_recv_msg_size: 104857600
+              limits_config:
+                max_global_streams_per_user: 5000
+                split_queries_by_interval: 15m
+                max_query_parallelism: 32
+          ruler:
+            enabled: true
+            kind: Deployment
+            replicas: 1
+            directories:
+              tenant_facets:
+                rules.txt: "groups:\n  - name: test\n    rules:\n    - alert: ServiceDiscoveryNotPresent\n\
+                  \      expr: sum(rate({app=\"p2e-web3bridge-queue\"} |= \"WARNING:\
+                  \ Service discovery for service-p2e-identity\" [1m])) by (job) >\
+                  \ 0\n      for: 1m\n      labels:\n        severity: warning\n \
+                  \     annotations:\n        summary: Service discovery for service-p2e-identity\
+                  \ not present in ENV, using from ZK\n        description: Service\
+                  \ discovery for service-p2e-identity not present in ENV, using from\
+                  \ ZK\n"
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+          compactor:
+            enabled: true
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+          distributor:
+            replicas: 1
+            autoscaling:
+              enabled: true
+              minReplicas: 1
+              maxReplicas: 5
+              targetCPUUtilizationPercentage: 60
+              targetMemoryUtilizationPercentage: 80
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+          ingester:
+            replicas: 1
+            persistence:
+              enabled: true
+              size: 5Gi
+            autoscaling:
+              enabled: true
+              minReplicas: 1
+              maxReplicas: 5
+              targetCPUUtilizationPercentage: 60
+              targetMemoryUtilizationPercentage: 80
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+          querier:
+            replicas: 1
+            persistence:
+              enabled: true
+              size: 5Gi
+            autoscaling:
+              enabled: true
+              minReplicas: 1
+              maxReplicas: 10
+              targetCPUUtilizationPercentage: 60
+              targetMemoryUtilizationPercentage: 80
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+          queryFrontend:
+            replicas: 1
+            autoscaling:
+              enabled: true
+              minReplicas: 1
+              maxReplicas: 5
+              targetCPUUtilizationPercentage: 60
+              targetMemoryUtilizationPercentage: 80
+            extraEnv:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            extraArgs:
+            - -memberlist.bind-addr=$(MY_POD_IP)
+      minio:
+        values:
+          provisioning:
+            extraCommands:
+            - mc ilm ls provisioning/loki --json
+      promtail:
+        scrape_kubelet_logs:
+          enabled: true
+          scrape_extra_matches:
+          - containerd.service
+        values:
+          config:
+            snippets:
+              pipelineStages:
+              - docker: {}
+              - match:
+                  selector: '{app="control-plane-new"}'
+                  stages:
+                  - multiline:
+                      firstline: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} [A-Z]+
+                      max_wait_time: 2s
+              - labeldrop:
+                - filename
+                - pod
+                - container
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+          nodeSelector:
+            kubernetes.io/hostname: ip-10-30-76-139.ec2.internal
+      loki_canary:
+        enable_loki_canary: true
+        values:
+          nodeSelector:
+            kubernetes.io/hostname: ip-10-30-76-139.ec2.internal
+  out: {}
