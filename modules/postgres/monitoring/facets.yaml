@@ -114,4 +114,4 @@ sample:
         disabled: false
         interval: 5m
         severity: critical
-        threshold: 8000
+        threshold: 80
