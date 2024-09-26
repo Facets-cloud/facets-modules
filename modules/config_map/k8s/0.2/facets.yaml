@@ -21,6 +21,7 @@ sample:
   kind: config_map
   flavor: k8s
   version: '0.2'
+  metadata: {}
   disabled: true
   spec:
     data:
