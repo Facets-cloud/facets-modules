@@ -9,6 +9,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   version: '0.1'
   kind: kubernetes_node_pool
+  metadata: {}
   disabled: true
   spec:
     instance_type: n2d-standard-2
