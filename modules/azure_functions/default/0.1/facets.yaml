@@ -1,0 +1,26 @@
+intent: azure_functions
+flavor: default
+version: '0.1'
+description: Adds azure_functions - default flavor
+clouds:
+- azure
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/azure_functions/azure_functions.schema.json
+  flavor: default
+  metadata:
+    tags: {}
+  kind: azure_functions
+  disabled: true
+  version: '0.1'
+  spec:
+    os: Linux
+    sku: P2v2
+    runtime:
+      stack: node
+      version: '14'
+    deploy_as: code
+    in_vnet: true
+    app_setting:
+      WEBSITE_RUN_FROM_PACKAGE: '1'
+    release:
+      zip_path: <file_path>/<your_zipfile_name.zip>

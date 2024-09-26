@@ -1,0 +1,19 @@
+intent: peering
+flavor: default
+version: '0.1'
+description: Adds peering - default flavor
+clouds:
+- aws
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/peering/peering.schema.json
+  flavor: default
+  kind: peering
+  version: '0.1'
+  metadata: {}
+  spec:
+    account_id: yyyyyy
+    cidr: 10.0.0.0/16
+    region: us-east-1
+    vpc_id: xxxxxxxxx
+  disabled: true

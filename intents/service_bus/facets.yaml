@@ -1,0 +1,4 @@
+name: service_bus
+type: azure_service_bus
+displayName: Service Bus
+description: Messaging service that enables communication between applications and services.

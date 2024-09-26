@@ -1,0 +1,30 @@
+intent: kubernetes_node_pool
+flavor: eks_self_managed
+version: '0.1'
+description: Adds kubernetes_node_pool - eks_self_managed flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
+  kind: kubernetes_node_pool
+  flavor: eks_self_managed
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+    annotations: {}
+  spec:
+    instance_type: t3.medium
+    is_public: false
+    azs: us-east-1a
+    min_node_count: 0
+    max_node_count: 5
+    disk_size: 20
+    taints:
+      taint1:
+        effect: NoSchedule
+        key: dedicated
+        value: windowsnode
+    labels:
+      service: rendering-service

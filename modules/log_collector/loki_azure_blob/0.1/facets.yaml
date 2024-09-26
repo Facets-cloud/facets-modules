@@ -1,0 +1,23 @@
+intent: log_collector
+flavor: loki_azure_blob
+version: '0.1'
+description: Adds log_collector - loki_azure_blob flavor
+clouds:
+- azure
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json
+  flavor: loki_blob
+  metadata:
+    name: loki-blob-log-collector
+  kind: log_collector
+  provided: false
+  disabled: true
+  version: '0.2'
+  spec:
+    retentation_days: 10
+    storage_size: '10'
+  advanced:
+    loki_blob:
+      container_name: <Dollar reference of the azure_storage_container>
+      primary_access_key: <Dollar reference the access key of azure_storage_container>
+      storage_account_name: <Dollar reference the name of the Storage Account of azure_storage_container>

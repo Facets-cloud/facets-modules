@@ -1,0 +1,24 @@
+intent: mysql
+flavor: aurora
+version: '0.1'
+description: Adds mysql - aurora flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json
+  kind: mysql
+  flavor: aurora
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags:
+      managed-by: facets
+  spec:
+    mysql_version: 8.0.mysql_aurora.3.02.0
+    size:
+      writer:
+        instance: db.t4g.medium
+        instance_count: 1
+      reader:
+        instance_count: 1
+        instance: db.t4g.medium

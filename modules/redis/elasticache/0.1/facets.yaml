@@ -1,0 +1,22 @@
+intent: redis
+flavor: elasticache
+version: '0.1'
+description: Adds redis - elasticache flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/redis/redis.schema.json
+  flavor: elasticache
+  metadata:
+    tags:
+      managed-by: facets
+  kind: redis
+  disabled: true
+  version: '0.2'
+  spec:
+    authenticated: true
+    redis_version: 6.x
+    persistence_enabled: false
+    size:
+      instance_count: 1
+      instance: cache.t3.micro

@@ -1,0 +1,18 @@
+intent: aws_api_gateway
+flavor: default
+version: '0.1'
+description: Adds aws_api_gateway - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_api_gateway/aws_api_gateway.schema.json
+  kind: aws_api_gateway
+  flavor: default
+  disabled: true
+  metadata:
+    description: some desc
+  version: '0.1'
+  spec:
+    protocol: HTTP
+    routes:
+      GET /: {}
