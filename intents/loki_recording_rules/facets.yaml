@@ -1,0 +1,4 @@
+name: loki_recording_rules
+type: K8s
+displayName: Loki Recording Rules
+description: Precompute frequently needed queries in Loki for faster access and optimized performance.

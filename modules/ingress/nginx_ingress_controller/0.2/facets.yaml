@@ -1,0 +1,36 @@
+intent: ingress
+flavor: nginx_ingress_controller
+version: '0.2'
+description: Adds ingress - nginx_ingress_controller flavor
+clouds:
+- gcp
+- kubernetes
+- azure
+- aws
+sample:
+  kind: ingress
+  flavor: nginx_ingress_controller
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/loadbalancer/ingress.schema.json
+  disabled: true
+  version: '0.2'
+  lifecycle: ENVIRONMENT
+  provided: false
+  depends_on: []
+  metadata:
+    name: test-nginx
+    annotations: {}
+  spec:
+    private: false
+    basic_auth: false
+    grpc: false
+    domains: {}
+    rules:
+      grafana1:
+        service_name: prometheus-operator-grafana
+        path: /
+        port: 80
+        domain_prefix: grafana1
+        annotations:
+          app: ''
+        disable_auth: false
+    force_ssl_redirection: true

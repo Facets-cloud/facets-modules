@@ -1,0 +1,23 @@
+intent: postgres
+flavor: cloudsql
+version: '0.1'
+description: Adds postgres - cloudsql flavor
+clouds:
+- gcp
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
+  flavor: cloudsql
+  disabled: true
+  version: '0.2'
+  kind: postgres
+  metadata: {}
+  spec:
+    size:
+      writer:
+        instance: db-f1-micro
+        volume: 10G
+      reader:
+        instance_count: 2
+        instance: db-g1-small
+        volume: 10G
+    postgres_version: '12.11'

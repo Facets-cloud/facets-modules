@@ -1,0 +1,19 @@
+intent: log_collector
+flavor: loki_aws_s3
+version: '0.1'
+description: Adds log_collector - loki_aws_s3 flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json
+  kind: log_collector
+  flavor: loki_s3
+  version: '0.2'
+  disabled: true
+  metadata: {}
+  spec:
+    retentation_days: 0
+    storage_size: ''
+  advanced:
+    loki_s3:
+      bucket_name: <Dollar reference the name of s3 bucket>

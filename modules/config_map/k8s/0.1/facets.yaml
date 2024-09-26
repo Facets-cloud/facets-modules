@@ -1,0 +1,96 @@
+intent: config_map
+flavor: k8s
+version: '0.1'
+description: Adds config_map - k8s flavor
+clouds:
+- gcp
+- kubernetes
+- azure
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
+  kind: config_map
+  flavor: k8s
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    data:
+      ssl.crt: '-----BEGIN CERTIFICATE-----
+
+        MIIDBzCCAe+gAwIBAgIJALOT/fiqj4yhMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+
+        BAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xNzA1MDMxNDA2NDVaFw0yNzA1MDExNDA2
+
+        NDVaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+
+        BQADggEPADCCAQoCggEBALHEIGNhuQsD1MI3zE5Kts5zN91ggbFjFq0aLWjYuIB6
+
+        ttfpS158b9x9oWbdACAqGIHC5i1/iwiJkW8J1UcxtPOOHZy4s9E48KnPzJOd6yAv
+
+        pxsBuns78Jx5hgBBt+J2TSwEL+Hi40HhBiog+Omk2pi3juMGkhFJaaSiBQf7gA0E
+
+        TXSC5iLK1XPCd6aQpDZwxQpjDNeDk9CR6asqtPJcm9X2skLuNWyIr8dKHpdzoQ5A
+
+        /5GhmtLC/WYwZdqi14Gwph+GS7a2eQYzbGwIZWfcPiMytoNGidDC2HurRpGt91PK
+
+        PxfXDhDk8taBuboHFDAW7beR/x68pPm+p2mTtVt+cS0CAwEAAaNQME4wHQYDVR0O
+
+        BBYEFDpuS3ujMg9wC09nBy/QRQI8PipqMB8GA1UdIwQYMBaAFDpuS3ujMg9wC09n
+
+        By/QRQI8PipqMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFh6UUfa
+
+        YL9iLREMGgHTvn4O4nMtsWEEW46/9o4ZcGgVgIL343qD1G0isaTLStKHB5C653N0
+
+        40DU/n9Fcver/x5EhKzjp9QcOSNizFDUG88tCOuW3H+EsTHsCwxdVvENzBT1+Z3N
+
+        JkT8oHVjEc3LBeQmVZLHiWWA9CSVW9b6qco0OjLwLe92f1EWKjqrHPW+5xM3zC0e
+
+        T2h5p4ApY74Pyl892HJrb/dd2DjzYDnXuvcDFZTAr9o5YgcS1jx0Gt9jE1FM7rhk
+
+        GF5aek4Bir9K8xwNBTc8R+dvl2OhQYoxIglSApkNI+n0J9/1pfPnpwojBHifqy/p
+
+        G9oErrv2EQ642e4=
+
+        -----END CERTIFICATE-----
+
+        '
+      ssl2.crt: '-----BEGIN CERTIFICATE-----
+
+        MIIDBzCCAe+gAwIBAgIJALOT/fiqj4yhMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+
+        BAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xNzA1MDMxNDA2NDVaFw0yNzA1MDExNDA2
+
+        NDVaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+
+        BQADggEPADCCAQoCggEBALHEIGNhuQsD1MI3zE5Kts5zN91ggbFjFq0aLWjYuIB6
+
+        ttfpS158b9x9oWbdACAqGIHC5i1/iwiJkW8J1UcxtPOOHZy4s9E48KnPzJOd6yAv
+
+        pxsBuns78Jx5hgBBt+J2TSwEL+Hi40HhBiog+Omk2pi3juMGkhFJaaSiBQf7gA0E
+
+        TXSC5iLK1XPCd6aQpDZwxQpjDNeDk9CR6asqtPJcm9X2skLuNWyIr8dKHpdzoQ5A
+
+        /5GhmtLC/WYwZdqi14Gwph+GS7a2eQYzbGwIZWfcPiMytoNGidDC2HurRpGt91PK
+
+        PxfXDhDk8taBuboHFDAW7beR/x68pPm+p2mTtVt+cS0CAwEAAaNQME4wHQYDVR0O
+
+        BBYEFDpuS3ujMg9wC09nBy/QRQI8PipqMB8GA1UdIwQYMBaAFDpuS3ujMg9wC09n
+
+        By/QRQI8PipqMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAFh6UUfa
+
+        YL9iLREMGgHTvn4O4nMtsWEEW46/9o4ZcGgVgIL343qD1G0isaTLStKHB5C653N0
+
+        40DU/n9Fcver/x5EhKzjp9QcOSNizFDUG88tCOuW3H+EsTHsCwxdVvENzBT1+Z3N
+
+        JkT8oHVjEc3LBeQmVZLHiWWA9CSVW9b6qco0OjLwLe92f1EWKjqrHPW+5xM3zC0e
+
+        T2h5p4ApY74Pyl892HJrb/dd2DjzYDnXuvcDFZTAr9o5YgcS1jx0Gt9jE1FM7rhk
+
+        GF5aek4Bir9K8xwNBTc8R+dvl2OhQYoxIglSApkNI+n0J9/1pfPnpwojBHifqy/p
+
+        G9oErrv2EQ642e4=
+
+        -----END CERTIFICATE-----
+
+        '
