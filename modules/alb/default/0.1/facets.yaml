@@ -8,6 +8,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/alb/alb.schema.json
   kind: alb
   flavor: default
+  metadata: {}
   disabled: true
   version: '0.1'
   spec:

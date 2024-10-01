@@ -11,6 +11,7 @@ sample:
   kind: mysql_user
   flavor: sharded_user
   version: '0.1'
+  metadata: {}
   spec:
     endpoint: root_one:dAG8rWSi5a@test-mysql.default.svc.cluster.local:3306,root_two:hsvxgvdcg@facets-mysql.default.svc.cluster.local:3307
     permissions:
