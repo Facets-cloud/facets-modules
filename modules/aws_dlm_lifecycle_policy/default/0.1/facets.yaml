@@ -9,6 +9,7 @@ sample:
   kind: aws_dlm_lifecycle_policy
   flavor: default
   version: '0.1'
+  metadata: {}
   spec:
     schedules:
       schedule1:
