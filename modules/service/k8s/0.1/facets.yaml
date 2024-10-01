@@ -163,7 +163,7 @@ spec:
               type: integer
               title: Readiness Start-Up Time
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter readiness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -174,7 +174,7 @@ spec:
               type: integer
               title: Readiness Timeout
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter readiness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -185,7 +185,7 @@ spec:
               type: integer
               title: Readiness Check Interval
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter readiness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -238,7 +238,7 @@ spec:
               type: integer
               default: 10
               title: Liveness Start-Up Time
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter liveness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -249,7 +249,7 @@ spec:
               type: integer
               default: 10
               title: Liveness Timeout
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter liveness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -260,7 +260,7 @@ spec:
               type: integer
               title: Liveness Check Interval
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,2}|10000)$'
+              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
               x-ui-placeholder: "Enter liveness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
