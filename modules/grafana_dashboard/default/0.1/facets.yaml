@@ -7,6 +7,21 @@ clouds:
 - gcp
 - azure
 - kubernetes
+spec:
+  title: K8s flavor of service
+  type: object
+  properties:
+    preserve_uid:
+      type: boolean
+      title: Preserve dashboard UID?
+      description: Boolean flag to preserve the dashboard UID being passed in dashboard JSON object.
+      default: false
+    dashboard:
+      type: object
+      title: Dashboard
+      description: Dashboard in YAML format
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter grafana dashboard object in YAML format.
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/grafana_dashboard/grafana_dashboard.schema.json
   kind: grafana_dashboard
