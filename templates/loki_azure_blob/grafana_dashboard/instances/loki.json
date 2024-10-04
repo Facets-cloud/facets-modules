@@ -1,7 +1,7 @@
 {
   "kind": "grafana_dashboard",
   "flavor": "default",
-  "version": "latest",
+  "version": "0.1",
   "lifecycle": "ENVIRONMENT",
   "disabled": false,
   "conditional_on_intent": "log_collector",
