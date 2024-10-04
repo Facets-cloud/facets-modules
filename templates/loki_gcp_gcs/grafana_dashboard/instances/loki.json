@@ -11,6 +11,7 @@
     "name": "loki"
   },
   "spec": {
+    "preserve_uid": true,
     "dashboard": {
       "annotations": {
         "list": [
