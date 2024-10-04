@@ -14,7 +14,7 @@ spec:
     preserve_uid:
       type: boolean
       title: Preserve dashboard UID?
-      description: Boolean flag to preserve the dashboard UID being passed in dashboard JSON object.
+      description: Boolean flag to preserve the dashboard UID being passed in dashboard object.
       default: false
     dashboard:
       type: object
