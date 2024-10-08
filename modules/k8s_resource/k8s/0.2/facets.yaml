@@ -1,7 +1,7 @@
 intent: k8s_resource
 flavor: k8s
 version: '0.2'
-description: Adds k8s_resource module
+description: Adds kubernetes objects inside the cluster via yaml manifests
 clouds:
   - aws
   - azure
@@ -18,6 +18,21 @@ spec:
       description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter kubernetes manifest in YAML format
+    additional_resources:
+      type: object
+      title: additional_resources
+      x-ui-override-disable: true
+      description: Additional resources that can be configured for k8s
+      patternProperties:
+        type: object
+        title: Additional resource name
+        description: Define the k8s resource
+        keyPattern: '^[0-9]+[m]?$'
+        properties:
+          type: object
+          description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+          x-ui-yaml-editor: true
+          x-ui-placeholder: Enter kubernetes manifest in YAML format
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
