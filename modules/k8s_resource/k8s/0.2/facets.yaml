@@ -28,10 +28,12 @@ spec:
         description: Define the k8s resource
         keyPattern: '^[0-9]+[m]?$'
         properties:
-          type: object
-          description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
-          x-ui-yaml-editor: true
-          x-ui-placeholder: Enter kubernetes manifest in YAML format
+          configuration:
+            type: object
+            title: Yaml Configuration
+            description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+            x-ui-yaml-editor: true
+            x-ui-placeholder: Enter kubernetes manifest in YAML format
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
