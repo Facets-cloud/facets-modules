@@ -22,6 +22,7 @@ spec:
       type: object
       title: Additional Resources
       description: Additional resources that can be configured for k8s
+      x-ui-title-replace: manifest
       patternProperties:
         type: object
         title: Additional resource name
