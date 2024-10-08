@@ -15,7 +15,7 @@ spec:
     resource:
       type: object
       title: Resource
-      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you can add them in Additional Resources section below.
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter kubernetes manifest in YAML format
     additional_resources:
@@ -30,8 +30,8 @@ spec:
         properties:
           configuration:
             type: object
-            title: Yaml Configuration
-            description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. If you need to create multiple resources, you need multiple json files.
+            title: Resource
+            description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource.
             x-ui-yaml-editor: true
             x-ui-placeholder: Enter kubernetes manifest in YAML format
 sample:
