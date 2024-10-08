@@ -20,8 +20,7 @@ spec:
       x-ui-placeholder: Enter kubernetes manifest in YAML format
     additional_resources:
       type: object
-      title: additional_resources
-      x-ui-override-disable: true
+      title: Additional Resources
       description: Additional resources that can be configured for k8s
       patternProperties:
         type: object
