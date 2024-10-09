@@ -28,11 +28,11 @@ spec:
         title: Additional resource name
         description: Define the k8s resource
         keyPattern: '^[0-9]+[m]?$'
-        x-ui-force-formControl: true
         properties:
           configuration:
             type: object
             title: Resource
+            x-ui-ignore-parentkey: true
             description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource.
             x-ui-yaml-editor: true
             x-ui-placeholder: Enter kubernetes manifest in YAML format
