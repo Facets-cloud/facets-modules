@@ -163,7 +163,8 @@ spec:
               type: integer
               title: Readiness Start-Up Time
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter readiness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -174,7 +175,8 @@ spec:
               type: integer
               title: Readiness Timeout
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter readiness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -185,7 +187,8 @@ spec:
               type: integer
               title: Readiness Check Interval
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter readiness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -238,7 +241,8 @@ spec:
               type: integer
               default: 10
               title: Liveness Start-Up Time
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter liveness start up time for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -249,7 +253,8 @@ spec:
               type: integer
               default: 10
               title: Liveness Timeout
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter liveness timeout for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -260,7 +265,8 @@ spec:
               type: integer
               title: Liveness Check Interval
               default: 10
-              pattern: '^(0|[1-9][0-9]{0,3}|10000)$'
+              minimum: 0
+              maximum: 10000
               x-ui-placeholder: "Enter liveness period for the Pod"
               x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-10000"
               x-ui-visible-if:
@@ -319,7 +325,6 @@ spec:
               maximum: 200
               description: Min replicas
               x-ui-placeholder: "Enter Min replicas for you application"
-              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
             max:
               type: integer
@@ -329,7 +334,6 @@ spec:
               maximum: 200
               description: Max replicas
               x-ui-placeholder: "Enter Max replicas for you application"
-              pattern: '^(1?[1-9]?[1-9]|200)$'
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
