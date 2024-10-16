@@ -28,7 +28,7 @@ spec:
         title: Additional resource name
         description: Define the k8s resource
         keyPattern: '^[0-9]+[m]?$'
-        x-ui-ignore-key: configuration
+        x-ui-allow-blueprint-merge: true
         properties:
           configuration:
             type: object
