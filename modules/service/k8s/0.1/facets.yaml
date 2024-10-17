@@ -40,22 +40,24 @@ spec:
         description: Define volume details
         properties:
           access_mode:
+            title: Access Mode
             type: string
             enum:
               - ReadWriteOnce
               - ReadWriteMany
-            description: This will define the read and write access of the the pvc , this can be of type ReadWriteOnce or ReadWriteMany
+            description: Define read-write access of the pvc
           storage_size:
             type: string
             title: Storage Size
-            description: The storage size of the pvc , it should be specified like `10Gi`
+            description: Storage size of the pvc. Eg. 10Gi
             pattern: # TODO
-            x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
+            x-ui-placeholder: "Enter the storage size, eg. 10Gi"
             x-ui-error-message: "Value doesn't match pattern"
           path:
             type: string
             title: Path
             description: Path to mount the PVC
+            pattern: # TODO
             x-ui-placeholder: "Enter the storage size, eg. /data/temp"
         required:
           - access_mode
