@@ -21,10 +21,10 @@ spec:
       description: Type - Application, (Statefulset, Cronjob, Job)-coming soon
       x-ui-override-disable: true
       enum:
-        - Application
-        - Statefulset
-        - Cronjob
-        - Job
+        - application
+        - statefulset
+        - cronjob
+        - job
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
