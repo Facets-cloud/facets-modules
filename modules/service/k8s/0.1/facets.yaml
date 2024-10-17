@@ -22,6 +22,92 @@ spec:
       x-ui-override-disable: true
       enum:
         - application
+        - statefulset
+        - cronjob
+        - job
+    # Type statefulset
+    persistent_volume_claims:
+      type: object
+      title: Persistent Volume Claim
+      Description: PVCs that you will create and mount to your statefulset
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.type
+        values: ["statefulset"]
+      patternProperties:
+        type: object
+        title: PVC
+        description: Define volume details
+        properties:
+          access_mode:
+            type: string
+            enum:
+              - ReadWriteOnce
+              - ReadWriteMany
+            description: This will define the read and write access of the the pvc , this can be of type ReadWriteOnce or ReadWriteMany
+          storage_size:
+            type: string
+            title: Storage Size
+            description: The storage size of the pvc , it should be specified like `10Gi`
+            pattern: # TODO
+            x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
+            x-ui-error-message: "Value doesn't match pattern"
+          path:
+            type: string
+            title: Path
+            description: Path to mount the PVC
+            x-ui-placeholder: "Enter the storage size, eg. /data/temp"
+        required:
+          - access_mode
+          - path
+          - storage_size
+    # Type Cronjob & job
+    cronjob:
+      type: object
+      title: Cronjob
+      description: This is the cron scheduler that you have to specify in cron format
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.type
+        values: [ "cronjob" ]
+      properties:
+        schedule:
+          type: string
+          description: This is the cron scheduler that you have to specify in cron format
+        suspend:
+          type: boolean
+          description: It will suspend all executions
+        concurrency_policy:
+          type: string
+          description: Specifies how to treat concurrent executions of a job that is created by this cron job.
+          enum:
+            - Allow
+            - Forbid
+            - Replace
+        required:
+          - schedule
+          - suspend
+          - concurrency_policy
+    job:
+      type: object
+      title: Job
+      description: This is the job
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.type
+        values: [ "cronjob","job" ]
+      properties:
+        retry:
+          type: string
+          default: 5 # default ??
+          minimum: 1
+          x-ui-placeholder: "Enter Min retry count for your job"
+          description: the number of time you want to retry the job before calling it a failure
+      required:
+        - retry
     restart_policy:
       type: string
       title: Restart Policy
