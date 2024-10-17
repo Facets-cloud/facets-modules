@@ -1,5 +1,5 @@
 name: k8s_resource
 type: K8s
-displayName: K8s resource
+displayName: K8s Resource
 description: A Kubernetes resource that defines workloads, services, and configurations, enabling orchestration of containerized applications.
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0ccb5a2964fe7f4d754_k8s_resource.svg

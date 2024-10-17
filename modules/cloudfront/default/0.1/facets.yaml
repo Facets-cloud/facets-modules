@@ -1,0 +1,36 @@
+intent: cloudfront
+flavor: default
+version: '0.1'
+description: Adds cloudfront - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/cloudfront/cloudfront.schema.json
+  kind: cloudfront
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    aliases:
+      alias1: '*.echo.infradev.facets.cloud'
+      alias2: echo.infradev.facets.cloud
+    viewer_certificate:
+      acm_certificate_arn: ''
+    origins:
+      origin1:
+        domain_name: ''
+    default_cache_behavior:
+      target_origin_id: origin1
+      allowed_methods:
+      - DELETE
+      - GET
+      - HEAD
+      - OPTIONS
+      - PATCH
+      - POST
+      - PUT
+      cached_methods:
+      - GET
+      - HEAD
+      viewer_protocol_policy: allow-all

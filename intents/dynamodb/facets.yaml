@@ -1,0 +1,4 @@
+name: dynamodb
+type: default
+displayName: DynamoDB
+description: Fully managed NoSQL database service that offers fast and predictable performance at any scale.

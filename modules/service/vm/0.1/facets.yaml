@@ -1,0 +1,47 @@
+intent: service
+flavor: vm
+version: '0.1'
+description: Adds service - vm flavor
+clouds:
+- gcp
+- aws
+sample:
+  flavor: vm
+  metadata:
+    labels:
+      something: 'true'
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
+  kind: service
+  disabled: true
+  version: '0.1'
+  spec:
+    enable_host_anti_affinity: false
+    type: application
+    release:
+      build:
+        artifactory: Replace-with-artifactory-name
+        name: Replace-with-app-name
+      strategy:
+        type: RollingUpdate
+    runtime:
+      health_checks:
+        liveness_url: /
+        period: 10
+        port: 50051
+        start_up_time: 10
+        timeout: 10
+      ports:
+        http:
+          protocol: tcp
+          port: '50051'
+      autoscaling:
+        min: 0
+        max: 1
+        cpu_threshold: 50
+      command:
+      - pwd
+      size:
+        instance_type: t4g.nano
+    env:
+      foo: dummyvalue
+      dummy: true
