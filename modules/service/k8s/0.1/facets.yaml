@@ -25,7 +25,6 @@ spec:
         - statefulset
         - cronjob
         - job
-    # Type statefulset
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
@@ -53,7 +52,6 @@ spec:
             x-ui-override-disable: true
             x-ui-toggle: true
             description: The storage size of the pvc , it should be specified like `10Gi`
-            pattern: # TODO
             x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
             x-ui-error-message: "Value doesn't match pattern"
           path:
@@ -67,7 +65,6 @@ spec:
           - access_mode
           - path
           - storage_size
-    # Type Cronjob & job
     cronjob:
       type: object
       title: Cronjob
