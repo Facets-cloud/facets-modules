@@ -1,0 +1,12 @@
+name: iam_policy_arn
+out:
+  type: object
+  title: IAM Policy ARN
+  description: IAM Policy ARN
+  properties:
+    read_only_iam_policy_arn:
+      required: true
+      type: string
+    read_write_iam_policy_arn:
+      required: true
+      type: string

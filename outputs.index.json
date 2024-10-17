@@ -43,5 +43,10 @@
     "name": "pvc",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/pvc/"
+  },
+  {
+    "name": "iam_policy_arn",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/iam_policy_arn/"
   }
 ]
