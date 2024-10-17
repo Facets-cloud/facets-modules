@@ -25,18 +25,33 @@ spec:
         - statefulset
         - cronjob
         - job
+    # Type statefulset
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
       Description: PVCs that you will create and mount to your statefulset
       x-ui-override-disable: true
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.type
+        values: ["statefulset"]
       patternProperties:
         type: object
         title: PVC
         description: Define volume details
+        x-ui-override-disable: true
+        x-ui-toggle: true
+        x-ui-visible-if:
+          field: spec.type
+          values: [ "statefulset" ]
         properties:
           access_mode:
             type: string
+            x-ui-override-disable: true
+            x-ui-toggle: true
+            x-ui-visible-if:
+              field: spec.type
+              values: [ "statefulset" ]
             enum:
               - ReadWriteOnce
               - ReadWriteMany
@@ -44,18 +59,30 @@ spec:
           storage_size:
             type: string
             title: Storage Size
+            x-ui-override-disable: true
+            x-ui-toggle: true
+            x-ui-visible-if:
+              field: spec.type
+              values: [ "statefulset" ]
             description: The storage size of the pvc , it should be specified like `10Gi`
+            pattern: # TODO
             x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
             x-ui-error-message: "Value doesn't match pattern"
           path:
             type: string
             title: Path
+            x-ui-override-disable: true
+            x-ui-toggle: true
+            x-ui-visible-if:
+              field: spec.type
+              values: [ "statefulset" ]
             description: Path to mount the PVC
             x-ui-placeholder: "Enter the storage size, eg. /data/temp"
         required:
           - access_mode
           - path
           - storage_size
+    # Type Cronjob & job
     cronjob:
       type: object
       title: Cronjob
