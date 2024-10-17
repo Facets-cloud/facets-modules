@@ -38,15 +38,9 @@ spec:
         type: object
         title: PVC
         description: Define volume details
-        x-ui-visible-if:
-          field: spec.type
-          values: [ "statefulset" ]
         properties:
           access_mode:
             type: string
-            x-ui-visible-if:
-              field: spec.type
-              values: [ "statefulset" ]
             enum:
               - ReadWriteOnce
               - ReadWriteMany
@@ -54,9 +48,6 @@ spec:
           storage_size:
             type: string
             title: Storage Size
-            x-ui-visible-if:
-              field: spec.type
-              values: [ "statefulset" ]
             description: The storage size of the pvc , it should be specified like `10Gi`
             pattern: # TODO
             x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
@@ -64,9 +55,6 @@ spec:
           path:
             type: string
             title: Path
-            x-ui-visible-if:
-              field: spec.type
-              values: [ "statefulset" ]
             description: Path to mount the PVC
             x-ui-placeholder: "Enter the storage size, eg. /data/temp"
         required:
