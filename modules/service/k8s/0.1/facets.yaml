@@ -30,7 +30,6 @@ spec:
       title: Persistent Volume Claim
       Description: PVCs that you will create and mount to your statefulset
       x-ui-override-disable: true
-      x-ui-toggle: true
       patternProperties:
         type: object
         title: PVC
@@ -41,7 +40,6 @@ spec:
           access_mode:
             type: string
             x-ui-override-disable: true
-            x-ui-toggle: true
             enum:
               - ReadWriteOnce
               - ReadWriteMany
@@ -50,7 +48,6 @@ spec:
             type: string
             title: Storage Size
             x-ui-override-disable: true
-            x-ui-toggle: true
             description: The storage size of the pvc , it should be specified like `10Gi`
             x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
             x-ui-error-message: "Value doesn't match pattern"
@@ -58,7 +55,6 @@ spec:
             type: string
             title: Path
             x-ui-override-disable: true
-            x-ui-toggle: true
             description: Path to mount the PVC
             x-ui-placeholder: "Enter the storage size, eg. /data/temp"
         required:
