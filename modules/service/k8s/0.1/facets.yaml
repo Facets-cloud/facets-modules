@@ -750,6 +750,9 @@ spec:
     - restart_policy
     - enable_host_anti_affinity
     - runtime
+    - persistent_volume_claims
+    - job
+    - cronjob
   x-ui-order:
     - type
     - restart_policy
