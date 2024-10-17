@@ -21,10 +21,10 @@ spec:
       description: Type - Application, (Statefulset, Cronjob, Job)-coming soon
       x-ui-override-disable: true
       enum:
-        - application
-        - statefulset
-        - cronjob
-        - job
+        - Application
+        - Statefulset
+        - Cronjob
+        - Job
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
@@ -64,7 +64,7 @@ spec:
     cronjob:
       type: object
       title: Cronjob
-      description: This is the cron scheduler that you have to specify in cron format
+      description: Cron scheduler to be specified in cron format
       x-ui-override-disable: true
       x-ui-toggle: true
       x-ui-visible-if:
@@ -72,14 +72,17 @@ spec:
         values: [ "cronjob" ]
       properties:
         schedule:
+          title: Schedule
           type: string
-          description: This is the cron scheduler that you have to specify in cron format
+          description: Cron scheduler to be specified in cron format
         suspend:
+          title: Suspend
           type: boolean
-          description: It will suspend all executions
+          description: Suspend all executions
         concurrency_policy:
+          title: Concurrent Policy
           type: string
-          description: Specifies how to treat concurrent executions of a job that is created by this cron job.
+          description: Specifies how to treat concurrent executions of a job created by this cron job
           enum:
             - Allow
             - Forbid
@@ -91,7 +94,7 @@ spec:
     job:
       type: object
       title: Job
-      description: This is the job
+      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
       x-ui-override-disable: true
       x-ui-toggle: true
       x-ui-visible-if:
@@ -102,8 +105,8 @@ spec:
           type: string
           default: 5 # default ??
           minimum: 1
-          x-ui-placeholder: "Enter Min retry count for your job"
-          description: the number of time you want to retry the job before calling it a failure
+          x-ui-placeholder: "Enter minimum retry count for your job"
+          description: Number of retry attempts before marking the job as failed.
       required:
         - retry
     restart_policy:
