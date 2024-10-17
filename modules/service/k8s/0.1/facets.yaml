@@ -25,7 +25,6 @@ spec:
         - statefulset
         - cronjob
         - job
-    # Type statefulset
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
@@ -39,16 +38,12 @@ spec:
         type: object
         title: PVC
         description: Define volume details
-        x-ui-override-disable: true
-        x-ui-toggle: true
         x-ui-visible-if:
           field: spec.type
           values: [ "statefulset" ]
         properties:
           access_mode:
             type: string
-            x-ui-override-disable: true
-            x-ui-toggle: true
             x-ui-visible-if:
               field: spec.type
               values: [ "statefulset" ]
@@ -59,8 +54,6 @@ spec:
           storage_size:
             type: string
             title: Storage Size
-            x-ui-override-disable: true
-            x-ui-toggle: true
             x-ui-visible-if:
               field: spec.type
               values: [ "statefulset" ]
@@ -71,8 +64,6 @@ spec:
           path:
             type: string
             title: Path
-            x-ui-override-disable: true
-            x-ui-toggle: true
             x-ui-visible-if:
               field: spec.type
               values: [ "statefulset" ]
@@ -82,7 +73,6 @@ spec:
           - access_mode
           - path
           - storage_size
-    # Type Cronjob & job
     cronjob:
       type: object
       title: Cronjob
