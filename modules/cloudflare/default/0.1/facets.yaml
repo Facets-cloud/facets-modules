@@ -1,0 +1,21 @@
+intent: cloudflare
+flavor: default
+version: '0.1'
+description: Adds cloudflare - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  kind: cloudflare
+  provided: false
+  disabled: false
+  flavor: default
+  lifecycle: ENVIRONMENT
+  metadata:
+    name: cloudflare-test
+  depends_on: []
+  version: '0.1'
+  spec:
+    domain: test.example.com

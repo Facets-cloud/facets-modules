@@ -1,0 +1,58 @@
+intent: mongo_user
+flavor: default
+version: '0.1'
+description: Adds mongo_user - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
+  kind: mongo_user
+  flavor: default
+  version: '0.1'
+  disabled: false
+  metadata: {}
+  out: {}
+  spec:
+    endpoint: mongodb://<user>:<pass>@<mdb_server>:27017
+    database: stage
+    permissions:
+      p1:
+        permission: createCollection,listCollections
+        database: stage
+        collection: ''
+        cluster: true
+      p2:
+        permission: find,update,insert
+        database: stage
+        collection: myCollection2
+        cluster: false
+  advanced:
+    mongo_user:
+      role:
+        dbRoles:
+          dbrole1:
+            db: stage
+            role: stage1
+        rolesToRole: stage2
+      user:
+        authenticationRestrictions:
+          auth1:
+            clientSource: 192.168.1.10,192.168.1.20
+            serverAddress: 192.168.2.10,192.168.2.20
+          auth2:
+            clientSource: 192.168.3.10,192.168.3.20
+            serverAddress: 192.168.4.10,192.168.4.20
+        username: test
+        password: xyz
+        customData:
+          employeeID: '167824'
+          profile: sysAdmin
+        mechanisms: SCRAM-SHA-1
+        dbRoles:
+          dbrole3:
+            db: stage
+            role: stage4
+        rolesToRole: stage3

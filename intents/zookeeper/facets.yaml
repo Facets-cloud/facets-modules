@@ -1,0 +1,4 @@
+name: zookeeper
+type: K8s
+displayName: Zookeeper
+description: Centralized service for managing configuration, synchronization, and naming in distributed systems.

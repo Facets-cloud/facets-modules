@@ -1,0 +1,21 @@
+intent: mongo
+flavor: documentdb
+version: '0.1'
+description: Adds mongo - documentdb flavor
+clouds:
+- aws
+- aws
+sample:
+  kind: mongo
+  flavor: documentdb
+  version: '0.1'
+  lifecycle: ENVIRONMENT
+  disabled: true
+  provided: false
+  depends_on: []
+  metadata: {}
+  spec:
+    mongodb_version: '5.0'
+    size:
+      instance_count: 0
+      instance: db.r4.large

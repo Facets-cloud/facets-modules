@@ -1,0 +1,19 @@
+intent: schemahero_database
+flavor: k8s
+version: '0.1'
+description: Adds schemahero_database - k8s flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/schemahero_database/schemahero_database.schema.json
+  flavor: k8s
+  kind: schemahero_database
+  metadata: {}
+  spec:
+    connection: postgres
+    uri: postgresql://postgres:test12345@schemahero-postgres-postgresql.default.svc.cluster.local:5432/schemahero
+  version: '0.1'
+  disabled: true

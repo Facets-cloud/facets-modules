@@ -21,6 +21,16 @@
   },
   {
     "intent": "redis",
+    "flavor": "azure_cache",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/redis/azure_cache/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "redis",
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -106,6 +116,19 @@
     "relativePath": "./modules/mysql/rds/0.1/",
     "clouds": [
       "aws"
+    ]
+  },
+  {
+    "intent": "mysql_web",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql/web_ui/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
     ]
   },
   {
@@ -222,19 +245,6 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/service/monitoring/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "k8s_resource",
-    "flavor": "k8s",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/k8s_resource/k8s/0.1/",
     "clouds": [
       "aws",
       "azure",
@@ -365,7 +375,7 @@
     "flavor": "k8s",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mysql/web_ui/",
+    "relativePath": "./modules/mysql/web_ui/0.1/",
     "clouds": [
       "aws",
       "azure",
@@ -381,19 +391,6 @@
     "relativePath": "./modules/iam_policy/aws_iam_policy/0.2/",
     "clouds": [
       "aws"
-    ]
-  },
-  {
-    "intent": "config_map",
-    "flavor": "k8s",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/config_map/k8s/0.2/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
     ]
   },
   {
@@ -425,6 +422,787 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/kubernetes_secret/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "nginx_ingress_controller",
+    "version": "0.01",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/nginx_ingress_controller/0.01/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "nginx_ingress_controller",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/nginx_ingress_controller/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "nginx_ingress_controller",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/nginx_ingress_controller/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "aws_alb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/aws_alb/0.2/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "aws_alb",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/aws_alb/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "gcp_alb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/gcp_alb/0.2/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "ingress",
+    "flavor": "gcp_alb",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/gcp_alb/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "redis",
+    "flavor": "memorystore",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/redis/memorystore/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "redis",
+    "flavor": "elasticache",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/redis/elasticache/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "postgres",
+    "flavor": "cloudsql",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres/cloudsql/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "postgres",
+    "flavor": "alloydb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres/alloydb/0.2/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "mysql",
+    "flavor": "aurora",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql/aurora/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "config_map",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/config_map/k8s/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "dax_cluster",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/dax_cluster/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "kubernetes_node_pool",
+    "flavor": "aks",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_node_pool/aks/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "kubernetes_node_pool",
+    "flavor": "gke_node_pool",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_node_pool/gke_node_pool/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "kubernetes_node_pool",
+    "flavor": "eks_self_managed",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_node_pool/eks_self_managed/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "kubernetes_node_pool",
+    "flavor": "eks_managed",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_node_pool/eks_managed/0.2/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "kubernetes_node_pool",
+    "flavor": "eks_managed",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_node_pool/eks_managed/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "sqs",
+    "flavor": "default",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/sqs/default/0.2/",
+    "clouds": [
+      "aws",
+      "aws"
+    ]
+  },
+  {
+    "intent": "service",
+    "flavor": "vm",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/vm/0.1/",
+    "clouds": [
+      "gcp",
+      "aws"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki_aws_s3",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki_aws_s3/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/k8s/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/k8s/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki_azure_blob",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki_azure_blob/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki_gcp_gcs",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki_gcp_gcs/0.2/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "log_collector",
+    "flavor": "loki",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "snapshot_schedule",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/snapshot_schedule/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "aws_static_website",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_static_website/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "aws_event_bus",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_event_bus/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "service_bus",
+    "flavor": "azure_service_bus",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service_bus/azure_service_bus/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "dynamodb",
+    "flavor": "default",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/dynamodb/default/0.2/",
+    "clouds": [
+      "aws",
+      "aws"
+    ]
+  },
+  {
+    "intent": "atlas_account",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/atlas_account/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "aws_api_gateway",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_api_gateway/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "schemahero_table",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/schemahero_table/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "elasticsearch",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/elasticsearch/k8s/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "aws_eventbridge",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_eventbridge/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "loki_recording_rules",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/loki_recording_rules/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "gcp_iam_role",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/gcp_iam_role/default/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "mongo",
+    "flavor": "atlas",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongo/atlas/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mongo",
+    "flavor": "documentdb",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongo/documentdb/0.1/",
+    "clouds": [
+      "aws",
+      "aws"
+    ]
+  },
+  {
+    "intent": "mongo",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongo/k8s/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "pvc",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/pvc/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "status_check",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/status_check/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mysql_user",
+    "flavor": "sharded_user",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql_user/sharded_user/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mysql_user",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql_user/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mongo_user",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongo_user/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "postgres_user",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres_user/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "aws_waf",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_waf/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "peering",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/peering/default/0.1/",
+    "clouds": [
+      "aws",
+      "aws"
+    ]
+  },
+  {
+    "intent": "k8s_resource",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/k8s_resource/k8s/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "cloudfront",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cloudfront/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "cloudflare",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cloudflare/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "alb",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/alb/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "aws_lambda_permission",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_lambda_permission/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "grafana_dashboard",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/grafana_dashboard/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "zookeeper",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/zookeeper/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "loki_alerting_rules",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/loki_alerting_rules/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "cassandra",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cassandra/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "azure_functions",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/azure_functions/default/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "alert_group",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/alert_group/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "aws_lambda",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_lambda/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "externaldns",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/externaldns/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "tcp_lb",
+    "flavor": "nlb",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/tcp_lb/nlb/0.2/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "tcp_lb",
+    "flavor": "nlb",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/tcp_lb/nlb/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
+    "intent": "schemahero_database",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/schemahero_database/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "aws_dlm_lifecycle_policy",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_dlm_lifecycle_policy/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "mysql",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql/k8s/0.2/",
     "clouds": [
       "aws",
       "azure",

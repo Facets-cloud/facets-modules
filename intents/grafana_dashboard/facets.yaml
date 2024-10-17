@@ -1,0 +1,4 @@
+name: grafana_dashboard
+type: default
+displayName: Grafana Dashboard
+description: A customizable interface for visualizing and monitoring metrics, logs, and data from various sources in Grafana.

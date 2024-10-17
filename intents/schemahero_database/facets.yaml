@@ -1,0 +1,4 @@
+name: schemahero_database
+type: K8s
+displayName: Schemahero Database
+description: Intent to configure a database for schema migrations.

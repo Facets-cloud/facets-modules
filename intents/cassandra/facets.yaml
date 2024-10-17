@@ -1,0 +1,4 @@
+name: cassandra
+type: K8s
+displayName: Cassandra
+description: Distributed NoSQL database system designed for high availability and scalability.

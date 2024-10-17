@@ -1,0 +1,27 @@
+intent: mysql_user
+flavor: sharded_user
+version: '0.1'
+description: Adds mysql_user - sharded_user flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  kind: mysql_user
+  flavor: sharded_user
+  version: '0.1'
+  metadata: {}
+  spec:
+    endpoint: root_one:dAG8rWSi5a@test-mysql.default.svc.cluster.local:3306,root_two:hsvxgvdcg@facets-mysql.default.svc.cluster.local:3307
+    permissions:
+      permission1:
+        permission: RO
+        database: my_database
+        table: '*'
+      permission2:
+        permission: ADMIN
+        database: '*'
+        table: '*'
+  disabled: true
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mysql_user/mysql_user.schema.json

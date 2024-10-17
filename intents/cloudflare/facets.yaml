@@ -1,0 +1,4 @@
+name: cloudflare
+type: default
+displayName: CloudFlare
+description: Global network service that enhances website performance, security, and reliability.

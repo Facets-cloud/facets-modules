@@ -1,0 +1,32 @@
+intent: mongo
+flavor: atlas
+version: '0.1'
+description: Adds mongo - atlas flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  flavor: atlas
+  lifecycle: ENVIRONMENT
+  metadata:
+    name: ''
+  depends_on: []
+  kind: mongo
+  provided: false
+  disabled: false
+  version: '0.1'
+  spec:
+    mongodb_version: '7.0'
+    size:
+      instance: M10
+      instance_count: 1
+      volume: 8
+    region: INDIA_CENTRAL
+    replication_specs:
+    - num_shards: 1
+      region_configs:
+      - electable_specs:
+          node_count: 3
+  out: {}

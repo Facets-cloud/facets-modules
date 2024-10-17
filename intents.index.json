@@ -102,5 +102,153 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/kubernetes_secret/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/dax_cluster/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/kubernetes_node_pool/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/sqs/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/log_collector/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/snapshot_schedule/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_static_website/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_event_bus/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/service_bus/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/dynamodb/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/atlas_account/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_api_gateway/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/schemahero_table/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_eventbridge/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/loki_recording_rules/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/gcp_iam_role/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/pvc/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/status_check/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/mysql_user/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/mongo_user/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/postgres_user/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_waf/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/peering/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/cloudfront/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/cloudflare/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/alb/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_lambda_permission/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/grafana_dashboard/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/zookeeper/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/loki_alerting_rules/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/cassandra/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/azure_functions/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/alert_group/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_lambda/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/externaldns/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/tcp_lb/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/schemahero_database/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_dlm_lifecycle_policy/"
   }
 ]

@@ -1,0 +1,4 @@
+name: atlas_account
+type: default
+displayName: Atlas Account
+description: MongoDB Atlas account for cloud database services, enabling scalable and secure data storage.

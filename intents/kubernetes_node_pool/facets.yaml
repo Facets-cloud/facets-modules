@@ -1,0 +1,4 @@
+name: kubernetes_node_pool
+type: aks
+displayName: Kubernetes Node Pool
+description: Group of nodes within a Kubernetes cluster that can be scaled and configured independently.

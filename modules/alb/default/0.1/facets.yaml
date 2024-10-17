@@ -1,0 +1,39 @@
+intent: alb
+flavor: default
+version: '0.1'
+description: Adds alb - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/alb/alb.schema.json
+  kind: alb
+  flavor: default
+  metadata: {}
+  disabled: true
+  version: '0.1'
+  spec:
+    domains:
+      testdomain:
+        domain: facetscloud.com
+        alias: testdomain
+        certificate_reference: ACM ARN of the certificate
+        equivalent_prefixes:
+        - ''
+        - testequivalent
+        rules:
+          testrule:
+            domain_prefix: testrule
+            path: /
+            port: '8080'
+            port_name: http-svc
+            service_name: backend
+    force_ssl_redirection: true
+    private: false
+    rules:
+      testrule2:
+        domain_prefix: testrule2
+        path: /test
+        port: '8080'
+        port_name: http-svc
+        priority: 1
+        service_name: cart-service

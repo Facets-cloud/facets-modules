@@ -1,0 +1,48 @@
+intent: loki_alerting_rules
+flavor: k8s
+version: '0.1'
+description: Adds loki_alerting_rules - k8s flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/loki_alerting_rules/loki_alerting_rules.schema.json
+  kind: loki_alerting_rules
+  flavor: k8s
+  version: '0.1'
+  disabled: true
+  lifecycle: ENVIRONMENT
+  metadata:
+    name: sample-loki-log-alert
+  depends_on: []
+  spec:
+    rules:
+      HighPercentageError:
+        expr: sum(rate({app="foo", env="production"} |= "error" [5m])) by (job) /
+          sum(rate({app="foo", env="production"}[5m])) by (job) > 0.05
+        message: High request latency
+        summary: High request latency for {{ $labels.app }}
+        for: 2m
+        labels:
+          team: infra
+          severity: critical
+        disabled: false
+        resource_name: '{{ $labels.app}}'
+        resource_type: app
+      TestAlert:
+        expr: sum(rate({app="loki"} | logfmt | level="info"[1m])) by (container) >
+          0
+        for: 1m
+        labels:
+          team: infra
+          severity: warning
+        summary: Loki info warning per minute rate > 0
+        message: 'Loki warning per minute rate > 0 container: {{ $labels.container
+          }}'
+        resource_name: '{{ $labels.app}}'
+        resource_type: app
+        disabled: false
+  advanced: {}
+  out: {}

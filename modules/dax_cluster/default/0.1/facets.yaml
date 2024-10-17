@@ -1,0 +1,19 @@
+intent: dax_cluster
+flavor: default
+version: '0.1'
+description: Adds dax_cluster - default flavor
+clouds:
+- aws
+sample:
+  kind: dax_cluster
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata:
+    tags: {}
+  spec:
+    iam_policies: arn:aws:iam::aws:policy/aws-service-role/DAXServiceRolePolicy
+    size:
+      instance: dax.r4.large
+    replication_factor: 1
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/dax_cluster/dax_cluster.schema.json

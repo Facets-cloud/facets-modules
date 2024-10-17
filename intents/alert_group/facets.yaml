@@ -1,0 +1,4 @@
+name: alert_group
+type: default
+displayName: Alert Group
+description: Collection of alerts to notify on specific triggers, ensuring timely action and incident management.

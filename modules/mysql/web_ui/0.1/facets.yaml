@@ -61,6 +61,7 @@ sample:
   kind: mysql_web
   flavor: k8s
   version: "0.1"
+  metadata: {}
   disabled: true
   spec:
     mysql_version: "5.2.1-debian-12-r35"

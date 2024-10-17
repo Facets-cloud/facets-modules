@@ -1,0 +1,4 @@
+name: loki_alerting_rules
+type: K8s
+displayName: Loki Alerting Rules
+description: Configuring alerts based on log data in Loki.

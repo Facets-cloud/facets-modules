@@ -1,0 +1,23 @@
+intent: aws_static_website
+flavor: default
+version: '0.1'
+description: Adds aws_static_website - default flavor
+clouds:
+- aws
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_static_website/aws_static_website.schema.json
+  kind: aws_static_website
+  flavor: default
+  version: '0.1'
+  lifecycle: ENVIRONMENT
+  disabled: false
+  provided: false
+  depends_on: []
+  metadata:
+    description: <Add description>
+  spec:
+    website:
+      source_code_s3_path: lambda.zip
+      cloudfront_enabled: true
+  advanced: {}
+  out: {}

@@ -156,6 +156,7 @@ sample:
   kind: mongo_monitoring
   flavor: k8s
   version: "0.1"
+  metadata: {}
   disabled: true
   spec:
     alerts:

@@ -1,0 +1,4 @@
+name: schemahero_table
+type: K8s
+displayName: Schemahero Table
+description: Intent to configure table of a database for schema migration.

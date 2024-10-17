@@ -1,0 +1,4 @@
+name: aws_lambda
+type: default
+displayName: AWS Lambda
+description: Serverless compute service that automatically runs code in response to triggers or events.

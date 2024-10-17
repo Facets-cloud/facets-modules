@@ -1,0 +1,4 @@
+name: mongo_user
+type: default
+displayName: Mongo User
+description: Database user for MongoDB instances, defining access permissions and authentication.
