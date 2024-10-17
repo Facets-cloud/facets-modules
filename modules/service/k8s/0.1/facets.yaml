@@ -757,6 +757,9 @@ spec:
     - runtime
     - release
     - cloud_permissions
+    - persistent_volume_claims
+    - job
+    - cronjob
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
