@@ -34,12 +34,9 @@ spec:
         type: object
         title: PVC
         description: Define volume details
-        x-ui-override-disable: true
-        x-ui-toggle: true
         properties:
           access_mode:
             type: string
-            x-ui-override-disable: true
             enum:
               - ReadWriteOnce
               - ReadWriteMany
@@ -47,14 +44,12 @@ spec:
           storage_size:
             type: string
             title: Storage Size
-            x-ui-override-disable: true
             description: The storage size of the pvc , it should be specified like `10Gi`
             x-ui-placeholder: "Enter the storage size, eg. 1024Gi"
             x-ui-error-message: "Value doesn't match pattern"
           path:
             type: string
             title: Path
-            x-ui-override-disable: true
             description: Path to mount the PVC
             x-ui-placeholder: "Enter the storage size, eg. /data/temp"
         required:
