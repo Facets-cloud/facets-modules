@@ -253,6 +253,10 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/vault/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/sns/"
   },
   {
