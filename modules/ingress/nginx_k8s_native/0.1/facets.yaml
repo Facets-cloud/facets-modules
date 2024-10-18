@@ -69,14 +69,6 @@ spec:
               filterConditions:
                 - field: resourceType
                   value: service
-          path:
-            type: string
-            title: Path
-            description: Path of the application
-            pattern: '^(/[^/]+)*(/)?$'
-            x-ui-placeholder: "Enter path to which your application will be accessible"
-            x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
-            default: '/'
           port:
             type: string
             title: Port
@@ -93,6 +85,14 @@ spec:
               valueKey: port
               path: ports
             x-ui-disable-tooltip: "No Ports Found or Service not selected"
+          path:
+            type: string
+            title: Path
+            description: Path of the application
+            pattern: '^(/[^/]+)*(/)?$'
+            x-ui-placeholder: "Enter path to which your application will be accessible"
+            x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
+            default: '/'
           domain_prefix:
             type: string
             title: Domain Prefix
@@ -100,6 +100,13 @@ spec:
             pattern: '^[a-z0-9-]{1,20}$'
             x-ui-placeholder: "Enter the subdomain you want to expose your application"
             x-ui-error-message: "Value doesn't match pattern, max characters of 20 and only hyphen special characters is accepted with numbers and alphabets"
+          annotations:
+            type: object
+            title: Annotations (Optional)
+            description: Add key-value pairs for configuring ingress annotations. Annotations allow you to customize the behavior of your ingress
+            x-ui-error-message: "This is not a valid yaml"
+            default: '{}'
+            x-ui-yaml-editor: true
           grpc:
             type: boolean
             title: GRPC
