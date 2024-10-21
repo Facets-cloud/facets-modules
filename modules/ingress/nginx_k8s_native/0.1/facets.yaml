@@ -114,7 +114,7 @@ spec:
             description: Enable/disable GRPC protocol
             x-ui-visible-if:
               field: spec.grpc
-              values: ["false"]
+              values: [false]
         required: ["service_name", "path", "port"]
     force_ssl_redirection:
       type: boolean
