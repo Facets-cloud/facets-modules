@@ -8,26 +8,26 @@
   "spec": {
     "alertmanager": {
       "size": {
-        "cpu": "200m",
-        "memory": "0.5Gi"
+        "cpu": "50m",
+        "memory": "0.25Gi"
       }
     },
     "grafana": {
       "size": {
-        "cpu": "200m",
-        "memory": "0.5Gi"
+        "cpu": "100m",ˇ
+        "memory": "0.25Gi"
       }
     },
     "prometheus": {
       "size": {
-        "cpu": "700m",
-        "memory": "4Gi"
+        "cpu": "200m",
+        "memory": "2Gi"
       }
     },
     "pushgateway": {
       "size": {
-        "cpu": "100m",
-        "memory": "0.5Gi"
+        "cpu": "50m",
+        "memory": "0.25Gi"
       }
     }
   }
