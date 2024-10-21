@@ -1,0 +1,43 @@
+intent: aws_secret_manager
+flavor: default
+version: '0.1'
+description: Adds secret manager for aws - default flavor
+clouds:
+- aws
+spec:
+  title: AWS Secret Manager
+  description: Specification of the aws secret manager resource intent
+  type: object
+  properties:
+    override_default_name:
+      type: boolean
+      title: Override Default Name
+      description: Set it to true if secret is to be created with custom name
+    override_name:
+      type: string
+      title: Override Name
+      description: Custom name for secret. Applies only if override_default_name is set to true.
+    secrets:
+      type: object
+      title: Secrets
+      description: Secrets to be stored in secret manager
+sample:
+  kind: aws_secret_manager
+  flavor: default
+  version: '0.1'
+  lifecycle: ENVIRONMENT
+  disabled: false
+  provided: false
+  depends_on: []
+  metadata:
+    name: ''
+  spec:
+    override_default_name: false
+    override_name: test
+    secrets:
+      key1: value1
+      key2: value2
+  advanced:
+    secret_manager: {}
+  out: {}
+
