@@ -638,7 +638,6 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/sqs/default/0.2/",
     "clouds": [
-      "aws",
       "aws"
     ]
   },

@@ -1,0 +1,4 @@
+name: sns
+type: default
+displayName: SNS
+description: Fully managed AWS notification service provider.

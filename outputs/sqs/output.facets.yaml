@@ -1,0 +1,21 @@
+name: sqs
+out:
+  type: object
+  title: SQS
+  description: SQS
+  properties:
+    attributes:
+      sqs_queue_name:
+        required: true
+        type: string
+      consumer_policy_arn:
+        required: true
+        type: string
+      producer_policy_arn:
+        required: true
+        type: string
+      queue_arn:
+        required: true
+        type: string
+    interfaces:
+
