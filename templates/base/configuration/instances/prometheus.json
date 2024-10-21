@@ -24,6 +24,12 @@
         "memory": "2Gi"
       }
     },
+    "prometheus-operator": {
+      "size": {
+        "cpu": "100m",
+        "memory": "0.25Gi"
+      }
+    }
     "pushgateway": {
       "size": {
         "cpu": "50m",
