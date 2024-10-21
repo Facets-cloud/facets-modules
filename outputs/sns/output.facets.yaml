@@ -1,0 +1,21 @@
+name: sns
+out:
+  type: object
+  title: SNS
+  description: SNS
+  properties:
+    attributes:
+      sns_topic_name:
+        required: true
+        type: string
+      consumer_policy_arn:
+          required: true
+          type: string
+      producer_policy_arn:
+          required: true
+          type: string
+      topic_arn:
+          required: true
+          type: string
+    interfaces:
+
