@@ -16,6 +16,7 @@ spec:
       title: MySQL Version
       description: Version of MySQL
       enum:
+        - "8.0.34"
         - "8.0.4"
         - "8.4.3"
         - "9.0.1"
