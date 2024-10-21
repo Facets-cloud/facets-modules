@@ -1,0 +1,31 @@
+intent: sns
+flavor: default
+version: '0.1'
+description: Adds sns - default flavor
+clouds:
+- aws
+spec:
+  title: AWS SNS
+  type: object
+  description: Specification of the K8s resource intent
+  properties:
+    subscriptions:
+      type: object
+      title: Subscriptions 
+      description: Subscriptions for sns
+      properties:
+        sqs:
+          type: object  
+          title: Subscriptions
+          description: Subscriptions for sns
+sample:
+  version: '0.1'
+  flavor: default
+  kind: sns
+  metadata: {}
+  spec:
+    subscriptions:
+      sqs:
+        protocol: sqs
+        endpoint: ""
+  disabled: false
