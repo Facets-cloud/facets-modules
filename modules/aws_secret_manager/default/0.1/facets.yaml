@@ -29,7 +29,10 @@ spec:
           type: string
           title: Secret Value
           description: Value for the secret key
+          x-ui-placeholder: "Enter the value for the secret"
       additionalProperties: false
+      x-ui-key-placeholder: "Enter the key for the secret"
+      x-ui-key-error-message: "Key must be alphanumeric and can include underscores"
 sample:
   kind: aws_secret_manager
   flavor: default
