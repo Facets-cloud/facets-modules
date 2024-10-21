@@ -16,8 +16,17 @@ spec:
       properties:
         sqs:
           type: object  
-          title: Subscriptions
+          title: sqs
           description: Subscriptions for sns
+          properties:
+            protocol:
+              type: object
+              title: Protocol
+              description: Protocol for sns subscription
+            endpoint:
+              type: object
+              title: Endpoint
+              description: Endpoint of the aws resource
 sample:
   version: '0.1'
   flavor: default
