@@ -14,7 +14,7 @@
     },
     "grafana": {
       "size": {
-        "cpu": "100m",ˇ
+        "cpu": "100m",
         "memory": "0.25Gi"
       }
     },
