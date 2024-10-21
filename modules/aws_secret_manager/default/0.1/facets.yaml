@@ -17,10 +17,19 @@ spec:
       type: string
       title: Override Name
       description: Custom name for secret. Applies only if override_default_name is set to true.
+      pattern: '[A-Za-z0-9]'
+      x-ui-placeholder: "Enter the custom name"
+      x-ui-error-message: "Value doesn't match the format eg. facets-secret"
     secrets:
       type: object
       title: Secrets
-      description: Secrets to be stored in secret manager
+      description: Key-value pairs for secrets
+      patternProperties:
+        "^[a-zA-Z0-9_]+$":
+          type: string
+          title: Secret Value
+          description: Value for the secret key
+      additionalProperties: false
 sample:
   kind: aws_secret_manager
   flavor: default
@@ -33,7 +42,7 @@ sample:
     name: ''
   spec:
     override_default_name: false
-    override_name: test
+    override_name: ""
     secrets:
       key1: value1
       key2: value2
