@@ -17,6 +17,7 @@ spec:
       description: Version of MySQL
       enum:
         - "5.7.43"
+        - "8.0.34"
         - "8.0.4"
       x-ui-placeholder: "Ex. 8.0"
     size:

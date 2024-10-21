@@ -17,7 +17,8 @@ spec:
       description: Version of RabbitMQ
       minLength: 1
       enum:
-        - 3.10.19
+        - "3.10.7"
+        - "3.10.19"
     size:
       type: object
       title: Size
