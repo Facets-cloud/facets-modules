@@ -1,5 +1,5 @@
 intent: service
-flavor: statefulset
+flavor: k8s_statefulset
 version: '0.1'
 description: Adds service module
 clouds:
@@ -700,9 +700,8 @@ spec:
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
-  flavor: statefulset
+  flavor: k8s_statefulset
   metadata:
-
   kind: service
   disabled: false
   version: '0.1'
