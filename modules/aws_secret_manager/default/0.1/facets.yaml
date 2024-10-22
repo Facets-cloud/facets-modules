@@ -21,18 +21,11 @@ spec:
       x-ui-placeholder: "Enter the custom name"
       x-ui-error-message: "Value doesn't match the format eg. facets-secret"
     secrets:
-      type: object
       title: Secrets
-      description: Key-value pairs for secrets
-      patternProperties:
-        "^[a-zA-Z0-9_]+$":
-          type: string
-          title: Secret Value
-          description: Value for the secret key
-          x-ui-placeholder: "Enter the value for the secret"
-      additionalProperties: false
-      x-ui-key-placeholder: "Enter the key for the secret"
-      x-ui-key-error-message: "Key must be alphanumeric and can include underscores"
+      type: object
+      description: "Enter a valid key-value pair for secrets in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
 sample:
   kind: aws_secret_manager
   flavor: default
