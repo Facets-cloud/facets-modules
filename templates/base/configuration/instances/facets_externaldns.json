@@ -1,0 +1,8 @@
+{
+  "kind": "configuration",
+  "for": "facets_externaldns",
+  "disabled": true,
+  "advanced": {
+    "inherit_from_base": true
+  }
+}
