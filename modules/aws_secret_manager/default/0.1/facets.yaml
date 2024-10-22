@@ -17,7 +17,11 @@ spec:
       type: string
       title: Override Name
       description: Custom name for secret. Applies only if override_default_name is set to true.
+<<<<<<< HEAD
       pattern: '^[a-zA-Z0-9/_+=.@-]+$'
+=======
+      pattern: '[A-Za-z0-9]'
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
       x-ui-placeholder: "Enter the custom name"
       x-ui-error-message: "Value doesn't match the format eg. facets-secret"
     secrets:

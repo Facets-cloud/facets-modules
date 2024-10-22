@@ -28,7 +28,13 @@ spec:
             type: string
             title: Endpoint
             description: Endpoint of the aws resource
+<<<<<<< HEAD
             x-ui-placeholder: "Enter the endpoint or arn of the resource"
+=======
+            pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
+            x-ui-placeholder: "Enter the endpoint or arn of the resource"
+            x-ui-error-message: "Value doesn't match the format"
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
 sample:
   version: '0.1'
   flavor: default
@@ -39,4 +45,8 @@ sample:
       sqs:
         protocol: ""
         endpoint: ""
+<<<<<<< HEAD
   disabled: false
+=======
+  disabled: false
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
