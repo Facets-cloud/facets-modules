@@ -50,6 +50,5 @@ sample:
   kind: service
   version: '0.1'
   spec:
-    type: cronjob
-    cronjob: {}
+    type: job
     job: {}
