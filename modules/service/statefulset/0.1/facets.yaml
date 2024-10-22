@@ -691,8 +691,8 @@ spec:
   required:
     - persistent_volume_claims
   x-ui-order:
-    - persistent_volume_claims
     - restart_policy
+    - persistent_volume_claims
     - enable_host_anti_affinity
     - cloud_permissions
     - runtime
@@ -708,11 +708,7 @@ sample:
   spec:
     enable_host_anti_affinity: false
     type: statefulset
-    persistent_volume_claims:
-      vol1:
-        access_mode: ReadWriteOnce
-        path: /tmp/vol1
-        storage_size: 2Gi
+    persistent_volume_claims: {}
     release:
     runtime:
       autoscaling:
