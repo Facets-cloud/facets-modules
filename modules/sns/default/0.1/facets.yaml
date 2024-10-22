@@ -13,19 +13,17 @@ spec:
       type: object
       title: Subscriptions 
       description: Subscriptions for sns
-      properties:
-        sqs:
-          type: object  
-          title: sqs
-          description: Subscriptions for sns
-          properties:
-            protocol:
-              type: string
-              title: Protocol
-              description: Protocol for sns subscription
-              pattern: '[A-Za-z0-9]'
-              x-ui-placeholder: "Enter the protocol"
-              x-ui-error-message: "Value doesn't match the format eg. sqs"
+      patternProperties:
+        type: object
+        title: Sqs
+        description: Define subscriptions for sqs
+        properties:
+          protocol:
+            type: string
+            title: Protocol
+            description: Protocol for sns subscription
+            enum:
+              - sqs
             endpoint:
               type: string
               title: Endpoint
