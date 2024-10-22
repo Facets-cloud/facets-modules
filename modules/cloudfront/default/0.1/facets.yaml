@@ -87,45 +87,45 @@ spec:
                       title: Cookies
                       description: List of cookies
                       x-ui-placeholder: "Enter the cookie name"
-                headers_config:
-                  type: object
-                  title: Headers Config
-                  description: Configuration for headers
-                  properties:
-                    header_behavior:
-                      type: string
-                      title: Header Behavior
-                      description: Behavior of headers
-                      enum:
-                        - none
-                        - whitelist
-                    headers:
-                      type: array
-                      title: Headers
-                      description: List of headers
+              headers_config:
+                type: object
+                title: Headers Config
+                description: Configuration for headers
+                properties:
+                  header_behavior:
+                    type: string
+                    title: Header Behavior
+                    description: Behavior of headers
+                    enum:
+                      - none
+                      - whitelist
+                  headers:
+                    type: array
+                    title: Headers
+                  description: List of headers
                       x-ui-placeholder: "Enter the header name"
-                query_strings_config:
-                  type: object
-                  title: Query Strings Config
-                  description: Configuration for query strings
-                  properties:
-                    query_string_behavior:
-                      type: string
-                      title: Query String Behavior
-                      description: Behavior of query strings
-                      enum:
-                        - none
-                        - whitelist
-                        - allExcept
-                        - all
-                enable_accept_encoding_brotli:
-                  type: boolean
-                  title: Enable Brotli
-                  description: Enable Brotli encoding
-                enable_accept_encoding_gzip:
-                  type: boolean
-                  title: Enable Gzip
-                  description: Enable Gzip encoding
+              query_strings_config:
+                type: object
+                title: Query Strings Config
+                description: Configuration for query strings
+                properties:
+                  query_string_behavior:
+                    type: string
+                    title: Query String Behavior
+                    description: Behavior of query strings
+                    enum:
+                      - none
+                      - whitelist
+                      - allExcept
+                      - all
+              enable_accept_encoding_brotli:
+                type: boolean
+                title: Enable Brotli
+                description: Enable Brotli encoding
+              enable_accept_encoding_gzip:
+                type: boolean
+                title: Enable Gzip
+                description: Enable Gzip encoding
     default_cache_behavior:
       type: object
       title: Default Cache Behavior
