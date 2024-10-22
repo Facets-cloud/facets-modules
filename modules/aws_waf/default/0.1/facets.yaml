@@ -4,23 +4,76 @@ version: '0.1'
 description: Adds aws_waf - default flavor
 clouds:
 - aws
+spec:
+  title: AWS WAF
+  type: object
+  description: Specification of the K8s resource intent
+  properties:
+    scope:
+      type: string
+      title: Scope
+      description: Scope of the WAF
+      enum:
+        - REGIONAL
+        - CLOUDFRONT
+    rule_groups:
+      type: object
+      title: Rule Groups
+      description: Rule groups configuration for WAF
+      patternProperties:
+        type: object
+        title: Rule Group
+        description: Rule group configuration
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        properties:
+          arn:
+            type: string
+            title: ARN
+            description: ARN of the rule group
+            x-ui-placeholder: "Enter the ARN of the rule group"
+          priority:
+            type: integer
+            title: Priority
+            description: Priority of the rule group
+            x-ui-placeholder: "Enter the priority of the rule group"
+    resource_arns:
+      type: object
+      title: Resource ARNs
+      description: Resource ARNs configuration for WAF
+      patternProperties:
+        type: object
+        title: Resource
+        description: Resource configuration
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        properties:
+          arn:
+            type: string
+            title: ARN
+            description: ARN of the resource
+            x-ui-placeholder: "Enter the ARN of the resource"
+    default_action:
+      type: object
+      title: Default Action
+      description: Default action configuration
+      properties:
+        allow:
+          type: object
+          title: Allow
+          description: Allow action
+          x-ui-yaml-editor: true
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres_user/postgres_user.schema.json
-  kind: postgres_user
-  flavor: default
   version: '0.1'
-  metadata: {}
-  spec:
-    endpoint: postgres:testPostgresPassword@test-postgresql.default.svc.cluster.local:5432
-    permissions:
-      permission1:
-        permission: ADMIN
-        database: test_db1
-        schema: public
-        table: test1
-      permission2:
-        permission: ADMIN
-        database: test_db1
-        schema: public
-        table: '*'
+  flavor: default
+  kind: aws_waf
   disabled: true
+  spec:
+    scope: "REGIONAL"
+    rule_groups:
+      rule1:
+        arn: ""
+        priority: 0
+    resource_arns:
+      test:
+        arn: ""
+    default_action:
+      allow: {}
