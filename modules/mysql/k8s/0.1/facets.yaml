@@ -15,7 +15,10 @@ spec:
       type: string
       title: MySQL Version
       description: Version of MySQL
-      minLength: 1
+      enum:
+        - "5.7.43"
+        - "8.0.34"
+        - "8.0.4"
       x-ui-placeholder: "Ex. 8.0"
     size:
       type: object
@@ -142,7 +145,7 @@ sample:
   version: "0.1"
   disabled: true
   spec:
-    mysql_version: 8.0.34
+    mysql_version: 8.0.4
     size:
       writer:
         cpu: 1
