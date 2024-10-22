@@ -48,5 +48,25 @@
     "name": "vault",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/vault/"
+  },
+  {
+    "name": "sns",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/sns/"
+  },
+  {
+    "name": "aws_secret_manager",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_secret_manager/"
+  },
+  {
+    "name": "cloudfront",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cloudfront/"
+  },
+  {
+    "name": "aws_waf",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_waf/"
   }
 ]

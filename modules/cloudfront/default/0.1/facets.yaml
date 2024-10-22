@@ -4,33 +4,271 @@ version: '0.1'
 description: Adds cloudfront - default flavor
 clouds:
 - aws
+spec:
+  title: AWS CloudFront
+  type: object
+  description: Specification of the AWS Cloudfront resource intent
+  properties:
+    aliases:
+      type: object
+      title: Aliases
+      description: Aliases for CloudFront
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter a wildcard domain"
+    viewer_certificate:
+      type: object
+      title: Viewer Certificate
+      description: ACM certificate for viewer certificate
+      properties:
+        acm_certificate_arn:
+          type: string
+          title: ACM Certificate ARN
+          description: ARN of the ACM Certificate
+          x-ui-placeholder: "Enter the ACM certificate ARN"
+    origins:
+      type: object
+      title: Origins
+      description: Origins for the CloudFront distribution
+      patternProperties:
+        type: object
+        title: Origin
+        description: Origin configuration
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        properties:
+          domain_name:
+            type: string
+            title: Domain Name
+            description: Domain name of the origin
+            x-ui-placeholder: "Enter the domain name of the origin"
+            x-ui-error-message: "Value doesn't match pattern, it should be domain name eg: test.s3.ap-south-1.amazonaws.com"
+    cache_policies:
+      type: object
+      title: Cache Policies
+      description: Cache policies for the CloudFront distribution
+      patternProperties:
+        type: object
+        title: Cache Policy
+        description: Cache policy configuration
+        keyPattern: ^[a-zA-Z0-9_.-]*$'
+        properties:
+          max_ttl:
+            type: integer
+            title: Max TTL
+            description: Maximum TTL
+          min_ttl:
+            type: integer
+            title: Min TTL
+            description: Minimum TTL
+          default_ttl:
+            type: integer
+            title: Default TTL
+            description: Default TTL
+          parameters_in_cache_key_and_forwarded_to_origin:
+            type: object
+            title: Parameters
+            description: Parameters for cache key and forwarding to origin
+            properties:
+              cookies_config:
+                type: object
+                title: Cookies Config
+                description: Configuration for cookies
+                properties:
+                  cookie_behavior:
+                    type: string
+                    title: Cookie Behavior
+                    description: Behavior of cookies
+                    enum:
+                      - none
+                      - whitelist
+                      - allExcept
+                      - all
+                    cookies:
+                      type: array
+                      title: Cookies
+                      description: List of cookies
+                      x-ui-placeholder: "Enter the cookie name"
+                headers_config:
+                  type: object
+                  title: Headers Config
+                  description: Configuration for headers
+                  properties:
+                    header_behavior:
+                      type: string
+                      title: Header Behavior
+                      description: Behavior of headers
+                      enum:
+                        - none
+                        - whitelist
+                    headers:
+                      type: array
+                      title: Headers
+                      description: List of headers
+                      x-ui-placeholder: "Enter the header name"
+                query_strings_config:
+                  type: object
+                  title: Query Strings Config
+                  description: Configuration for query strings
+                  properties:
+                    query_string_behavior:
+                      type: string
+                      title: Query String Behavior
+                      description: Behavior of query strings
+                      enum:
+                        - none
+                        - whitelist
+                        - allExcept
+                        - all
+                enable_accept_encoding_brotli:
+                  type: boolean
+                  title: Enable Brotli
+                  description: Enable Brotli encoding
+                enable_accept_encoding_gzip:
+                  type: boolean
+                  title: Enable Gzip
+                  description: Enable Gzip encoding
+    default_cache_behavior:
+      type: object
+      title: Default Cache Behavior
+      description: Default cache behavior configuration
+      properties:
+        cache_policy_name:
+          type: string
+          title: Cache Policy Name
+          description: Name of the cache policy
+          x-ui-placeholder: "Enter the cache policy name"
+        target_origin_id:
+          type: string
+          title: Target Origin ID
+          description: ID of the target origin
+          x-ui-placeholder: "Enter the target origin ID"
+        allowed_methods:
+          type: array
+          title: Allowed Methods
+          description: List of allowed methods
+          x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
+        cached_methods:
+          type: array
+          title: Cached Methods
+          description: List of cached methods
+          x-ui-placeholder: Enter the cached methods eg. GET, HEAD
+        viewer_protocol_policy:
+          type: string
+          title: Viewer Protocol Policy
+          description: Policy for viewer protocol
+          enum:
+            - allow-all
+            - redirect-to-https
+            - https-only
+    ordered_cache_behaviors:
+      type: object
+      title: Ordered Cache Behaviors
+      description: Ordered cache behaviors configuration
+      patternProperties:
+        type: object
+        title: Cache Behavior
+        description: Cache behavior configuration
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        properties:
+          cache_policy_name:
+            type: string
+            title: Cache Policy Name
+            description: Name of the cache policy
+            x-ui-placeholder: "Enter the cache policy name"
+          path_pattern:
+            type: string
+            title: Path Pattern
+            description: Path pattern for the cache behavior
+            x-ui-placeholder: "Enter the path pattern"
+          target_origin_id:
+            type: string
+            title: Target Origin ID
+            description: ID of the target origin
+            x-ui-placeholder: "Enter the target origin ID"
+          viewer_protocol_policy:
+            type: string
+            title: Viewer Protocol Policy
+            description: Policy for viewer protocol
+            enum:
+              - allow-all
+              - redirect-to-https
+              - https-only
+          allowed_methods:
+            type: array
+            title: Allowed Methods
+            description: List of allowed methods
+            x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
+          cached_methods:
+            type: array
+            title: Cached Methods
+            description: List of cached methods
+            x-ui-placeholder: Enter cached methods eg. GET, HEADS
+          compress:
+            type: boolean
+            title: Compress
+            description: Enable compression
+    aws_waf_id:
+      type: string
+      title: AWS WAF ID
+      description: Web Application Firewall ID
+      x-ui-placeholder: "Enter the AWS WAF ID"
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/cloudfront/cloudfront.schema.json
-  kind: cloudfront
-  flavor: default
   version: '0.1'
-  disabled: true
-  metadata: {}
+  flavor: default
+  kind: cloudfront
+  lifecycle: ENVIRONMENT
+  disabled: false
+  provided: false
+  depends_on: []
+  metadata:
+    name: ""
   spec:
     aliases:
-      alias1: '*.echo.infradev.facets.cloud'
-      alias2: echo.infradev.facets.cloud
+      alias1: "*.example.com"
     viewer_certificate:
-      acm_certificate_arn: ''
+      acm_certificate_arn: ""
     origins:
       origin1:
-        domain_name: ''
+        domain_name: ""
+      origin2:
+        domain_name: ""
+    cache_policies:
+      sample_policy:
+        max_ttl: 60
+        min_ttl: 10
+        default_ttl: 30
+        parameters_in_cache_key_and_forwarded_to_origin:
+          cookies_config:
+            cookie_behavior: "whitelist"
+            cookies:
+              items:
+                - ""
+          headers_config:
+            header_behavior: "none"
+          query_strings_config:
+            query_string_behavior: "none"
+          enable_accept_encoding_brotli: false
+          enable_accept_encoding_gzip: false
     default_cache_behavior:
-      target_origin_id: origin1
+      cache_policy_name: ""
+      target_origin_id: ""
       allowed_methods:
-      - DELETE
-      - GET
-      - HEAD
-      - OPTIONS
-      - PATCH
-      - POST
-      - PUT
+        - GET
+        - HEAD
       cached_methods:
-      - GET
-      - HEAD
-      viewer_protocol_policy: allow-all
+        - GET
+        - HEAD
+      viewer_protocol_policy: "allow-all"
+    ordered_cache_behaviors:
+      cache1:
+        cache_policy_name: ""
+        path_pattern: "/example/*"
+        target_origin_id: ""
+        viewer_protocol_policy: "redirect-to-https"
+        allowed_methods:
+          - GET
+          - HEAD
+        cached_methods:
+          - GET
+          - HEAD
+        compress: true
+    waf_id: ""
