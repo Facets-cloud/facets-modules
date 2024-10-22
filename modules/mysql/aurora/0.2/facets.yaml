@@ -131,6 +131,10 @@ spec:
               x-ui-placeholder: "Enter writer instance count"
           required:
             - instance
+    apply_immediately:
+      type: boolean
+      title: Apply Immediately
+      description: This specifies whether any modifications are applied immediately, or during the next maintenance window. Default is false
   required:
     - size
     - mysql_version
@@ -148,6 +152,7 @@ sample:
       managed-by: facets
   spec:
     mysql_version: 8.0.mysql_aurora.3.05.2
+    apply_immediately: false
     size:
       writer:
         instance: db.t4g.medium

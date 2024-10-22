@@ -181,6 +181,10 @@ spec:
       type: array
       title: Additional Database Names
       description: List of additional databases to be created.
+    apply_immediately:
+      type: boolean
+      title: Apply Immediately
+      description: This specifies whether any modifications are applied immediately, or during the next maintenance window. Default is false
   required:
     - size
     - postgres_version
@@ -200,6 +204,7 @@ sample:
   flavor: aurora
   spec:
     postgres_version: '12.11'
+    apply_immediately: false
     size:
       writer:
         instance: db.t3.medium
