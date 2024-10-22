@@ -1,0 +1,15 @@
+name: aws_secret_manager
+out:
+  type: object
+  title: AWS Secret Manager
+  description: AWS Secret Manager
+  properties:
+    attributes:
+       secret_name:
+        required: true
+        type: string
+       secret_arn:
+        required: true
+        type: string
+    interfaces:
+

@@ -1,0 +1,48 @@
+intent: aws_secret_manager
+flavor: default
+version: '0.1'
+description: Adds secret manager for aws - default flavor
+clouds:
+- aws
+spec:
+  title: AWS Secret Manager
+  description: Specification of the aws secret manager resource intent
+  type: object
+  properties:
+    override_default_name:
+      type: boolean
+      title: Override Default Name
+      description: Set it to true if secret is to be created with custom name
+    override_name:
+      type: string
+      title: Override Name
+      description: Custom name for secret. Applies only if override_default_name is set to true.
+      pattern: '[A-Za-z0-9]'
+      x-ui-placeholder: "Enter the custom name"
+      x-ui-error-message: "Value doesn't match the format eg. facets-secret"
+    secrets:
+      title: Secrets
+      type: object
+      description: "Enter a valid key-value pair for secrets in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
+sample:
+  kind: aws_secret_manager
+  flavor: default
+  version: '0.1'
+  lifecycle: ENVIRONMENT
+  disabled: false
+  provided: false
+  depends_on: []
+  metadata:
+    name: ''
+  spec:
+    override_default_name: false
+    override_name: ""
+    secrets:
+      key1: value1
+      key2: value2
+  advanced:
+    secret_manager: {}
+  out: {}
+

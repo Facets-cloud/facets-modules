@@ -1,0 +1,4 @@
+name: aws_secret_manager
+type: default
+displayName: AWS Secret Manager
+description: Secrets Manager to manage access to applications, services, and IT resources.
