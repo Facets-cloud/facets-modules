@@ -63,5 +63,10 @@
     "name": "cloudfront",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/cloudfront/"
+  },
+  {
+    "name": "aws_waf",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_waf/"
   }
 ]

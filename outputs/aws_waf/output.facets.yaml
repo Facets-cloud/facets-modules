@@ -1,0 +1,12 @@
+name: aws_waf
+out:
+  type: object
+  title: AWS WAF
+  description: AWS WAFv2 Web ACL Attributes
+  properties:
+    attributes:
+      arn:
+        required: true
+        type: string
+        description: ARN of the WAFv2 Web ACL
+    interfaces:
