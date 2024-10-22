@@ -20,10 +20,12 @@ spec:
       title: MongoDB Version
       description: Specifies the MongoDB version to use.
       enum:
-        - "4.4.14"
-        - "5.0.23"
+        - "4.4.15"
+        - "5.0.24"
         - "6.0.13"
         - "7.0.11"
+        - "7.0.14"
+        - "8.0.1"
       x-ui-placeholder: "e.g., '7.0' or '7.0.11'"
       x-ui-error-message: "Please select a valid MongoDB version."
     size:
@@ -101,7 +103,7 @@ sample:
   version: "0.3"
   spec:
     authenticated: true
-    mongodb_version: "6.0.13"
+    mongodb_version: "8.0.1"
     size:
       instance_count: 1
       cpu: "500m"
