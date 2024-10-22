@@ -691,7 +691,6 @@ spec:
   required:
     - persistent_volume_claims
   x-ui-order:
-    - type
     - persistent_volume_claims
     - restart_policy
     - enable_host_anti_affinity

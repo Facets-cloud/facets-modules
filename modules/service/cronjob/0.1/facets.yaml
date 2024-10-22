@@ -67,7 +67,6 @@ spec:
     - job
     - cronjob
   x-ui-order:
-    - type
     - job
     - cronjob
 sample:
