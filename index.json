@@ -654,6 +654,45 @@
     ]
   },
   {
+    "intent": "service",
+    "flavor": "statefulset",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/statefulset/0.1/",
+    "clouds": [
+      "gcp",
+      "aws",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "service",
+    "flavor": "cronjob",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/cronjob/0.1/",
+    "clouds": [
+      "gcp",
+      "aws",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "service",
+    "flavor": "job",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/job/0.1/",
+    "clouds": [
+      "gcp",
+      "aws",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
     "intent": "log_collector",
     "flavor": "loki_aws_s3",
     "version": "0.1",
