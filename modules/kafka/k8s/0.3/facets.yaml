@@ -165,13 +165,13 @@ sample:
       persistence_enabled: true
       size:
         cpu: "1"
-        memory: 1G
-        replica_count: 1
+        memory: 1Gi
+        instance_count: 1
         volume: 8Gi
     broker:
       persistence_enabled: true
       size:
         cpu: "1"
-        memory: 1G
-        replica_count: 1
+        memory: 1Gi
+        instance_count: 1
         volume: 8Gi
