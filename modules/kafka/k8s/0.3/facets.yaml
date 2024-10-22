@@ -28,12 +28,12 @@ spec:
       enum:
         - kraft
     controller:
-      tittle: Controller Spec
+      title: Controller Spec
       type: object
       properties:
         controller_only:
           type: boolean
-          tittle: Controller Only
+          title: Controller Only
           description: Run the controller in dedicated mode
         persistence_enabled:
           type: boolean
@@ -90,7 +90,7 @@ spec:
           required: ["cpu", "memory", "instance_count"]
       required: ["controller_only", "persistence_enabled", "size"]
     broker:
-      tittle: Broker Spec
+      title: Broker Spec
       type: object
       properties:
         persistence_enabled:
