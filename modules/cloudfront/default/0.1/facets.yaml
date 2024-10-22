@@ -28,7 +28,11 @@ spec:
     origins:
       type: object
       title: Origins
+<<<<<<< HEAD
       description: Specify the origin where CloudFront sends requests for the files
+=======
+      description: Origins for the CloudFront distribution
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
       patternProperties:
         type: object
         title: Origin
@@ -54,6 +58,7 @@ spec:
           max_ttl:
             type: integer
             title: Max TTL
+<<<<<<< HEAD
             description: Maximum time to live in seconds.
           min_ttl:
             type: integer
@@ -62,6 +67,16 @@ spec:
           default_ttl:
             type: integer
             title: Default time to live in seconds.
+=======
+            description: Maximum TTL
+          min_ttl:
+            type: integer
+            title: Min TTL
+            description: Minimum TTL
+          default_ttl:
+            type: integer
+            title: Default TTL
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             description: Default TTL
           parameters_in_cache_key_and_forwarded_to_origin:
             type: object
@@ -71,17 +86,26 @@ spec:
               cookies_config:
                 type: object
                 title: Cookies Config
+<<<<<<< HEAD
                 description: Determines whether any cookies in viewer requests are included in the cache key
+=======
+                description: Configuration for cookies
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
                 properties:
                   cookie_behavior:
                     type: string
                     title: Cookie Behavior
+<<<<<<< HEAD
                     description: Determines whether any cookies in viewer requests are included in the cache key and in requests that CloudFront sends to the origin
+=======
+                    description: Behavior of cookies
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
                     enum:
                       - none
                       - whitelist
                       - allExcept
                       - all
+<<<<<<< HEAD
                   cookies:
                     type: array
                     title: Cookies
@@ -131,6 +155,52 @@ spec:
                 type: boolean
                 title: Enable Gzip
                 description: Determines whether the Accept-Encoding HTTP header is included in the cache key
+=======
+                    cookies:
+                      type: array
+                      title: Cookies
+                      description: List of cookies
+                      x-ui-placeholder: "Enter the cookie name"
+                headers_config:
+                  type: object
+                  title: Headers Config
+                  description: Configuration for headers
+                  properties:
+                    header_behavior:
+                      type: string
+                      title: Header Behavior
+                      description: Behavior of headers
+                      enum:
+                        - none
+                        - whitelist
+                    headers:
+                      type: array
+                      title: Headers
+                      description: List of headers
+                      x-ui-placeholder: "Enter the header name"
+                query_strings_config:
+                  type: object
+                  title: Query Strings Config
+                  description: Configuration for query strings
+                  properties:
+                    query_string_behavior:
+                      type: string
+                      title: Query String Behavior
+                      description: Behavior of query strings
+                      enum:
+                        - none
+                        - whitelist
+                        - allExcept
+                        - all
+                enable_accept_encoding_brotli:
+                  type: boolean
+                  title: Enable Brotli
+                  description: Enable Brotli encoding
+                enable_accept_encoding_gzip:
+                  type: boolean
+                  title: Enable Gzip
+                  description: Enable Gzip encoding
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
     default_cache_behavior:
       type: object
       title: Default Cache Behavior
@@ -144,22 +214,38 @@ spec:
         target_origin_id:
           type: string
           title: Target Origin ID
+<<<<<<< HEAD
           description: The value of ID for the origin that you want CloudFront to route requests to
+=======
+          description: ID of the target origin
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
           x-ui-placeholder: "Enter the target origin ID"
         allowed_methods:
           type: array
           title: Allowed Methods
+<<<<<<< HEAD
           description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
+=======
+          description: List of allowed methods
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
         cached_methods:
           type: array
           title: Cached Methods
+<<<<<<< HEAD
           description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
+=======
+          description: List of cached methods
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
         viewer_protocol_policy:
           type: string
           title: Viewer Protocol Policy
+<<<<<<< HEAD
           description: The protocol that viewers can use to access the files in the origin
+=======
+          description: Policy for viewer protocol
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
           enum:
             - allow-all
             - redirect-to-https
@@ -182,17 +268,29 @@ spec:
           path_pattern:
             type: string
             title: Path Pattern
+<<<<<<< HEAD
             description: The pattern that specifies which requests to apply the behavior to
+=======
+            description: Path pattern for the cache behavior
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             x-ui-placeholder: "Enter the path pattern"
           target_origin_id:
             type: string
             title: Target Origin ID
+<<<<<<< HEAD
             description: The value of ID for the origin that you want CloudFront to route requests to
+=======
+            description: ID of the target origin
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             x-ui-placeholder: "Enter the target origin ID"
           viewer_protocol_policy:
             type: string
             title: Viewer Protocol Policy
+<<<<<<< HEAD
             description: The protocol that viewers can use to access the files in the origin
+=======
+            description: Policy for viewer protocol
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             enum:
               - allow-all
               - redirect-to-https
@@ -200,17 +298,29 @@ spec:
           allowed_methods:
             type: array
             title: Allowed Methods
+<<<<<<< HEAD
             description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
+=======
+            description: List of allowed methods
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
           cached_methods:
             type: array
             title: Cached Methods
+<<<<<<< HEAD
             description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
+=======
+            description: List of cached methods
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
             x-ui-placeholder: Enter cached methods eg. GET, HEADS
           compress:
             type: boolean
             title: Compress
+<<<<<<< HEAD
             description: Determines whether you want CloudFront to automatically compress certain files for this cache behavior.
+=======
+            description: Enable compression
+>>>>>>> df513fa ( Aws secret manager, SQS and SNS (#152))
     aws_waf_id:
       type: string
       title: AWS WAF ID
