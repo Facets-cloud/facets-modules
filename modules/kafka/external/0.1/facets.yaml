@@ -1,0 +1,44 @@
+intent: kafka
+flavor: external
+version: "0.1"
+description: Adds Kafka module of kubernetes flavor
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Kafka Spec
+  type: object
+  properties:
+    endpoint:
+      type: string
+      title: Endpoint
+      description: This is the Kafka Endpoint that is used to connect kafka instances
+    username:
+      type: string
+      title: Endpoint
+      description: This is the Kafka username that is used to connect kafka instances
+    password:
+      type: string
+      title: Endpoint
+      description: This is the Kafka password that is used to connect kafka instances
+    connection_string:
+      type: string
+      title: Endpoint
+      description: This is the Kafka connections string with protocol that is used to connect kafka instances
+      pattern: "^kafka:\/\/[a-zA-Z0-9._%+-]+:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(:[0-9]{1,5})(,[a-zA-Z0-9.-]+(:[0-9]{1,5}))*$"
+  required: ["connection_string", "password", "username", "endpoint"]
+sample:
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json"
+  kind: kafka
+  version: "0.1"
+  flavor: external
+  disabled: true
+  metadata: {}
+  spec:
+    username: ""
+    password: ""
+    endpoint: ""
+    connection_string: ""
+

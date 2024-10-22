@@ -1,0 +1,43 @@
+intent: mongo
+flavor: external
+version: "0.1"
+description: Adds mongo module of kubernetes flavor
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: mongo Spec
+  type: object
+  properties:
+    endpoint:
+      type: string
+      title: Endpoint
+      description: This is the Mongo Endpoint that is used to connect mongo instances
+    username:
+      type: string
+      title: Endpoint
+      description: This is the Mongo username that is used to connect mongo instances
+    password:
+      type: string
+      title: Endpoint
+      description: This is the Mongo password that is used to connect mongo instances
+    connection_string:
+      type: string
+      title: Endpoint
+      description: This is the Mongo connection string with protocol that is used to connect mongo instances
+  required: ["connection_string", "password", "username", "endpoint"]
+sample:
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json"
+  kind: mongo
+  version: "0.1"
+  flavor: external
+  disabled: true
+  metadata: {}
+  spec:
+    username: ""
+    password: ""
+    endpoint: ""
+    connection_string: ""
+
