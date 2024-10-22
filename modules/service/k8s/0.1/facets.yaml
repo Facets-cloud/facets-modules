@@ -18,13 +18,8 @@ spec:
     type:
       type: string
       title: Service Type
-      description: Type - Application, (Statefulset, Cronjob, Job)-coming soon
-      x-ui-override-disable: true
-      enum:
-        - application
-        - statefulset
-        - cronjob
-        - job
+      description: Type - Application
+      default: application
     persistent_volume_claims:
       type: object
       title: Persistent Volume Claim
@@ -753,7 +748,6 @@ spec:
               x-ui-placeholder: "Enter the max number or percentage of pods that needs to be unavailable during disruption, this is pod disruption budget"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 0 to 100 or 0% to 100%"
   required:
-    - type
     - restart_policy
     - enable_host_anti_affinity
     - runtime
@@ -761,7 +755,6 @@ spec:
     - job
     - cronjob
   x-ui-order:
-    - type
     - restart_policy
     - enable_host_anti_affinity
     - runtime
