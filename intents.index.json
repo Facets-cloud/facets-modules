@@ -250,5 +250,13 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/aws_dlm_lifecycle_policy/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/sns/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./intents/aws_secret_manager/"
   }
 ]

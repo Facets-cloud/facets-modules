@@ -4,7 +4,10 @@ version: '0.2'
 description: Adds sqs - default flavor
 clouds:
 - aws
-- aws
+spec:
+  title: AWS SQS
+  type: object
+  description: Specification of the SQS resource intent
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/sqs/sqs.schema.json
   version: '0.2'

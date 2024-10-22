@@ -638,7 +638,6 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/sqs/default/0.2/",
     "clouds": [
-      "aws",
       "aws"
     ]
   },
@@ -1208,6 +1207,26 @@
       "azure",
       "gcp",
       "kubernetes"
+    ]
+  },
+  {
+    "intent": "sns",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/sns/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "aws_secret_manager",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_secret_manager/default/0.1/",
+    "clouds": [
+      "aws"
     ]
   }
 ]

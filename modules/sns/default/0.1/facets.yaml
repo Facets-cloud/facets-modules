@@ -1,0 +1,44 @@
+intent: sns
+flavor: default
+version: '0.1'
+description: Adds sns - default flavor
+clouds:
+- aws
+spec:
+  title: AWS SNS
+  type: object
+  description: Specification of the K8s resource intent
+  properties:
+    subscriptions:
+      type: object
+      title: Subscriptions 
+      description: Subscriptions for sns
+      patternProperties:
+        type: object
+        title: Sqs
+        description: Define subscriptions for sqs
+        properties:
+          protocol:
+            type: string
+            title: Protocol
+            description: Protocol for sns subscription
+            enum:
+              - sqs
+          endpoint:
+            type: string
+            title: Endpoint
+            description: Endpoint of the aws resource
+            pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
+            x-ui-placeholder: "Enter the endpoint or arn of the resource"
+            x-ui-error-message: "Value doesn't match the format"
+sample:
+  version: '0.1'
+  flavor: default
+  kind: sns
+  metadata: {}
+  spec:
+    subscriptions:
+      sqs:
+        protocol: ""
+        endpoint: ""
+  disabled: false
