@@ -39,7 +39,6 @@ spec:
   required:
     - job
   x-ui-order:
-    - type
     - job
 sample:
   $schema: >-
