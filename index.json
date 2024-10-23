@@ -1306,5 +1306,15 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "postgres",
+    "flavor": "rds",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres/rds/0.1/",
+    "clouds": [
+      "aws"
+    ]
   }
 ]
