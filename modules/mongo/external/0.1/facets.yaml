@@ -27,7 +27,7 @@ spec:
       type: string
       title: Connection String
       description: This is the Mongo connection string with protocol that is used to connect mongo instances
-  required: ["connection_string", "password", "username", "endpoint"]
+  required: ["connection_string", "endpoint"]
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json"
   kind: mongo
