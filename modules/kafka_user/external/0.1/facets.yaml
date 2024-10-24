@@ -1,0 +1,32 @@
+intent: kafka_user
+flavor: external
+version: '0.1'
+description: Adds kafka_user - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+spec:
+  title: Kafka User External Spec
+  type: object
+  properties:
+    username:
+      type: string
+      title: Endpoint
+      description: This is the Kafka username that is used to connect kafka instances
+    password:
+      type: string
+      title: Endpoint
+      description: This is the Kafka password that is used to connect kafka instances
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_user/kafka_user.schema.json
+  kind: kafka_user
+  flavor: default
+  version: '0.1'
+  disabled: false
+  metadata: {}
+  out: {}
+  spec:
+    username: ""
+    password: ""
