@@ -267,6 +267,19 @@
   },
   {
     "intent": "kafka",
+    "flavor": "external",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kafka/external/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "kafka",
     "flavor": "msk",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -872,6 +885,19 @@
   },
   {
     "intent": "mongo",
+    "flavor": "external",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongo/external/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mongo",
     "flavor": "documentdb",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -939,6 +965,32 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/mysql_user/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "kafka_user",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kafka_user/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "kafka_user",
+    "flavor": "external",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kafka_user/external/0.1/",
     "clouds": [
       "aws",
       "gcp",
