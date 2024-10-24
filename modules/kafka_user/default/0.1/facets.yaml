@@ -7,6 +7,10 @@ clouds:
 - gcp
 - azure
 - kubernetes
+spec:
+  title: Kafka User
+  type: object
+  description: Specifications of user for Kafka
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_user/kafka_user.schema.json
   kind: kafka_user
