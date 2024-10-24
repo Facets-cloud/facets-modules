@@ -7,6 +7,10 @@ clouds:
 - gcp
 - azure
 - kubernetes
+spec:
+  title: MongoDB User
+  type: object
+  description: Specifications of user for MongoDB
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
   kind: mongo_user
