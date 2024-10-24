@@ -1,8 +1,5 @@
 intent: service
 flavor: k8s_application
-alias: 
-- k8s
-- default
 version: '0.1'
 description: Adds service module
 clouds:
