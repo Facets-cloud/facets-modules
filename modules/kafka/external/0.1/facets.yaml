@@ -17,15 +17,15 @@ spec:
       description: This is the Kafka Endpoint that is used to connect kafka instances
     username:
       type: string
-      title: Endpoint
+      title: Username
       description: This is the Kafka username that is used to connect kafka instances
     password:
       type: string
-      title: Endpoint
+      title: Password
       description: This is the Kafka password that is used to connect kafka instances
     connection_string:
       type: string
-      title: Endpoint
+      title: Connection String
       description: This is the Kafka connections string with protocol that is used to connect kafka instances
       pattern: "^kafka:\\/\\/[a-zA-Z0-9._%+-]+:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(:[0-9]{1,5})(,[a-zA-Z0-9.-]+(:[0-9]{1,5}))*$"
   required: ["connection_string", "password", "username", "endpoint"]

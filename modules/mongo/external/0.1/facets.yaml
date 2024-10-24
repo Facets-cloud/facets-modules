@@ -17,15 +17,15 @@ spec:
       description: This is the Mongo Endpoint that is used to connect mongo instances
     username:
       type: string
-      title: Endpoint
+      title: Username
       description: This is the Mongo username that is used to connect mongo instances
     password:
       type: string
-      title: Endpoint
+      title: Password
       description: This is the Mongo password that is used to connect mongo instances
     connection_string:
       type: string
-      title: Endpoint
+      title: Connection String
       description: This is the Mongo connection string with protocol that is used to connect mongo instances
   required: ["connection_string", "password", "username", "endpoint"]
 sample:
