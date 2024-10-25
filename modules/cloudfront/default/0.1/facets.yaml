@@ -28,7 +28,7 @@ spec:
     origins:
       type: object
       title: Origins
-      description: Origins for the CloudFront distribution
+      description: Specify the origin where CloudFront sends requests for the files
       patternProperties:
         type: object
         title: Origin
@@ -140,27 +140,26 @@ spec:
           type: string
           title: Cache Policy Name
           description: Name of the cache policy
-          x-ui-dynamic-enum: spec.cache_policies.*
           x-ui-placeholder: "Enter the cache policy name"
         target_origin_id:
           type: string
           title: Target Origin ID
-          description: ID of the target origin
+          description: The value of ID for the origin that you want CloudFront to route requests to
           x-ui-placeholder: "Enter the target origin ID"
         allowed_methods:
           type: array
           title: Allowed Methods
-          description: List of allowed methods
+          description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
         cached_methods:
           type: array
           title: Cached Methods
-          description: List of cached methods
+          description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
         viewer_protocol_policy:
           type: string
           title: Viewer Protocol Policy
-          description: Policy for viewer protocol
+          description: The protocol that viewers can use to access the files in the origin
           enum:
             - allow-all
             - redirect-to-https
@@ -183,17 +182,17 @@ spec:
           path_pattern:
             type: string
             title: Path Pattern
-            description: Path pattern for the cache behavior
+            description: The pattern that specifies which requests to apply the behavior to
             x-ui-placeholder: "Enter the path pattern"
           target_origin_id:
             type: string
             title: Target Origin ID
-            description: ID of the target origin
+            description: The value of ID for the origin that you want CloudFront to route requests to
             x-ui-placeholder: "Enter the target origin ID"
           viewer_protocol_policy:
             type: string
             title: Viewer Protocol Policy
-            description: Policy for viewer protocol
+            description: The protocol that viewers can use to access the files in the origin
             enum:
               - allow-all
               - redirect-to-https
@@ -201,17 +200,17 @@ spec:
           allowed_methods:
             type: array
             title: Allowed Methods
-            description: List of allowed methods
+            description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
             x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
           cached_methods:
             type: array
             title: Cached Methods
-            description: List of cached methods
+            description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
             x-ui-placeholder: Enter cached methods eg. GET, HEADS
           compress:
             type: boolean
             title: Compress
-            description: Enable compression
+            description: Determines whether you want CloudFront to automatically compress certain files for this cache behavior.
     aws_waf_id:
       type: string
       title: AWS WAF ID
