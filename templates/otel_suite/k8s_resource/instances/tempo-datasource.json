@@ -1,0 +1,23 @@
+{
+	"kind": "k8s_resource",
+	"metadata": {},
+	"flavor": "k8s",
+	"version": "0.2",
+	"disabled": true,
+	"spec": {
+		"resource": {
+			"apiVersion": "v1",
+			"kind": "ConfigMap",
+			"metadata": {
+				"name": "tempo-datasource",
+				"labels": {
+					"datasource_name": "tempo-distributed",
+					"grafana_datasource": "1"
+				}
+			},
+			"data": {
+				"datasource.yaml": "apiVersion: 1\ndatasources:\n- name: Facets Tempo\n  type: tempo\n  access: proxy\n  url: http://tempo-query-frontend-discovery.tempo.svc.cluster.local:3100\n  editable: true\n  readOnly: false\n  isDefault: false\n  jsonData:\n    tracesToLogs:\n      datasourceUid: Facets Loki\n      filterBySpanID: true\n      filterByTraceID: true\n      mapTagNamesEnabled: false\n      tags: ['job', 'instance', 'pod', 'namespace']\n    serviceMap:\n      datasourceUid: prometheus\n    nodeGraph:\n      enabled: true"
+			}
+		}
+	}
+}
