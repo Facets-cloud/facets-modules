@@ -5,5 +5,36 @@
   "ui": {
     "base_resource": true
   },
-  "spec": {}
+  "spec": {
+    "alertmanager": {
+      "size": {
+        "cpu": "50m",
+        "memory": "0.25Gi"
+      }
+    },
+    "grafana": {
+      "size": {
+        "cpu": "100m",
+        "memory": "0.25Gi"
+      }
+    },
+    "prometheus": {
+      "size": {
+        "cpu": "200m",
+        "memory": "2Gi"
+      }
+    },
+    "prometheus-operator": {
+      "size": {
+        "cpu": "100m",
+        "memory": "0.25Gi"
+      }
+    }
+    "pushgateway": {
+      "size": {
+        "cpu": "50m",
+        "memory": "0.25Gi"
+      }
+    }
+  }
 }
