@@ -3,7 +3,7 @@
   "flavor": "default",
   "version": "latest",
   "lifecycle": "ENVIRONMENT",
-  "disabled": false,
+  "disabled": true,
   "conditional_on_intent": "log_collector",
   "provided": false,
   "depends_on": [],
