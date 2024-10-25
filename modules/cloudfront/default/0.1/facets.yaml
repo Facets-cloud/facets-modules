@@ -141,6 +141,7 @@ spec:
           title: Cache Policy Name
           description: Name of the cache policy
           x-ui-placeholder: "Enter the cache policy name"
+          x-ui-dynamic-enum: spec.cache_policies.*
         target_origin_id:
           type: string
           title: Target Origin ID
