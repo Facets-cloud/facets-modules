@@ -68,5 +68,10 @@
     "name": "aws_waf",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/aws_waf/"
+  },
+  {
+    "name": "kafka_topic",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka_topic/"
   }
 ]

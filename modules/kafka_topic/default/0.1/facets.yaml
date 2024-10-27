@@ -1,0 +1,55 @@
+intent: kafka_topic
+flavor: default
+version: '0.1'
+description: Adds kafka_topic - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+spec:
+  title: Kafka Topic
+  type: object
+  description: Specifications of Kafka Topic for Kafka
+  properties:
+    topics:
+      type: object
+      description: Contains a map of configurations for multiple Kafka Topics
+      minProperties: 1
+      patternProperties:
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        description: The name of the Kafka Topic to be created
+        type: object
+        properties:
+          replication_factor:
+            description: The replication factor for each partition in the topic being
+              created. If not supplied, defaults to the cluster default.
+            type: number
+          partitions:
+            description: "The number of partitions for the topic being created or altered (WARNING: If partitions are increased for a topic that has a key, the partition logic or ordering of the messages will be affected). If not supplied for create, defaults to the cluster default."
+            type: number
+          configs:
+            description: A topic configuration override for the topic
+            type: object
+        required:
+          - replication_factor
+          - partitions
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
+  kind: kafka_topic
+  flavor: default
+  version: '0.1'
+  disabled: false
+  metadata: {}
+  out: {}
+  spec:
+    topics:
+      example_test1:
+        replication_factor: 1
+        partitions: 101
+        configs:
+          segment.ms: '20000'
+          cleanup.policy: compact
+      example_test2:
+        replication_factor: 1
+        partitions: 100

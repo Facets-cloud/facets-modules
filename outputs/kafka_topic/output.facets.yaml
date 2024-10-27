@@ -1,0 +1,12 @@
+name: kafka_topic
+out:
+  type: object
+  title: Kafka Topic
+  description: A category or feed name that stores and organizes data in Apache Kafka
+  properties:
+    attributes:
+      topics:
+        required: true
+        type: array
+        description: The list of kafka topic names
+    interfaces:
