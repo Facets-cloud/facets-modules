@@ -1339,5 +1339,15 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "aws_efs",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/aws_efs/default/0.1/",
+    "clouds": [
+      "aws"
+    ]
   }
 ]

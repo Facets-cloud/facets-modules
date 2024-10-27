@@ -73,5 +73,10 @@
     "name": "kafka_topic",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kafka_topic/"
+  },
+  {
+    "name": "aws_efs",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_efs/"
   }
 ]
