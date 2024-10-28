@@ -14,9 +14,11 @@ spec:
   properties:
     topics:
       type: object
+      title: Topics
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
       patternProperties:
+        title: Topic Name
         keyPattern: '^[a-zA-Z0-9_.-]*$'
         description: The name of the Kafka Topic to be created
         type: object
