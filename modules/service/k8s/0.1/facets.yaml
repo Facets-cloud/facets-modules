@@ -1,5 +1,5 @@
 intent: service
-flavor: k8s
+flavor: k8s_application
 version: '0.1'
 description: Adds service module
 clouds:
@@ -672,7 +672,7 @@ spec:
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
-  flavor: k8s
+  flavor: k8s_application
   metadata:
     labels:
       deliveryType: MANUAL
