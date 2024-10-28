@@ -17,6 +17,7 @@ spec:
       title: Topics
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
+      x-ui-allow-title-edit: true
       patternProperties:
         title: Topics
         keyPattern: '^[a-zA-Z0-9_.-]*$'
