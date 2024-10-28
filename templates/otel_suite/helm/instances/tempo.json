@@ -68,7 +68,9 @@
 			"serviceAccount": {
 				"create": true,
 				"imagePullSecrets": [],
-				"annotations": {},
+				"annotations": {
+					"eks.amazonaws.com/role-arn": "${aws_iam_role.tempo-s3-access.out.attributes.irsa_iam_role_arn}"
+				},
 				"automountServiceAccountToken": false
 			},
 			"rbac": {
@@ -637,7 +639,11 @@
 					"block": {
 						"dedicated_columns": []
 					},
-					"backend": "local",
+					"backend": "s3",
+					"s3": {
+						"bucket": "${s3.tempo-s3.out.attributes.bucket_name}",
+						"endpoint": "s3.ap-south-1.amazonaws.com"
+					},
 					"pool": {
 						"max_workers": 400,
 						"queue_depth": 20000

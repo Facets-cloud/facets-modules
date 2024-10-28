@@ -1,0 +1,9 @@
+{
+	"disabled": true,
+	"flavor": "default",
+	"kind": "s3",
+	"metadata": {},
+	"version": "0.2",
+	"spec": {},
+	"advanced": {}
+}
