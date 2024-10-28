@@ -18,23 +18,32 @@ spec:
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
       patternProperties:
-        title: Topic Name
+        title: Topics
         keyPattern: '^[a-zA-Z0-9_.-]*$'
         description: The name of the Kafka Topic to be created
         type: object
         properties:
+          topic_name:
+            title: Topic Name
+            description: The name of the topic.
+            type: string
+            pattern: '^[a-zA-Z0-9_.-]*$'
           replication_factor:
+            title: Replication Factor
             description: The replication factor for each partition in the topic being created.
             type: number
           partitions:
+            title: Partitions
             description: "The number of partitions for the topic being created or altered."
             type: number
           configs:
+            title: Configs
             description: A topic configuration override for the topic
             type: object
             x-ui-yaml-editor: true
             x-ui-placeholder: "Enter the configs key/value pair. Eg. segment.ms: 20000"
         required:
+          - topic_name
           - replication_factor
           - partitions
 sample:
