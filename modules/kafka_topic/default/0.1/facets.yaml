@@ -31,6 +31,8 @@ spec:
           configs:
             description: A topic configuration override for the topic
             type: object
+            x-ui-yaml-editor: true
+            x-ui-placeholder: "Enter the configs key/value pair. Eg. segment.ms: 20000"
         required:
           - replication_factor
           - partitions
