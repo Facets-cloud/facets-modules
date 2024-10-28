@@ -18,11 +18,17 @@ spec:
       minLength: 1
       x-ui-placeholder: "e.g., '13.3.0' or '15.3.0'"
       enum:
-        - "12.11.0"
-        - "13.3.0"
-        - "14.0.0"
+        - "9.6.9"
+        - "10.9.0"
+        - "11.9.0"
+        - "12.9.0"
+        - "13.9.0"
+        - "14.9.0"
         - "15.3.0"
+        - "15.8.0"
         - "16.0.0"
+        - "16.4.0"
+        - "17.0.0"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object

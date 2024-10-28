@@ -45,6 +45,11 @@
     "relativePath": "./outputs/pvc/"
   },
   {
+    "name": "vault",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/vault/"
+  },
+  {
     "name": "sns",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/sns/"
