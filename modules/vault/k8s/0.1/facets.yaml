@@ -1,7 +1,7 @@
-intent: mongo
+intent: vault
 flavor: k8s
-version: "0.3"
-description: Adds Mongo module of kubernetes flavor
+version: "0.1"
+description: Adds vault module of kubernetes flavor
 clouds:
   - aws
   - azure
@@ -11,27 +11,18 @@ spec:
   title: K8s
   type: object
   properties:
-    authenticated:
-      type: boolean
-      title: Authenticated
-      description: Make this MongoDB instance password protected.
-    mongodb_version:
+    vault_version:
       type: string
-      title: MongoDB Version
-      description: Specifies the MongoDB version to use.
+      title: Vault Version
+      description: Specifies the Vault version to use.
       enum:
-        - "4.4.15"
-        - "5.0.24"
-        - "6.0.13"
-        - "7.0.11"
-        - "7.0.14"
-        - "8.0.1"
-      x-ui-placeholder: "e.g., '7.0' or '7.0.11'"
-      x-ui-error-message: "Please select a valid MongoDB version."
+        - "1.17.2"
+      x-ui-placeholder: "e.g., '1.17.2'"
+      x-ui-error-message: "Please select a valid Vault version."
     size:
       type: object
       title: Size
-      description: Size of the MongoDB instance.
+      description: Size of the Vault instance.
       properties:
         instance_count:
           type: integer
@@ -43,19 +34,19 @@ spec:
           x-ui-error-message: "Instance count must be between 1 and 10."
         cpu:
           type: string
-          title: CPU Request
+          title: CPU
           description: Number of CPU cores required.
           minLength: 1
           pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-          x-ui-placeholder: "e.g., '500m' or '1'"
+          x-ui-placeholder: "e.g., '256m' or '1'"
           x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
         memory:
           type: string
-          title: Memory Request
+          title: Memory
           description: Amount of memory required.
           minLength: 1
-          pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-          x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+          pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+          x-ui-placeholder: "e.g., '256Mi' or '1.5Gi'"
           x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
         cpu_limit:
           type: string
@@ -63,51 +54,50 @@ spec:
           description: Set a maximum limit on CPU utilization.
           minLength: 1
           pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-          x-ui-placeholder: "e.g., '500m' or '1'"
+          x-ui-placeholder: "e.g., '256m' or '1'"
           x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
         memory_limit:
           type: string
           title: Memory Limit
           description: Set a maximum limit on memory utilization.
           minLength: 1
-          pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-          x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
+          pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+          x-ui-placeholder: "e.g., '256Mi' or '1.5Gi'"
           x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
         volume:
           type: string
           title: Volume
           description: The size of the volume.
           minLength: 1
-          pattern: "^[0-9]+[EiKMGTP]i?$"
+          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
           x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
-          x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
+          x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
       required:
         - instance_count
         - cpu
         - memory
+        - volume
   required:
     - size
-    - authenticated
-    - mongodb_version
+    - vault_version
   x-ui-order:
-    - authenticated
-    - mongodb_version
+    - vault_version
     - size
 sample:
   $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json
+    https://facets-cloud.github.io/facets-schemas/schemas/vault/vault.schema.json
   flavor: k8s
   metadata: {}
-  kind: mongo
+  kind: vault
   disabled: true
-  version: "0.3"
+  version: "0.1"
   spec:
     authenticated: true
-    mongodb_version: "8.0.1"
+    vault_version: "1.17.2"
     size:
       instance_count: 1
-      cpu: "500m"
-      memory: "800Mi"
-      cpu_limit: "1000m"
-      memory_limit: "1Gi"
+      cpu: "250m"
+      memory: "256Mi"
+      cpu_limit: "250m"
+      memory_limit: "256Mi"
       volume: "10Gi"

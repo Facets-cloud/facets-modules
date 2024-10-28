@@ -1262,6 +1262,32 @@
     ]
   },
   {
+    "intent": "vault",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/vault/k8s/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "kafka",
+    "flavor": "k8s",
+    "version": "0.3",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kafka/k8s/0.3/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
     "intent": "sns",
     "flavor": "default",
     "version": "0.1",
@@ -1279,19 +1305,6 @@
     "relativePath": "./modules/aws_secret_manager/default/0.1/",
     "clouds": [
       "aws"
-    ]
-  },
-  {
-    "intent": "kafka",
-    "flavor": "k8s",
-    "version": "0.3",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/kafka/k8s/0.3/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
     ]
   }
 ]
