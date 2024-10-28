@@ -45,14 +45,4 @@ sample:
   disabled: false
   metadata: {}
   out: {}
-  spec:
-    topics:
-      example_test1:
-        replication_factor: 1
-        partitions: 101
-        configs:
-          segment.ms: '20000'
-          cleanup.policy: compact
-      example_test2:
-        replication_factor: 1
-        partitions: 100
+  spec: {}
