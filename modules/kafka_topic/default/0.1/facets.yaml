@@ -22,11 +22,10 @@ spec:
         type: object
         properties:
           replication_factor:
-            description: The replication factor for each partition in the topic being
-              created. If not supplied, defaults to the cluster default.
+            description: The replication factor for each partition in the topic being created.
             type: number
           partitions:
-            description: "The number of partitions for the topic being created or altered (WARNING: If partitions are increased for a topic that has a key, the partition logic or ordering of the messages will be affected). If not supplied for create, defaults to the cluster default."
+            description: "The number of partitions for the topic being created or altered (WARNING: If partitions are increased for a topic that has a key, the partition logic or ordering of the messages will be affected)."
             type: number
           configs:
             description: A topic configuration override for the topic
