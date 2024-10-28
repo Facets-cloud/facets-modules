@@ -25,7 +25,7 @@ spec:
             description: The replication factor for each partition in the topic being created.
             type: number
           partitions:
-            description: "The number of partitions for the topic being created or altered (WARNING: If partitions are increased for a topic that has a key, the partition logic or ordering of the messages will be affected)."
+            description: "The number of partitions for the topic being created or altered."
             type: number
           configs:
             description: A topic configuration override for the topic
