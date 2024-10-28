@@ -667,7 +667,7 @@
   },
   {
     "intent": "service",
-    "flavor": "statefulset",
+    "flavor": "k8s_statefulset",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/service/statefulset/0.1/",
@@ -680,7 +680,20 @@
   },
   {
     "intent": "service",
-    "flavor": "cronjob",
+    "flavor": "k8s_application",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/k8s/0.1/",
+    "clouds": [
+      "gcp",
+      "aws",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "service",
+    "flavor": "k8s_cronjob",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/service/cronjob/0.1/",
@@ -693,7 +706,7 @@
   },
   {
     "intent": "service",
-    "flavor": "job",
+    "flavor": "k8s_job",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/service/job/0.1/",
