@@ -17,10 +17,6 @@ spec:
       title: Topics
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
-<<<<<<< HEAD
-=======
-      x-ui-allow-title-edit: true
->>>>>>> bcf213d ([S67] Feature: Added Kafka Topic resource (#163))
       patternProperties:
         title: Topics
         keyPattern: '^[a-zA-Z0-9_.-]*$'
