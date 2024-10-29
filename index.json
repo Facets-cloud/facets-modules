@@ -1306,5 +1306,18 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "kafka_topic",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kafka_topic/default/0.1/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
