@@ -1262,19 +1262,6 @@
     ]
   },
   {
-    "intent": "mysql",
-    "flavor": "k8s",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mysql/k8s/0.2/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
-    ]
-  },
-  {
     "intent": "vault",
     "flavor": "k8s",
     "version": "0.1",
