@@ -1319,5 +1319,18 @@
       "gcp",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "kubernetes_secret",
+    "flavor": "k8s",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_secret/k8s/0.2/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
   }
 ]
