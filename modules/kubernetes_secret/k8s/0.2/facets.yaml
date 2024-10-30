@@ -1,6 +1,6 @@
 intent: kubernetes_secret
 flavor: k8s
-version: '0.1'
+version: '0.2'
 clouds:
   - aws
   - azure
@@ -21,7 +21,7 @@ sample:
   kind: kubernetes_secret
   disabled: true
   flavor: k8s
-  version: '0.1'
+  version: '0.2'
   metadata: {}
   spec:
     data: 
