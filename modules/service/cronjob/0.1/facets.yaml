@@ -1,5 +1,5 @@
 intent: service
-flavor: k8s_cronjob
+flavor: cronjob
 version: '0.1'
 description: Adds service module
 clouds:
@@ -520,7 +520,7 @@ sample:
   metadata:
     name: cronjob-service
   disabled: true
-  flavor: k8s_cronjob
+  flavor: cronjob
   kind: service
   version: '0.1'
   spec:
