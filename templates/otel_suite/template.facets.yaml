@@ -4,5 +4,5 @@ clouds:
 version: 0.1
 type: MULTI_INSTANCE
 group: Capabilities
-displayName: Log Collection and Tracing AWS
-description: Log Collector and Trace Logs for AWS
+displayName: Grafana Tempo AWS
+description: Tracing using Grafana Tempo in AWS
