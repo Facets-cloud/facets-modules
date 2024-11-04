@@ -1,0 +1,270 @@
+{
+	"kind": "helm",
+	"flavor": "k8s",
+	"disabled": true,
+	"metadata": {},
+	"version": "0.1",
+	"spec": {
+		"helm": {
+			"repository": "https://open-telemetry.github.io/opentelemetry-helm-charts",
+			"chart": "opentelemetry-kube-stack",
+			"namespace": "otel-operator",
+			"wait": true,
+			"version": "0.2.3"
+		},
+		"values": {
+			"cleanupJob": {
+				"enabled": true
+			},
+			"crds": {
+				"install": true
+			},
+			"opentelemetry-operator": {
+				"enabled": true,
+				"manager": {
+					"collectorImage": {
+						"repository": "otel/opentelemetry-collector-contrib"
+					}
+				},
+				"admissionWebhooks": {
+					"failurePolicy": "Fail"
+				},
+				"crds": {
+					"create": true
+				}
+			},
+			"defaultCRConfig": {
+				"enabled": false
+			},
+			"collectors": {
+				"cluster": {
+					"enabled": false
+				},
+				"daemon": {
+					"suffix": "daemon",
+					"mode": "daemonset",
+					"enabled": true,
+					"resources": {
+						"limits": {
+							"cpu": "100m",
+							"memory": "250Mi"
+						},
+						"requests": {
+							"cpu": "100m",
+							"memory": "128Mi"
+						}
+					},
+					"scrape_configs_file": "",
+					"presets": {
+						"logsCollection": {
+							"enabled": true
+						},
+						"kubeletMetrics": {
+							"enabled": false
+						},
+						"hostMetrics": {
+							"enabled": false
+						},
+						"kubernetesAttributes": {
+							"enabled": true
+						}
+					},
+					"config": {
+						"receivers": {
+							"otlp": {
+								"protocols": {
+									"grpc": {
+										"endpoint": "0.0.0.0:4317"
+									},
+									"http": {
+										"endpoint": "0.0.0.0:4318"
+									}
+								}
+							}
+						},
+						"connectors": {
+							"spanmetrics": {
+								"histogram": {},
+								"dimensions": [
+									{
+										"name": "http.method",
+										"default": "GET"
+									},
+									{
+										"name": "http.status_code"
+									}
+								]
+							}
+						},
+						"processors": {
+							"batch": {
+								"send_batch_size": 1000,
+								"timeout": "1s",
+								"send_batch_max_size": 1500
+							},
+							"resourcedetection/env": {
+								"detectors": [
+									"env"
+								],
+								"timeout": "2s",
+								"override": false
+							},
+							"memory_limiter": {
+								"check_interval": "1s",
+								"limit_percentage": 75,
+								"spike_limit_percentage": 15
+							}
+						},
+						"exporters": {
+							"prometheus": {
+								"endpoint": "0.0.0.0:9090",
+								"resource_to_telemetry_conversion": {
+									"enabled": true
+								},
+								"const_labels": {
+									"source": "otel-collector"
+								}
+							},
+							"debug": {
+								"verbosity": "detailed"
+							},
+							"otlp/tempo": {
+								"endpoint": "http://tempo-distributor-discovery.tempo.svc.cluster.local:4317",
+								"tls": {
+									"insecure": true
+								}
+							},
+							"otlp/signoz": {
+								"endpoint": "http://signoz-otel-collector.signoz.svc.cluster.local:4317",
+								"tls": {
+									"insecure": true
+								}
+							}
+						},
+						"service": {
+							"pipelines": {
+								"traces": {
+									"receivers": [
+										"otlp"
+									],
+									"processors": [
+										"memory_limiter",
+										"batch"
+									],
+									"exporters": [
+										"otlp/tempo",
+										"otlp/signoz",
+										"spanmetrics"
+									]
+								},
+								"metrics": {
+									"receivers": [
+										"spanmetrics",
+										"otlp"
+									],
+									"processors": [
+										"memory_limiter",
+										"batch"
+									],
+									"exporters": [
+										"otlp/signoz",
+										"prometheus"
+									]
+								},
+								"logs": {
+									"receivers": [
+										"otlp"
+									],
+									"processors": [
+										"memory_limiter",
+										"batch"
+									],
+									"exporters": [
+										"otlp/signoz"
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"clusterRole": {
+				"enabled": true,
+				"annotations": {},
+				"rules": []
+			},
+			"instrumentation": {
+				"enabled": true,
+				"labels": {},
+				"annotations": {},
+				"exporter": {
+					"endpoint": "http://otel-operator-daemon-collector.otel-operator:4318"
+				},
+				"resource": {
+					"resourceAttributes": {},
+					"addK8sUIDAttributes": true
+				},
+				"propagators": [
+					"tracecontext",
+					"baggage",
+					"b3",
+					"b3multi",
+					"jaeger",
+					"xray",
+					"ottrace"
+				],
+				"sampler": {},
+				"env": [],
+				"java": {
+					"image": "ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest"
+				},
+				"nodejs": {
+					"image": "ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-nodejs:latest"
+				},
+				"python": {
+					"image": "ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest"
+				},
+				"dotnet": {
+					"image": "ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-dotnet:latest"
+				}
+			},
+			"opAMPBridge": {
+				"enabled": false
+			},
+			"kubernetesServiceMonitors": {
+				"enabled": false,
+				"ignoreNamespaceSelectors": false
+			},
+			"kubeApiServer": {
+				"enabled": false
+			},
+			"kubelet": {
+				"enabled": false
+			},
+			"kubeControllerManager": {
+				"enabled": false
+			},
+			"coreDns": {
+				"enabled": false
+			},
+			"kubeDns": {
+				"enabled": false
+			},
+			"kubeEtcd": {
+				"enabled": false
+			},
+			"kubeScheduler": {
+				"enabled": false
+			},
+			"kubeProxy": {
+				"enabled": false
+			},
+			"kubeStateMetrics": {
+				"enabled": false
+			},
+			"prometheus-node-exporter": {
+				"enabled": false
+			}
+		}
+	}
+}

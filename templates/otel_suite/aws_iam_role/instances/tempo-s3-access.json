@@ -1,0 +1,23 @@
+{
+	"version": "0.1",
+	"disabled": true,
+	"flavor": "default",
+	"metadata": {
+		"namespace": "tempo"
+	},
+	"kind": "aws_iam_role",
+	"spec": {
+		"irsa": {
+			"service_accounts": {
+				"arbitrary_name": {
+					"name": "tempo"
+				}
+			}
+		},
+		"policies": {
+			"tempo_s3_rw_access": {
+				"arn": "${s3.tempo-s3.out.attributes.read_write_iam_policy_arn}"
+			}
+		}
+	}
+}
