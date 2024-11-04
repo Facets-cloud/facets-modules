@@ -476,16 +476,9 @@ spec:
       required:
         - ports
         - size
-        - health_checks
       x-ui-order:
         - ports
-        - metrics
         - size
-        - health_checks
-        - autoscaling
-        - volumes
-        - command
-        - args
   required:
     - job
     - runtime
