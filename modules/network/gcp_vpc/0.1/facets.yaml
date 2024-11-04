@@ -1,0 +1,19 @@
+intent: network
+flavor: gcp_vpc
+version: "0.1"
+description: Adds network - gcp vpc flavor
+clouds:
+  - gcp
+spec:
+  title: network
+  description: Specification of the network resource intent for gcp vpc flavor
+  type: object
+sample:
+  kind: network
+  flavor: gcp_vpc
+  version: "0.1"
+  lifecycle: ENVIRONMENT_NO_DEPS
+  disabled: true
+  depends_on: []
+  metadata: {}
+  spec: {}
