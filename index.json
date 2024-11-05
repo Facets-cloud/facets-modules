@@ -1376,7 +1376,7 @@
   {
     "intent": "kubernetes_cluster",
     "flavor": "gcp_gke",
-    "version": "0.2",
+    "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/kubernetes_cluster/gcp_gke/0.1/",
     "clouds": [
@@ -1412,8 +1412,6 @@
     "clouds": [
       "gcp"
     ]
-  }
-]
   },
   {
     "intent": "aws_efs",
