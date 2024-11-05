@@ -39,7 +39,7 @@ spec:
     runtime:
       type: object
       title: Runtime
-      description: Customize service runtime settings like ports, healthchecks etc.
+      description: Customize service runtime settings like argument, command.
       properties:
         command:
           type: array
