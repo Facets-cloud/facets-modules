@@ -54,12 +54,5 @@ sample:
   provided: false
   depends_on: []
   metadata: {}
-  spec:
-    auto_upgrade: true
-    maintenance_windows:
-      default:
-        days_of_week:
-          - Monday
-        start_hour: 3
-        duration: 4
+  spec: {}
   advanced: {}

@@ -33,7 +33,4 @@ sample:
   disabled: true
   depends_on: []
   metadata: {}
-  spec:
-    enable_multi_az: false
-    existing_vpc_id: ""
-    vpc_cidr: 10.45.0.0/16"
+  spec: {}

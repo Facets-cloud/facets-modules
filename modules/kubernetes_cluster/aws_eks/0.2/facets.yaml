@@ -114,7 +114,7 @@ spec:
               description: Maximum number of worker nodes in the node pool
               type: number
               minimum: 1
-              maximum: 200
+              maximum: 100
             instance_type:
               title: Node Instance Types
               description: Comma-separated list of instance types for worker nodes
@@ -163,25 +163,5 @@ sample:
   disabled: true
   depends_on: []
   metadata: {}
-  spec:
-    cluster:
-      cloudwatch_log_retention_days: 30
-      public_cidr_whitelist: ""
-      kms_keys:
-        deletion_window_in_days: 7
-        enable_rotation: false
-    nodepools:
-      enable_ondemand_fallback_nodes: true
-      default:
-        root_disk_volume: 30
-        node_lifecycle_type: SPOT
-        max_nodes: 10
-      facets_dedicated:
-        enable: true
-        root_disk_volume: 30
-        node_lifecycle_type: SPOT
-        max_nodes: 10
-        instance_type: "c4.xlarge"
-    tags:
-      key1: value1
+  spec: {}
   advanced: {}
