@@ -1,0 +1,16 @@
+name: aws_efs
+out:
+  type: object
+  title: AWS EFS
+  description: AWS EFS Attributes
+  properties:
+    attributes:
+      file_system_id:
+        required: true
+        type: string
+        description: The ID that identifies the file system
+      storage_class_name:
+        required: true
+        type: string
+        description: The K8s storage class name
+    interfaces:

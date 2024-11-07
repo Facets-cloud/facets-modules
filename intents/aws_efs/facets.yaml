@@ -1,0 +1,4 @@
+name: aws_efs
+type: default
+displayName: AWS EFS
+description: Provides an Elastic File System (EFS) File System resource.
