@@ -1,0 +1,17 @@
+intent: aws_efs
+flavor: default
+version: '0.1'
+description: Adds aws_efs - default flavor
+clouds:
+- aws
+spec:
+  title: AWS EFS
+  type: object
+  description: Specification of the AWS EFS resource intent
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_efs/aws_efs.schema.json
+  version: '0.1'
+  flavor: default
+  kind: aws_efs
+  disabled: true
+  spec: {}
