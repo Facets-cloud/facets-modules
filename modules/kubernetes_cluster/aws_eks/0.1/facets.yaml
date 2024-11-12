@@ -137,6 +137,20 @@ spec:
           description: Specifications of Ondemand Fallback Nodepool
           type: object
           properties:
+            enable:
+              title: Enable Ondemand Fallback Nodepool
+              description: Boolean to enable ondemand fallback nodepool
+              type: boolean
+            instance_type:
+              title: Instance Type of Ondemand Fallback Node
+              description: Size of the node for ondemand fallback worker node
+              type: string
+            max_nodes: 
+              title: Max nodes
+              description: Maximum number of nodes in nodepool
+              type: number
+              minimum: 0
+              maximum: 100
             ami_id:
               title: AMI Id
               description: AMI Id of the AMI image to be used in for the kubernetes node. This should be self owned ami.
