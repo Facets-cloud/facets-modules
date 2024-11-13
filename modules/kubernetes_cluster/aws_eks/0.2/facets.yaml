@@ -6,7 +6,7 @@ clouds:
   - aws
 spec:
   title: Kubernetes Cluster
-  description: Specification of the kubernetes cluster resource intent for aws eks flavor
+  description: Specification of the kubernetes cluster for aws eks flavor
   type: object
   properties:
     cluster:
@@ -27,7 +27,7 @@ spec:
           type: string
           x-ui-placeholder: e.g., 10.45.0.0/16,10.60.0.0/16
           pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b(,\s*\b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b)*
-          x-ui-error-message: Regex for cidr block did not match. Make sure valid comma-separated cidr blocks are given
+          x-ui-error-message: Regex for CIDR block did not match. Make sure valid comma-separated CIDR blocks are given
         kms_keys:
           title: KMS Keys
           description: Specification of aws kms
@@ -35,11 +35,11 @@ spec:
           properties:
             deletion_window_in_days:
               title: Deletion Window
-              description: The waiting period in days after which kms keys are deleted
+              description: Waiting period in days after which kms keys are deleted
               type: number
               minimum: 7
               maximum: 30
-              x-ui-error-message: The deletion window must be between 7 and 30
+              x-ui-error-message: Deletion window must be between 7 and 30
             enable_rotation:
               title: Enable Rotation for KMS
               description: Specifies whether key rotation is enabled
@@ -77,16 +77,16 @@ spec:
               minimum: 1
               maximum: 200
             ami_id:
-              title: AMI Id
-              description: AMI Id of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              title: AMI ID
+              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for ami image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
             ami_owner_id:
-              title: AMI Owner Id
-              description: AMI owner id of the ami image to be used for the kubernetes node while using a name filter.
+              title: AMI Owner ID
+              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
@@ -121,16 +121,16 @@ spec:
               type: string
               x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
             ami_id:
-              title: AMI Id
-              description: AMI Id of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              title: AMI ID
+              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for ami image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
             ami_owner_id:
-              title: AMI Owner Id
-              description: AMI owner id of the ami image to be used for the kubernetes node while using a name filter.
+              title: AMI Owner ID
+              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
         ondemand_fallback:
           title: Ondemand Fallback Nodepool Spec
@@ -152,16 +152,16 @@ spec:
               minimum: 0
               maximum: 100
             ami_id:
-              title: AMI Id
-              description: AMI Id of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              title: AMI ID
+              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for ami image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
             ami_owner_id:
-              title: AMI Owner Id
-              description: AMI owner id of the ami image to be used for the kubernetes node while using a name filter.
+              title: AMI Owner ID
+              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
     tags:
       title: Kubernetes Cluster Tags
