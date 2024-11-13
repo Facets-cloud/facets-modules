@@ -6,7 +6,7 @@ clouds:
   - gcp
 spec:
   title: Kubernetes Cluster
-  description: Specification of the kubernetes cluster resource intent for gcp gke flavor
+  description: Specification of the kubernetes cluster for gcp gke flavor
   type: object
   properties:
     maintenance_windows:

@@ -6,7 +6,7 @@ clouds:
   - azure
 spec:
   title: Kubernetes Cluster
-  description: Specification of the kubernetes cluster resource intent for azure aks flavor
+  description: Specification of the kubernetes cluster for azure aks flavor
   type: object
   properties:
     maintenance_windows:

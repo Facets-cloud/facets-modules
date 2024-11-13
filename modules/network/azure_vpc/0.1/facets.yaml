@@ -6,7 +6,7 @@ clouds:
   - azure
 spec:
   title: network
-  description: Specification of the network resource intent for gcp vpc flavor
+  description: Specification of the network for gcp vpc flavor
   type: object
 sample:
   kind: network
