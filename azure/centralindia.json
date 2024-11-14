@@ -1,0 +1,320 @@
+{
+    "16Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.349,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / 0",
+                "canonicalname": "B16als_v2",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:06:27",
+                "name": "Standard_B16als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.444,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D16as_v5",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:05:34",
+                "name": "Standard_D16as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 304560,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.444,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "DC16as_cc_v5",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:02:02",
+                "name": "Standard_DC16as_cc_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.444,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / 0",
+                "canonicalname": "DC16as_v5",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:00:37",
+                "name": "Standard_DC16as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.06216,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D16as_v5",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:05:34",
+                "name": "Standard_D16as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 304560,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.06902,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D16a_v4",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:05:07",
+                "name": "Standard_D16a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 293654,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.06902,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D16as_v4",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:02:41",
+                "name": "Standard_D16as_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 292074,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.07518,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D16ads_v5",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:03:56",
+                "name": "Standard_D16ads_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 306800,
+                "tags": []
+            }
+        ]
+    },
+    "4Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.0984,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "B4as_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:03:52",
+                "name": "Standard_B4as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.106,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -17.7",
+                "canonicalname": "B4als_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:06:05",
+                "name": "Standard_B4als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.111,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "DC4as_cc_v5",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:04:20",
+                "name": "Standard_DC4as_cc_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.111,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / 0",
+                "canonicalname": "DC4as_v5",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:05:42",
+                "name": "Standard_DC4as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.01554,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D4as_v5",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:05:48",
+                "name": "Standard_D4as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 72928,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.01722,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D4a_v4",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:06:15",
+                "name": "Standard_D4a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 70996,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.01722,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D4as_v4",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:01:41",
+                "name": "Standard_D4as_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 71707,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.01876,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D4ads_v5",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:02:59",
+                "name": "Standard_D4ads_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 72644,
+                "tags": []
+            }
+        ]
+    },
+    "8Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.211,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -17.5",
+                "canonicalname": "B8als_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:01:22",
+                "name": "Standard_B8als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.222,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / 0",
+                "canonicalname": "D8as_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:05:17",
+                "name": "Standard_D8as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 153842,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.222,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "DC8as_cc_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:04:30",
+                "name": "Standard_DC8as_cc_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.222,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / 0",
+                "canonicalname": "DC8as_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:04:18",
+                "name": "Standard_DC8as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.03108,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D8as_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:05:17",
+                "name": "Standard_D8as_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 153842,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.03444,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D8a_v4",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:01:12",
+                "name": "Standard_D8a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 151379,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.03444,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D8as_v4",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:03:14",
+                "name": "Standard_D8as_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 151474,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.03752,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / 0",
+                "canonicalname": "D8ads_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:02:52",
+                "name": "Standard_D8ads_v5",
+                "paymentType": "payasyougo",
+                "perfScore": 153951,
+                "tags": []
+            }
+        ]
+    }
+}
