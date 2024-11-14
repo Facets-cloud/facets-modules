@@ -24,7 +24,7 @@ def get_instance_types(vcpu, region):
     def filter_and_format(data):
         instances = []
         for instance in data['listVmInformations']:
-            if instance['numberOfCores'] == vcpu and instance['cpuArchitecture'] == 'x64':
+            if instance['numberOfCores'] == vcpu and instance['cpuArchitecture'] == 'x64' and instance['linuxPrice'] != 0:
                 instance_info = {
                     "name": instance['name'],
                     "PricePerHour": instance['linuxPrice'],
