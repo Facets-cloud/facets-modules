@@ -28,7 +28,7 @@ def get_gcp_instance_types(vcpu, region):
     def filter_and_format(data, vcpu):
         instances = []
         for instance in data['Data']['Items']:
-            if instance['ProcessorVCPUCount'] == vcpu and 'x86_64' in instance['ProcessorArchitecture']:
+            if instance['ProcessorVCPUCount'] == vcpu and 'x86_64' in instance['ProcessorArchitecture'] and instance['PricePerHour'] != 0:
                 instance_info = {
                     "InstanceType": instance['InstanceType'],
                     "PricePerHour": instance['PricePerHour'],
