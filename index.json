@@ -1344,6 +1344,76 @@
     ]
   },
   {
+    "intent": "kubernetes_cluster",
+    "flavor": "aws_eks",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_cluster/aws_eks/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "kubernetes_cluster",
+    "flavor": "aws_eks",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_cluster/aws_eks/0.2/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "kubernetes_cluster",
+    "flavor": "azure_aks",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_cluster/azure_aks/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "kubernetes_cluster",
+    "flavor": "gcp_gke",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_cluster/gcp_gke/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
+    "intent": "network",
+    "flavor": "aws_vpc",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/network/aws_vpc/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
+    "intent": "network",
+    "flavor": "azure_vpc",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/network/azure_vpc/0.1/",
+    "clouds": [
+      "azure"
+    ]
+  },
+  {
+    "intent": "network",
+    "flavor": "gcp_vpc",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/network/gcp_vpc/0.1/",
+    "clouds": [
+      "gcp"
+    ]
+  },
+  {
     "intent": "aws_efs",
     "flavor": "default",
     "version": "0.1",

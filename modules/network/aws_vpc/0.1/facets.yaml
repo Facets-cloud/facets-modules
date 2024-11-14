@@ -1,0 +1,36 @@
+intent: network
+flavor: aws_vpc
+version: "0.1"
+description: Adds network - aws vpc flavor
+clouds:
+  - aws
+spec:
+  title: network
+  description: Specification of the network for aws vpc flavor
+  type: object
+  properties:
+    vpc_cidr:
+      title: VPC CIDR
+      description: CIDR block for the vpc
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b
+      x-ui-error-message: Regex for the vpc CIDR block did not match
+      type: string
+    enable_multi_az:
+      title: Enable Multi AZ
+      description: Enable multi availability zone network
+      type: boolean
+    existing_vpc_id:
+      title: Existing VPC ID
+      description: To setup network components in an existing vpc
+      type: string
+  required: [vpc_cidr, enable_multi_az]
+sample:
+  kind: network
+  flavor: aws_vpc
+  version: "0.1"
+  lifecycle: ENVIRONMENT_NO_DEPS
+  disabled: true
+  depends_on: []
+  metadata: {}
+  spec: {}
