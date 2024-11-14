@@ -1,0 +1,320 @@
+{
+    "16Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.869,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -59.8",
+                "canonicalname": "B16als_v2",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:06:27",
+                "name": "Standard_B16als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.884,
+                "architecture": "x64",
+                "bestPriceRegion": "Spain Central / -90.9",
+                "canonicalname": "B16ls_v2",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:01:52",
+                "name": "Standard_B16ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.972,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -59.5",
+                "canonicalname": "B16as_v2",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:00:59",
+                "name": "Standard_B16as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.998,
+                "architecture": "x64",
+                "bestPriceRegion": "East US 2 / -33.3",
+                "canonicalname": "B16ms",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:04:21",
+                "name": "Standard_B16ms",
+                "paymentType": "payasyougo",
+                "perfScore": 276669,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.14126,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "D16ls_v5",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:01:33",
+                "name": "Standard_D16ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.14126,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "F16s_v2",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:01:55",
+                "name": "Standard_F16s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 271369,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.15148,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -54.4",
+                "canonicalname": "D16a_v4",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:05:07",
+                "name": "Standard_D16a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 293654,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.15148,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -54.4",
+                "canonicalname": "D16as_v4",
+                "memory": 65536,
+                "modifiedDate": "11/11/2024 01:02:41",
+                "name": "Standard_D16as_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 292074,
+                "tags": []
+            }
+        ]
+    },
+    "4Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.213,
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -25.4",
+                "canonicalname": "A4_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:06:22",
+                "name": "Standard_A4_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.217,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -59.8",
+                "canonicalname": "B4als_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:06:05",
+                "name": "Standard_B4als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.225,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -56.3",
+                "canonicalname": "B4as_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:03:52",
+                "name": "Standard_B4as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.24,
+                "architecture": "x64",
+                "bestPriceRegion": "Spain Central / -91.6",
+                "canonicalname": "B4ls_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:00:51",
+                "name": "Standard_B4ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.02982,
+                "architecture": "x64",
+                "bestPriceRegion": "UK South / -26.4",
+                "canonicalname": "A4_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:06:22",
+                "name": "Standard_A4_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.03528,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "D4ls_v5",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:06:00",
+                "name": "Standard_D4ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.03528,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "F4s_v2",
+                "memory": 8192,
+                "modifiedDate": "11/11/2024 01:05:37",
+                "name": "Standard_F4s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 65819,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.0378,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -54.4",
+                "canonicalname": "D4a_v4",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:06:15",
+                "name": "Standard_D4a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 70996,
+                "tags": []
+            }
+        ]
+    },
+    "8Cores": {
+        "onDemand": [
+            {
+                "PricePerHour": 0.398,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -56.3",
+                "canonicalname": "B8als_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:01:22",
+                "name": "Standard_B8als_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.426,
+                "architecture": "x64",
+                "bestPriceRegion": "West US 3 / -21.8",
+                "canonicalname": "A8_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:03:58",
+                "name": "Standard_A8_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.479,
+                "architecture": "x64",
+                "bestPriceRegion": "Spain Central / -91.6",
+                "canonicalname": "B8ls_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:04:46",
+                "name": "Standard_B8ls_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.486,
+                "architecture": "x64",
+                "bestPriceRegion": "Jio India West / -59.5",
+                "canonicalname": "B8as_v2",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:05:59",
+                "name": "Standard_B8as_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            }
+        ],
+        "spot": [
+            {
+                "PricePerHour": 0.05964,
+                "architecture": "x64",
+                "bestPriceRegion": "UK South / -22.9",
+                "canonicalname": "A8_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:03:58",
+                "name": "Standard_A8_v2",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": [
+                    "cheapest"
+                ]
+            },
+            {
+                "PricePerHour": 0.07056,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "D8ls_v5",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:04:47",
+                "name": "Standard_D8ls_v5",
+                "paymentType": "payasyougo",
+                "perfScore": null,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.07056,
+                "architecture": "x64",
+                "bestPriceRegion": "Australia Central2 / -37.1",
+                "canonicalname": "F8s_v2",
+                "memory": 16384,
+                "modifiedDate": "11/11/2024 01:04:32",
+                "name": "Standard_F8s_v2",
+                "paymentType": "payasyougo",
+                "perfScore": 136027,
+                "tags": []
+            },
+            {
+                "PricePerHour": 0.07574,
+                "architecture": "x64",
+                "bestPriceRegion": "Central India / -54.5",
+                "canonicalname": "D8a_v4",
+                "memory": 32768,
+                "modifiedDate": "11/11/2024 01:01:12",
+                "name": "Standard_D8a_v4",
+                "paymentType": "payasyougo",
+                "perfScore": 151379,
+                "tags": []
+            }
+        ]
+    }
+}
