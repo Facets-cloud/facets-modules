@@ -1,0 +1,4 @@
+name: network
+type: default
+displayName: Network
+description: A collection of connected devices which provides medium to share resources within.
