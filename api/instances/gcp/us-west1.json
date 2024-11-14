@@ -7,7 +7,7 @@
                 "CanonicalName": "e2-highcpu-16",
                 "InstanceType": "e2-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.39576192,
                 "tags": [
@@ -20,7 +20,7 @@
                 "CanonicalName": "n2d-highcpu-16",
                 "InstanceType": "n2d-highcpu-16",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.499008,
                 "tags": []
@@ -31,7 +31,7 @@
                 "CanonicalName": "e2-standard-16",
                 "InstanceType": "e2-standard-16",
                 "Memory": 65536,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.53609136,
                 "tags": []
@@ -42,7 +42,7 @@
                 "CanonicalName": "n1-highcpu-16",
                 "InstanceType": "n1-highcpu-16",
                 "Memory": 14746,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.566790455078125,
                 "tags": []
@@ -51,13 +51,13 @@
         "spot": [
             {
                 "Architecture": "x86_64",
-                "BestOnDemandHourPriceRegion": "us-central1",
-                "CanonicalName": "c2-standard-16",
-                "InstanceType": "c2-standard-16",
-                "Memory": 65536,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "BestOnDemandHourPriceRegion": "asia-south1",
+                "CanonicalName": "n2d-highcpu-16",
+                "InstanceType": "n2d-highcpu-16",
+                "Memory": 16384,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.09920000000000001,
+                "PricePerHour": 0.103936,
                 "tags": [
                     "cheapest"
                 ]
@@ -65,23 +65,23 @@
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "n2d-highcpu-16",
-                "InstanceType": "n2d-highcpu-16",
-                "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "CanonicalName": "t2d-standard-16",
+                "InstanceType": "t2d-standard-16",
+                "Memory": 65536,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.10032,
+                "PricePerHour": 0.110592,
                 "tags": []
             },
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "t2d-standard-16",
-                "InstanceType": "t2d-standard-16",
+                "CanonicalName": "n2d-standard-16",
+                "InstanceType": "n2d-standard-16",
                 "Memory": 65536,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.113088,
+                "PricePerHour": 0.140704,
                 "tags": []
             },
             {
@@ -90,9 +90,9 @@
                 "CanonicalName": "n1-highcpu-16",
                 "InstanceType": "n1-highcpu-16",
                 "Memory": 14746,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.113317130859375,
+                "PricePerHour": 0.14919721875,
                 "tags": []
             }
         ]
@@ -105,7 +105,7 @@
                 "CanonicalName": "e2-highcpu-4",
                 "InstanceType": "e2-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.09894048,
                 "tags": [
@@ -118,7 +118,7 @@
                 "CanonicalName": "n2d-highcpu-4",
                 "InstanceType": "n2d-highcpu-4",
                 "Memory": 4096,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.124752,
                 "tags": []
@@ -129,7 +129,7 @@
                 "CanonicalName": "e2-standard-4",
                 "InstanceType": "e2-standard-4",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.13402284,
                 "tags": []
@@ -140,7 +140,7 @@
                 "CanonicalName": "n1-highcpu-4",
                 "InstanceType": "n1-highcpu-4",
                 "Memory": 3686,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.141695544921875,
                 "tags": []
@@ -149,13 +149,13 @@
         "spot": [
             {
                 "Architecture": "x86_64",
-                "BestOnDemandHourPriceRegion": "us-central1",
-                "CanonicalName": "c2-standard-4",
-                "InstanceType": "c2-standard-4",
-                "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "BestOnDemandHourPriceRegion": "asia-south1",
+                "CanonicalName": "n2d-highcpu-4",
+                "InstanceType": "n2d-highcpu-4",
+                "Memory": 4096,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.024800000000000003,
+                "PricePerHour": 0.025984,
                 "tags": [
                     "cheapest"
                 ]
@@ -163,34 +163,34 @@
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "n2d-highcpu-4",
-                "InstanceType": "n2d-highcpu-4",
-                "Memory": 4096,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "CanonicalName": "t2d-standard-4",
+                "InstanceType": "t2d-standard-4",
+                "Memory": 16384,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.02508,
+                "PricePerHour": 0.027648,
                 "tags": []
             },
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "t2d-standard-4",
-                "InstanceType": "t2d-standard-4",
+                "CanonicalName": "n2d-standard-4",
+                "InstanceType": "n2d-standard-4",
                 "Memory": 16384,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.028272,
+                "PricePerHour": 0.035176,
                 "tags": []
             },
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "us-central1",
-                "CanonicalName": "n1-highcpu-4",
-                "InstanceType": "n1-highcpu-4",
-                "Memory": 3686,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "CanonicalName": "c3-standard-4",
+                "InstanceType": "c3-standard-4",
+                "Memory": 16384,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.028328869140625,
+                "PricePerHour": 0.03532,
                 "tags": []
             }
         ]
@@ -203,7 +203,7 @@
                 "CanonicalName": "e2-highcpu-8",
                 "InstanceType": "e2-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.19788096,
                 "tags": [
@@ -216,7 +216,7 @@
                 "CanonicalName": "n2d-highcpu-8",
                 "InstanceType": "n2d-highcpu-8",
                 "Memory": 8192,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.249504,
                 "tags": []
@@ -227,7 +227,7 @@
                 "CanonicalName": "e2-standard-8",
                 "InstanceType": "e2-standard-8",
                 "Memory": 32768,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.26804568,
                 "tags": []
@@ -238,7 +238,7 @@
                 "CanonicalName": "n1-highcpu-8",
                 "InstanceType": "n1-highcpu-8",
                 "Memory": 7373,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
                 "PricePerHour": 0.2833952275390625,
                 "tags": []
@@ -247,13 +247,13 @@
         "spot": [
             {
                 "Architecture": "x86_64",
-                "BestOnDemandHourPriceRegion": "us-central1",
-                "CanonicalName": "c2-standard-8",
-                "InstanceType": "c2-standard-8",
-                "Memory": 32768,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "BestOnDemandHourPriceRegion": "asia-south1",
+                "CanonicalName": "n2d-highcpu-8",
+                "InstanceType": "n2d-highcpu-8",
+                "Memory": 8192,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.049600000000000005,
+                "PricePerHour": 0.051968,
                 "tags": [
                     "cheapest"
                 ]
@@ -261,34 +261,34 @@
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "n2d-highcpu-8",
-                "InstanceType": "n2d-highcpu-8",
-                "Memory": 8192,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "CanonicalName": "t2d-standard-8",
+                "InstanceType": "t2d-standard-8",
+                "Memory": 32768,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.05016,
+                "PricePerHour": 0.055296,
                 "tags": []
             },
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "asia-south1",
-                "CanonicalName": "t2d-standard-8",
-                "InstanceType": "t2d-standard-8",
+                "CanonicalName": "n2d-standard-8",
+                "InstanceType": "n2d-standard-8",
                 "Memory": 32768,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.056544,
+                "PricePerHour": 0.070352,
                 "tags": []
             },
             {
                 "Architecture": "x86_64",
                 "BestOnDemandHourPriceRegion": "us-central1",
-                "CanonicalName": "n1-highcpu-8",
-                "InstanceType": "n1-highcpu-8",
-                "Memory": 7373,
-                "ModifiedDate": "2024-07-22 00:02:04",
+                "CanonicalName": "c3-standard-8",
+                "InstanceType": "c3-standard-8",
+                "Memory": 32768,
+                "ModifiedDate": "2024-11-13 00:01:25",
                 "PaymentType": "OnDemand",
-                "PricePerHour": 0.0566585654296875,
+                "PricePerHour": 0.07064,
                 "tags": []
             }
         ]
