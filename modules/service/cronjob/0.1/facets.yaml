@@ -1,0 +1,107 @@
+intent: service
+flavor: cronjob
+version: '0.1'
+description: Adds service module
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+artifact_inputs: 
+  primary: 
+    attribute_path: "spec.release.image" 
+    artifact_type: "docker_image"
+spec:
+  title: Cronjob flavor of service
+  type: object
+  properties:
+    type:
+      type: string
+      title: Service Type
+      description: Type - Cronjob
+      x-ui-override-disable: true
+      default: cronjob
+    cronjob:
+      type: object
+      title: Cronjob
+      description: Cron scheduler to be specified in cron format
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      properties:
+        schedule:
+          title: Schedule
+          type: string
+          description: Cron scheduler to be specified in cron format
+        suspend:
+          title: Suspend
+          type: boolean
+          description: Suspend all executions
+        concurrency_policy:
+          title: Concurrent Policy
+          type: string
+          description: Specifies how to treat concurrent executions of a job created by this cron job
+          enum:
+            - Allow
+            - Forbid
+            - Replace
+      required:
+        - schedule
+        - suspend
+        - concurrency_policy
+    job:
+      type: object
+      title: Job
+      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      properties:
+        retry:
+          type: string
+          default: 5
+          minimum: 1
+          x-ui-placeholder: "Enter Min retry count for your job"
+          description: Number of time you want to retry the job before calling it a failure
+      required:
+        - retry
+    runtime:
+      type: object
+      title: Runtime
+      description: Customize service runtime settings like command, arguments.
+      properties:
+        command:
+          type: array
+          title: Command
+          description: Command to run in the container
+          items:
+            type: string
+          x-ui-command: true
+        args:
+          type: array
+          title: Arguments
+          description: Arguments to pass to the command
+          items:
+            type: string
+          x-ui-command: true
+      x-ui-order:
+        - args
+        - command
+  required:
+    - job
+    - cronjob
+  x-ui-order:
+    - cronjob
+    - job
+    - runtime
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
+  metadata:
+    name: cronjob-service
+  disabled: true
+  flavor: cronjob
+  kind: service
+  version: '0.1'
+  spec:
+    type: cronjob
+    cronjob: {}
+    job: {}

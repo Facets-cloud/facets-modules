@@ -1,0 +1,77 @@
+intent: service
+flavor: job
+version: '0.1'
+description: Adds service module
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+artifact_inputs: 
+  primary: 
+    attribute_path: "spec.release.image" 
+    artifact_type: "docker_image"
+spec:
+  title: K8s flavor of service
+  type: object
+  properties:
+    type:
+      type: string
+      title: Service Type
+      description: Type - Job
+      x-ui-override-disable: true
+      default: job
+    job:
+      type: object
+      title: Job
+      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      properties:
+        retry:
+          type: string
+          default: 5
+          minimum: 1
+          x-ui-placeholder: "Enter Min retry count for your job"
+          description: Number of time you want to retry the job before calling it a failure
+      required:
+        - retry
+    runtime:
+      type: object
+      title: Runtime
+      description: Customize service runtime settings like argument, command.
+      properties:
+        command:
+          type: array
+          title: Command
+          description: Command to run in the container
+          items:
+            type: string
+          x-ui-command: true
+        args:
+          type: array
+          title: Arguments
+          description: Arguments to pass to the command
+          items:
+            type: string
+          x-ui-command: true
+      x-ui-order:
+        - args
+        - command
+  required:
+    - job
+  x-ui-order:
+    - job
+    - runtime
+sample:
+  $schema: >-
+    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
+  metadata:
+    name: job-service
+  disabled: true
+  flavor: job
+  kind: service
+  version: '0.1'
+  spec:
+    type: job
+    job: {}
