@@ -1,0 +1,29 @@
+{
+	"kind": "k8s_resource",
+	"metadata": {
+		"namespace": "otel-operator"
+	},
+	"flavor": "k8s",
+	"version": "0.2",
+	"disabled": true,
+	"spec": {
+		"resource": {
+			"apiVersion": "opentelemetry.io/v1alpha1",
+			"kind": "Instrumentation",
+			"metadata": {
+				"name": "instrumentation",
+				"namespace": "otel-operator"
+			},
+			"spec": {
+				"exporter": {
+					"endpoint": "http://otel-operator-daemon-collector.otel-operator.svc.cluster.local:4318"
+				},
+				"propagators": [
+					"tracecontext",
+					"baggage",
+					"b3"
+				]
+			}
+		}
+	}
+}
