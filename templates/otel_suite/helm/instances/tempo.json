@@ -71,7 +71,8 @@
 				"annotations": {
 					"eks.amazonaws.com/role-arn": "${aws_iam_role.tempo-s3-access.out.attributes.irsa_iam_role_arn}"
 				},
-				"automountServiceAccountToken": false
+				"automountServiceAccountToken": false,
+				"name": "tempo"
 			},
 			"rbac": {
 				"create": false,

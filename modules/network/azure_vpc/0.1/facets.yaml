@@ -1,0 +1,19 @@
+intent: network
+flavor: azure_vpc
+version: "0.1"
+description: Adds network - azure vpc flavor
+clouds:
+  - azure
+spec:
+  title: network
+  description: Specification of the network for gcp vpc flavor
+  type: object
+sample:
+  kind: network
+  flavor: azure_vpc
+  version: "0.1"
+  lifecycle: ENVIRONMENT_NO_DEPS
+  disabled: true
+  depends_on: []
+  metadata: {}
+  spec: {}
