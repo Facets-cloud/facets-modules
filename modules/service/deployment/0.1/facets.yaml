@@ -422,7 +422,7 @@ spec:
                 description: Service port
                 pattern: '^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
                 x-ui-placeholder: "Enter the port number to expose for your application service"
-                x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 0-65535"
+                x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
               protocol:
                 type: string
                 title: Protocol
