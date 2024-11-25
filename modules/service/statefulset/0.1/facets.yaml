@@ -507,7 +507,7 @@ spec:
                   name:
                     type: string
                     title: Name
-                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])?$"
+                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: Config map name
                   mount_path:
                     type: string
@@ -556,7 +556,7 @@ spec:
                   claim_name:
                     type: string
                     title: Claim Name
-                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])?$"
+                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: PVC name
                   mount_path:
                     type: string
