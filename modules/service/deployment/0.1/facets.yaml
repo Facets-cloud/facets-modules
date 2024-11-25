@@ -346,7 +346,7 @@ spec:
               type: string
               title: CPU Threshold
               description: Max CPU threshold
-              pattern: '^(1?[0-9]?[0-9]|100)$'
+              pattern: '^(100|[1-9][0-9]?)$'
               x-ui-placeholder: "Enter cpu threshold for you application to scale"
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
               x-ui-visible-if:
