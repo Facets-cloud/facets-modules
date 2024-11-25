@@ -479,7 +479,7 @@ spec:
                   name:
                     type: string
                     title: Name
-                    pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
+                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: Config map name
                     x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                   mount_path:
