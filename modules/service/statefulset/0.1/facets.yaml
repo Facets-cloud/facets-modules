@@ -509,11 +509,13 @@ spec:
                     title: Name
                     pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: Config map name
+                    x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be range of 3-20 characters"
                   mount_path:
                     type: string
                     title: Mount Path
                     pattern: "^/.*"
                     description: Mount path for config maps
+                    x-ui-error-message: "Value doesn't match pattern, it should start with a forward slash (/)"
                   sub_path:
                     type: string
                     title: Sub Path
@@ -560,11 +562,13 @@ spec:
                     title: Claim Name
                     pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: PVC name
+                    x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be range of 3-20 characters"
                   mount_path:
                     type: string
                     title: Mount Path
                     pattern: "^/.*"
                     description: Mount path for PVC
+                    x-ui-error-message: "Value doesn't match pattern, it should start with a forward slash (/)"
                   sub_path:
                     type: string
                     title: Sub Path
@@ -586,6 +590,7 @@ spec:
                     title: Mount Path
                     pattern: "^/.*"
                     description: Mount path for host path
+                    x-ui-error-message: "Value doesn't match pattern, it should start with a forward slash (/)"
                   sub_path:
                     type: string
                     title: Sub Path
