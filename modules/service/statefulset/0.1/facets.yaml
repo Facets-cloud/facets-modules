@@ -502,7 +502,7 @@ spec:
               patternProperties:
                 type: object
                 title: Config Map Name
-                keyPattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$"
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
                 properties:
                   name:
                     type: string
@@ -556,6 +556,7 @@ spec:
                   claim_name:
                     type: string
                     title: Claim Name
+                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$"
                     description: PVC name
                   mount_path:
                     type: string
