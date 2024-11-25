@@ -20,13 +20,17 @@ spec:
         chart:
           type: string
           title: Chart
-          description: URL or local path to the Helm chart package
-          x-ui-placeholder: Enter URL or local path
+          description:  Name of the Helm chart package
+          x-ui-placeholder: Enter name of the helm chart
+          pattern: '^[a-zA-Z]+(-[a-zA-Z]+)*[a-zA-Z]$'
+          x-ui-error-message: "Invalid format. Only alphabets and hypens are allowed"
         repository:
           type: string
           title: Repository
           description: URL for the helm repository
           x-ui-placeholder: Enter repository URL
+          pattern: "^(http:\/\/|https:\/\/|\.\.\/stacks)[a-zA-Z0-9\-._~:\/?#[\]@!$&'()*+,;=%]*$"
+          x-ui-error-message: "Invalid URL format. The URL must start with http://, https://, or ../stacks and contain only valid URL characters"
         version:
           type: string
           title: Version
@@ -37,6 +41,8 @@ spec:
           title: Namespace
           description: Namespace to deploy the Helm chart in
           x-ui-placeholder: Enter namespace
+          pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$'
+          x-ui-error-message: "Invalid namespace format. The namespace must be DNS-compliant, containing only letters, numbers, and hyphens, and must not start or end with a hyphen"
         wait:
           type: boolean
           title: Wait
