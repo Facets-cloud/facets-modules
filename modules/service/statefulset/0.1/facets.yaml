@@ -502,11 +502,12 @@ spec:
               patternProperties:
                 type: object
                 title: Config Map Name
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                keyPattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$"
                 properties:
                   name:
                     type: string
                     title: Name
+                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$"
                     description: Config map name
                   mount_path:
                     type: string
