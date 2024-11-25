@@ -512,6 +512,7 @@ spec:
                   mount_path:
                     type: string
                     title: Mount Path
+                    pattern: "^/.*"
                     description: Mount path for config maps
                   sub_path:
                     type: string
@@ -536,6 +537,7 @@ spec:
                   mount_path:
                     type: string
                     title: Mount Path
+                    pattern: "^/.*"
                     description: Mount path for secrets
                   sub_path:
                     type: string
@@ -561,6 +563,7 @@ spec:
                   mount_path:
                     type: string
                     title: Mount Path
+                    pattern: "^/.*"
                     description: Mount path for PVC
                   sub_path:
                     type: string
@@ -581,6 +584,7 @@ spec:
                   mount_path:
                     type: string
                     title: Mount Path
+                    pattern: "^/.*"
                     description: Mount path for host path
                   sub_path:
                     type: string
