@@ -154,7 +154,7 @@ sample:
         memory: "1G"
         cpu_limit: "1"
         memory_limit: "1G"
-        volume: "10Gi"
+        volume: "50Gi"
       reader:
         cpu: "1"
         memory: "1G"
