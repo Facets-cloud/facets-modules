@@ -26,6 +26,10 @@ spec:
       type: number
       minimum: 0
       maximum: 100
+    is_public:
+      title: Is Public
+      description: Set this to true to deploy the node pool in public subnets
+      type: boolean
     disk_size:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
@@ -62,8 +66,27 @@ spec:
       x-ui-placeholder: "Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
-  required:
-    - labels
+    iam:
+      title: IAM
+      description: IAM specification for kubernetes nodepool
+      type: object
+      properties:
+        roles:
+          title: IAM Roles
+          description: Iam roles to be assigned to nodepool service account
+          type: object
+          patternProperties:
+            title: Key Name For Role
+            description: Key name for role
+            type: object
+            keyPattern: "^[a-zA-Z][a-zA-Z0-9_.-]*$"
+            properties:
+              role:
+                title: Role
+                description: Role to be added to the nodepool service account
+                type: string
+                x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+            x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
 sample:
   flavor: gke_node_pool
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
