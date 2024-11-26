@@ -29,35 +29,34 @@ spec:
     disk_size:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
-      type: number
-      minimum: 10
-      maximum: 1000
+      type: string
+      pattern: '\b((10G)|([1-9][0-9]G)|([1-9][0-9][0-9]G)|(1000G))\b'
+      x-ui-placeholder: "eg. 50G"
+      x-ui-error-message: "Value doesn't match the format eg. 50G"
     taints:
       title: Taints
       description: Map of Kubernetes taints which should be applied to nodes in the node pool
       type: object
-      properties:
+      patternProperties:
         type: object
         title: Taint Object
-        patternProperties:
-          type: object
-          keyPattern: "^[a-z][a-z0-9-_]*$"
-          properties:
-            key:
-              title: Taint Key
-              description: Taint Key
-              type: string
-              x-ui-placeholder: CriticalAddonsOnly
-            value:
-              title: Taint value
-              description: Taint Value
-              type: string
-              x-ui-placeholder: "true"
-            effect:
-              title: Taint Effect
-              description: Taint Effect
-              type: string
-              x-ui-placeholder: NoSchedule
+        keyPattern: "^[a-z][a-z0-9-_]*$"
+        properties:
+          key:
+            title: Taint Key
+            description: Taint Key
+            type: string
+            x-ui-placeholder: CriticalAddonsOnly
+          value:
+            title: Taint value
+            description: Taint Value
+            type: string
+            x-ui-placeholder: "true"
+          effect:
+            title: Taint Effect
+            description: Taint Effect
+            type: string
+            x-ui-placeholder: NoSchedule
     labels:
       title: Labels
       description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
@@ -84,6 +83,6 @@ sample:
     instance_type: Standard_F8
     min_node_count: 0
     max_node_count: 100
-    disk_size: 50Gi
+    disk_size: 50G
     taints: {}
     labels: {}
