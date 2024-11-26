@@ -36,28 +36,26 @@ spec:
       title: Taints
       description: Map of Kubernetes taints which should be applied to nodes in the node pool
       type: array
-      properties:
+      patternProperties:
         type: object
         title: Taint Object
-        patternProperties:
-          type: object
-          keyPattern: "^[a-z][a-z0-9-_]*$"
-          properties:
-            key:
-              title: Taint Key
-              description: Taint Key
-              type: string
-              x-ui-placeholder: CriticalAddonsOnly
-            value:
-              title: Taint value
-              description: Taint Value
-              type: string
-              x-ui-placeholder: "true"
-            effect:
-              title: Taint Effect
-              description: Taint Effect
-              type: string
-              x-ui-placeholder: NoSchedule
+        keyPattern: "^[a-z][a-z0-9-_]*$"
+        properties:
+          key:
+            title: Taint Key
+            description: Taint Key
+            type: string
+            x-ui-placeholder: CriticalAddonsOnly
+          value:
+            title: Taint value
+            description: Taint Value
+            type: string
+            x-ui-placeholder: "true"
+          effect:
+            title: Taint Effect
+            description: Taint Effect
+            type: string
+            x-ui-placeholder: NoSchedule
     labels:
       title: Labels
       description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
@@ -66,7 +64,6 @@ spec:
       x-ui-yaml-editor: true
   required:
     - labels
-
 sample:
   flavor: gke_node_pool
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
