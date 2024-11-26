@@ -8,118 +8,124 @@ spec:
   title: AWS S3
   type: object
   description: Specification of the K8s resource intent
-  enable_bucket_force_ssl:
-    title: Force Bucket SSL
-    description: To force SSL on Buckets
-    type: boolean
-  lifecycle_rule:
-    title: Lifecycle Rule
-    description: Setup lifecycle rules for objects
-    type: object
-    patternProperties:
-      keyPattern: "^[a-zA-Z0-9_.-]*$"
-      title: Lifecyle rule Object
-      description: Name of the lifecycle rule object
-      properties:
-        abort_incomplete_multipart_upload_days:
-          title: Multi part upload in days
-          description: (Optional) Specifies the number of days after initiating a multipart upload when the multipart upload must be completed.
-          type: string
-        prefix:
-          title: Target Prefix
-          description: (Optional) Object key prefix identifying one or more objects to which the rule applies.
-          type: string
-        id:
-          title: rule identifier
-          description: (Optional) Unique identifier for the rule. Must be less than or equal to 255 characters in length.
-          type: string
-        enabled:
-          title: Lifecycle Rules
-          description: (Required) Specifies lifecycle rule status.
-          type: boolean
-        expiration:
-          title: Object Expiration
-          description: (Optional) Specifies a period in the object's expire
-          type: object
-          expired_object_delete_marker:
-            title: Object Delete Markers
-            description: (Optional) to delete expired object delete markers
-            type: string
-          days:
-            title: Days
-            description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
-            type: string
-          date:
-            title: Start Date
-            description: (Optional) Specifies the date after which you want the corresponding action to take effect.
-            type: string
-        transition:
-          title: Object Transition
-          description: (Optional) Specifies a period in the object's transitions
-          type: object
-          storage_class:
-            title: Storage Class Type
-            description: (Required) Specifies the Amazon S3 storage class to which you want the object to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
-            enum:
-              - "DEEP_ARCHIVE"
-              - "GLACIER"
-              - "INTELLIGENT_TIERING"
-              - "STANDARD_IA"
-              - "ONEZONE_IA"
-            #            x-ui-placeholder: "STANDARD_IA"
-          days:
-            title: Days
-            description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
-            type: string
-          date:
-            title: Start Date
-            description: (Optional) Specifies the date after which you want the corresponding action to take effect.
-            type: string
-        noncurrent_version_expiration:
-          title: Expiration of Noncurrent Versions
-          description: Specifies when noncurrent object versions expire
-          type: object
-          days:
-            title: Days of Expiry
-            description: (Required) Specifies the number of days noncurrent object versions expire.
-            type: string
-        noncurrent_version_transition:
-          title: Noncurrent Object Versions Transitions
-          description: (Optional) Specifies when noncurrent object versions transitions.
-          type: object
-          storage_class:
-            title: Storage Class Type
-            description: (Required) Specifies the Amazon S3 storage class to which you want the noncurrent object versions to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
-            enum:
-              - "DEEP_ARCHIVE"
-              - "GLACIER"
-              - "INTELLIGENT_TIERING"
-              - "STANDARD_IA"
-              - "ONEZONE_IA"
-#            x-ui-placeholder: "STANDARD_IA"
-          days:
-            title: Transition days
-            description: (Required) Specifies the number of days noncurrent object versions transition.
-            type: string
-  server_side_encryption_configuration:
-    title: Default Server Side Encryption
-    description: server-side encryption with S3 managed keys (SSE)
-    type: object
-    sse_algorithm:
-      title: SSE Algorithm
-      description: (required) The server-side encryption algorithm to use. Valid values are AES256 and aws:kms
-      enum:
-        - "AES256"
-        - "aws:kms"
-#      x-ui-placeholder: "aws:kms"
-    kms_master_key_id:
-      title: AWS KMS master key ID
-      description: (optional) The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms.
-      type: string
-    bucket_key_enabled:
-      title: Use S3 Bucket Keys
-      description: (Optional) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS.
+  properties:
+    enable_bucket_force_ssl:
+      title: Force Bucket SSL
+      description: To force SSL on Buckets
       type: boolean
+    lifecycle_rule:
+      title: Lifecycle Rule
+      description: Setup lifecycle rules for objects
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        title: Lifecyle rule Object
+        description: Name of the lifecycle rule object
+        properties:
+          enabled:
+            title: Lifecycle Rules
+            description: (Required) Specifies lifecycle rule status.
+            type: boolean
+          abort_incomplete_multipart_upload_days:
+            title: Multi part upload in days
+            description: (Optional) Specifies the number of days after initiating a multipart upload when the multipart upload must be completed.
+            type: string
+          prefix:
+            title: Target Prefix
+            description: (Optional) Object key prefix identifying one or more objects to which the rule applies.
+            type: string
+          id:
+            title: rule identifier
+            description: (Optional) Unique identifier for the rule. Must be less than or equal to 255 characters in length.
+            type: string
+          expiration:
+            title: Object Expiration
+            description: (Optional) Specifies a period in the object's expire
+            type: object
+            properties:
+              expired_object_delete_marker:
+                title: Object Delete Markers
+                description: (Optional) to delete expired object delete markers
+                type: string
+              days:
+                title: Days
+                description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
+                type: string
+              date:
+                title: Start Date
+                description: (Optional) Specifies the date after which you want the corresponding action to take effect.
+                type: string
+          transition:
+            title: Object Transition
+            description: (Optional) Specifies a period in the object's transitions
+            type: object
+            properties:
+              storage_class:
+                title: Storage Class Type
+                description: (Required) Specifies the Amazon S3 storage class to which you want the object to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
+                enum:
+                  - "DEEP_ARCHIVE"
+                  - "GLACIER"
+                  - "INTELLIGENT_TIERING"
+                  - "STANDARD_IA"
+                  - "ONEZONE_IA"
+                #            x-ui-placeholder: "STANDARD_IA"
+              days:
+                title: Days
+                description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
+                type: string
+              date:
+                title: Start Date
+                description: (Optional) Specifies the date after which you want the corresponding action to take effect.
+                type: string
+          noncurrent_version_expiration:
+            title: Expiration of Noncurrent Versions
+            description: Specifies when noncurrent object versions expire
+            type: object
+            properties:
+              days:
+                title: Days of Expiry
+                description: (Required) Specifies the number of days noncurrent object versions expire.
+                type: string
+          noncurrent_version_transition:
+            title: Noncurrent Object Versions Transitions
+            description: (Optional) Specifies when noncurrent object versions transitions.
+            type: object
+            properties:
+              storage_class:
+                title: Storage Class Type
+                description: (Required) Specifies the Amazon S3 storage class to which you want the noncurrent object versions to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
+                enum:
+                  - "DEEP_ARCHIVE"
+                  - "GLACIER"
+                  - "INTELLIGENT_TIERING"
+                  - "STANDARD_IA"
+                  - "ONEZONE_IA"
+    #            x-ui-placeholder: "STANDARD_IA"
+              days:
+                title: Transition days
+                description: (Required) Specifies the number of days noncurrent object versions transition.
+                type: string
+    server_side_encryption_configuration:
+      title: Default Server Side Encryption
+      description: server-side encryption with S3 managed keys (SSE)
+      type: object
+      properties:
+        sse_algorithm:
+          title: SSE Algorithm
+          description: (required) The server-side encryption algorithm to use. Valid values are AES256 and aws:kms
+          enum:
+            - "AES256"
+            - "aws:kms"
+    #      x-ui-placeholder: "aws:kms"
+        kms_master_key_id:
+          title: AWS KMS master key ID
+          description: (optional) The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms.
+          type: string
+        bucket_key_enabled:
+          title: Use S3 Bucket Keys
+          description: (Optional) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS.
+          type: boolean
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
