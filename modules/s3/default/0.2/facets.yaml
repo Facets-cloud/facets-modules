@@ -8,6 +8,98 @@ spec:
   title: AWS S3
   type: object
   description: Specification of the K8s resource intent
+  enable_bucket_force_ssl:
+    title: Force Bucket SSL
+    description: CIDR block for the vpc
+    type: boolean
+  lifecycle_rule:
+    title: Lifecycle_rules
+    description: Setup lifecycle rules
+    type: object
+    abort_incomplete_multipart_upload_days:
+      title: multipart upload pending cancel
+      description: (Optional) Specifies the number of days after initiating a multipart upload when the multipart upload must be completed.
+      type: string
+    prefix:
+      title: prefix like regex
+      description: (Optional) Object key prefix identifying one or more objects to which the rule applies.
+      type: string
+    id:
+      title: rule identifier
+      description: (Optional) Unique identifier for the rule. Must be less than or equal to 255 characters in length.
+      type: string
+    enabled:
+      title: enable lifecycle rules
+      description: (Required) Specifies lifecycle rule status.
+      type: boolean
+    expiration:
+      title: (Optional) Specifies a period in the object's expire
+      description: (Optional) Specifies a period in the object's expire
+      type: object
+      expired_object_delete_marker:
+        title: delete expired object delete markers
+        description: (Optional) to delete expired object delete markers
+        type: string
+      days:
+        title: rule identifier
+        description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
+        type: string
+      date:
+        title: rule identifier
+        description: (Optional) Specifies the date after which you want the corresponding action to take effect.
+        type: string
+    transition:
+      title: rule identifier
+      description: (Optional) Specifies a period in the object's transitions
+      type: object
+      storage_class:
+        title: delete expired object delete markers
+        description: (Required) Specifies the Amazon S3 storage class to which you want the object to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
+        type: dropdown
+      days:
+        title: rule identifier
+        description: (Optional) Specifies the number of days after object creation when the specific rule action takes effect.
+        type: string
+      date:
+        title: rule identifier
+        description: (Optional) Specifies the date after which you want the corresponding action to take effect.
+        type: string
+    noncurrent_version_expiration:
+      title: something
+      description: Specifies when noncurrent object versions expire
+      type: object
+      days:
+        title: rule identifier
+        description: (Required) Specifies the number of days noncurrent object versions expire.
+        type: string
+    noncurrent_version_transition:
+      title: (Optional) Specifies when noncurrent object versions transitions (documented below).
+      description: (Optional) Specifies when noncurrent object versions transitions (documented below).
+      type: object
+      storage_class:
+        title: delete expired object delete markers
+        description: (Required) Specifies the Amazon S3 storage class to which you want the noncurrent object versions to transition. Can be ONEZONE_IA, STANDARD_IA, INTELLIGENT_TIERING, GLACIER, or DEEP_ARCHIVE.
+        type: dropdown
+      days:
+        title: rule identifier
+        description: (Required) Specifies the number of days noncurrent object versions transition.
+        type: string
+  server_side_encryption_configuration:
+    title: Server-side encryption
+    description: server-side encryption with S3 managed keys (SSE)
+    type: object
+    sse_algorithm:
+      title: Server-side encryption
+      description: (required) The server-side encryption algorithm to use. Valid values are AES256 and aws:kms
+      type: string
+    kms_master_key_id:
+      title: Server-side encryption
+      description: optional) The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms.
+      type: string
+    bucket_key_enabled:
+      title: Server-side encryption
+      description: (Optional) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS.
+      type: boolean
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
