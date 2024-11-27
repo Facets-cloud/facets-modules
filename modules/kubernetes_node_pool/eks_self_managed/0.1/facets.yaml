@@ -34,7 +34,7 @@ spec:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
       type: number
-      minimum: 10
+      minimum: 50
       maximum: 1000
     azs:
       title: Avalability Zones
@@ -89,7 +89,6 @@ spec:
     - disk_size
     - taints
     - labels
-
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   kind: kubernetes_node_pool
@@ -106,7 +105,7 @@ sample:
     azs: us-east-1a
     min_node_count: 0
     max_node_count: 5
-    disk_size: 20
+    disk_size: 50
     taints:
       taint1:
         effect: NoSchedule

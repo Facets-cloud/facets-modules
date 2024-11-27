@@ -34,7 +34,7 @@ spec:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
       type: number
-      minimum: 10
+      minimum: 50
       maximum: 1000
     taints:
       title: Taints
@@ -77,6 +77,9 @@ spec:
     - instance_type
     - min_node_count
     - max_node_count
+    - disk_size
+    - taints
+    - labels
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   kind: kubernetes_node_pool
@@ -91,7 +94,7 @@ sample:
     min_node_count: 1
     max_node_count: 5
     is_public: false
-    disk_size: 20
+    disk_size: 50
     taints:
       taint1:
         key: CriticalAddonsOnly
