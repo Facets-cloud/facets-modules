@@ -38,28 +38,10 @@ spec:
       maximum: 1000
     taints:
       title: Taints
-      description: Map of Kubernetes taints which should be applied to nodes in the node pool
-      type: array
-      patternProperties:
-        type: object
-        title: Taint Object
-        keyPattern: "^[a-z][a-z0-9-_]*$"
-        properties:
-          key:
-            title: Taint Key
-            description: Taint Key
-            type: string
-            x-ui-placeholder: CriticalAddonsOnly
-          value:
-            title: Taint value
-            description: Taint Value
-            type: string
-            x-ui-placeholder: "true"
-          effect:
-            title: Taint Effect
-            description: Taint Effect
-            type: string
-            x-ui-placeholder: NoSchedule
+      description: "Array of Kubernetes taints which should be applied to nodes in the node pool. Enter array of object in YAML format. Eg. \n- key: special \nvalue: \"true\"\neffect: PreferNoSchedule.\nSet this to [] if no taints are required."
+      type: object
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Eg. \n- key: CriticalAddonsOnly \nvalue: \"true\"\neffect: NoSchedule"
     labels:
       title: Labels
       description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
@@ -99,5 +81,11 @@ sample:
     min_node_count: 1
     max_node_count: 50
     disk_size: 100
-    taints: []
+    taints: [
+      {
+        "effect": "NoSchedule",
+        "key": "CriticalAddonsOnly",
+        "value": "true"
+      }
+    ]
     labels: {}
