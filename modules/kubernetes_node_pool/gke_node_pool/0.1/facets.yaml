@@ -34,7 +34,7 @@ spec:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
       type: number
-      minimum: 10
+      minimum: 50
       maximum: 1000
     taints:
       title: Taints
@@ -69,6 +69,13 @@ spec:
                 type: string
                 x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
             x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
+  required:
+    - instance_type
+    - min_node_count
+    - max_node_count
+    - disk_size
+    - taints
+    - labels
 sample:
   flavor: gke_node_pool
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
