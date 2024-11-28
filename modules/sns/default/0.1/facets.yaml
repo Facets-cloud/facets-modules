@@ -9,6 +9,13 @@ spec:
   type: object
   description: Specification of the K8s resource intent
   properties:
+    disable_encryption:
+      type: boolean
+      title: Disable Server-Side Encryption
+      description: |
+        Disable Server-Side Encryption (SSE) for this SNS resource. Default
+        behaviour is to Enable encryption with AWS managed SNS key.
+      default: false
     subscriptions:
       type: object
       title: Subscriptions 
@@ -29,6 +36,36 @@ spec:
             title: Endpoint
             description: Endpoint of the aws resource
             x-ui-placeholder: "Enter the endpoint or arn of the resource"
+          raw_message_delivery:
+            type: boolean
+            title: Enable Raw Message Delivery
+            default: false
+            description: Enable raw message delivery for this endpoint
+    triggers:
+      type: object
+      title: Triggers 
+      description: Triggers that can publish to this SNS
+      properties:
+        s3:
+          type: object
+          title: S3
+          default: {}
+          description: Configuration options for S3 Event notification
+          properties:
+            name:
+              type: string
+              title: Name
+              description: Name of S3 Bucket
+            arn: 
+              type: string 
+              title: ARN 
+              description: ARN of the S3 bucket
+            events:
+              type: array
+              title: Events
+              description: A list of all S3 events you want to subscribe to
+
+
 sample:
   version: '0.1'
   flavor: default
