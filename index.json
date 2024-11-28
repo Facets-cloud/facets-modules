@@ -1343,6 +1343,7 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/sns/default/0.1/",
+    "gitRef": "sqs-docs",
     "clouds": [
       "aws"
     ]
