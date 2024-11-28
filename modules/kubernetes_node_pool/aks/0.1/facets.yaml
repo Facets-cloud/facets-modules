@@ -48,7 +48,7 @@ spec:
             type: string
             x-ui-placeholder: CriticalAddonsOnly
           value:
-            title: Taint value
+            title: Taint Value
             description: Taint Value
             type: string
             x-ui-placeholder: "true"
