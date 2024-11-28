@@ -1,9 +1,75 @@
 intent: kubernetes_node_pool
 flavor: aks
-version: '0.1'
+version: "0.1"
 description: Adds kubernetes_node_pool - aks flavor
 clouds:
-- azure
+  - azure
+spec:
+  title: Kubernetes Node Pool
+  description: Specification of the kubernetes node pool for aks flavor
+  type: object
+  properties:
+    instance_type:
+      title: Instance Type
+      description: SKU of the virtual machines used in this node pool
+      type: string
+      x-ui-placeholder: Eg. Standard_D4a_v4
+    min_node_count:
+      title: Min Node Count
+      description: Minimum number of nodes which should exist within this node pool
+      type: number
+      minimum: 0
+      maximum: 100
+    max_node_count:
+      title: Max Node Count
+      description: Maximum number of nodes which should exist within this node pool
+      type: number
+      minimum: 0
+      maximum: 100
+    disk_size:
+      title: Disk Size
+      description: Size of the Disk in GiB for node in this node pool
+      type: string
+      pattern: '\b((5[0-9]G)|([6-9][0-9]G)|([1-9][0-9][0-9]G)|(1000G))\b'
+      x-ui-placeholder: "eg. 50G"
+      x-ui-error-message: "Value doesn't match the format eg. 50G. Minimum is 50G and max is 1000G"
+    taints:
+      title: Taints
+      description: Map of Kubernetes taints which should be applied to nodes in the node pool
+      type: object
+      patternProperties:
+        type: object
+        title: Taint Object
+        keyPattern: "^[a-z][a-z0-9-_]*$"
+        properties:
+          key:
+            title: Taint Key
+            description: Taint Key
+            type: string
+            x-ui-placeholder: CriticalAddonsOnly
+          value:
+            title: Taint Value
+            description: Taint Value
+            type: string
+            x-ui-placeholder: "true"
+          effect:
+            title: Taint Effect
+            description: Taint Effect
+            type: string
+            x-ui-placeholder: NoSchedule
+    labels:
+      title: Labels
+      description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      x-ui-placeholder: "Eg. key1: value1"
+      type: object
+      x-ui-yaml-editor: true
+  required:
+    - instance_type
+    - min_node_count
+    - max_node_count
+    - disk_size
+    - taints
+    - labels
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   flavor: aks
@@ -13,12 +79,11 @@ sample:
       managed-by: facets
     annotations: {}
   disabled: true
-  version: '0.1'
+  version: "0.1"
   spec:
-    instance: Spot
     instance_type: Standard_F8
     min_node_count: 0
     max_node_count: 100
-    disk_size: 50Gi
+    disk_size: 50G
     taints: {}
     labels: {}
