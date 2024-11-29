@@ -1,0 +1,8 @@
+name: ecs_cluster
+type: ECS Cluster
+displayName: ECS Cluster
+description: A logical grouping of tasks or services that allows you to manage, scale, and maintain your applications in a coordinated way.
+iconUrl: https://icon.icepanel.io/AWS/svg/Containers/Elastic-Container-Service.svg
+outputs:
+  - name: default
+    type: "@output/ecs_cluster"
