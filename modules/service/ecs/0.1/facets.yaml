@@ -249,7 +249,7 @@ spec:
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
-  flavor: deployment
+  flavor: ecs_service
   metadata:
     labels:
       deliveryType: MANUAL
