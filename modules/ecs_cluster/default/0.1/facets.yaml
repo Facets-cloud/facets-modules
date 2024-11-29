@@ -1,0 +1,32 @@
+intent: ecs_cluster
+flavor: default
+version: '0.1'
+description: Adds AWS ECS Cluster
+clouds:
+  - aws
+spec:
+  title: AWS ECS Cluster
+  type: object
+  properties:
+    cluster:
+      type: object
+      title: Cluster Spec
+      description: Specifications of cluster to be created
+      properties:
+        lifecycle:
+          type: string
+          title: Lifecycle
+          description: Lifecycle of the ECS Cluster
+          enum:
+            - "spot"
+            - "ondemand"
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/ecs_cluster/ecs_cluster.schema.json
+  kind: ecs_cluster
+  flavor: default
+  version: '0.1'
+  disabled: true
+  metadata: {}
+  spec:
+    cluster:
+      lifecycle: 'spot'
