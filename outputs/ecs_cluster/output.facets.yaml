@@ -1,0 +1,10 @@
+name: ecs_cluster
+out:
+  type: object
+  title: ECS Cluster
+  description: ECS Cluster
+  properties:
+    attributes:
+      cluster_arn:
+      cluster_name:
+    interfaces:
