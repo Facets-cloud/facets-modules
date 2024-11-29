@@ -718,6 +718,16 @@
     ]
   },
   {
+    "intent": "service",
+    "flavor": "ecs_service",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/ecs/0.1/",
+    "clouds": [
+      "aws"
+    ]
+  },
+  {
     "intent": "log_collector",
     "flavor": "loki_aws_s3",
     "version": "0.1",
