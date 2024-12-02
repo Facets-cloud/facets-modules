@@ -1,6 +1,6 @@
 intent: service
 flavor: deployment
-alias-flavors: ["k8s", "default"]
+alias-flavors: ["k8s"]
 version: '0.1'
 description: Adds service module
 clouds:
