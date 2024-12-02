@@ -637,7 +637,6 @@
     "version": "0.2",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/sqs/default/0.2/",
-    "gitRef": "sqs-docs",
     "clouds": [
       "aws"
     ]
