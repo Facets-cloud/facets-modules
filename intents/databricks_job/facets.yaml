@@ -1,0 +1,4 @@
+name: databricks_job
+type: databricks
+displayName: Databricks Job
+description: Create and manage Databricks Jobs to automate the deployment and scheduling of data processing and machine learning tasks.
