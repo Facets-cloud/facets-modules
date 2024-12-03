@@ -1,0 +1,106 @@
+name: cherry-pick
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  cherry-pick:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/cherry-pick')
+    runs-on: iac-arc
+    steps:
+      - name: Check team membership
+        uses: tspascoal/get-user-teams-membership@v2
+        id: actorTeams
+        with:
+          username: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Check if user belongs to team
+        run: |
+          if [[ "${{ steps.actorTeams.outputs.teams }}" == *"infra-release-managers"* ]]; then
+            echo "User belongs to team"
+          else
+            echo "User does not belong to team"
+            exit 1
+          fi
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: 'develop' # Make sure we checkout the branch where PR gets merged
+      - name: Extract text after /cherry-pick
+        id: input
+        run: |
+          branch=$(cat $GITHUB_EVENT_PATH | jq -r '.comment.body | capture("/cherry-pick\\s*(?<text1>\\b[^\\s]+)\\b") | .text1')
+          if [ -z "$branch" ]; then
+            echo "Branch not specified"
+            exit 1
+          fi
+          echo "Branch $branch"
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+      - name: Authenticate GH CLI
+        run: gh auth login --with-token <<< ${{ secrets.PAT }}
+
+      - name: Check if PR is merged
+        id: check
+        run: |
+          PR_MERGED=$(gh pr view ${{ github.event.issue.number }} --json state -q '.state')
+          echo "::set-output name=merged::$PR_MERGED"
+
+      - name: Get squash merge commit ID
+        id: commit_id
+        run: |
+          if [[ "${{ steps.check.outputs.merged }}" == "MERGED" ]]; then
+            COMMIT_ID=$(gh pr view ${{ github.event.issue.number }} --json mergeCommit -q '.mergeCommit.oid')
+            echo "::set-output name=id::$COMMIT_ID"
+          else
+            echo "PR not merged"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+
+      - name: Set Git identity
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Checkout ref branch
+        run: git checkout ${{ steps.input.outputs.branch }}
+
+      - name: Cherry-pick commit
+        run: git cherry-pick --allow-empty -x ${{ steps.commit_id.outputs.id }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ steps.input.outputs.branch }}
+        env:
+          GIT_COMMITTER_NAME: ${{ github.actor }}
+          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
+      - name: Add comment to PR
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            const issueComment = `Commit cherry-picked to ref [${{ steps.input.outputs.branch }}](https://github.com/${{ github.repository }}/tree/${{ steps.input.outputs.branch }}).`
+            github.issues.createComment({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: issueComment
+            })
+      - name: Post Success to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          slack-message: '<https://github.com/${{ github.repository }}/pull/${{ github.event.issue.number }}|#${{ github.event.issue.number }}> cherry-picked to ref <https://github.com/${{ github.repository }}/tree/${{ steps.input.outputs.branch }}|${{ steps.input.outputs.branch }}>.'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
