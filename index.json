@@ -188,19 +188,6 @@
     ]
   },
   {
-    "intent": "service",
-    "flavor": "k8s",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/service/k8s/0.1/",
-    "clouds": [
-      "aws",
-      "azure",
-      "gcp",
-      "kubernetes"
-    ]
-  },
-  {
     "intent": "ingress",
     "flavor": "nginx_k8s_native",
     "version": "0.1",
