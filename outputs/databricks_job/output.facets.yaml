@@ -1,0 +1,8 @@
+name: databricks_job
+out:
+  type: object
+  title: Databricks Job
+  description: Databricks Job outputs
+  properties:
+    attributes:
+    interfaces:

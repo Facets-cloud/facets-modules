@@ -1,0 +1,8 @@
+name: databricks_account
+out:
+  type: object
+  title: Databricks Account
+  description: Databricks Account outputs
+  properties:
+    attributes:
+    interfaces:

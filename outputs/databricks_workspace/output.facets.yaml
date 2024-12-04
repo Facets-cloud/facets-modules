@@ -1,0 +1,8 @@
+name: databricks_workspace
+out:
+  type: object
+  title: Databricks Workspace
+  description: Databricks Workspace outputs
+  properties:
+    attributes:
+    interfaces:
