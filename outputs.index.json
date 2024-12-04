@@ -83,5 +83,20 @@
     "name": "ecs_cluster",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ecs_cluster/"
+  },
+  {
+    "name": "databricks_account",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_account/"
+  },
+  {
+    "name": "databricks_workspace",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_workspace/"
+  },
+  {
+    "name": "databricks_job",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_job/"
   }
 ]
