@@ -223,7 +223,6 @@ spec:
           type: string
           title: Image
           description: The docker image of the application that you want to run
-          x-ui-skip: true
           x-ui-error-message: "Value doesn't match pattern for a container image"
         build:
           type: object
@@ -239,7 +238,6 @@ spec:
               title: Name
               description: Name of the artifactory
           required: [ "artifactory", "name" ]
-          x-ui-skip: true
   required:
     - runtime
     - release
