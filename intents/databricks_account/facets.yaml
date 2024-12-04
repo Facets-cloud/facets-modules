@@ -2,3 +2,6 @@ name: databricks_account
 type: databricks
 displayName: Databricks Account
 description: Initialize a Databricks account to automate the setup and management of the cloud resources.
+outputs:
+  - name: default
+    type: "@output/databricks_account"
