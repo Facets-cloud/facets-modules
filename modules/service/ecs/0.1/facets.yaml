@@ -261,7 +261,7 @@ sample:
       image: 'mendhak/http-https-echo:latest'
     runtime:
       args: []
-      command: []
+      command: ""
       autoscaling:
         min: '1'
         max: '1'
