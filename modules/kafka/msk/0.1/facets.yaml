@@ -90,7 +90,7 @@ spec:
               description: Volume request in kubernetes persistent volumes
               pattern: "^[0-9]+[G]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
+              x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
               x-ui-visible-if: 
                 field: spec.persistence_enabled
                 values: [ true ]
