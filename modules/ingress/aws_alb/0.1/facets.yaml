@@ -117,7 +117,7 @@ spec:
             type: string
             title: Domain Prefix
             description: Subdomain prefix
-            pattern: '^[a-z0-9-]{1,20}$'
+            pattern: '^(?!-)[a-z0-9-]{1,18}(?<!-)$'
             x-ui-placeholder: "Enter the subdomain you want to expose your application"
             x-ui-error-message: "Value doesn't match pattern, max characters of 20 and only hyphen special characters is accepted with numbers and alphabets"
           grpc:
