@@ -66,9 +66,9 @@ spec:
               type: string
               title: Volume
               description: Volume size
-              pattern: "^[1-9]+[EiKMGTP]i?$"
+              pattern: "^[1-9]+[G]i?$"
               x-ui-placeholder: "Ex. 8Gi"
-              x-ui-error-message: "Value doesn't match '^[1-9]+[EiKMGTP]i?$' pattern"
+              x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')"
             instance_count:
               type: integer
               title: Instance Count
@@ -123,7 +123,7 @@ spec:
               type: string
               title: Volume
               description: Volume Size
-              pattern: "^[0-9]+[EiKMGTP]i?$"
+              pattern: "^[0-9]+[G]i?$"
               x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
               x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
           required:
