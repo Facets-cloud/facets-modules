@@ -8,6 +8,12 @@ spec:
   title: AWS SQS
   type: object
   description: Specification of the SQS resource intent
+  properties:
+    use_sqs_managed_sse:
+      type: boolean
+      title: Use SQS Managed Server-side Encryption
+      default: false
+      description: enables SQS managed SSE, takes precedence over specifying a customer managed key id
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/sqs/sqs.schema.json
   version: '0.2'
