@@ -237,7 +237,6 @@ spec:
               type: string
               title: Name
               description: Name of the artifactory
-          required: [ "artifactory", "name" ]
   required:
     - runtime
     - release
