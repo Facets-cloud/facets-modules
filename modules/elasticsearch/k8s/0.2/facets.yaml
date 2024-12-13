@@ -38,7 +38,7 @@ spec:
         data:
           type: object
           title: Data
-          description: 
+          description: Data Sizing
           properties:
             cpu:
               type: string
@@ -93,8 +93,8 @@ spec:
             - instance_count
         client:
           type: object
-          title: Data
-          description: 
+          title: Client
+          description: Client Sizing
           properties:
             cpu:
               type: string
@@ -132,9 +132,9 @@ spec:
               type: string
               title: Volume
               description: Size of the volume
-              pattern: "^[0-9]+[EiKMGTP]i?$"
+              pattern: "^[0-9]+[G]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
@@ -147,6 +147,8 @@ spec:
             - memory
             - volume
             - instance_count
+    required:
+      - data
   required:
     - size
     - elasticsearch_version
@@ -155,7 +157,7 @@ spec:
     - size
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json
-  version: '0.1'
+  version: '0.2'
   flavor: k8s
   kind: elasticsearch
   metadata: {}
@@ -163,6 +165,11 @@ sample:
     elasticsearch_version: 8.5.1
     size:
       data:
+        cpu: 2001m
+        memory: 2Gi
+        volume: 8Gi
+        replica_count: 1
+      client:
         cpu: 2001m
         memory: 2Gi
         volume: 8Gi
