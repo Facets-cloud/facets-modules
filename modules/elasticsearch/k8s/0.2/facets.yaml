@@ -142,11 +142,6 @@ spec:
               minimum: 1
               maximum: 100
               x-ui-placeholder: "Enter instance count"
-          required:
-            - cpu
-            - memory
-            - volume
-            - instance_count
     required:
       - data
   required:
