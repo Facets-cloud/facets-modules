@@ -87,12 +87,9 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[G]i?$"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
-              x-ui-visible-if: 
-                field: spec.controller.persistence_enabled
-                values: [ true ]
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
@@ -148,12 +145,9 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[G]i?$"
+              pattern: "^[0-9]+[EiKMGTP]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
-              x-ui-visible-if: 
-                field: spec.broker.persistence_enabled
-                values: [ true ]
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
             instance_count:
               type: integer
               title: Instance Count
