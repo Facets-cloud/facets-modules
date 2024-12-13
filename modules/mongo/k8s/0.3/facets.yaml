@@ -78,7 +78,7 @@ spec:
           title: Volume
           description: The size of the volume.
           minLength: 1
-          pattern: "^[0-9]+[EiKMGTP]i?$"
+          pattern: "^[0-9]+[G]i?$"
           x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
           x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
       required:
