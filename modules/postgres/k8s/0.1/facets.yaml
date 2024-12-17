@@ -170,7 +170,9 @@ spec:
     db_names:
       type: array
       title: Additional Database Names
-      description: List of additional databases to be created.
+      description: List of additional databases to be created
+      pattern: '^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$'
+      x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
   required:
     - size
     - postgres_version

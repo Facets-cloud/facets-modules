@@ -41,8 +41,10 @@ spec:
           type: string
           default: 5
           minimum: 1
-          x-ui-placeholder: "Enter Min retry count for your job"
+          x-ui-placeholder: "Enter the minimum retry count for your job (default is 5)"
           description: Number of time you want to retry the job before calling it a failure
+          pattern: '^(100|[1-9][0-9]?)$'
+          x-ui-error-message: "The retry count must be a positive integer between 1 and 100."
       required:
         - retry
     runtime:
@@ -61,6 +63,8 @@ spec:
           type: array
           title: Arguments
           description: Arguments to pass to the command
+          pattern: '^[a-zA-Z0-9-_ ]+$'
+          x-ui-error-message: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
           items:
             type: string
           x-ui-command: true
