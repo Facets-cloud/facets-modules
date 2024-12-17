@@ -90,6 +90,15 @@ spec:
               pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])G$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)M$"
               x-ui-placeholder: "e.g., '800M' or '1.5G'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
+            volume:
+              type: string
+              title: Volume
+              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
+              x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
+              x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
+              x-ui-visible-if: 
+                field: spec.persistence_enabled
+                values: [ true ]
           required:
             - instance_count
             - cpu
@@ -130,9 +139,12 @@ spec:
             volume:
               type: string
               title: Volume
-              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
               x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
               x-ui-error-message: "Volume must be specified in the correct format with integer only (e.g., '10Gi' or '50Gi')."
+              x-ui-visible-if: 
+                field: spec.persistence_enabled
+                values: [ true ]
           required:
             - cpu
             - memory
@@ -163,11 +175,11 @@ sample:
         memory: "1G"
         cpu_limit: "1"
         memory_limit: "1G"
-        volume: "10Gi"
+        volume: "50Gi"
       reader:
         cpu: "1"
         memory: "1G"
         cpu_limit: "1"
         memory_limit: "1G"
-        volume: "10Gi"
+        volume: "1Gi"
         instance_count: 0

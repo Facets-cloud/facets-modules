@@ -16,6 +16,9 @@ spec:
       type: integer
       title: Retention Days
       description: Retention days after which the logs should be deleted
+      pattern: '^[0-9]+$'
+      x-ui-placeholder: "Enter the number of days for log retention"
+      x-ui-error-message: "Only numeric values are allowed."
     storage_size:
       type: string
       title: Storage Size

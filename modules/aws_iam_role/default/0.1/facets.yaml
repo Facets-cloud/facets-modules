@@ -26,6 +26,8 @@ spec:
               name:
                 type: string
                 description: The name of the service account that you want to attach the role to with the trust relationship
+                pattern: '^(?!-)[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*(?<!-)$'
+                x-ui-error-message: "Service account names must contain only letters, numbers, underscores and hyphens, cannot contain consecutive hyphens, and must not include spaces or special characters "
         oidc_providers:
           type: object
           title: OIDC Providers
@@ -39,6 +41,8 @@ spec:
                 arn:
                   type: string
                   description: The arn of the OIDC that you want to attach the role to with the trust relationship
+                  pattern: '^arn:aws:iam::[0-9]{12}:oidc-provider\/[a-zA-Z0-9._\-\/]+$'
+                  x-ui-error-message: "Invalid OIDC ARN format. Ensure it follows the pattern <arn:aws:iam::<account-id>:oidc-provider/<provider-path>"
       required:
         - service_accounts
     policies:
@@ -54,6 +58,8 @@ spec:
           arn:
             type: string
             description: The arn of the policy that you want to attach the role
+            pattern: '^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$'
+            x-ui-error-message: "Invalid ARN format. Ensure it follows the pattern <arn:partition:service:region:account-id:resource>"
     required:
       - policies
 sample:
