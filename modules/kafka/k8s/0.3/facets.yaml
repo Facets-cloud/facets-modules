@@ -7,6 +7,15 @@ clouds:
   - azure
   - gcp
   - kubernetes
+metadata:
+  title: Metadata of Kafka
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace 
+      description: Namespace in which kafka should be deployed
+      default: default
 spec:
   title: Kafka Spec
   type: object
@@ -78,9 +87,12 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[EiKMGTP]i?$"
+              pattern: "^[0-9]+[G]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
+              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
+              x-ui-visible-if: 
+                field: spec.controller.persistence_enabled
+                values: [ true ]
             instance_count:
               type: integer
               title: Instance Count
@@ -136,9 +148,12 @@ spec:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[EiKMGTP]i?$"
+              pattern: "^[0-9]+[G]i?$"
               x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
+              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
+              x-ui-visible-if: 
+                field: spec.broker.persistence_enabled
+                values: [ true ]
             instance_count:
               type: integer
               title: Instance Count

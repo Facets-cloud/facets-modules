@@ -60,7 +60,7 @@ spec:
           type: string
           title: Volume
           description: Size of the volume
-          pattern: "^[0-9]+[EiKMGTP]i?$"
+          pattern: "^[0-9]+[G]i?$"
           x-ui-placeholder: "Enter volume size"
           x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
         instance_count:
