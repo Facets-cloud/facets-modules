@@ -7,6 +7,15 @@ clouds:
   - azure
   - gcp
   - kubernetes
+metadata:
+  title: Metadata of Kafka
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace 
+      description: Namespace in which kafka should be deployed
+      default: default
 spec:
   title: Kafka Spec
   type: object
