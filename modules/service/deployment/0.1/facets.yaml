@@ -12,6 +12,15 @@ artifact_inputs:
   primary: 
     attribute_path: "spec.release.image" 
     artifact_type: "docker_image"
+metadata:
+  title: Metadata of service
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace 
+      description: Namespace in which deployment should be deployed
+      default: default
 spec:
   title: K8s flavor of service
   type: object
