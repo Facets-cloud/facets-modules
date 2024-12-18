@@ -1,0 +1,4 @@
+name: hostedzone
+type: aws_zone
+displayName: hostedzone
+description: AWS Private Hosted Zone Service
