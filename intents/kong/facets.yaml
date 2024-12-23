@@ -1,0 +1,4 @@
+name: kong
+type: K8s
+displayName: Kong
+description: A kubernetes deployment of kong
