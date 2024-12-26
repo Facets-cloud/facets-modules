@@ -89,6 +89,7 @@ spec:
               filterConditions:
                 - field: resourceType
                   value: service
+            x-ui-typeable: true
           path:
             type: string
             title: Path
@@ -113,6 +114,7 @@ spec:
               valueKey: port
               path: ports
             x-ui-disable-tooltip: "No Ports Found or Service not selected"
+            x-ui-typeable: true
           domain_prefix:
             type: string
             title: Domain Prefix
