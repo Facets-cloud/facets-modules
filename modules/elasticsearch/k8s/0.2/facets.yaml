@@ -7,17 +7,166 @@ clouds:
 - kubernetes
 - azure
 - aws
+metadata:
+  title: Metadata of Elasticsearch
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace 
+      description: Namespace in which Elasticsearch should be deployed
+      default: default
+spec:
+  title: K8s elasticsearch
+  type: object
+  properties:
+    elasticsearch_version:
+      type: string
+      title: Elasticsearch Version
+      description: Version of Elasticsearch
+      minLength: 1
+      enum:
+        - 8.14.1
+        - 7.16.3
+        - 6.4.3
+        - 5.6.12
+    size:
+      type: object
+      title: Size
+      description: Datastore Sizing
+      properties:
+        data:
+          type: object
+          title: Data
+          description: Data Sizing
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: Number of CPU cores required
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Enter CPU cores"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
+            memory:
+              type: string
+              title: Memory
+              description: Amount of required memory
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Enter memory (Ex. 2Gi)"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+            cpu_limit:
+              type: string
+              title: CPU Limit
+              description: CPU limit for the instance
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Enter CPU limit"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
+            memory_limit:
+              type: string
+              title: Memory Limit
+              description: Memory limit for the instance
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Enter memory limit"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+            volume:
+              type: string
+              title: Volume
+              description: Size of the volume
+              pattern: "^[0-9]+[EiKMGTP]i?$"
+              x-ui-placeholder: "Enter volume size"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of instances to create
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter instance count"
+          required:
+            - cpu
+            - memory
+            - volume
+            - instance_count
+        client:
+          type: object
+          title: Client
+          description: Client Sizing
+          properties:
+            cpu:
+              type: string
+              title: CPU
+              description: Number of CPU cores required
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Enter CPU cores"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
+            memory:
+              type: string
+              title: Memory
+              description: Amount of required memory
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Enter memory (Ex. 2Gi)"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+            cpu_limit:
+              type: string
+              title: CPU Limit
+              description: CPU limit for the instance
+              minLength: 1
+              pattern: "^[0-9]+[m]?$"
+              x-ui-placeholder: "Enter CPU limit"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
+            memory_limit:
+              type: string
+              title: Memory Limit
+              description: Memory limit for the instance
+              minLength: 1
+              pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+              x-ui-placeholder: "Enter memory limit"
+              x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+            volume:
+              type: string
+              title: Volume
+              description: Size of the volume
+              pattern: "^[0-9]+[G]i?$"
+              x-ui-placeholder: "Enter volume size"
+              x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of instances to create
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter instance count"
+    required:
+      - data
+  required:
+    - size
+    - elasticsearch_version
+  x-ui-order:
+    - elasticsearch_version
+    - size
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json
-  version: '0.1'
+  version: '0.2'
   flavor: k8s
   kind: elasticsearch
   metadata: {}
   spec:
     elasticsearch_version: 8.5.1
     size:
-      cpu: 2001m
-      memory: 2Gi
-      volume: 8Gi
-      replica_count: 2
+      data:
+        cpu: 2001m
+        memory: 2Gi
+        volume: 8Gi
+        replica_count: 1
+      client:
+        cpu: 2001m
+        memory: 2Gi
+        volume: 8Gi
+        replica_count: 2
   disabled: true

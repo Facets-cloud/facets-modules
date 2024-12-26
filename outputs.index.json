@@ -98,5 +98,10 @@
     "name": "databricks_job",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/databricks_job/"
+  },
+  {
+    "name": "cassandra",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cassandra/"
   }
 ]
