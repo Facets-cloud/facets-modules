@@ -85,8 +85,7 @@ spec:
               method: GET
               labelKey: namespace
               valueKey: namespace
-              valueTemplate: "${service.{{value}}.out.attributes.namespace}"
-              path: ports
+              path: namespace
             x-ui-disable-tooltip: "No Namespace Found or Service not selected"
             x-ui-typeable: true
           port:
