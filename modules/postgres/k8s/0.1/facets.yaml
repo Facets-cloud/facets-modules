@@ -13,7 +13,7 @@ metadata:
   properties:
     namespace:
       type: string
-      title: Namespace 
+      title: Namespace
       description: Namespace in which Mongo should be deployed
       default: default
 spec:
@@ -171,8 +171,31 @@ spec:
       type: array
       title: Additional Database Names
       description: List of additional databases to be created
-      pattern: '^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$'
+      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
       x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
+    db_schemas:
+      type: object
+      title: Additional Database Schemas
+      description: Map of additonal schemas to be created.
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9-_]+$"
+        title: Database Schemas
+        description: Database schema row item which contains schema name and database name in which schema will be created.
+        properties:
+          db:
+            title: Database Name
+            type: string
+            description: Name of the database under which schema will be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+            x-ui-error-message: Database name must start with an alphabet or underscore and should contain only alphanumeric characters and underscores
+          schema:
+            title: Database Schema
+            type: string
+            description: Name of the schema which needs to be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        required:
+          - db
+          - schema
   required:
     - size
     - postgres_version
@@ -180,6 +203,7 @@ spec:
     - postgres_version
     - size
     - db_names
+    - db_schemas
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
