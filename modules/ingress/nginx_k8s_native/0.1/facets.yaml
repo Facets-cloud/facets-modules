@@ -71,6 +71,24 @@ spec:
                 - field: resourceType
                   value: service
             x-ui-typeable: true
+          namespace:
+            type: string
+            title: Namespace
+            description: Service Namespace
+            x-ui-api-source:
+              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview"
+              dynamicProperties:
+                serviceName:
+                  key: service_name
+                  lookup: regex
+                  x-ui-lookup-regex: '\${[^.]+\.([^.]+).*'
+              method: GET
+              labelKey: namespace
+              valueKey: namespace
+              valueTemplate: "${service.{{value}}.out.attributes.namespace}"
+              path: ports
+            x-ui-disable-tooltip: "No Namespace Found or Service not selected"
+            x-ui-typeable: true
           port:
             type: string
             title: Port
