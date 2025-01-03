@@ -803,6 +803,20 @@ spec:
                           type: string
                           title: Name
                           description: Config map name
+                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${config_map.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: config_map
                         mount_path:
                           type: string
                           title: Mount Path
@@ -827,6 +841,18 @@ spec:
                           type: string
                           title: Name
                           description: Secret name
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${kubernetes_secret.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: kubernetes_secret
                         mount_path:
                           type: string
                           title: Mount Path
@@ -851,6 +877,20 @@ spec:
                           type: string
                           title: Claim Name
                           description: PVC name
+                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${pvc.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: pvc
                         mount_path:
                           type: string
                           title: Mount Path
@@ -1013,6 +1053,20 @@ spec:
                           type: string
                           title: Name
                           description: Config map name
+                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${config_map.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: config_map
                         mount_path:
                           type: string
                           title: Mount Path
@@ -1037,6 +1091,18 @@ spec:
                           type: string
                           title: Name
                           description: Secret name
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${kubernetes_secret.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: kubernetes_secret
                         mount_path:
                           type: string
                           title: Mount Path
@@ -1061,6 +1127,20 @@ spec:
                           type: string
                           title: Claim Name
                           description: PVC name
+                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
+                          x-ui-typeable: true
+                          x-ui-api-source:
+                            endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                            method: GET
+                            params:
+                              includeContent: false
+                            labelKey: resourceName
+                            valueKey: resourceName
+                            valueTemplate: "${pvc.{{value}}.out.attributes.name}"
+                            filterConditions:
+                              - field: resourceType
+                                value: pvc
                         mount_path:
                           type: string
                           title: Mount Path
