@@ -722,7 +722,7 @@ spec:
             x-ui-yaml-editor: true
           additional_k8s_env_from:
             title: Import Additional Environment Variables
-            desccription: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
+            description: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
             type: object
             x-ui-yaml-editor: true
           runtime:
@@ -932,7 +932,7 @@ spec:
             x-ui-yaml-editor: true
           additional_k8s_env_from:
             title: Import Additional Environment Variables
-            desccription: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
+            description: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
             type: object
             x-ui-yaml-editor: true
           runtime:
