@@ -7,13 +7,53 @@ clouds:
 - kubernetes
 - azure
 - aws
+spec:
+  title: TCP Loadbalancer
+  type: object
+  description: Specification of the TCP Loadbalancer
+  mode:
+    title: Mode
+    description: Type loadbalancing is for a single instance loadbalancing for backend applications and per_instance is for targeting a specific backend application
+    enum:
+      - "loadbalancing"
+      - "per_instance"
+  instances:
+    type: integer
+    description: Number of instances that you want to create per_instance loadbalancers
+    title: Instances
+  ports:
+    type: object
+    title: Ports
+    description: All the ports that you need to expose on the loadbalancer
+    keyPattern: "^[a-zA-Z0-9_.-]*$"
+    properties:
+      port:
+        type: integer
+        title: Port
+        description: Port number where the service needs to be accessible via the loadbalancer its the same port that will be exposed via the loadbalancer
+      protocol:
+        title: Protocol
+        description: the protocol of the port
+        enum:
+          - "tcp"
+          - "udp"
+  private:
+    type: boolean
+    description: Make this load balancer private
+    title: Private Loadbalancer
+  selector:
+    type: object
+    title: Selector
+    description: Map of all the kubernetes selectors that are required to map the loadbalancer service to applications in the backend.
+    x-ui-yaml-editor: true
+    x-ui-placeholder: Enter Selectors in YAML format
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/tcp_lb/nlb.schema.json
   kind: tcp_lb
   flavor: default
   metadata:
     name: test
-  version: '0.2'
+  version: '0.1'
   spec:
     mode: loadbalancing
     instances: 1
