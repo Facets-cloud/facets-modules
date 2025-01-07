@@ -56,7 +56,7 @@ spec:
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/tcp_lb/nlb.schema.json
   kind: tcp_lb
-  flavor: default
+  flavor: nlb
   metadata:
     name: test
   version: '0.2'
