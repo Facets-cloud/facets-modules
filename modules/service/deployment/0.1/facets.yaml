@@ -695,7 +695,7 @@ spec:
       x-ui-toggle: true
       patternProperties:
         title: Init Container
-        desccription: Init Container Specification.
+        description: Init Container Specification.
         type: object
         keyPattern: "^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$"
         properties:
@@ -706,7 +706,7 @@ spec:
             x-ui-error-message: "Value doesn't match pattern for a container image"
           pull_policy:
             title: Image Pull Policy
-            desccription: Specifies when the image should be pulled from the registry.
+            description: Specifies when the image should be pulled from the registry.
             type: string
             default: IfNotPresent
             enum:
@@ -715,11 +715,11 @@ spec:
               - Never
           env:
             title: Environment Variables
-            desccription: Map of environment variables passed to init container.
+            description: Map of environment variables passed to init container.
             type: object
             patternPorperties:
               title: Evironment Variable
-              desccription: Environment Variable
+              description: Environment Variable
               keyPattern: "^[a-zA-Z][a-zA-Z0-9_-.]*$"
               type: string
             x-ui-yaml-editor: true
@@ -730,7 +730,7 @@ spec:
             x-ui-yaml-editor: true
           additional_k8s_env_from:
             title: Import Additional Environment Variables
-            desccription: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
+            description: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
             type: object
             x-ui-yaml-editor: true
           runtime:
@@ -945,7 +945,7 @@ spec:
       x-ui-toggle: true
       patternProperties:
         title: Sidecar Container
-        desccription: Sidecar Container Specification
+        description: Sidecar Container Specification
         type: object
         keyPattern: "^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$"
         properties:
@@ -956,7 +956,7 @@ spec:
             x-ui-error-message: "Value doesn't match pattern for a container image"
           pull_policy:
             title: Image Pull Policy
-            desccription: Specifies when the image should be pulled from the registry.
+            description: Specifies when the image should be pulled from the registry.
             type: string
             default: IfNotPresent
             enum:
@@ -965,11 +965,11 @@ spec:
               - Never
           env:
             title: Environment Variables
-            desccription: Map of environment variables passed to init container
+            description: Map of environment variables passed to init container
             type: object
             patternPorperties:
               title: Evironment Variable
-              desccription: Environment Variable
+              description: Environment Variable
               keyPattern: "^[a-zA-Z][a-zA-Z0-9_-.]*$"
               type: string
             x-ui-yaml-editor: true
@@ -980,7 +980,7 @@ spec:
             x-ui-yaml-editor: true
           additional_k8s_env_from:
             title: Import Additional Environment Variables
-            desccription: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
+            description: List of configmap or secret reference from which environments varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
             type: object
             x-ui-yaml-editor: true
           runtime:
