@@ -13,6 +13,7 @@ spec:
   description: Specification of the TCP Loadbalancer
   properties:
     mode:
+      type: string
       title: Mode
       description: Type loadbalancing is for a single instance loadbalancing for backend applications and per_instance is for targeting a specific backend application
       enum:
