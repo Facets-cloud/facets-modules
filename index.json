@@ -1481,5 +1481,44 @@
     "clouds": [
       "aws"
     ]
+  },
+  {
+    "intent": "kubernetes_secret",
+    "flavor": "k8s",
+    "version": "0.3",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kubernetes_secret/k8s/0.3/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "config_map",
+    "flavor": "k8s",
+    "version": "0.3",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/config_map/k8s/0.3/",
+    "clouds": [
+      "aws",
+      "azure",
+      "gcp",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "k8s_resource",
+    "flavor": "k8s",
+    "version": "0.3",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/k8s_resource/k8s/0.3/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
   }
 ]
