@@ -106,6 +106,8 @@ spec:
                 title: Transition days
                 description: (Required) Specifies the number of days noncurrent object versions transition.
                 type: string
+        required:
+          -  enabled
     server_side_encryption_configuration:
       title: Default Server Side Encryption
       description: server-side encryption with S3 managed keys (SSE)
@@ -122,6 +124,9 @@ spec:
           title: AWS KMS master key ID
           description: (optional) The AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms.
           type: string
+          x-ui-visible-if:
+            field: spec.server_side_encryption_configuration.sse_algorithm
+            values: [ "aws:kms" ]
         bucket_key_enabled:
           title: Use S3 Bucket Keys
           description: (Optional) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS.
