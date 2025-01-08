@@ -1,0 +1,5 @@
+name: iam_policy_arn
+out:
+  type: string
+  title: IAM Policy ARN
+  description: ARN of IAM Policy
