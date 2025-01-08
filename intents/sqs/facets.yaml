@@ -2,3 +2,10 @@ name: sqs
 type: default
 displayName: SQS
 description: Fully managed AWS message queuing service.
+outputs:
+  - name: attributes.consumer_policy_arn
+    title: "SQS Consumer Permission"
+    type: "@output/iam_policy_arn"
+  - name: attributes.producer_policy_arn
+    title: "SQS Producer Permission"
+    type: "@output/iam_policy_arn"
