@@ -37,7 +37,7 @@ spec:
             type: string
             title: Certificate reference
             Description: Certificate reference name. It's the ACM ARN certificate reference.
-            pattern: '/^arn:aws:acm:\w+(?:-\w+)+:\d{12}:certificate\/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+$/gm'
+            pattern: '^arn:aws:acm:\w+(?:-\w+)+:\d{12}:certificate\/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+$'
             x-ui-placeholder: "IAM policy example. Eg: arn:aws:acm:us-west-2:123456789012:certificate/abcd1234-5678-90ab-cdef-EXAMPLE11111"
             x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:acm:us-west-2:123456789012:certificate/abcd1234-5678-90ab-cdef-EXAMPLE11111"
         required: [ "domain", "alias", "certificate_reference" ]
