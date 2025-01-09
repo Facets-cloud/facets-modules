@@ -16,7 +16,7 @@ spec:
       title: Domains
       description: Map of domain key to rules
       type: object
-      x-ui-overrides-only: true
+      x-ui-overrides-only: false
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
         title: Domain Object
