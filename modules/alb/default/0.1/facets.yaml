@@ -100,7 +100,7 @@ spec:
             x-ui-error-message: "Value doesn't match pattern, max characters of 20, only hyphen special characters is accepted with numbers and alphabets and should not start or end with hyphen"
           port_name:
             type: string
-            title: Port
+            title: Port name
             description: Service port name
           priority:
             type: string
