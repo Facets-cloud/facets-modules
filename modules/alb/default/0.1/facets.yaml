@@ -102,6 +102,19 @@ spec:
             type: string
             title: Port name
             description: Service port name
+## TODO: once support is avaialable from FE
+#            x-ui-api-source:
+#              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+#              method: GET
+#              params:
+#                includeContent: false
+#              labelKey: resourceName
+#              valueKey: resourceName
+#              valueTemplate: "${service.{{value}}.out.attributes.{{value}}.port_name}"
+#              filterConditions:
+#                - field: resourceType
+#                  value: service
+#            x-ui-typeable: true
           priority:
             type: string
             title: Priority
