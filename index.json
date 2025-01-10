@@ -1673,5 +1673,18 @@
       "azure",
       "aws"
     ]
+  },
+  {
+    "intent": "elk",
+    "flavor": "k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/elk/k8s/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
   }
 ]
