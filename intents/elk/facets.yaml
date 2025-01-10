@@ -1,0 +1,4 @@
+name: elk
+type: k8s
+displayName: ELK Stack
+description: Adds ELK module of Kubernetes flavor.
