@@ -39,7 +39,7 @@ spec:
       description: "Include all container registries mapped to this project."
       x-ui-visible-if:
         field: spec.artifactories
-        values: [{}]
+        values: [null]
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/artifactories/artifactories.schema.json
   version: '0.1'
