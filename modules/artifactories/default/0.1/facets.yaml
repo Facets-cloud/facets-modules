@@ -11,10 +11,36 @@ spec:
   title: Artifactories
   type: object
   description: Specification of the Artifactories resource intent
+  properties:
+    artifactories:
+      title: Artifactories
+      type: object
+      description: "A mapping of container registries."
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        title: Artifactories Object Block
+        description: Name of the Container Registry for creating a secret.
+        type: string
+        x-ui-api-source:
+          endpoint: "/cc-ui/v1/artifactories"
+          method: GET
+          params:
+            includeContent: false
+          labelKey: name
+          valueKey: name
+    include_all:
+      type: bool
+      title: Include All Container Registry
+      description: "Include all container registries mapped to this project."
+      x-ui-visible-if:
+        field: spec.artifactories
+        values: [{}]
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/artifactories/artifactories.schema.json
   version: '0.1'
   flavor: default
   kind: artifactories
   disabled: true
-  spec: {}
+  spec: {
+    artifactories: {}
+  }
