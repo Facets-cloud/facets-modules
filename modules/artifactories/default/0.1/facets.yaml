@@ -15,19 +15,24 @@ spec:
     artifactories:
       title: Artifactories
       type: object
-      description: "A mapping of container registries."
+      description: "A map of Container Registries."
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
         title: Artifactories Object Block
-        description: Name of the Container Registry for creating a secret.
-        type: string
-        x-ui-api-source:
-          endpoint: "/cc-ui/v1/artifactories"
-          method: GET
-          params:
-            includeContent: false
-          labelKey: name
-          valueKey: name
+        description: The Name of the Container Registry for creating a secret.
+        type: object
+        properties:
+          name:
+          title: Container Registry
+          type: object
+          description: "Container Registry Name"
+          x-ui-api-source:
+            endpoint: "/cc-ui/v1/artifactories"
+            method: GET
+            params:
+              includeContent: false
+            labelKey: name
+            valueKey: name
     include_all:
       type: bool
       title: Include All Container Registry
