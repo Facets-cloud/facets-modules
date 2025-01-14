@@ -20,6 +20,9 @@ spec:
       title: Artifactories
       type: object
       description: "A map of Container Registries."
+      x-ui-visible-if:
+          field: spec.include_all
+          values: [false]
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
         title: Artifactories Object Block
@@ -43,5 +46,5 @@ sample:
   flavor: default
   kind: artifactories
   disabled: true
-  spec: {
-  }
+  spec:
+    include_all: false
