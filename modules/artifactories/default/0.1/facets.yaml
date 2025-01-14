@@ -23,16 +23,16 @@ spec:
         type: object
         properties:
           name:
-          title: Container Registry
-          type: string
-          description: "Container Registry Name"
-          x-ui-api-source:
-            endpoint: "/cc-ui/v1/artifactories"
-            method: GET
-            params:
-              includeContent: false
-            labelKey: name
-            valueKey: name
+            title: Container Registry
+            type: string
+            description: "Container Registry Name"
+            x-ui-api-source:
+              endpoint: "/cc-ui/v1/artifactories"
+              method: GET
+              params:
+                includeContent: false
+              labelKey: name
+              valueKey: name
     include_all:
       type: bool
       title: Include All Container Registry
