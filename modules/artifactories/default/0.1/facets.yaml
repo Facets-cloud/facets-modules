@@ -24,7 +24,7 @@ spec:
         properties:
           name:
           title: Container Registry
-          type: object
+          type: string
           description: "Container Registry Name"
           x-ui-api-source:
             endpoint: "/cc-ui/v1/artifactories"
