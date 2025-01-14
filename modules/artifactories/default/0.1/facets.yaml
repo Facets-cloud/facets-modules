@@ -1,0 +1,20 @@
+intent: artifactories
+flavor: default
+version: '0.1'
+description: Adds artifactories - default flavor
+clouds:
+- gcp
+- kubernetes
+- azure
+- aws
+spec:
+  title: Artifactories
+  type: object
+  description: Specification of the Artifactories resource intent
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/artifactories/artifactories.schema.json
+  version: '0.1'
+  flavor: default
+  kind: artifactories
+  disabled: true
+  spec: {}
