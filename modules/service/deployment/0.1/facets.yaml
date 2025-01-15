@@ -48,7 +48,7 @@ spec:
       title: Secret References
       description: Reference the secrets from stack
       x-ui-typeable: true
-      x-ui-secret: true
+      x-ui-secret-ref: true
       x-ui-api-source:
         endpoint: "/cc-ui/v1/stacks/{{stackName}}"
         method: GET
@@ -57,7 +57,7 @@ spec:
       title: Variable References
       description: Reference the variable from stack
       x-ui-typeable: true
-      x-ui-variable: true
+      x-ui-variable-ref: true
       x-ui-api-source:
         endpoint: "/cc-ui/v1/stacks/{{stackName}}"
         method: GET    
