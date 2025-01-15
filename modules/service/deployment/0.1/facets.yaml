@@ -49,6 +49,18 @@ spec:
       description: Reference the secrets from stack
       x-ui-typeable: true
       x-ui-secret: true
+      x-ui-api-source:
+        endpoint: "/cc-ui/v1/stacks/{{stackName}}"
+        method: GET
+    reference_variable:
+      type: string
+      title: Variable References
+      description: Reference the variable from stack
+      x-ui-typeable: true
+      x-ui-secret: true
+      x-ui-api-source:
+        endpoint: "/cc-ui/v1/stacks/{{stackName}}"
+        method: GET    
     cloud_permissions:
       type: object
       title: Cloud Permissions
@@ -1413,6 +1425,7 @@ spec:
   x-ui-order:
     - restart_policy
     - reference_secret
+    - reference_variable
     - enable_host_anti_affinity
     - runtime
     - release
