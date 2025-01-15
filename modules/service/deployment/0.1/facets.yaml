@@ -1414,6 +1414,7 @@ spec:
     - runtime
   x-ui-order:
     - restart_policy
+    - reference_secret
     - enable_host_anti_affinity
     - runtime
     - release
