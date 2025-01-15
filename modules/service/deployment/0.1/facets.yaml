@@ -57,7 +57,7 @@ spec:
       title: Variable References
       description: Reference the variable from stack
       x-ui-typeable: true
-      x-ui-secret: true
+      x-ui-variable: true
       x-ui-api-source:
         endpoint: "/cc-ui/v1/stacks/{{stackName}}"
         method: GET    
