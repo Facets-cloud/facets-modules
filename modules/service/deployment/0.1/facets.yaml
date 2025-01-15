@@ -43,6 +43,14 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
+    reference_secret:
+      type: string
+      title: Secret References
+      description: Reference the secrets from stack
+      x-ui-typeable: true
+      x-ui-api-source:
+        endpoint: "/cc-ui/v1/stacks/{{stackName}}"
+        method: GET
     cloud_permissions:
       type: object
       title: Cloud Permissions
