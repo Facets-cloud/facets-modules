@@ -1,0 +1,243 @@
+[
+  {
+    "name": "redis",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/redis/"
+  },
+  {
+    "name": "service",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/service/"
+  },
+  {
+    "name": "mongo",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mongo/"
+  },
+  {
+    "name": "mysql",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mysql/"
+  },
+  {
+    "name": "elasticsearch",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/elasticsearch/"
+  },
+  {
+    "name": "postgres",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/postgres/"
+  },
+  {
+    "name": "rabbitmq",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/rabbitmq/"
+  },
+  {
+    "name": "ingress",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ingress/"
+  },
+  {
+    "name": "pvc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/pvc/"
+  },
+  {
+    "name": "vault",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/vault/"
+  },
+  {
+    "name": "sns",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/sns/"
+  },
+  {
+    "name": "aws_secret_manager",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_secret_manager/"
+  },
+  {
+    "name": "cloudfront",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cloudfront/"
+  },
+  {
+    "name": "aws_waf",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_waf/"
+  },
+  {
+    "name": "kafka_topic",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka_topic/"
+  },
+  {
+    "name": "aws_efs",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_efs/"
+  },
+  {
+    "name": "ecs_cluster",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ecs_cluster/"
+  },
+  {
+    "name": "databricks_account",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_account/"
+  },
+  {
+    "name": "databricks_workspace",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_workspace/"
+  },
+  {
+    "name": "databricks_job",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/databricks_job/"
+  },
+  {
+    "name": "cassandra",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cassandra/"
+  },
+  {
+    "name": "iam_policy_arn",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/iam_policy_arn/"
+  },
+  {
+<<<<<<< HEAD
+    "name": "kubernetes",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kubernetes_cluster/"
+  },
+  {
+    "name": "artifactories",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/artifactories/"
+  },
+  {
+    "name": "postgres_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/postgres_user/"
+  },
+  {
+    "name": "mysql_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mysql_user/"
+  },
+  {
+    "name": "kafka_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka_user/"
+  },
+  {
+    "name": "kafka",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka/"
+  },
+  {
+    "name": "mongo_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mongo_user/"
+  },
+  {
+    "name": "mongo",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mongo/"
+  },
+  {
+    "name": "database_operator",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/database_operator/"
+  },
+  {
+    "name": "crossplane",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/crossplane/"
+  },
+  {
+    "name": "mongodb_auth_operator",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mongodb_auth_operator/"
+  },
+  {
+    "name": "aws_vpc_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_vpc_details/"
+  },
+  {
+    "name": "azure_vmss_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vmss_details/"
+  },
+  {
+    "name": "ecs_service_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ecs_service_details/"
+  },
+  {
+    "name": "azure_vnet_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vnet_details/"
+  },
+  {
+    "name": "kubernetes_cluster_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kubernetes_cluster_details/"
+  },
+  {
+    "name": "gcp_network_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/gcp_network_details/"
+  },
+  {
+    "name": "ecs_cluster_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ecs_cluster_details/"
+  },
+  {
+    "name": "aws_eventbridge",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_eventbridge/"
+  },
+  {
+    "name": "azure_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vpc/"
+  },
+  {
+    "name": "aws_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_vpc/"
+  },
+  {
+    "name": "gcp_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/gcp_vpc/"
+  },
+  {
+    "name": "dax_cluster",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/dax_cluster/"
+  },
+  {
+    "name": "kms",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kms/"
+  },
+  {
+    "name": "google_workload_identity",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/google_workload_identity/"
+=======
+    "name": "artifactories",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/artifactories/"
+>>>>>>> d7887d3 ([S73] Feature: Per-Instance Artifactories Module (#210))
+  }
+]
