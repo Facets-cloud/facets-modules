@@ -7,14 +7,6 @@ clouds:
 - kubernetes
 - azure
 - aws
-inputs:
-  kubernetes_details:
-    optional: false
-    type: "@output/kubernetes"
-    displayName: Kubernetes Cluster
-    default:
-      resource_type: kubernetes_cluster
-      resource_name: default
 spec:
   title: Artifactories
   type: object
