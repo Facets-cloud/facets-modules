@@ -1,0 +1,16 @@
+name: artifactories
+out:
+  type: object
+  title: Artifactories
+  description: Artifactories Attributes
+  properties:
+    attributes:
+      registry_secrets_list:
+        required: true
+        type: array
+        description: The List of Container Registry k8s secrets
+      registry_secret_objects:
+        required: true
+        type: object
+        description: "The Map of Container Registry k8s secrets. Eg: {<container_registry_name>: [{\"name\": \"<k8s_secret_name>\"}]}"
+    interfaces:
