@@ -1,0 +1,4 @@
+name: artifactories
+type: default
+displayName: Artifactories
+description: Provides an Artifactories resource for creating Container Registry secrets within the cluster.
