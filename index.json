@@ -1520,5 +1520,18 @@
       "azure",
       "aws"
     ]
+  },
+  {
+    "intent": "artifactories",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/artifactories/default/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
   }
 ]
