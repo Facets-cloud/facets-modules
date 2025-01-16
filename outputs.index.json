@@ -110,6 +110,7 @@
     "relativePath": "./outputs/iam_policy_arn/"
   },
   {
+<<<<<<< HEAD
     "name": "kubernetes",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kubernetes_cluster/"
@@ -233,5 +234,10 @@
     "name": "google_workload_identity",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/google_workload_identity/"
+=======
+    "name": "artifactories",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/artifactories/"
+>>>>>>> d7887d3 ([S73] Feature: Per-Instance Artifactories Module (#210))
   }
 ]

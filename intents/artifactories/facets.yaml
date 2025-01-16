@@ -2,6 +2,9 @@ name: artifactories
 type: default
 displayName: Artifactories
 description: Provides an Artifactories resource for creating Container Registry secrets within the cluster.
+<<<<<<< HEAD
 outputs:
   - name: default
     type: "@output/artifactories"
+=======
+>>>>>>> d7887d3 ([S73] Feature: Per-Instance Artifactories Module (#210))
