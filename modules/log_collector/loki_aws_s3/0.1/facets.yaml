@@ -1,5 +1,5 @@
 intent: log_collector
-flavor: loki_aws_s3
+flavor: loki_s3
 version: '0.1'
 description: Adds log_collector - loki_aws_s3 flavor
 clouds:
