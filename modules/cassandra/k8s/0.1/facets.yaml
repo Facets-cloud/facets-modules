@@ -95,6 +95,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/cassandra/cassandra.schema.json
   flavor: k8s
   kind: cassandra
+  version: '0.1'
   metadata: {}
   spec:
     cassandra_version: 5.0.2

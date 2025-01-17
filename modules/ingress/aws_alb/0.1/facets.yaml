@@ -9,7 +9,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
   flavor: aws_alb
   disabled: true
-  version: '0.2'
+  version: '0.1'
   metadata:
     annotations: {}
   spec:
