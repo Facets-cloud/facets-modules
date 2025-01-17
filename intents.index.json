@@ -309,7 +309,6 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-<<<<<<< HEAD
     "relativePath": "./intents/ecs_service/"
   },
   {
@@ -343,8 +342,5 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/google_workload_identity/"
-=======
-    "relativePath": "./intents/artifactories/"
->>>>>>> d7887d3 ([S73] Feature: Per-Instance Artifactories Module (#210))
   }
 ]
