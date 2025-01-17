@@ -84,7 +84,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   kind: kubernetes_node_pool
   flavor: eks_managed
-  version: "0.2"
+  version: "0.1"
   metadata:
     tags:
       managed-by: facets

@@ -6,13 +6,13 @@ clouds:
 - azure
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json
-  flavor: loki_blob
+  flavor: loki_azure_blob
   metadata:
     name: loki-blob-log-collector
   kind: log_collector
   provided: false
   disabled: true
-  version: '0.2'
+  version: '0.1'
   spec:
     retentation_days: 10
     storage_size: '10'

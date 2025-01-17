@@ -10,7 +10,7 @@ sample:
   metadata: {}
   kind: postgres
   disabled: true
-  version: '0.1'
+  version: '0.2'
   spec:
     postgres_version: '12.11'
     size:

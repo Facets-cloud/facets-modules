@@ -11,7 +11,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/log-collector/log-collector.schema.json
   kind: log_collector
   flavor: k8s
-  version: '0.2'
+  version: '0.1'
   lifecycle: ENVIRONMENT_BOOTSTRAP
   disabled: true
   provided: false
