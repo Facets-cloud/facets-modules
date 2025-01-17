@@ -127,13 +127,14 @@ spec:
               title: Azure Role
               description: Assign Azure roles to define access and permissions for managing resources.
               patternProperties:
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                keyPattern: "^[a-zA-Z0-9_. -]*$"
                 title: Roles
                 properties:
                   role:
                     title: role
                     type: string
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
+                    x-ui-error-message: "The value doesn't match the expected pattern. Eg: Storage Account Contributor, Owner."
                 required:
                   - role
     runtime:
