@@ -12,7 +12,7 @@ sample:
       managed-by: facets
   kind: redis
   disabled: true
-  version: '0.2'
+  version: '0.1'
   spec:
     authenticated: true
     redis_version: 6.x
