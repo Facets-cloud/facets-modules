@@ -123,9 +123,7 @@ spec:
           type: string
           title: Schedule
           description: Cron schedule for backups.
-          pattern: "^((\*|\d+|\d+-\d+|\d+(,\d+)+|\d+(\/\d+)+|\d+-\d+(/\d+)?)(\s+|$)){5}$"
           x-ui-placeholder: "e.g., '*/5 * * * *'"
-          x-ui-error-message: "Please provide a valid cron expression."
           x-ui-visible-if: 
             field: spec.backup_configuration.enabled
             values: [ true ]
