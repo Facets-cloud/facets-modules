@@ -134,7 +134,7 @@ spec:
                     title: role
                     type: string
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
-                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: Storage Account Contributor, Owner"
+                    x-ui-error-message: "The value doesn't match the expected pattern. Eg: Storage Account Contributor, Owner."
                 required:
                   - role
     runtime:
