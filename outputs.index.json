@@ -108,10 +108,5 @@
     "name": "iam_policy_arn",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/iam_policy_arn/"
-  },
-  {
-    "name": "artifactories",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/artifactories/"
   }
 ]

@@ -306,9 +306,5 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/kong/"
-  },
-  {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./intents/artifactories/"
   }
 ]
