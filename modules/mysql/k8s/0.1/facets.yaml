@@ -162,12 +162,54 @@ spec:
             - cpu
             - memory
             - volume
+    backup_configuration:
+      type: object
+      title: Backup Configuration
+      description: Configuration for Mysql backups.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable or disable backups.
+        schedule:
+          type: string
+          title: Schedule
+          description: Cron schedule for backups.
+          pattern: "^((\*|\d+|\d+-\d+|\d+(,\d+)+|\d+(\/\d+)+|\d+-\d+(/\d+)?)(\s+|$)){5}$"
+          x-ui-placeholder: "e.g., '*/5 * * * *'"
+          x-ui-error-message: "Please provide a valid cron expression."
+          x-ui-visible-if: 
+            field: spec.backup_configuration.enabled
+            values: [ true ]
+        retention_policy:
+          type: object
+          title: Retention Policy
+          description: Policy for retaining backup data.
+          x-ui-visible-if: 
+            field: spec.backup_configuration.enabled
+            values: [ true ]
+          properties:
+            expiry:
+              type: string
+              title: Expiry
+              description: Time duration for backup expiry.
+              pattern: "^\d+[hmsd]$"
+              x-ui-placeholder: "e.g., '2160h' or '30d'"
+              x-ui-error-message: "Expiry must be specified in a valid duration format (e.g., '2160h' or '30d')."
+            count:
+              type: integer
+              title: Count
+              description: Number of backups to retain.
+              minimum: 1
+              x-ui-placeholder: "e.g., 10"
+              x-ui-error-message: "Count must be a positive integer."
   required:
     - size
     - mysql_version
   x-ui-order:
     - mysql_version
     - size
+    - backup_configuration
   x-ui-error-message: "Please provide required information for the size."
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
