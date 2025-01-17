@@ -139,7 +139,7 @@ spec:
               type: string
               title: Expiry
               description: Time duration for backup expiry.
-              pattern: "^\d+[hmsd]$"
+              pattern: '^\d+[hmsd]$'
               x-ui-placeholder: "e.g., '2160h' or '30d'"
               x-ui-error-message: "Expiry must be specified in a valid duration format (e.g., '2160h' or '30d')."
             count:
