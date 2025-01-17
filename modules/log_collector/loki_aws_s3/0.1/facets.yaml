@@ -7,8 +7,8 @@ clouds:
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json
   kind: log_collector
-  flavor: loki_s3
-  version: '0.2'
+  flavor: loki_aws_s3
+  version: '0.1'
   disabled: true
   metadata: {}
   spec:

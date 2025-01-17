@@ -22,7 +22,7 @@ spec:
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_user/kafka_user.schema.json
   kind: kafka_user
-  flavor: default
+  flavor: external
   version: '0.1'
   disabled: false
   metadata: {}
