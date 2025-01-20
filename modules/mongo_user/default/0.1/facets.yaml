@@ -11,6 +11,13 @@ spec:
   title: MongoDB User
   type: object
   description: Specifications of user for MongoDB
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@output/kubernetes"
+  mongo_details:
+    optional: false
+    type: "@output/mongo"
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
   kind: mongo_user
