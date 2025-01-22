@@ -42,6 +42,7 @@ spec:
         - "provided.al2023"
         - "provided.al2"
       example: "python3.8"
+   # TODO: Here any one of [s3_path,image,build] is mandatory. Waiting for FE changes to have either of them to passed into release object
     release:
       type: object
       title: Release
