@@ -1,6 +1,6 @@
 intent: s3
 flavor: default
-version: '0.2'
+version: "0.2"
 description: Adds S3 module
 clouds:
   - aws
@@ -102,6 +102,6 @@ sample:
   flavor: default
   kind: s3
   metadata: {}
-  version: '0.2'
+  version: "0.2"
   spec: {}
   advanced: {}
