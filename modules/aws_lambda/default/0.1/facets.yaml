@@ -43,7 +43,7 @@ spec:
         - "provided.al2"
       example: "python3.8"
     release:
-      type: string
+      type: object
       title: Release
       default: None
       description: The release object containing the artifacts, either S3 or container image.
