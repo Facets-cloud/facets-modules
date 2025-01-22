@@ -1,6 +1,6 @@
 intent: s3
 flavor: default
-version: '0.2'
+version: "0.2"
 description: Adds S3 module
 clouds:
   - aws
@@ -8,6 +8,22 @@ spec:
   title: AWS S3
   type: object
   description: Specification of the K8s resource intent
+  properties:
+    imports:
+      type: array
+      title: Imports
+      description: Imports help you import existing S3 resources into Facets
+      properties:
+        s3_bucket:
+          type: string
+          title: S3 Bucket ID
+          description: ID of the S3 Bucket that you want to import
+        s3_bucket_policy:
+          type: string
+          title: S3 Bucket Policy ID
+          description: ID of the S3 Bucket Policy that you want to import
+      required:
+        - s3_bucket
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
@@ -15,6 +31,6 @@ sample:
   flavor: default
   kind: s3
   metadata: {}
-  version: '0.2'
+  version: "0.2"
   spec: {}
   advanced: {}
