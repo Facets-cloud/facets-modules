@@ -47,7 +47,7 @@ spec:
       type: object
       title: Release
       default: None
-      description: The release object containing the artifacts, either S3 or container image.
+      description: The release object containing either s3_path, image or build (object).
       properties:
         s3_path:
           type: string
@@ -67,7 +67,7 @@ spec:
             artifactory:
               type: string
               title: Artifactory
-              description: Parent artifactory name.
+              description: artifactory name.
             name:
               type: string
               title: Name
