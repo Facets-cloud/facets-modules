@@ -53,63 +53,51 @@ spec:
         - image
         - build
       description: The release object containing the artifacts, either S3 or container image.
-      properties:
-        s3_path:
-          type: string
-          title: S3 Path
-          description: The full path of the zip file present in S3.
-          x-ui-visible-if:
-            field: spec.release
-            values: [ "s3_path" ]
-          x-ui-placeholder: "Enter S3 path for your lambda application. Eg lambda-facets/lambda.zip"
-        image:
-          type: string
-          title: Image
-          description: The docker image of the application that you want to run.
-          x-ui-visible-if:
-            field: spec.release
-            values: [ "image" ]
-          x-ui-placeholder: "Enter docker image for your lambda application. Eg lambda-facets/lambda.zip"
-        build:
-          type: object
-          title: Build
-          description: The build object containing the artifactory information.
-          x-ui-visible-if:
-            field: spec.release
-            values: [ "build" ]
-          properties:
-            artifactory:
-              type: string
-              title: Artifactory
-              x-ui-visible-if:
-                field: spec.release.build
-                values: [ "build" ]
-              description: Parent artifactory name.
-            name:
-              type: string
-              title: Name
-              x-ui-visible-if:
-                field: spec.release.build
-                values: [ "build" ]
-              description: Name of the artifactory.
+#      properties:
+#        s3_path:
+#          type: string
+#          title: S3 Path
+#          description: The full path of the zip file present in S3.
+#          x-ui-visible-if:
+#            field: spec.release
+#            values: [ "s3_path" ]
+#          x-ui-placeholder: "Enter S3 path for your lambda application. Eg lambda-facets/lambda.zip"
+#        image:
+#          type: string
+#          title: Image
+#          description: The docker image of the application that you want to run.
+#          x-ui-visible-if:
+#            field: spec.release
+#            values: [ "image" ]
+#          x-ui-placeholder: "Enter docker image for your lambda application. Eg lambda-facets/lambda.zip"
+#        build:
+#          type: object
+#          title: Build
+#          description: The build object containing the artifactory information.
+#          x-ui-visible-if:
+#            field: spec.release
+#            values: [ "build" ]
+#          properties:
+#            artifactory:
+#              type: string
+#              title: Artifactory
+#              x-ui-visible-if:
+#                field: spec.release.build
+#                values: [ "build" ]
+#              description: Parent artifactory name.
+#            name:
+#              type: string
+#              title: Name
+#              x-ui-visible-if:
+#                field: spec.release.build
+#                values: [ "build" ]
+#              description: Name of the artifactory.
     env:
       type: object
       title: Environment Variables
       description: A map that defines environment variables for the Lambda Function.
-      patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Env Object Block
-        description: something
-        type: object
-        properties:
-          key:
-            title: Env Key
-            description: Key name of the Env variable object
-            type: string
-          value:
-            title: Value Data Object Value
-            description: Value of the Env variable object
-            type: string
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter the value of the env variable. Eg. key: value"
 
   required:
     - description
