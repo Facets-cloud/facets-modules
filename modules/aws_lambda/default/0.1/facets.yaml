@@ -4,6 +4,104 @@ version: '0.1'
 description: Adds aws_lambda - default flavor
 clouds:
 - aws
+spec:
+  type: object
+  properties:
+    description:
+      type: string
+      title: Description
+      description: Description of your Lambda Function.
+      x-ui-placeholder: "Enter description of lambda functions"
+    handler:
+      type: string
+      title: Handler
+      description: Lambda Function entrypoint in your code.
+      x-ui-placeholder: "Enter handler for the lambda Eg. main.lambda_handler"
+    runtime:
+      type: string
+      title: Runtime
+      description: Lambda Function runtime.
+      default: None
+      x-ui-no-sort: true
+      enum:
+        - "nodejs22.x"
+        - "nodejs20.x"
+        - "nodejs18.x"
+        - "python3.13"
+        - "python3.12"
+        - "python3.11"
+        - "python3.10"
+        - "python3.9"
+        - "java21"
+        - "java17"
+        - "java11"
+        - "java8.al2"
+        - "dotnet8"
+        - "ruby3.3"
+        - "ruby3.2"
+        - "provided.al2023"
+        - "provided.al2"
+      example: "python3.8"
+    release:
+      type: object
+      title: Release
+      default: None
+      x-ui-no-sort: true
+      x-ui-placeholder: "Enter release value for your lambda application from the below dropdown"
+      enum:
+        - s3_path
+        - image
+        - build
+      description: The release object containing the artifacts, either S3 or container image.
+      properties:
+        s3_path:
+          type: string
+          title: S3 Path
+          description: The full path of the zip file present in S3.
+          x-ui-placeholder: "Enter S3 path for your lambda application. Eg lambda-facets/lambda.zip"
+        image:
+          type: string
+          title: Image
+          description: The docker image of the application that you want to run.
+          x-ui-placeholder: "Enter docker image for your lambda application. Eg lambda-facets/lambda.zip"
+        build:
+          type: object
+          title: Build
+          description: The build object containing the artifactory information.
+          properties:
+            artifactory:
+              type: string
+              title: Artifactory
+              x-ui-visible-if:
+                field: spec.release.build
+                values: [ "build" ]
+              description: Parent artifactory name.
+            name:
+              type: string
+              title: Name
+              x-ui-visible-if:
+                field: spec.release.build
+                values: [ "build" ]
+              description: Name of the artifactory.
+    env:
+      type: object
+      title: Environment Variables
+      description: A map that defines environment variables for the Lambda Function.
+      additionalProperties:
+        type: string
+      example: {}
+
+  required:
+    - description
+    - handler
+    - runtime
+    - release
+  x-ui-order:
+    - description
+    - handler
+    - runtime
+    - release
+    - env
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json
   kind: aws_lambda
