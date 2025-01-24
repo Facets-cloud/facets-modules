@@ -1,0 +1,25 @@
+name: zookeper
+out:
+  type: object
+  title: Zookeeper
+  description: Zookeeper
+  properties:
+    attributes:
+    interfaces:
+      zookeeper:
+        connection_string:
+          required: true
+          type: string
+        host:
+          required: true
+          type: string
+        port:
+          required: true
+          type: string
+      cluster:
+        endpoint:
+          required: true
+          type: string
+        connection_string:
+          required: true
+          type: string
