@@ -5,4 +5,13 @@ out:
   description: Vault
   properties:
     attributes:
+      secret_name:
+        required: true
+        type: string
+      root_token:
+        required: true
+        type: string
+      secrets:
+        required: true
+        type: array
     interfaces:
