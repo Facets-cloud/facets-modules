@@ -8,6 +8,72 @@ spec:
   title: AWS S3
   type: object
   description: Specification of the K8s resource intent
+  properties:
+    lifecycle_rule:
+      type: object
+      title: Lifecycle Rules
+      description: Lifecycle Rules
+      patternProperties:
+        type: object
+        title: Lifecycle Rule
+        description: Lifecycle Rule for S3 Bucket
+        keyPattern: "^[a-zA-Z0-9_-]*$"
+        properties:
+          enabled:
+            type: boolean
+            default: true
+            description: Specifies whether the lifecycle rule is enabled
+          id:
+            type: string
+            description: Unique identifier for the lifecycle rule
+          prefix:
+            type: string
+            description: Object key prefix identifying one or more objects to which the rule applies
+          abort_incomplete_multipart_upload_days:
+            type: integer
+            description: Days after which an incomplete multipart upload will be aborted
+          expiration:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                description: Date on which the expiration action is performed
+              days:
+                type: integer
+                description: Number of days after object creation when the expiration action takes effect
+              expired_object_delete_marker:
+                type: boolean
+                description: Whether to remove expired object delete markers
+          transition:
+            type: object
+            properties:
+              storage_class:
+                type: string
+                default: "STANDARD_IA"
+                description: Storage class to which you want the object to transition
+              date:
+                type: string
+                format: date
+                description: Date indicating when the objects are transitioned to a specified storage class
+              days:
+                type: integer
+                description: Number of days after object creation when the transition action takes effect
+          noncurrent_version_expiration:
+            type: object
+            properties:
+              days:
+                type: integer
+                description: Number of days after noncurrent version creation when the version is permanently deleted
+          noncurrent_version_transition:
+            type: object
+            properties:
+              storage_class:
+                type: string
+                description: Storage class to which you want the noncurrent version to transition
+              days:
+                type: integer
+                description: Number of days after a new version of the object is created when the noncurrent version is transitioned
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
