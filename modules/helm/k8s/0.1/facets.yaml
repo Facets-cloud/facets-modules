@@ -59,6 +59,14 @@ spec:
           x-ui-placeholder: Enter repository password
           x-ui-mask-content: true
       required: [ "chart" ]
+      x-ui-order:
+        - repository
+        - chart
+        - version
+        - namespace
+        - repository_username
+        - repository_password
+        - wait
     values:
       type: object
       title: Values
