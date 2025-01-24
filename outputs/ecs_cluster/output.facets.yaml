@@ -6,5 +6,9 @@ out:
   properties:
     attributes:
       cluster_arn:
+        required: true
+        type: string
       cluster_name:
+        required: true
+        type: string
     interfaces:
