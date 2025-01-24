@@ -4,6 +4,10 @@ version: '0.1'
 description: Adds aws_lambda - default flavor
 clouds:
 - aws
+artifact_inputs:
+  primary:
+    attribute_path: "spec.release.s3_path"
+    artifact_type: "freestyle"
 spec:
   type: object
   properties:
@@ -54,24 +58,6 @@ spec:
           title: S3 Path
           description: The full path of the zip file present in S3.
           x-ui-placeholder: "Enter S3 path for your lambda application. Eg lambda-facets/lambda.zip"
-        image:
-          type: string
-          title: Image
-          description: The docker image of the application that you want to run.
-          x-ui-placeholder: "Enter docker image for your lambda application. Eg lambda-facets/lambda.zip"
-        build:
-          type: object
-          title: Build
-          description: The build object containing the artifactory information.
-          properties:
-            artifactory:
-              type: string
-              title: Artifactory
-              description: artifactory name.
-            name:
-              type: string
-              title: Name
-              description: Name of the artifactory.
     env:
       type: object
       title: Environment Variables
