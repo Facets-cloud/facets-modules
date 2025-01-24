@@ -29,7 +29,7 @@ spec:
           title: Repository
           description: URL for the helm repository
           x-ui-placeholder: Enter repository URL
-          pattern: "^[a-zA-Z][a-zA-Z0-9+.-]*:[\\/a-zA-Z0-9\\-._~:?#[\\]@!$&'()*+,;=%]*$"
+          pattern: "[a-zA-Z:/]+"
           x-ui-error-message: "Invalid URL format. The URL must start with :// and contain only valid URL characters"
         version:
           type: string
