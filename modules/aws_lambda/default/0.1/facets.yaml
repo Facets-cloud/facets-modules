@@ -74,7 +74,6 @@ spec:
     - description
     - handler
     - runtime
-    - release
     - env
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json
