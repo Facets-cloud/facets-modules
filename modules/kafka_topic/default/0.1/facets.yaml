@@ -7,6 +7,12 @@ clouds:
 - gcp
 - azure
 - kubernetes
+inputs:
+  kafka_details:
+    type: "@outputs/kafka"
+    isplayName: Kafka details
+    description: The details of Kafka
+    optional: false
 spec:
   title: Kafka Topic
   type: object
