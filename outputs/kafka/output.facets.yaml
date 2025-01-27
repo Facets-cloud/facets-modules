@@ -1,0 +1,33 @@
+name: kafka
+out:
+  type: object
+  title: Kafka
+  description: Kafka
+  properties:
+    attributes:
+      name:
+        required: true
+        type: string
+      pod_prefix:
+        required: true
+        type: object
+      selectors:
+        required: true
+        type: string
+    interfaces:
+      cluster:
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          type: string
+        endpoint:
+          required: true
+          type: string
+        connection_string:
+          required: true
+          type: string
+        secrets:
+          required: true
+          type: string
