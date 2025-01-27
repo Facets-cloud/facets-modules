@@ -4,6 +4,77 @@ version: '0.1'
 description: Adds aws_lambda - default flavor
 clouds:
 - aws
+artifact_inputs:
+  primary:
+    attribute_path: "spec.release.s3_path"
+    artifact_type: "freestyle"
+spec:
+  type: object
+  properties:
+    description:
+      type: string
+      title: Description
+      description: Description of your Lambda Function.
+      x-ui-placeholder: "Enter description of lambda functions"
+    handler:
+      type: string
+      title: Handler
+      description: Lambda Function entrypoint in your code.
+      x-ui-placeholder: "Enter handler for the lambda Eg. main.lambda_handler"
+    runtime:
+      type: string
+      title: Runtime
+      description: Lambda Function runtime.
+      default: None
+      x-ui-no-sort: true
+      enum:
+        - "nodejs22.x"
+        - "nodejs20.x"
+        - "nodejs18.x"
+        - "python3.13"
+        - "python3.12"
+        - "python3.11"
+        - "python3.10"
+        - "python3.9"
+        - "java21"
+        - "java17"
+        - "java11"
+        - "java8.al2"
+        - "dotnet8"
+        - "ruby3.3"
+        - "ruby3.2"
+        - "provided.al2023"
+        - "provided.al2"
+      example: "python3.8"
+   # TODO: Here any one of [s3_path,image,build] is mandatory. Waiting for FE changes to have either of them to passed into release object
+    release:
+      type: object
+      title: Release
+      default: None
+      description: The release object containing either s3_path, image or build (object).
+      properties:
+        s3_path:
+          type: string
+          title: S3 Path
+          description: The full path of the zip file present in S3.
+          x-ui-placeholder: "Enter S3 path for your lambda application. Eg lambda-facets/lambda.zip"
+    env:
+      type: object
+      title: Environment Variables
+      description: A map that defines environment variables for the Lambda Function.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: "Enter the value of the env variable. Eg. key: value"
+
+  required:
+    - description
+    - handler
+    - runtime
+    - release
+  x-ui-order:
+    - description
+    - handler
+    - runtime
+    - env
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json
   kind: aws_lambda

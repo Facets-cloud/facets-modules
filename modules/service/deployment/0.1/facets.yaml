@@ -127,13 +127,14 @@ spec:
               title: Azure Role
               description: Assign Azure roles to define access and permissions for managing resources.
               patternProperties:
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                keyPattern: "^[a-zA-Z0-9_. -]*$"
                 title: Roles
                 properties:
                   role:
                     title: role
                     type: string
                     x-ui-placeholder: "Azure role to be added, example. Eg: Storage Account Contributor"
+                    x-ui-error-message: "The value doesn't match the expected pattern. Eg: Storage Account Contributor, Owner."
                 required:
                   - role
     runtime:
@@ -492,9 +493,7 @@ spec:
                   name:
                     type: string
                     title: Name
-                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: Config map name
-                    x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                     x-ui-typeable: true
                     x-ui-api-source:
                       endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
