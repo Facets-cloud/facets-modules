@@ -41,20 +41,20 @@ out:
           type: string
     attributes:
       resource_type:
-          required: true
-          type: string
+        required: true
+        type: string
       resource_name:
-          required: true
-          type: string
+        required: true
+        type: string
       instances:
-          required: true
-          type: object
+        required: true
+        type: object
       defaultDatabase:
-          required: true
-          type: string
+        required: true
+        type: string
       postgresVersion:
-          required: true
-          type: string
+        required: true
+        type: string
       excludedDatabases:
-          required: true
-          type: array
+        required: true
+        type: array
