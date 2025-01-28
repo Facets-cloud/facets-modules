@@ -25,14 +25,6 @@ spec:
       description: To setup network components in an existing vpc
       type: string
   required: [vpc_cidr, enable_multi_az]
-outputs:
-  default:
-    type: "@outputs/aws_vpc"
-    properties:
-      interfaces:
-        type: object
-      attributes:
-        type: object
 sample:
   kind: network
   flavor: aws_vpc
