@@ -7,6 +7,12 @@ clouds:
 - gcp
 - azure
 - kubernetes
+inputs:
+  postgres_outputs:
+    type: "@output/postgres"
+    displayName: Postgres details
+    description: The details of Postgres where the user needs to be created
+    optional: false
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres_user/postgres_user.schema.json
   kind: postgres_user
