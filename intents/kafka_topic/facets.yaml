@@ -2,3 +2,6 @@ name: kafka_topic
 type: default
 displayName: Kafka Topic
 description: A category or feed name that stores and organizes data in Apache Kafka
+outputs:
+  - name: default
+    type: "@output/kafka_topic"
