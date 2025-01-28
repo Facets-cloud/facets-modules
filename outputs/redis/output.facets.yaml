@@ -39,4 +39,19 @@ out:
         connection_string:
           required: true
           type: string
-    attributes: null
+    attributes:
+      resource_type:
+        required: true
+        type: string
+      resource_name:
+        required: true
+        type: string
+      authenticated:
+        required: true
+        type: string
+      instances:
+        required: true
+        type: object
+      secrets:
+        required: true
+        type: list
