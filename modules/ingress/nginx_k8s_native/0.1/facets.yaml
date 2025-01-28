@@ -7,6 +7,15 @@ clouds:
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    displayName: Kubernetes details
+    description: The details of kubernetes
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
 spec:
   title: Nginx Ingress Controller
   type: object
