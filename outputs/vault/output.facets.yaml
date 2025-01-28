@@ -11,4 +11,4 @@ out:
       root_token:
         required: true
         type: string
-    interfaces:
+    interfaces: null

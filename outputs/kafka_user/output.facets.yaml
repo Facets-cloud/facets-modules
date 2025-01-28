@@ -7,9 +7,9 @@ out:
     interfaces:
     attributes:
       username:
-          required: true
-          type: string
+        required: true
+        type: string
       password:
-          required: true
-          type: string
-          secret: true
+        required: true
+        type: string
+        secret: true
