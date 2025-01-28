@@ -113,5 +113,10 @@
     "name": "kafka",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kafka/"
+  },
+  {
+    "name": "postgres_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/postgres_user/"
   }
 ]

@@ -1,0 +1,18 @@
+name: postgres_user
+out:
+  type: object
+  title: Postgres User
+  description: Postgres User
+  properties:
+    interfaces: {}
+    attributes:
+      username:
+          required: true
+          type: string
+      password:
+          required: true
+          type: string
+          secret: true
+      secrets:
+          required: true
+          type: array
