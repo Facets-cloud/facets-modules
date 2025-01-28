@@ -4,16 +4,7 @@ out:
   title: Kafka
   description: Kafka
   properties:
-    attributes:
-      name:
-        required: true
-        type: string
-      pod_prefix:
-        required: true
-        type: object
-      selectors:
-        required: true
-        type: string
+    attributes: {}
     interfaces:
       cluster:
         username:
