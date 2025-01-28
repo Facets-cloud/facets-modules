@@ -4,7 +4,7 @@ out:
   title: Kafka
   description: Kafka
   properties:
-    attributes: {}
+    attributes:
     interfaces:
       cluster:
         username:

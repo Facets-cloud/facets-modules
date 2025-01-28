@@ -4,7 +4,7 @@ out:
   title: Postgres User
   description: Postgres User
   properties:
-    interfaces: {}
+    interfaces:
     attributes:
       username:
           required: true
