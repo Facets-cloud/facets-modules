@@ -1,0 +1,8 @@
+name: network
+out:
+  type: object
+  title: Network
+  description: Network
+  properties:
+    interfaces: {}
+    attributes: {}
