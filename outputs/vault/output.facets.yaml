@@ -11,7 +11,4 @@ out:
       root_token:
         required: true
         type: string
-      secrets:
-        required: true
-        type: array
     interfaces:
