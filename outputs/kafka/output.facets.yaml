@@ -28,6 +28,3 @@ out:
         connection_string:
           required: true
           type: string
-        secrets:
-          required: true
-          type: string

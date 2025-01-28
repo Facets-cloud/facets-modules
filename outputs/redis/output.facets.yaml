@@ -52,6 +52,3 @@ out:
       instances:
         required: true
         type: object
-      secrets:
-        required: true
-        type: list
