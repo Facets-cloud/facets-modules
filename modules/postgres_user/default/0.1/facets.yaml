@@ -8,7 +8,15 @@ clouds:
 - azure
 - kubernetes
 inputs:
-  postgres_outputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    displayName: Kubernetes Details
+    description: The details of Kubernetes where the postgres operator will be deployed
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+  postgres_details:
     type: "@output/postgres"
     displayName: Postgres details
     description: The details of Postgres where the user needs to be created
