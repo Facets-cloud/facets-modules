@@ -6,7 +6,7 @@ clouds:
   - aws
 inputs:
   network_details:
-    type: "@outputs/aws_vpc"
+    type: "@output/aws_vpc"
     displayName: Network Details
     description: The details of the network in which the RDS should be deployed
     optional: false
