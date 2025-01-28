@@ -9,7 +9,7 @@ clouds:
 - aws
 inputs:
   kubernetes_details:
-    type: "@outputs/kubernetes"
+    type: "@output/kubernetes"
     displayName: Kubernetes details
     description: The details of kubernetes
     optional: false

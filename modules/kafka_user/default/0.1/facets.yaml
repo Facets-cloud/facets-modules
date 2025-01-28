@@ -9,7 +9,7 @@ clouds:
 - kubernetes
 inputs:
   kafka_details:
-    type: "@outputs/kafka"
+    type: "@output/kafka"
     displayName: Kafka details
     description: The details of Kafka where the user needs to be created
     optional: false
