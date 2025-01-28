@@ -4,6 +4,15 @@ version: "0.1"
 description: Adds postgres module of flavor rds
 clouds:
   - aws
+inputs:
+  network_details:
+    type: "@outputs/aws_vpc"
+    displayName: Network Details
+    description: The details of the network in which the RDS should be deployed
+    optional: false
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: RDS
   type: object
