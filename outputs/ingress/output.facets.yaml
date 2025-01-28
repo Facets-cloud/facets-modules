@@ -8,4 +8,4 @@ out:
       base_domain:
         required: true
         type: string
-    interfaces: {}
+    interfaces:
