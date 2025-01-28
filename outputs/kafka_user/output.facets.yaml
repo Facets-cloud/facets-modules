@@ -1,0 +1,15 @@
+name: kafka_user
+out:
+  type: object
+  title: Kafka User
+  description: A category or feed name that stores and organizes users in Kafka
+  properties:
+    interfaces:
+    attributes:
+      username:
+          required: true
+          type: string
+      password:
+          required: true
+          type: string
+          secret: true
