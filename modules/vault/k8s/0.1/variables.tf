@@ -13,51 +13,51 @@ variable "cc_metadata" {
 }
 
 variable "instance" {
-  type = any
+  type    = any
   default = {}
 }
 
 variable "advanced" {
-  type = any
+  type    = any
   default = {}
 }
 
 variable "instance_name" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "inputs" {
-  type = any
+  type    = any
   default = []
 }
 
 variable "environment" {
-  type = any
+  type    = any
   default = {}
 }
 
 variable "release_metadata" {
-    type = any
-    default = {}
+  type    = any
+  default = {}
 }
 
 variable "instance_type" {
-    type = string
-    default = ""
+  type    = string
+  default = ""
 }
 
 variable "iac_version" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "generate_release_metadata" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "settings" {
-  type = any
+  type    = any
   default = {}
 }
