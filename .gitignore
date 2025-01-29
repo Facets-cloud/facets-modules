@@ -8,3 +8,4 @@
 *.tfvars.json
 **/test/**
 .DS_store
+zips/*
