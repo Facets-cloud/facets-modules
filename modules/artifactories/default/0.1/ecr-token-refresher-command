@@ -1,0 +1,7 @@
+export DOCKER_USER=AWS
+export DOCKER_PASSWORD=`aws ecr get-login --region ${AWS_REGION} --registry-ids ${AWS_ACCOUNT} | cut -d' ' -f6`
+kubectl delete secret ${KEY_NAME} --namespace ${NAMESPACE} || true
+kubectl create secret docker-registry ${KEY_NAME} --docker-server=$DOCKER_REGISTRY_SERVER --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD --docker-email=no@email.local --namespace ${NAMESPACE}
+if [ -n "${INSTANCE_LABELS}" ]; then
+  kubectl label secret ${KEY_NAME} --namespace ${NAMESPACE} "${INSTANCE_LABELS}"
+fi

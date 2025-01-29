@@ -1,3 +1,11 @@
 .idea/
 /.idea/
 .venv
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+**/test/**
+.DS_store
+zips/*
