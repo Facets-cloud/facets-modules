@@ -10,11 +10,7 @@ clouds:
 inputs:
   kubernetes_details:
     optional: false
-<<<<<<< HEAD
     type: "@output/kubernetes"
-=======
-    type: "@outputs/kubernetes"
->>>>>>> 9fd760b (Vault Terraform module (#227))
     default:
       resource_type: kubernetes_cluster
       resource_name: default
