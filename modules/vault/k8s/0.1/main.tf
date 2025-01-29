@@ -53,7 +53,7 @@ locals {
 }
 
 module "name" {
-  source          = "github.com/Facets-cloud/facets-utility-modules.git//name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   is_k8s          = true
   globally_unique = false
   resource_type   = "vault"
@@ -64,7 +64,7 @@ module "name" {
 
 module "vault-pvc" {
   count             = local.replica_count == 1 ? 1 : 0
-  source            = "github.com/Facets-cloud/facets-utility-modules.git//pvc"
+  source            = "github.com/Facets-cloud/facets-utility-modules//pvc"
   name              = "data-${module.name.name}-0"
   namespace         = local.namespace
   access_modes      = ["ReadWriteOnce"]

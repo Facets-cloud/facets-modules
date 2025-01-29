@@ -22,7 +22,7 @@ locals {
 }
 
 module "name" {
-  source          = "github.com/Facets-cloud/facets-utility-modules.git//name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 255
   resource_name   = var.instance_name
