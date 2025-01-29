@@ -24,7 +24,7 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/elasticsearch/"
   },
-    {
+  {
     "name": "postgres",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/postgres/"
@@ -113,5 +113,10 @@
     "name": "kubernetes",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kubernetes_cluster/"
+  },
+  {
+    "name": "artifactories",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/artifactories/"
   }
 ]
