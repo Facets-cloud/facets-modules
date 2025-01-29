@@ -4,6 +4,9 @@ version: '0.1'
 description: Adds AWS ECS Cluster
 clouds:
   - aws
+outputs:
+  default:
+    type: "@outputs/ecs_cluster"
 spec:
   title: AWS ECS Cluster
   type: object
