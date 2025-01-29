@@ -57,10 +57,3 @@ sample:
   disabled: true
   spec:
     include_all: false
-inputs:
-  kubernetes_details:
-    optional: false
-    type: "@output/kubernetes"
-    default:
-      resource_type: kubernetes_cluster
-      resource_name: default
