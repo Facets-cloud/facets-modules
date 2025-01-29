@@ -53,11 +53,7 @@ locals {
 }
 
 module "name" {
-<<<<<<< HEAD
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
-=======
-  source          = "../../3_utility/name"
->>>>>>> 9fd760b (Vault Terraform module (#227))
   is_k8s          = true
   globally_unique = false
   resource_type   = "vault"
@@ -68,11 +64,7 @@ module "name" {
 
 module "vault-pvc" {
   count             = local.replica_count == 1 ? 1 : 0
-<<<<<<< HEAD
   source            = "github.com/Facets-cloud/facets-utility-modules//pvc"
-=======
-  source            = "../../3_utility/pvc"
->>>>>>> 9fd760b (Vault Terraform module (#227))
   name              = "data-${module.name.name}-0"
   namespace         = local.namespace
   access_modes      = ["ReadWriteOnce"]
