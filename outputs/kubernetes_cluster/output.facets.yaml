@@ -4,9 +4,15 @@ out:
   title: Kubernetes Cluster
   description: Kubernetes
   properties:
+<<<<<<< HEAD
     interfaces: null
     attributes:
       legacy_outputs:
         type: object
         required: true
         secret: true
+=======
+    attributes:
+    interfaces:
+
+>>>>>>> 9fd760b (Vault Terraform module (#227))
