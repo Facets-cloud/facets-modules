@@ -68,6 +68,5 @@ for root, _, files in os.walk(zip_root_dir):
     for file in files:
         file_path = os.path.join(root, file)
         s3_key = os.path.relpath(file_path, zip_root_dir)  # Path within the S3 bucket
+        print(f"Uploading {file_path} to s3")
         s3_client.upload_file(file_path, s3_bucket_name, s3_key)
-
-print(f"Zips directory synchronized to s3://{s3_bucket_name}/{s3_path} on S3.")
