@@ -133,5 +133,10 @@
     "name": "kafka_user",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kafka_user/"
+  },
+  {
+    "name": "kafka",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka/"
   }
 ]
