@@ -108,5 +108,10 @@
     "name": "iam_policy_arn",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/iam_policy_arn/"
+  },
+  {
+    "name": "kubernetes",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kubernetes/"
   }
 ]
