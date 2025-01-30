@@ -123,5 +123,10 @@
     "name": "postgres_user",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/postgres_user/"
+  },
+  {
+    "name": "mysql_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mysql_user/"
   }
 ]

@@ -1546,5 +1546,18 @@
       "azure",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "mysql_user",
+    "flavor": "default",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mysql_user/default/0.2/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
   }
 ]
