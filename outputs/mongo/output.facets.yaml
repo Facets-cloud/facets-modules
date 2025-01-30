@@ -4,59 +4,26 @@ out:
   title: Mongo
   description: Mongo
   properties:
-    interfaces:
-      reader:
-        host:
+    attributes: 
+      name:
+        required: true
+        type: string
+      pod_prefix:
+        required: true
+        type: string
+      selectors:
+        required: true
+        type: object
+        mongo:
           required: true
-          type: string
-        port:
-          required: true
-          type: string
-        username:
-          required: true
-          type: string
-        password:
-          required: true
-          secret: true
-          type: string
-        connection_string:
-          required: true
-          type: string
-        name:
-          required: true
-          type: string
-      writer:
-        host:
-          required: true
-          type: string
-        port:
-          required: true
-          type: string
-        username:
-          required: true
-          type: string
-        password:
-          required: true
-          secret: true
-          type: string
-        connection_string:
-          required: true
-          type: string
-        name:
-          required: true
-          type: string
-      cluster:
-        endpoint:
-          required: true
-          type: string
-        username:
-          required: true
-          type: string
-        password:
-          required: true
-          secret: true
-          type: string
-        connection_string:
-          required: true
-          type: string
-    attributes: null
+          type: object
+      resource_type:
+        required: true
+        type: string
+      resource_name:
+        required: true
+        type: string
+      instances:
+        required: true
+        type: object
+        secret: true

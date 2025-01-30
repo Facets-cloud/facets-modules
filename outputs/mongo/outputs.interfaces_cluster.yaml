@@ -1,0 +1,21 @@
+name: interfaces_cluster
+out:
+  type: object
+  title: Interaces Cluster
+  description: This is the interfaces cluster output for mongo that will be referenced by applications
+  properties:
+    interfaces:
+      cluster:
+        endpoint:
+          required: true
+          type: string
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          secret: true
+          type: string
+        connection_string:
+          required: true
+          type: string
