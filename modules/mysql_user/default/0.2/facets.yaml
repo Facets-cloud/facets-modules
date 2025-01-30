@@ -79,9 +79,4 @@ sample:
         permission: ADMIN
         database: '*'
         table: '*'
-  inputs:
-    kubernetes_details:
-      resource_type: kubernetes_cluster
-      resource_name: default
-    mysql_details: { }
   disabled: true
