@@ -7,6 +7,8 @@ clouds:
   - gcp
   - azure
   - kubernetes
+depends_on:
+  - module.database-operator
 lifecycle: ENVIRONMENT
 input_type: instance
 composition: { }
