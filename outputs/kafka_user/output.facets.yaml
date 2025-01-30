@@ -1,0 +1,16 @@
+name: kafka_user
+out:
+  type: object
+  title: Kafka User
+  description: Kafka User
+  properties:
+    interfaces: null
+    attributes:
+      username:
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          secret: true
+          type: string
