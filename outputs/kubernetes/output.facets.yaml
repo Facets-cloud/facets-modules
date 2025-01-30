@@ -1,0 +1,4 @@
+name: kubernetes
+out:
+  type: object
+  title: Kafka Topic
