@@ -1,0 +1,16 @@
+name: mysql_user
+out:
+  type: object
+  title: Mysql User
+  description: Mysql User
+  properties:
+    interfaces: null
+    attributes:
+      username:
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          secret: true
+          type: string
