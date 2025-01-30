@@ -4,4 +4,4 @@ displayName: Kafka User
 description: Database user for Kafka instances, defining access permissions and authentication.
 outputs:
   - name: default
-    type: "@outputs/kafka_user"
+    type: "@output/kafka_user"
