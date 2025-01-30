@@ -1,0 +1,30 @@
+intent: kafka_user
+flavor: default
+version: '0.2'
+description: Adds kafka_user - default flavor
+clouds:
+  - aws
+  - gcp
+  - azure
+  - kubernetes
+depends_on: [ ]
+lifecycle: ENVIRONMENT
+input_type: instance
+inputs:
+  kafka_details:
+    type: "@output/kafka"
+    displayName: Kafka Details
+    description: The details of Kafka where the user needs to be created
+    optional: false
+spec:
+  title: Kafka User
+  type: object
+  description: Specifications of user for Kafka
+sample:
+  kind: kafka_user
+  flavor: default
+  version: '0.2'
+  disabled: false
+  metadata: { }
+  spec: { }
+  inputs: { }
