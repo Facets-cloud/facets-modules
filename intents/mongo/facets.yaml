@@ -6,9 +6,3 @@ iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc13f38e
 outputs:
   - name: default
     type: "@output/mongo"
-  - name: interfaces_reader
-    type: "@output/interfaces_reader"
-  - name: interfaces_writer
-    type: "@output/interfaces_writer"
-  - name: interfaces_cluster
-    type: "@output/interfaces_cluster"
