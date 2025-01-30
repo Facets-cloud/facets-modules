@@ -24,7 +24,6 @@ sample:
   kind: kafka_user
   flavor: default
   version: '0.2'
-  disabled: false
   metadata: { }
   spec: { }
-  inputs: { }
+  disabled: true
