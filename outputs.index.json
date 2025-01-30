@@ -118,5 +118,10 @@
     "name": "artifactories",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/artifactories/"
+  },
+  {
+    "name": "postgres_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/postgres_user/"
   }
 ]

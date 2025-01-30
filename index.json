@@ -1533,5 +1533,18 @@
       "azure",
       "aws"
     ]
+  },
+  {
+    "intent": "postgres_user",
+    "flavor": "default",
+    "version": "0.2",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres_user/default/0.2/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
   }
 ]
