@@ -341,7 +341,7 @@ spec:
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
               x-ui-compare: 
                 field: spec.runtime.autoscaling.max
-                comparator: '<'
+                comparator: '<='
                 errMsg: 'Min cannot be greater than max value'
             max:
               type: integer
@@ -352,7 +352,7 @@ spec:
               description: Max replicas
               x-ui-compare: 
                 field: spec.runtime.autoscaling.min
-                comparator: '>'
+                comparator: '>='
                 errMsg: 'Max cannot be less than min value'
               x-ui-placeholder: "Enter Max replicas for you application"
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
