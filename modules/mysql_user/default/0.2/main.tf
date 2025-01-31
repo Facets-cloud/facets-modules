@@ -1,5 +1,5 @@
 module "release_name" {
-  source          = "../../../../3_utility/name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 248
   resource_name   = var.instance_name
@@ -9,7 +9,7 @@ module "release_name" {
 }
 
 module "username" {
-  source          = "../../../../3_utility/name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 32
   resource_name   = var.instance_name
@@ -19,7 +19,7 @@ module "username" {
 }
 
 module "user_password" {
-  source  = "../../../../3_utility/password"
+  source  = "github.com/Facets-cloud/facets-utility-modules//password"
   length  = 32
   special = false
 }
@@ -41,7 +41,7 @@ resource "kubernetes_secret" "db_conn_details" {
 }
 
 module "mysql_user_resources" {
-  source          = "../../../../3_utility/any-k8s-resources"
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
   namespace       = local.namespace
   advanced_config = {}
   name            = module.release_name.name

@@ -1,5 +1,5 @@
 module "unique_name" {
-  source          = "../../../../3_utility/name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 32
   resource_name   = var.instance_name
@@ -9,7 +9,7 @@ module "unique_name" {
 }
 
 module "user_password" {
-  source = "../../../../3_utility/password"
+  source = "github.com/Facets-cloud/facets-utility-modules//password"
   length = 32
 }
 
@@ -29,7 +29,7 @@ resource "kubernetes_secret" "db_conn_details" {
 }
 
 module "postgres-user" {
-  source          = "../../../../3_utility/any-k8s-resource"
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = local.role_name
   namespace       = local.namespace
   advanced_config = {}
@@ -75,7 +75,7 @@ module "postgres-grants" {
     module.postgres-user
   ]
 
-  source          = "../../../../3_utility/any-k8s-resource"
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.role_name}-${each.key}"
   namespace       = local.namespace
   advanced_config = {}
