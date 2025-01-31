@@ -139,6 +139,7 @@ spec:
       title: Runtime (Main Application Container)
       description: Customize service runtime settings like ports, healthchecks etc.
       properties:
+
         command:
           type: array
           title: Command
@@ -767,6 +768,51 @@ spec:
             title: Runtime
             description: Customize runtime settings like size, healthchecks etc.
             properties:
+              lifecycle:
+                type: object
+                title: Lifecycle
+                description: Define lifecycle hooks for the container (preStop and postStart).
+                properties:
+                  preStop:
+                    type: object
+                    title: PreStop Hook
+                    description: Actions to take before the container is stopped.
+                    properties:
+                      exec:
+                        type: object
+                        title: Exec Command
+                        description: Command to execute inside the container.
+                        properties:
+                          command:
+                            type: array
+                            title: Command
+                            description: Command to run in the container.
+                            items:
+                              type: string
+                            x-ui-command: true
+                    required:
+                      - exec
+                  postStart:
+                    type: object
+                    title: PostStart Hook
+                    description: Actions to take after the container is started.
+                    properties:
+                      exec:
+                        type: object
+                        title: Exec Command
+                        description: Command to execute inside the container.
+                        properties:
+                          command:
+                            type: array
+                            title: Command
+                            description: Command to run in the container.
+                            items:
+                              type: string
+                            x-ui-command: true
+                    required:
+                      - exec
+                x-ui-toggle: true
+                x-ui-override-disable: true
               command:
                 type: array
                 title: Command
