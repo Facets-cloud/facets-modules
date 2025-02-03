@@ -3,14 +3,14 @@ name: Publish Module Zips
 on:
   push:
     branches:
-      - master  # Change this to your default branch if needed
+      - master
 
 concurrency:
   group: publish-module-zips
 
 jobs:
   publish:
-    runs-on: iac-arc  # Custom runner label
+    runs-on: iac-arc
 
     steps:
       - name: Checkout repository
