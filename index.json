@@ -579,7 +579,6 @@
       "azure",
       "aws"
     ]
-<<<<<<< HEAD
   },
   {
     "intent": "postgres_user",
