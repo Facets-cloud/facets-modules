@@ -2,3 +2,4 @@ name: rabbitmq
 type: Indexing
 displayName: RabbitMQ
 description: An open source general-purpose message broker that is designed for consistent, highly-available messaging scenarios.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0cccfd2aae6c3ac9d36_queue.svg
