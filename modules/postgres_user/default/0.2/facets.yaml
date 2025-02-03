@@ -1,0 +1,93 @@
+intent: postgres_user
+flavor: default
+version: '0.2'
+description: Adds postgres_user - default flavor
+clouds:
+  - aws
+  - gcp
+  - azure
+  - kubernetes
+lifecycle: ENVIRONMENT
+input_type: instance
+composition: { }
+inputs:
+  kubernetes_details:
+    type: "@output/kubernetes"
+    displayName: Kubernetes Details
+    description: Details of Kubernetes where the postgres operator will be deployed
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+  postgres_details:
+    type: "@output/postgres"
+    displayName: Postgres Details
+    description: Details of Postgres where the user needs to be created
+    optional: false
+spec:
+  title: Postgres User Spec
+  description: Specification for postgres user
+  type: object
+  properties:
+    role_name:
+      title: Role Name
+      description: Name of role and user to be created in postgres
+      type: string
+    permissions:
+      title: Permissions
+      description: Map of permissions that will be provided to the postgres user
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_-]+$"
+        type: object
+        title: Permission
+        description: Permission Object
+        properties:
+          permission:
+            type: string
+            title: Permission
+            description: Permission for the postgres user
+            enum:
+              - RO
+              - RWO
+              - ADMIN
+          database:
+            type: string
+            title: Database
+            description: Database name where this permission should be given
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          schema:
+            type: string
+            title: Schema
+            description: Schema in the database where this permission should be given
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          table:
+            type: string
+            title: Table
+            description: Table in the database where this permission should be given
+            patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        required:
+          - permission
+          - database
+          - schema
+          - table
+  required:
+    - permissions
+sample:
+  kind: postgres_user
+  flavor: default
+  version: '0.2'
+  metadata: { }
+  spec:
+    permissions:
+      permission1:
+        permission: ADMIN
+        database: test_db1
+        schema: public
+        table: test1
+      permission2:
+        permission: ADMIN
+        database: test_db1
+        schema: public
+        table: '*'
+  disabled: true

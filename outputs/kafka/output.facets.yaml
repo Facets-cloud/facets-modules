@@ -1,0 +1,21 @@
+name: kafka
+out:
+  type: object
+  title: Kafka
+  description: Kafka
+  properties:
+    attributes: null
+    interfaces:
+      cluster:
+        username:
+          required: true
+          type: string
+        password:
+          required: true
+          type: string
+        endpoint:
+          required: true
+          type: string
+        connection_string:
+          required: true
+          type: string
