@@ -1,0 +1,23 @@
+name: Publish Module Zips
+
+on:
+  push:
+    branches:
+      - master  # Change this to your default branch if needed
+
+concurrency:
+  group: publish-module-zips
+
+jobs:
+  publish:
+    runs-on: iac-arc  # Custom runner label
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Generate Module Zips
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: python .github/workflows/zip_modules.py  # Run the script from workflows folder
