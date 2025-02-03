@@ -1,25 +1,27 @@
 name: cherry-pick
-
 on:
   issue_comment:
     types: [created]
-
 permissions:
   contents: write
   pull-requests: write
   actions: write
-
 jobs:
   cherry-pick:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/cherry-pick')
     runs-on: iac-arc
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
       - name: Check team membership
         uses: tspascoal/get-user-teams-membership@v2
         id: actorTeams
         with:
           username: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Check if user belongs to team
         run: |
           if [[ "${{ steps.actorTeams.outputs.teams }}" == *"infra-release-managers"* ]]; then
@@ -44,7 +46,7 @@ jobs:
           echo "Branch $branch"
           echo "branch=$branch" >> $GITHUB_OUTPUT
       - name: Authenticate GH CLI
-        run: gh auth login --with-token <<< ${{ secrets.PAT }}
+        run: gh auth login --with-token <<< ${{ steps.app-token.outputs.token }}
 
       - name: Check if PR is merged
         id: check
@@ -63,7 +65,7 @@ jobs:
             exit 1
           fi
         env:
-          GH_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Set Git identity
         run: |
@@ -79,7 +81,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.PAT }}
+          github_token: ${{ steps.app-token.outputs.token }}
           branch: ${{ steps.input.outputs.branch }}
         env:
           GIT_COMMITTER_NAME: ${{ github.actor }}
@@ -87,7 +89,7 @@ jobs:
       - name: Add comment to PR
         uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.PAT}}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const issueComment = `Commit cherry-picked to ref [${{ steps.input.outputs.branch }}](https://github.com/${{ github.repository }}/tree/${{ steps.input.outputs.branch }}).`
             github.issues.createComment({
