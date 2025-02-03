@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      branchName:
+        description: 'Branch Name'
+        required: true
 
 concurrency:
   group: publish-module-zips
@@ -13,11 +18,15 @@ jobs:
     runs-on: iac-arc
 
     steps:
+      - name: Set BRANCH_NAME variable
+        run: echo "BRANCH_NAME=${{ github.event.inputs.branchName || 'master' }}" >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ env.BRANCH_NAME }}
 
       - name: Generate Module Zips
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: python .github/workflows/zip_modules.py  # Run the script from workflows folder
+        run: python .github/workflows/zip_modules.py
