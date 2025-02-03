@@ -2,3 +2,4 @@ name: dynamodb
 type: default
 displayName: DynamoDB
 description: Fully managed NoSQL database service that offers fast and predictable performance at any scale.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0ccade3d320ff1e7a9e_dynamodb.svg
