@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Set BRANCH_NAME variable
-        run: echo "BRANCH_NAME='master'" >> $GITHUB_ENV
+        run: echo "BRANCH_NAME=${{ github.event.inputs.branchName || 'tfdev' }}" >> $GITHUB_ENV
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
