@@ -35,3 +35,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: python .github/workflows/zip_modules/zip_modules.py
+
+      - name: Post Success to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          slack-message: 'Facets Modules have been successfully synced! <https://github.com/${{ github.repository }}/tree/${{ github.sha }}|View Commit>'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
