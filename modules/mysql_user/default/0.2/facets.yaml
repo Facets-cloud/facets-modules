@@ -7,8 +7,6 @@ clouds:
   - gcp
   - azure
   - kubernetes
-depends_on:
-  - module.crossplane
 lifecycle: ENVIRONMENT
 input_type: instance
 composition: { }
