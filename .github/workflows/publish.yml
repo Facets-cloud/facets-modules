@@ -1,4 +1,4 @@
-name: Publish Module Zips
+name: Publish Modules to S3
 
 on:
   push:
@@ -24,13 +24,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ env.BRANCH_NAME }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install boto3 pyyaml
+          pip install -r .github/workflows/zip_modules/requirements.txt
 
       - name: Generate Module Zips
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: python .github/workflows/zip_modules.py
+        run: python .github/workflows/zip_modules/zip_modules.py
