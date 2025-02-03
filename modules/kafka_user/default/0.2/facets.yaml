@@ -7,7 +7,6 @@ clouds:
   - gcp
   - azure
   - kubernetes
-depends_on: [ ]
 lifecycle: ENVIRONMENT
 input_type: instance
 inputs:
