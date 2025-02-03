@@ -19,6 +19,7 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+<<<<<<< HEAD
   database_operator_details:
     type: "@output/database_operator"
     displayName: Database Operator
@@ -27,6 +28,11 @@ inputs:
   postgres_details:
     type: "@output/postgres"
     displayName: Postgres
+=======
+  postgres_details:
+    type: "@output/postgres"
+    displayName: Postgres Details
+>>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
     description: Details of Postgres where the user needs to be created
     optional: false
 spec:
@@ -53,9 +59,15 @@ spec:
             title: Permission
             description: Permission for the postgres user
             enum:
+<<<<<<< HEAD
             - RO
             - RWO
             - ADMIN
+=======
+              - RO
+              - RWO
+              - ADMIN
+>>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
           database:
             type: string
             title: Database
@@ -72,17 +84,30 @@ spec:
             description: Table in the database where this permission should be given
             patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
         required:
+<<<<<<< HEAD
         - permission
         - database
         - schema
         - table
   required:
   - permissions
+=======
+          - permission
+          - database
+          - schema
+          - table
+  required:
+    - permissions
+>>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
 sample:
   kind: postgres_user
   flavor: default
   version: '0.2'
+<<<<<<< HEAD
   metadata: {}
+=======
+  metadata: { }
+>>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
   spec:
     permissions:
       permission1:
