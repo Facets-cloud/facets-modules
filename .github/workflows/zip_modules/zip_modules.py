@@ -10,8 +10,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 with open('index.json') as f:
     data = json.load(f)
 
-# Specify your AWS S3 bucket
-s3_bucket_name = 'facets-modules'  # Bucket name defined here
+# Specify your AWS S3 bucket from environment variable
+s3_bucket_name = os.environ.get('S3_BUCKET_NAME')  # Bucket name sourced from environment variables
 
 # Create a root zips directory
 zip_root_dir = 'zips'
