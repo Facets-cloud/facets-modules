@@ -1,4 +1,4 @@
-name: Publish Module Zips
+name: Publish Modules to S3
 
 on:
   push:
@@ -20,13 +20,29 @@ jobs:
     steps:
       - name: Set BRANCH_NAME variable
         run: echo "BRANCH_NAME=${{ github.event.inputs.branchName || 'master' }}" >> $GITHUB_ENV
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           ref: ${{ env.BRANCH_NAME }}
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/workflows/zip_modules/requirements.txt
+
       - name: Generate Module Zips
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: python .github/workflows/zip_modules.py
+          S3_BUCKET_NAME: ${{ vars.FACETS_MODULES_BUCKET_NAME }}
+        run: python .github/workflows/zip_modules/zip_modules.py
+
+      - name: Post Success to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          slack-message: 'Facets Modules have been successfully synced! <https://github.com/${{ github.repository }}/tree/${{ github.sha }}|View Commit>'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
