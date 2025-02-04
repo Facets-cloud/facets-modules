@@ -672,6 +672,7 @@ spec:
         - health_checks
         - autoscaling
         - volumes
+        - lifecycle
         - command
         - args
     release:
