@@ -73,6 +73,10 @@ spec:
               type: string
               title: Memory
               description: Amount of memory required.
+              x-ui-compare: 
+                field: spec.size.reader.memory_limit
+                comparator: '<='
+                errMsg: 'memory cannot be less than memory limit value'
               pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])G$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)M$"
               x-ui-placeholder: "e.g., '800M' or '1.5G'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
@@ -87,6 +91,10 @@ spec:
               type: string
               title: Memory Limit
               description: Maximum memory resource utilization.
+              x-ui-compare: 
+                field: spec.size.reader.memory
+                comparator: '>='
+                errMsg: 'memory limit cannot be less than memory value'
               pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])G$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)M$"
               x-ui-placeholder: "e.g., '800M' or '1.5G'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1G to 64G or 1M to 64000M"
