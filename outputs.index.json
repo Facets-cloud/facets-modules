@@ -24,7 +24,7 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/elasticsearch/"
   },
-    {
+  {
     "name": "postgres",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/postgres/"
@@ -108,5 +108,35 @@
     "name": "iam_policy_arn",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/iam_policy_arn/"
+  },
+  {
+    "name": "kubernetes",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kubernetes_cluster/"
+  },
+  {
+    "name": "artifactories",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/artifactories/"
+  },
+  {
+    "name": "postgres_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/postgres_user/"
+  },
+  {
+    "name": "mysql_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/mysql_user/"
+  },
+  {
+    "name": "kafka_user",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka_user/"
+  },
+  {
+    "name": "kafka",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kafka/"
   }
 ]

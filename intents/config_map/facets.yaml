@@ -2,3 +2,4 @@ name: config_map
 type: K8s
 displayName: Config Map
 description: A Kubernetes resource that defines workloads, services, and configurations, enabling orchestration of containerized applications.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0cc958e099a4e3561c5_config_map.svg
