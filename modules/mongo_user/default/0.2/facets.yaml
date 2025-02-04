@@ -103,7 +103,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
   kind: mongo_user
   flavor: default
-  version: '0.1'
+  version: '0.2'
   disabled: false
   metadata: {}
   out: {}
