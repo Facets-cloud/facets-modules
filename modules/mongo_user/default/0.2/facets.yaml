@@ -15,6 +15,7 @@ inputs:
     optional: false
     type: "@outputs/kubernetes"
     default:
+      displayName: Kubernetes Details
       resource_type: kubernetes_cluster
       resource_name: default
   mongo_details:
