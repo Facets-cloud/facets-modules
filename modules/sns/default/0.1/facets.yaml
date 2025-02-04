@@ -64,6 +64,14 @@ spec:
               type: array
               title: Events
               description: A list of all S3 events you want to subscribe to
+            filter_prefix:
+              type: string
+              title: Filter Prefix
+              description: Prefix to filter S3 objects for notifications
+            filter_suffix:
+              type: string
+              title: Filter Suffix
+              description: Suffix to filter S3 objects for notifications
 
 
 sample:

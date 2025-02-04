@@ -29,8 +29,8 @@ spec:
           title: Repository
           description: URL for the helm repository
           x-ui-placeholder: Enter repository URL
-          pattern: "^(http:\\/\\/|https:\\/\\/|\\.\\.\\/stacks)[a-zA-Z0-9\\-._~:\\/?#[\\]@!$&'()*+,;=%]*$"
-          x-ui-error-message: "Invalid URL format. The URL must start with http://, https://, or ../stacks and contain only valid URL characters"
+          pattern: "[a-zA-Z0-9:/.-]+"
+          x-ui-error-message: "Invalid URL format. The URL must start with :// and contain only valid URL characters"
         version:
           type: string
           title: Version
@@ -59,6 +59,14 @@ spec:
           x-ui-placeholder: Enter repository password
           x-ui-mask-content: true
       required: [ "chart" ]
+      x-ui-order:
+        - repository
+        - chart
+        - version
+        - namespace
+        - repository_username
+        - repository_password
+        - wait
     values:
       type: object
       title: Values
