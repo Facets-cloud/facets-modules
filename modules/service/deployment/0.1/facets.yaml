@@ -1008,6 +1008,7 @@ spec:
               - size
               - volumes
               - command
+              - lifecycle
               - args
         required:
           - image
