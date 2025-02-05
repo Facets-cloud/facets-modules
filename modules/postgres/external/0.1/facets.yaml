@@ -1,0 +1,60 @@
+intent: postgres
+flavor: external
+version: 0.1
+clouds:
+  - aws
+  - gcp
+  - azure
+  - kubernetes
+
+spec:
+  type: object
+  properties:
+    writer_details:
+      title: Writer Details
+      x-ui-overrides-only: true
+      type: object
+      properties:
+        host:
+          title: Host
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+          x-ui-mask: true
+        port:
+          title: Port
+          type: string
+      required: ["port", "host", "username", "password"]
+    reader_details:
+      title: Reader Details
+      x-ui-overrides-only: true
+      type: object
+      properties:
+        host:
+          title: Host
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+          x-ui-secret-ref: true
+        port:
+          title: Port
+          type: string
+      required: ["port", "host", "username", "password"]
+
+outputs:
+  default:
+    type: "@outputs/postgres"
+
+sample:
+  kind: "postgres"
+  flavor: "external"
+  version: "0.1"
+  spec: {}
