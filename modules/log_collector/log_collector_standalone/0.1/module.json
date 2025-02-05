@@ -1,0 +1,17 @@
+{
+    "provides": "log_collector",
+    "flavors": [
+        "loki_standalone_k8s"
+    ],
+    "supported_clouds": [
+        "aws",
+        "gcp",
+        "azure",
+        "kubernetes"
+    ],
+    "version": "0.1",
+    "depends_on": [],
+    "lifecycle": "ENVIRONMENT",
+    "input_type": "instance",
+    "composition": {}
+}
