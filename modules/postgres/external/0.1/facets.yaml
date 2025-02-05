@@ -28,6 +28,7 @@ spec:
         port:
           title: Port
           type: string
+      required: ["port", "host", "username", "password"]
     reader_details:
       title: Reader Details
       x-ui-overrides-only: true
@@ -42,10 +43,11 @@ spec:
         password:
           title: Password
           type: string
-          x-ui-mask: true
+          x-ui-secret-ref: true
         port:
           title: Port
           type: string
+      required: ["port", "host", "username", "password"]
 
 outputs:
   default:
