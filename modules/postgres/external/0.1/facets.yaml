@@ -24,7 +24,11 @@ spec:
         password:
           title: Password
           type: string
-          x-ui-mask: true
+          x-ui-secret-ref: true
+          x-ui-typeable: true
+          x-ui-api-source:
+            endpoint: "/cc-ui/v1/stacks/{{stackName}}"
+            method: GET
         port:
           title: Port
           type: string
@@ -44,6 +48,10 @@ spec:
           title: Password
           type: string
           x-ui-secret-ref: true
+          x-ui-typeable: true
+          x-ui-api-source:
+            endpoint: "/cc-ui/v1/stacks/{{stackName}}"
+            method: GET
         port:
           title: Port
           type: string
