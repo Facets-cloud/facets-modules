@@ -55,17 +55,14 @@ sample:
   kind: "postgres"
   flavor: "external"
   version: "0.1"
-  spec: {
-    writer_details: {
-      host: "writer.example.com",
-      username: "postgres",
-      password: "password",
+  spec:
+    writer_details:
+      host: "writer.example.com"
+      username: "postgres"
+      password: "password"
       port: "5432"
-    },
-    reader_details: {
-      host: "reader.example.com",
-      username: "repl_user",
-      password: "password",
+    reader_details:
+      host: "reader.example.com"
+      username: "repl_user"
+      password: "password"
       port: "5432"
-    }
-  }
