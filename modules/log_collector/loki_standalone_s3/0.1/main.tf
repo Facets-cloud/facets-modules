@@ -7,7 +7,7 @@ resource "aws_iam_policy" "readwrite" {
 }
 
 module "irsa" {
-  source = "../../3_utility/aws_irsa"
+  source = "github.com/Facets-cloud/facets-utility-modules//aws_irsa"
   iam_arns = {
     s3_read_write_access = {
       arn = aws_iam_policy.readwrite.arn
@@ -20,7 +20,7 @@ module "irsa" {
 }
 
 module "name" {
-  source          = "../../3_utility/name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 63
   resource_name   = var.instance_name
