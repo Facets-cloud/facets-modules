@@ -38,4 +38,3 @@ variable "inputs" {
   description = "A map of inputs requested by the module developer."
   type        = map(any)
 }
-}
