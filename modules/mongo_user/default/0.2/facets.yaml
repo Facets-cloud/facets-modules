@@ -15,12 +15,12 @@ inputs:
     optional: false
     type: "@outputs/kubernetes"
     default:
-      displayName: Kubernetes Details
+      displayName: Kubernetes Cluster
       resource_type: kubernetes_cluster
       resource_name: default
   mongo_details:
     type: "@outputs/mongo"
-    displayName: Mongo Details
+    displayName: Mongo
     description: The details of Mongo where the user needs to be created
     optional: false
 spec:
