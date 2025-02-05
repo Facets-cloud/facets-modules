@@ -30,7 +30,7 @@ module "name" {
 }
 
 module "log_collector" {
-  source = "../log_collector_standalone"
+  source = "../../log_collector_standalone"
 
   instance      = local.log_collector
   instance_name = lower(var.instance_name)
