@@ -11,26 +11,40 @@ spec:
   type: object
   properties:
     writer_details:
+      title: Writer Details
+      x-ui-overrides-only: true
       type: object
       properties:
         host:
+          title: Host
           type: string
         username:
+          title: Username
           type: string
         password:
+          title: Password
           type: string
+          x-ui-mask: true
         port:
+          title: Port
           type: string
     reader_details:
+      title: Reader Details
+      x-ui-overrides-only: true
       type: object
       properties:
         host:
+          title: Host
           type: string
         username:
+          title: Username
           type: string
         password:
+          title: Password
           type: string
+          x-ui-mask: true
         port:
+          title: Port
           type: string
 
 outputs:
@@ -41,14 +55,4 @@ sample:
   kind: "postgres"
   flavor: "external"
   version: "0.1"
-  spec:
-    writer_details:
-      host: "writer.example.com"
-      username: "postgres"
-      password: "password"
-      port: "5432"
-    reader_details:
-      host: "reader.example.com"
-      username: "repl_user"
-      password: "password"
-      port: "5432"
+  spec: {}
