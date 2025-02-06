@@ -45,6 +45,15 @@ jobs:
           MODULE_DIR_PATH=$(echo "${CONTROL_PLANES}" | jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath")
           echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
 
+      - name: Update facets.yaml version
+        run: |
+          set -e
+          GITHUB_REF="${{ github.ref }}"
+          FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
+          echo "Updating version in $FACETS_YAML_PATH"
+          # Append the GitHub ref to the version in facets.yaml
+          yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
+
       - name: Execute command
         run: |
           set -e
