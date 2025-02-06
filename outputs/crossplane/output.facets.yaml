@@ -1,0 +1,8 @@
+name: crossplane
+out:
+  type: object
+  title: Crossplane
+  description: Crossplane
+  properties:
+    attributes: null
+    interfaces: null

@@ -153,5 +153,10 @@
     "name": "database_operator",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/database_operator/"
+  },
+  {
+    "name": "crossplane",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/crossplane/"
   }
 ]
