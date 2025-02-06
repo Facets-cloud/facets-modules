@@ -3,13 +3,13 @@ flavor: default
 version: '0.2'
 description: Adds mysql_user - default flavor
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
+- aws
+- gcp
+- azure
+- kubernetes
 lifecycle: ENVIRONMENT
 input_type: instance
-composition: { }
+composition: {}
 inputs:
   kubernetes_details:
     type: "@output/kubernetes"
@@ -49,12 +49,12 @@ spec:
             title: Permission
             description: Permission for the postgres user
             enum:
-              - RO
-              - RWO
-              - ADMIN
-              - RWC
-              - RWD
-              - RWCT
+            - RO
+            - RWO
+            - ADMIN
+            - RWC
+            - RWD
+            - RWCT
           database:
             type: string
             title: Database
@@ -66,16 +66,16 @@ spec:
             description: Table in the database where this permission should be given
             patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
         required:
-          - permission
-          - database
-          - table
+        - permission
+        - database
+        - table
   required:
-    - permissions
+  - permissions
 sample:
   kind: mysql_user
   flavor: default
   version: '0.2'
-  metadata: { }
+  metadata: {}
   spec:
     permissions:
       permission1:

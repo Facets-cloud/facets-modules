@@ -3,11 +3,11 @@ flavor: default
 version: '0.2'
 description: Adds mongo_user - default flavor
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
-depends_on: [ ]
+- aws
+- gcp
+- azure
+- kubernetes
+depends_on: []
 lifecycle: ENVIRONMENT
 input_type: instance
 inputs:
@@ -112,8 +112,8 @@ sample:
   flavor: default
   version: '0.2'
   disabled: false
-  metadata: { }
-  out: { }
+  metadata: {}
+  out: {}
   spec:
     database: stage
     permissions:
