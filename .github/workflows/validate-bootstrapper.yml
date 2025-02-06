@@ -1,0 +1,47 @@
+name: Validate Bootstrapper
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: validate-bootstrapper
+
+jobs:
+  validate-bootstrapper:
+    runs-on: iac-arc
+    outputs:
+      script_output: ${{ steps.run.outputs.script_output }}
+      exit_status: ${{ steps.run.outputs.exit_status }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run validate-bootstrapper script
+        id: run
+        env:
+          ROOT_USER: ${{ secrets.ROOT_USER }}
+          ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
+        run: |
+          set +e
+          output=$(python .github/workflows/validate-bootstrapper.py)
+          exit_status=${PIPESTATUS[0]}
+          echo "script_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$output" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "exit_status=$exit_status" >> $GITHUB_OUTPUT
+  on-failure:
+    needs: validate-bootstrapper
+    runs-on: iac-arc
+    if: ${{ needs.validate-bootstrapper.outputs.exit_status != '0' }}
+    steps:
+      - name: Post Failure to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.CHANNEL_ID }}
+          slack-message: 'Bootstrap Module Failed: ${{needs.validate-bootstrapper.outputs.script_output}}'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      - name: Exiting with error
+        run: exit 1
