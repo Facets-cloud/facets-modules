@@ -18,6 +18,11 @@ inputs:
       displayName: Kubernetes Cluster
       resource_type: kubernetes_cluster
       resource_name: default
+  mongodb_auth_operator_details:
+    type: "@outputs/mongodb_auth_operator"
+    displayName: MongoDB Auth Operator
+    description: The details of MongoDB Auth Operator which is responsible to create mongo users
+    optional: false
   mongo_details:
     type: "@outputs/mongo"
     displayName: Mongo
