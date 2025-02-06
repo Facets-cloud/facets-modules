@@ -97,7 +97,7 @@ sample:
   metadata: {}
   kind: vault
   disabled: true
-  version: "0.1"
+  version: "0.1-test"
   spec:
     authenticated: true
     vault_version: "1.17.2"
