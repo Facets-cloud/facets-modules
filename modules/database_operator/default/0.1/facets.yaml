@@ -53,5 +53,5 @@ sample:
   disabled: true
   spec:
     size:
-      cpu: 200m
-      memory: 200Mi
+      cpu_limit: 200m
+      memory_limit: 200Mi
