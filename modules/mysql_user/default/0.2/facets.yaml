@@ -13,7 +13,7 @@ composition: { }
 inputs:
   kubernetes_details:
     type: "@output/kubernetes"
-    displayName: Kubernetes Details
+    displayName: Kubernetes Cluster
     description: The details of Kubernetes where the operator for creating mysql user will be installed
     optional: false
     default:
@@ -21,7 +21,7 @@ inputs:
       resource_name: default
   mysql_details:
     type: "@output/mysql"
-    displayName: MySQL Details
+    displayName: MySQL
     description: The details of MySQL where the user needs to be created
     optional: false
 spec:

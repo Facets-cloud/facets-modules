@@ -12,7 +12,7 @@ input_type: instance
 inputs:
   kafka_details:
     type: "@output/kafka"
-    displayName: Kafka Details
+    displayName: Kafka
     description: The details of Kafka where the user needs to be created
     optional: false
 spec:
