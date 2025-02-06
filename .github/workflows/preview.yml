@@ -72,7 +72,7 @@ jobs:
               URL=$(jq -r ".[$key].URL" control_planes.json)
               USERNAME=$(jq -r ".[$key].Username" control_planes.json)
               TOKEN_REF_NAME=$(jq -r ".[$key].TokenRef" control_planes.json)
-              TOKEN="${{ secrets[format('{0}', TOKEN_REF_NAME)] }}"  # Using format function
+              TOKEN="${{ secrets[env.TOKEN_REF_NAME] }}"  # Using format function
               echo "Starting process for control plane: $key"
               curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH" &
             done
