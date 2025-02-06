@@ -37,7 +37,7 @@ jobs:
         run: |
           set -e
           set -o pipefail
-          JSON_CONTENT='${{ vars.control_planes }}'
+          JSON_CONTENT='${{ vars.DEV_CONTROL_PLANES }}'
           echo "$JSON_CONTENT" > control_planes.json
 
       - name: Get module directory path
