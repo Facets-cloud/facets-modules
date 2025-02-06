@@ -86,8 +86,7 @@ jobs:
             echo "Processing specified control plane with provided token."
             curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH"
           else
-            echo "Processing all control planes concurrently."
-            # Loop through all control planes and run commands in parallel
+            echo "Processing all control planes"
             for key in $(jq -r 'keys[]' control_planes.json); do
               URL=$(jq -r ".$key.URL" control_planes.json)
               USERNAME=$(jq -r ".$key.Username" control_planes.json)
