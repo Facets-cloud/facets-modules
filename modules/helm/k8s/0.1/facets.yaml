@@ -30,7 +30,7 @@ spec:
           description: URL or relative path for the helm repository
           x-ui-placeholder: Enter URL or relative path of the repository
           pattern: "[a-zA-Z0-9:/.-_]+"
-          x-ui-error-message: "Invalid input format. The URL or relative path should contain only valid characters following this regex `[a-zA-Z0-9:/.-_]+`"
+          x-ui-error-message: "Invalid input format. The URL or relative path should contain only valid regex `[a-zA-Z0-9:/.-_]+`"
         version:
           type: string
           title: Version
