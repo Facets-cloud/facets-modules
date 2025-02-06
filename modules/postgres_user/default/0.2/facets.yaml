@@ -3,13 +3,13 @@ flavor: default
 version: '0.2'
 description: Adds postgres_user - default flavor
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
+- aws
+- gcp
+- azure
+- kubernetes
 lifecycle: ENVIRONMENT
 input_type: instance
-composition: { }
+composition: {}
 inputs:
   kubernetes_details:
     type: "@output/kubernetes"
@@ -53,9 +53,9 @@ spec:
             title: Permission
             description: Permission for the postgres user
             enum:
-              - RO
-              - RWO
-              - ADMIN
+            - RO
+            - RWO
+            - ADMIN
           database:
             type: string
             title: Database
@@ -72,17 +72,17 @@ spec:
             description: Table in the database where this permission should be given
             patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
         required:
-          - permission
-          - database
-          - schema
-          - table
+        - permission
+        - database
+        - schema
+        - table
   required:
-    - permissions
+  - permissions
 sample:
   kind: postgres_user
   flavor: default
   version: '0.2'
-  metadata: { }
+  metadata: {}
   spec:
     permissions:
       permission1:

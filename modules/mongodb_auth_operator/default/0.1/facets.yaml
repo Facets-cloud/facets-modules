@@ -3,13 +3,13 @@ flavor: default
 version: '0.1'
 description: Adds mongodb auth operator - default flavor
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
+- aws
+- gcp
+- azure
+- kubernetes
 lifecycle: ENVIRONMENT
 input_type: instance
-composition: { }
+composition: {}
 inputs:
   kubernetes_details:
     type: "@output/kubernetes"
@@ -49,7 +49,7 @@ sample:
   kind: mongodb_auth_operator
   flavor: default
   version: '0.1'
-  metadata: { }
+  metadata: {}
   disabled: true
   spec:
     size:
