@@ -5,10 +5,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-    inputs:
-      branchName:
-        description: 'Branch Name'
-        required: true
 
 concurrency:
   group: publish-module-zips
@@ -19,7 +15,7 @@ jobs:
 
     steps:
       - name: Set BRANCH_NAME variable
-        run: echo "BRANCH_NAME=${{ github.event.inputs.branchName || 'master' }}" >> $GITHUB_ENV
+        run: echo "BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -46,3 +42,8 @@ jobs:
           slack-message: 'Facets Modules have been successfully synced! <https://github.com/${{ github.repository }}/tree/${{ github.sha }}|View Commit>'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+
+      - name: Trigger validate-bootstrapper workflow
+        id: validate-bootstrapper workflow
+        run: |
+          gh workflow run schema-documentation -R ${{ github.repository }} --ref ${{ github.ref }}
