@@ -1,0 +1,80 @@
+name: Preview Module
+
+on:
+  workflow_dispatch:
+    inputs:
+      intent:
+        description: 'Intent for the module'
+        required: true
+      flavor:
+        description: 'Flavor for the module'
+        required: true
+      version:
+        description: 'Version of the module'
+        required: true
+      url:
+        description: 'Control Plane URL'
+        required: false
+      username:
+        description: 'Control Plane Username'
+        required: false
+      token:
+        description: 'Control Plane Token'
+        required: false
+
+jobs:
+  run-command:
+    runs-on: iac-arc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Set control planes variable
+        id: set_control_planes
+        run: |
+          set -e
+          echo "CONTROL_PLANES=${{ vars.control_planes }}" >> $GITHUB_ENV
+
+      - name: Get module directory path
+        id: get_module_path
+        run: |
+          set -e
+          MODULE_DIR_PATH=$(echo "${CONTROL_PLANES}" | jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath")
+          echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
+
+      - name: Update facets.yaml version
+        run: |
+          set -e
+          GITHUB_REF="${{ github.ref }}"
+          FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
+          echo "Updating version in $FACETS_YAML_PATH"
+          # Append the GitHub ref to the version in facets.yaml
+          yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
+
+      - name: Execute command
+        run: |
+          set -e
+          if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
+            # Use provided URL, Username, and Token
+            URL="${{ github.event.inputs.url }}"
+            USERNAME="${{ github.event.inputs.username }}"
+            TOKEN="${{ github.event.inputs.token }}"
+            echo "Processing specified control plane with provided token."
+            curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH"
+          else
+            echo "Processing all control planes concurrently."
+            # Loop through all control planes and run commands in parallel
+            for key in $(echo "${CONTROL_PLANES}" | jq -r 'keys[]'); do
+              URL=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].URL")
+              USERNAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].Username")
+              TOKEN_REF_NAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].TokenRef") 
+              TOKEN="${{ secrets[TOKEN_REF_NAME] }}"
+              echo "Starting process for control plane: $key"
+              curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH" &
+            done
+            echo "Waiting for all background processes to complete..."
+            wait # Wait for all background processes to finish
+          fi
