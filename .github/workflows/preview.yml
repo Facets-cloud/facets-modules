@@ -32,6 +32,13 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
+      - name: Create control plane file
+        id: set_control_planes
+        run: |
+          set -e
+          JSON_CONTENT='${{ vars.CONTROL_PLANES }}'
+          echo "$JSON_CONTENT" > control_planes.json
+
       - name: Get module directory path
         id: get_module_path
         run: |
@@ -60,7 +67,6 @@ jobs:
             curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH"
           else
             echo "Processing all control planes concurrently."
-            CONTROL_PLANES='${{ vars.CONTROL_PLANES }}'
             # Loop through all control planes and run commands in parallel
             for key in $(echo "${CONTROL_PLANES}" | jq -r 'keys[]'); do
               URL=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].URL")
