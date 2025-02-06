@@ -36,6 +36,7 @@ jobs:
         id: set_control_planes
         run: |
           set -e
+          set -o pipefail
           JSON_CONTENT='${{ vars.control_planes }}'
           echo "$JSON_CONTENT" > control_planes.json
 
@@ -50,6 +51,7 @@ jobs:
       - name: Update facets.yaml version
         run: |
           set -e
+          set -o pipefail
           GITHUB_REF="${{ github.ref }}"
           FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
           echo "Updating version in $FACETS_YAML_PATH"
@@ -62,6 +64,7 @@ jobs:
           ALL_SECRETS: ${{ toJson(secrets) }}
         run: |
           set -e
+          set -o pipefail
           if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
             # Use provided URL, Username, and Token
             URL="${{ github.event.inputs.url }}"
