@@ -61,8 +61,8 @@ jobs:
             for key in $(echo "${CONTROL_PLANES}" | jq -r 'keys[]'); do
               URL=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].URL")
               USERNAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].Username")
-              TOKEN_SECRET_NAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].Token")
-              TOKEN="${{ secrets[TOKEN_SECRET_NAME] }}"
+              TOKEN_REF_NAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].TokenRef") 
+              TOKEN="${{ secrets[TOKEN_REF_NAME] }}"
               echo "Starting process for control plane: $key"
               curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH" &
             done
