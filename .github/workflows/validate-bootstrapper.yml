@@ -13,7 +13,7 @@ concurrency:
 jobs:
   validate-bootstrapper:
     runs-on: iac-arc
-    if: ${{ github.event.workflow_run.status == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       script_output: ${{ steps.run.outputs.script_output }}
       slack_message: ${{ steps.run.outputs.slack_message }}
