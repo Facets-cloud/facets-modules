@@ -14,11 +14,16 @@ inputs:
   kubernetes_details:
     type: "@output/kubernetes"
     displayName: Kubernetes Cluster
-    description: Details of Kubernetes where the postgres operator will be deployed
+    description: Details of Kubernetes where the CRD for managing PostgreSQL user will be created
     optional: false
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+  database_operator_details:
+    type: "@output/database_operator"
+    displayName: Database Operator
+    description: Details of database operator which will be responsible to create postgres users
+    optional: false
   postgres_details:
     type: "@output/postgres"
     displayName: Postgres
