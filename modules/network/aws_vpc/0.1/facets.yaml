@@ -9,6 +9,18 @@ spec:
   description: Specification of the network for aws vpc flavor
   type: object
   properties:
+    create_new_vpc:
+      title: Create New VPC
+      description: Create a new vpc
+      type: boolean
+    use_existing_vpc:
+      title: Use Existing VPC
+      description: Use an existing vpc
+      type: boolean
+    azs:
+      title: Availability Zones
+      description: Availability zones for the vpc
+      type: array
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
@@ -24,7 +36,10 @@ spec:
       title: Existing VPC ID
       description: To setup network components in an existing vpc
       type: string
-  required: [vpc_cidr, enable_multi_az]
+      x-ui-visible-if:
+        field: spec.use_existing_vpc
+        values: [true]
+  required: [azs, vpc_cidr, existing_vpc_id]
 sample:
   kind: network
   flavor: aws_vpc
