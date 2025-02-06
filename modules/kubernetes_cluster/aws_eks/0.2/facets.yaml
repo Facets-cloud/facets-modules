@@ -20,7 +20,7 @@ spec:
           type: number
           x-ui-placeholder: e.g. 30
           minimum: 1
-          maximum: 3650
+          maximum: 365
           x-ui-override-only: true
         public_cidr_whitelist:
           title: Public CIDR Whitelist
@@ -53,6 +53,8 @@ spec:
               description: Specifies Rotation Period for KMS in days
               type: number
               x-ui-override-only: true
+              minimum: 1
+              maximum: 365
     nodepools:
       title: Nodepool Spec
       description: Specifications of nodepools to be created
@@ -69,6 +71,8 @@ spec:
               type: number
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
+              minimum: 30
+              maximum: 500
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -118,6 +122,8 @@ spec:
                 values: [true]
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
+              minimum: 30
+              maximum: 500
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -134,7 +140,7 @@ spec:
               description: Maximum number of worker nodes in the node pool
               type: number
               minimum: 1
-              maximum: 100
+              maximum: 200
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
@@ -237,14 +243,12 @@ spec:
       patternProperties:
         type: object
         title: Addon Name
-        description: Name of the Addon
         keyPattern: "^[a-zA-Z-]+$"
         properties:
           enable:
             title: Enable Addon
             description: Set this to true to enable the addon
             type: boolean
-            x-ui-override-only: true
           configuration_values:
             title: Configuration Values
             description: Configuration values for the addon
