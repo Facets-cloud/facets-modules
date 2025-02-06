@@ -1,0 +1,6 @@
+{
+    "kind": "configuration",
+    "disabled": true,
+    "for": "k8s-pvc-tagger",
+    "version": "0.1"
+}

@@ -1,0 +1,6 @@
+{
+    "kind": "configuration",
+    "for": "storage_class",
+    "disabled": true,
+    "version": "0.1"
+}
