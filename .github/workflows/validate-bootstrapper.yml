@@ -45,7 +45,7 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.CHANNEL_ID }}
-          slack-message: 'Bootstrap Module Failed: ${{needs.validate-bootstrapper.outputs.script_output}}'
+          slack-message: ':alert-siren:Bootstrap Module Failed: ${{needs.validate-bootstrapper.outputs.script_output}}'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
       - name: Exiting with error
