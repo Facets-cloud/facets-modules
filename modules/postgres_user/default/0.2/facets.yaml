@@ -13,7 +13,7 @@ composition: { }
 inputs:
   kubernetes_details:
     type: "@output/kubernetes"
-    displayName: Kubernetes Details
+    displayName: Kubernetes Cluster
     description: Details of Kubernetes where the postgres operator will be deployed
     optional: false
     default:
@@ -21,7 +21,7 @@ inputs:
       resource_name: default
   postgres_details:
     type: "@output/postgres"
-    displayName: Postgres Details
+    displayName: Postgres
     description: Details of Postgres where the user needs to be created
     optional: false
 spec:
