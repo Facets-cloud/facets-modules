@@ -44,6 +44,6 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
       - name: Trigger validate-bootstrapper workflow
-        id: validate-bootstrapper workflow
+        id: validate_bootstrapper_workflow
         run: |
           gh workflow run schema-documentation -R ${{ github.repository }} --ref ${{ github.ref }}
