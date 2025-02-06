@@ -1,0 +1,41 @@
+{
+  "kind": "mongo_user",
+  "flavor": "default",
+  "version": "0.1",
+  "disabled": false,
+  "spec": {
+    "permissions": {
+      "p1": {
+        "permission": "createCollection,listCollections",
+        "database": "stage",
+        "collection": "",
+        "cluster": true
+      },
+      "p2": {
+        "permission": "find,update,insert",
+        "database": "stage",
+        "collection": "myCollection2",
+        "cluster": true
+      }
+    },
+    "mongo_user": {
+      "user": {
+        "username": "tester",
+        "password": "xyz",
+        "customData": {
+          "employeeID": "167824",
+          "profile": "sysAdmin"
+        },
+        "mechanisms": "SCRAM-SHA-1",
+        "dbRoles": {
+          "dbrole3": {
+            "db": "stage",
+            "role": "stage4"
+          }
+        },
+        "rolesToRole": "stage3"
+      }
+    }
+  },
+  "advanced": {}
+}
