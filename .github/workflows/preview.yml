@@ -45,6 +45,13 @@ jobs:
         run: |
           set -e
           MODULE_DIR_PATH=$(jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath" index.json)
+
+          # Check if MODULE_DIR_PATH is found
+          if [ -z "$MODULE_DIR_PATH" ]; then
+            echo "Error: Module directory path not found for the intent ${{ github.event.inputs.intent }} flavor ${{ github.event.inputs.flavor }} version ${{ github.event.inputs.version }}."
+            exit 1
+          fi
+
           echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
           echo "MODULE_DIR_PATH=$MODULE_DIR_PATH"
 
@@ -54,6 +61,12 @@ jobs:
           set -o pipefail
           GITHUB_REF="${{ github.ref }}"
           FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
+          # Check if facets.yaml exists
+          if [ ! -f "$FACETS_YAML_PATH" ]; then
+            echo "Error: facets.yaml not found in the module directory."
+            exit 1
+          fi
+
           echo "Updating version in $FACETS_YAML_PATH"
           # Append the GitHub ref to the version in facets.yaml
           yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
