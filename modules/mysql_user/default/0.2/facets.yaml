@@ -14,7 +14,7 @@ inputs:
   kubernetes_details:
     type: "@output/kubernetes"
     displayName: Kubernetes Cluster
-    description: The details of Kubernetes where the operator for creating mysql user will be installed
+    description: The details of Kubernetes where CRD for managing mysql user will be created
     optional: false
     default:
       resource_type: kubernetes_cluster
