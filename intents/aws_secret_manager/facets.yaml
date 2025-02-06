@@ -2,3 +2,4 @@ name: aws_secret_manager
 type: default
 displayName: AWS Secret Manager
 description: Secrets Manager to manage access to applications, services, and IT resources.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333eabb358800faf8ff5_Default-aws_secret_manager.svg
