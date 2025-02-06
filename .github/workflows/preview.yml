@@ -43,7 +43,8 @@ jobs:
         id: get_module_path
         run: |
           set -e
-          MODULE_DIR_PATH=$(echo "${CONTROL_PLANES}" | jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath")
+          # Read from control_planes.json instead of variable
+          MODULE_DIR_PATH=$(jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath" control_planes.json)
           echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
 
       - name: Update facets.yaml version
@@ -68,11 +69,11 @@ jobs:
           else
             echo "Processing all control planes concurrently."
             # Loop through all control planes and run commands in parallel
-            for key in $(echo "${CONTROL_PLANES}" | jq -r 'keys[]'); do
-              URL=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].URL")
-              USERNAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].Username")
-              TOKEN_REF_NAME=$(echo "${CONTROL_PLANES}" | jq -r ".[$key].TokenRef") 
-              TOKEN="${{ secrets[format('{0}', '$TOKEN_REF_NAME')] }}"
+            for key in $(jq -r 'keys[]' control_planes.json); do
+              URL=$(jq -r ".[$key].URL" control_planes.json)
+              USERNAME=$(jq -r ".[$key].Username" control_planes.json)
+              TOKEN_REF_NAME=$(jq -r ".[$key].TokenRef" control_planes.json)
+              TOKEN="${{ secrets[TOKEN_REF_NAME] }}"  # Fetch the token secret using the retrieved name properly
               echo "Starting process for control plane: $key"
               curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH" &
             done
