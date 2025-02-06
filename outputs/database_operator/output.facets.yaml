@@ -1,0 +1,8 @@
+name: database_operator
+out:
+  type: object
+  title: Database Operator
+  description: Database Operator
+  properties:
+    attributes: null
+    interfaces: null
