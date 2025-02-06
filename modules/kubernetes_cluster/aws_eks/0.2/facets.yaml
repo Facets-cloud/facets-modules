@@ -18,9 +18,9 @@ spec:
           title: CloudWatch Log Retention Days
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
           type: number
-          x-ui-placeholder: e.g. 30
           minimum: 1
           maximum: 365
+          x-ui-placeholder: e.g. 30
           x-ui-override-only: true
         public_cidr_whitelist:
           title: Public CIDR Whitelist
@@ -52,9 +52,9 @@ spec:
               title: Rotation Period for KMS in days
               description: Specifies Rotation Period for KMS in days
               type: number
-              x-ui-override-only: true
               minimum: 1
               maximum: 365
+              x-ui-override-only: true
     nodepools:
       title: Nodepool Spec
       description: Specifications of nodepools to be created
@@ -69,10 +69,10 @@ spec:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
-              x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
               minimum: 30
               maximum: 500
+              x-ui-placeholder: e.g. 100
+              x-ui-override-only: true
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -117,13 +117,13 @@ spec:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              minimum: 30
+              maximum: 500
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
-              minimum: 30
-              maximum: 500
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -254,50 +254,32 @@ spec:
             description: Configuration values for the addon
             type: string
             x-ui-override-only: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
           resolve_conflicts:
             title: Resolve Conflicts
             description: Set this to true to resolve conflicts
             type: boolean
             x-ui-override-only: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
           addon_version:
             title: Addon Version
             description: Version of the addon
             type: string
             x-ui-override-only: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
           tags:
             title: Addon Tags
             description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
             type: object
             x-ui-override-only: true
             x-ui-yaml-editor: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
           preserve:
             title: Preserve Addon
             description: Set this to true to preserve the addon
             type: boolean
             x-ui-override-only: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
           service_account_role_arn:
             title: Service Account Role ARN
             description: Service account for the addon
             type: string
             x-ui-override-only: true
-            x-ui-visible-if:
-              field: spec.addons.*.enable
-              values: [true]
   required: [cluster, nodepools]
 sample:
   kind: kubernetes_cluster
