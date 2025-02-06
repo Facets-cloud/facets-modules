@@ -49,8 +49,7 @@ sample:
   kind: mongodb_auth_operator
   flavor: default
   version: '0.1'
-  metadata: { },
-  lifecycle: ENVIRONMENT,
+  metadata: { }
   disabled: true
   spec:
     size:
