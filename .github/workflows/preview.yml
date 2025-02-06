@@ -43,8 +43,9 @@ jobs:
         id: get_module_path
         run: |
           set -e
-          MODULE_DIR_PATH=$(jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath" control_planes.json)
+          MODULE_DIR_PATH=$(jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath" index.json)
           echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
+          echo "MODULE_DIR_PATH=$MODULE_DIR_PATH"
 
       - name: Update facets.yaml version
         run: |
