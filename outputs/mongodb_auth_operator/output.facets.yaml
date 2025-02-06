@@ -1,0 +1,8 @@
+name: mongodb_auth_operator
+out:
+  type: object
+  title: MongoDB Auth Operator
+  description: MongoDB Auth Operator
+  properties:
+    interfaces: null
+    attributes: null
