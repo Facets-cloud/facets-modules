@@ -19,6 +19,11 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+  crossplane_details:
+    type: "@output/crossplane"
+    displayName: Crossplane
+    description: Details of crossplane which will be responsible to create mysql users
+    optional: false
   mysql_details:
     type: "@output/mysql"
     displayName: MySQL
