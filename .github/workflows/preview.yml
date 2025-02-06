@@ -55,6 +55,7 @@ jobs:
           echo "Updating version in $FACETS_YAML_PATH"
           # Append the GitHub ref to the version in facets.yaml
           yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
+          yq eval -i ".sample.version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
 
       - name: Execute command
         env:
