@@ -28,11 +28,6 @@ inputs:
   mysql_details:
     type: "@output/mysql"
     displayName: MySQL
-=======
-  mysql_details:
-    type: "@output/mysql"
-    displayName: MySQL Details
->>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
     description: The details of MySQL where the user needs to be created
     optional: false
 spec:
@@ -55,21 +50,12 @@ spec:
             title: Permission
             description: Permission for the postgres user
             enum:
-<<<<<<< HEAD
             - RO
             - RWO
             - ADMIN
             - RWC
             - RWD
             - RWCT
-=======
-              - RO
-              - RWO
-              - ADMIN
-              - RWC
-              - RWD
-              - RWCT
->>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
           database:
             type: string
             title: Database
@@ -81,28 +67,14 @@ spec:
             description: Table in the database where this permission should be given
             patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
         required:
-<<<<<<< HEAD
         - permission
         - database
         - table
-  required:
-  - permissions
-=======
-          - permission
-          - database
-          - table
-  required:
-    - permissions
->>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
 sample:
   kind: mysql_user
   flavor: default
   version: '0.2'
-<<<<<<< HEAD
   metadata: {}
-=======
-  metadata: { }
->>>>>>> db16850 (Add 0.2 version of database users part 2 (#229))
   spec:
     permissions:
       permission1:
