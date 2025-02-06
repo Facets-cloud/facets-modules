@@ -7,11 +7,7 @@ clouds:
 - gcp
 - azure
 - kubernetes
-<<<<<<< HEAD
 depends_on: []
-=======
-depends_on: [ ]
->>>>>>> 3114d18 (Input output modelling part 1 (#233))
 lifecycle: ENVIRONMENT
 input_type: instance
 inputs:
@@ -79,11 +75,7 @@ spec:
         user:
           type: object
           title: User
-<<<<<<< HEAD
           description: The custom user details
-=======
-          description: The custom user details 
->>>>>>> 3114d18 (Input output modelling part 1 (#233))
           properties:
             username:
               type: string
