@@ -3,10 +3,10 @@ flavor: default
 version: '0.2'
 description: Adds mongo_user - default flavor
 clouds:
-- aws
-- gcp
-- azure
-- kubernetes
+  - aws
+  - gcp
+  - azure
+  - kubernetes
 depends_on: [ ]
 lifecycle: ENVIRONMENT
 input_type: instance
@@ -16,6 +16,7 @@ inputs:
     type: "@output/kubernetes"
     default:
       displayName: Kubernetes Cluster
+      description: Details of Kubernetes where the CRD for managing mongo user will be created
       resource_type: kubernetes_cluster
       resource_name: default
   mongodb_auth_operator_details:
@@ -74,7 +75,7 @@ spec:
         user:
           type: object
           title: User
-          description: The custom user details 
+          description: The custom user details
           properties:
             username:
               type: string
@@ -111,8 +112,8 @@ sample:
   flavor: default
   version: '0.2'
   disabled: false
-  metadata: {}
-  out: {}
+  metadata: { }
+  out: { }
   spec:
     database: stage
     permissions:
