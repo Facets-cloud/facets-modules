@@ -73,9 +73,9 @@ jobs:
             cat control_planes.json
             # Loop through all control planes and run commands in parallel
             for key in $(jq -r 'keys[]' control_planes.json); do
-              URL=$(jq -r ".[$key].URL" control_planes.json)
-              USERNAME=$(jq -r ".[$key].Username" control_planes.json)
-              TOKEN_REF_NAME=$(jq -r ".[$key].TokenRef" control_planes.json)
+              URL=$(jq -r ".$key.URL" control_planes.json)
+              USERNAME=$(jq -r ".$key.Username" control_planes.json)
+              TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
               TOKEN=$(echo "$ALL_SECRETS" | jq -r ".\"$TOKEN_REF_NAME\"")
               echo "Starting process for control plane: $key"
               curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH" &
