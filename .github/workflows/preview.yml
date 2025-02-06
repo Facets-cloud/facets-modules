@@ -36,7 +36,7 @@ jobs:
         id: set_control_planes
         run: |
           set -e
-          echo "CONTROL_PLANES=${{ vars.control_planes }}" >> $GITHUB_ENV
+          echo 'CONTROL_PLANES=${{ vars.control_planes }}' >> $GITHUB_ENV
 
       - name: Get module directory path
         id: get_module_path
