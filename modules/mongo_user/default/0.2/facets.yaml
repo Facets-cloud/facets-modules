@@ -14,9 +14,9 @@ inputs:
   kubernetes_details:
     optional: false
     type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the CRD for managing mongo user will be created
     default:
-      displayName: Kubernetes Cluster
-      description: Details of Kubernetes where the CRD for managing mongo user will be created
       resource_type: kubernetes_cluster
       resource_name: default
   mongodb_auth_operator_details:
