@@ -1,23 +1,180 @@
 intent: service_bus
 flavor: azure_service_bus
-version: '0.1'
-description: Adds service_bus - azure_service_bus flavor
+version: "0.1"
+description: Create an Azure Service Bus
 clouds:
-- azure
+  - azure
+inputs:
+  network_details:
+    optional: true
+    type: "@outputs/azure_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+spec:
+  title: Azure Service Bus
+  description: Specification of the Azure Service Bus
+  type: object
+  properties:
+    sku:
+      type: string
+      title: SKU
+      description: The SKU of the Azure Service Bus
+      enum:
+        - Basic
+        - Standard
+        - Premium
+      default: Standard
+    capacity:
+      type: integer
+      title: Capacity
+      description: The capacity of the Azure Service Bus
+      default: 0
+    queues:
+      type: object
+      title: Queues
+      description: Configuration for the queues
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        type: object
+        properties:
+          name:
+            type: string
+            title: Queue Name
+            description: Name of the queue
+          status:
+            type: string
+            title: Status
+            description: Status of the queue
+            enum:
+              - Active
+              - Disabled
+            default: Active
+          lock_duration:
+            type: integer
+            title: Lock Duration
+            description: Lock duration in minutes (enter number only)
+            default: 1
+          max_message_size_in_kilobytes:
+            type: integer
+            title: Max Message Size (KB)
+            description: Maximum message size in kilobytes
+          max_size_in_megabytes:
+            type: integer
+            title: Max Size (MB)
+            description: Maximum size in megabytes
+          requires_duplicate_detection:
+            type: boolean
+            title: Requires Duplicate Detection
+            description: Whether duplicate detection is required
+            default: false
+          requires_session:
+            type: boolean
+            title: Requires Session
+            description: Whether session is required
+            default: false
+          dead_lettering_on_message_expiration:
+            type: boolean
+            title: Dead Lettering on Message Expiration
+            description: Whether dead lettering on message expiration is enabled
+            default: false
+          max_delivery_count:
+            type: integer
+            title: Max Delivery Count
+            description: Maximum delivery count
+            default: 10
+          enable_batched_operations:
+            type: boolean
+            title: Enable Batched Operations
+            description: Whether batched operations are enabled
+            default: true
+          enable_partitioning:
+            type: boolean
+            title: Enable Partitioning
+            description: Whether partitioning is enabled
+            default: false
+          enable_express:
+            type: boolean
+            title: Enable Express
+            description: Whether express is enabled
+            default: false
+          forward_to:
+            type: string
+            title: Forward To
+            description: Forward to another queue or topic
+          forward_dead_lettered_messages_to:
+            type: string
+            title: Forward Dead Lettered Messages To
+            description: Forward dead lettered messages to another queue or topic
+
+    topics:
+      type: object
+      title: Topics
+      description: Configuration for the topics
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        type: object
+        properties:
+          name:
+            type: string
+            title: Topic Name
+            description: Name of the topic
+          status:
+            type: string
+            title: Status
+            description: Status of the topic
+            enum:
+              - Active
+              - Disabled
+            default: Active
+          enable_batched_operations:
+            type: boolean
+            title: Enable Batched Operations
+            description: Whether batched operations are enabled
+            default: true
+          enable_express:
+            type: boolean
+            title: Enable Express
+            description: Whether express is enabled
+            default: false
+          enable_partitioning:
+            type: boolean
+            title: Enable Partitioning
+            description: Whether partitioning is enabled
+            default: false
+          max_message_size_in_kilobytes:
+            type: integer
+            title: Max Message Size (KB)
+            description: Maximum message size in kilobytes
+          max_size_in_megabytes:
+            type: integer
+            title: Max Size (MB)
+            description: Maximum size in megabytes
+          requires_duplicate_detection:
+            type: boolean
+            title: Requires Duplicate Detection
+            description: Whether duplicate detection is required
+            default: false
+          support_ordering:
+            type: boolean
+            title: Support Ordering
+            description: Whether ordering is supported
+            default: false
+
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/service_bus/service_bus.schema.json
   kind: service_bus
   flavor: azure_service_bus
-  version: '0.1'
-  disabled: true
+  version: "0.1"
+  lifecycle: ENVIRONMENT
+  disabled: false
+  depends_on: []
   metadata:
+    name: azure_service_bus
     tags: {}
   spec:
-    size:
-      sku: ''
-      capacity: ''
-    topics:
-      test:
-        name: ''
-        status: Active
-      test2: {}
+    instance_name: "test_instance"
+    spec:
+      sku: "Standard"
+      capacity: 0
+      queues: {}
+      topics: {}
