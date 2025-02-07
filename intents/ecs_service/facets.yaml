@@ -2,3 +2,4 @@ name: ecs_service
 type: Service
 displayName: ECS Service
 description: An Amazon ECS service for running and managing containers in a scalable and reliable manner.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e3ee06b2739a66cd0_unknown-ecs_service.svg

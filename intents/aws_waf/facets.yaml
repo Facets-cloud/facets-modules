@@ -2,3 +2,4 @@ name: aws_waf
 type: default
 displayName: AWS WAF
 description: Web Application Firewall that protects applications against common web exploits.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333eb375c629d7047388_Default-aws_waf.svg
