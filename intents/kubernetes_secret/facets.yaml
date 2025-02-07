@@ -2,3 +2,4 @@ name: kubernetes_secret
 type: K8s
 displayName: Kubernetes Secret
 description: A Kubernetes resource that defines workloads, services, and configurations, enabling orchestration of containerized applications.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333eb375c629d70473a5_K8s-secret.svg
