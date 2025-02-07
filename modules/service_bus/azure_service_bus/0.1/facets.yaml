@@ -166,7 +166,7 @@ sample:
   flavor: azure_service_bus
   version: "0.1"
   lifecycle: ENVIRONMENT
-  disabled: false
+  disabled: true
   depends_on: []
   metadata:
     name: azure_service_bus
