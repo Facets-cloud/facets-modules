@@ -18,6 +18,13 @@ spec:
       description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. To add more manifests, use the Additional Resources section below.
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter kubernetes manifest in YAML format
+    customValues:
+      type: object
+      title: Custom Values
+      description: The values to be passed on to the chart in the form of a YAML object
+      x-ui-editor: true
+      x-ui-editor-language: yaml
+      x-ui-placeholder: Enter values in YAML format    
     additional_resources:
       type: object
       title: Additional Resources
