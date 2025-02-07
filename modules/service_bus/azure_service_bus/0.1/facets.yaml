@@ -55,6 +55,7 @@ spec:
             title: Lock Duration
             description: Lock duration in minutes (enter number only)
             default: 1
+            maximum: 5
           max_message_size_in_kilobytes:
             type: integer
             title: Max Message Size (KB)
@@ -160,6 +161,60 @@ spec:
             title: Support Ordering
             description: Whether ordering is supported
             default: false
+          subscriptions:
+            type: object
+            title: Subscriptions
+            description: Configuration for the subscriptions
+            patternProperties:
+              keyPattern: "^[a-zA-Z0-9_.-]*$"
+              type: object
+              properties:
+                name:
+                  type: string
+                  title: Subscription Name
+                  description: Name of the subscription
+                max_delivery_count:
+                  type: integer
+                  title: Max Delivery Count
+                  description: Maximum delivery count
+                  default: 10
+                lock_duration:
+                  type: integer
+                  title: Lock Duration
+                  description: Lock duration in minutes (enter number only)
+                  default: 1
+                  maximum: 5
+                dead_lettering_on_message_expiration:
+                  type: boolean
+                  title: Dead Lettering on Message Expiration
+                  description: Whether dead lettering on message expiration is enabled
+                  default: false
+                enable_batched_operations:
+                  type: boolean
+                  title: Enable Batched Operations
+                  description: Whether batched operations are enabled
+                  default: true
+                requires_session:
+                  type: boolean
+                  title: Requires Session
+                  description: Whether session is required
+                  default: false
+                status:
+                  type: string
+                  title: Status
+                  description: Status of the subscription
+                  enum:
+                    - Active
+                    - Disabled
+                  default: Active
+                forward_to:
+                  type: string
+                  title: Forward To
+                  description: Forward to another queue or topic
+                forward_dead_lettered_messages_to:
+                  type: string
+                  title: Forward Dead Lettered Messages To
+                  description: Forward dead lettered messages to another queue or topic
 
 sample:
   kind: service_bus
