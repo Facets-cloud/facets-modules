@@ -2,3 +2,4 @@ name: schemahero_table
 type: K8s
 displayName: Schemahero Table
 description: Intent to configure table of a database for schema migration.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e0fc0d5850a27a2f7_K8s-schemahero_table.svg
