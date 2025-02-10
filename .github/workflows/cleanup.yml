@@ -1,13 +1,14 @@
-name: Cleanup Feature Branch Modules
+name: Cleanup Preview Modules
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [ closed ]
+    branches: [ 'master' ]
 
 jobs:
   cleanup:
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'workflow_dispatch'
     runs-on: iac-arc
 
     steps:
@@ -29,5 +30,5 @@ jobs:
 
       - name: Execute cleanup script
         env:
-          GITHUB_REF_NAME: ${{ github.ref }}
+          GITHUB_REF_NAME: ${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.pull_request.head.ref }}
         run: python .github/workflows/innersourcing/cleanup.py
