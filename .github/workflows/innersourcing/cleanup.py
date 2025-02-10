@@ -54,7 +54,6 @@ if __name__ == '__main__':
         token = secrets.get(value.get('TokenRef', ""), '')
         # Assuming the first URL is used for API calls
         modules = get(cp_url + '/cc-ui/v1/modules/all', username, token, {'allowPreviewModules': 'true'})
-        print(modules)
 
         for module in modules:
             version = module.get('version', '')
