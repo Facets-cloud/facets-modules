@@ -23,7 +23,7 @@ spec:
       title: Custom Values
       description: The values to be passed on to the chart in the form of a YAML object
       x-ui-editor: true
-      x-ui-editor-language: yaml
+      x-ui-editor-language: python
       x-ui-placeholder: Enter values in YAML format    
     additional_resources:
       type: object
