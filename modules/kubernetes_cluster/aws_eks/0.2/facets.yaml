@@ -240,6 +240,7 @@ spec:
     addons:
       title: Addons
       description: Specifications of addons to be installed
+      type: object
       patternProperties:
         type: object
         title: Addon Name
