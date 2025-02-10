@@ -57,8 +57,10 @@ if __name__ == '__main__':
 
         for module in modules:
             version = module.get('version', '')
+            intent = module.get('intent', '')
+            flavor = module.get('flavor', '')
             stage = module.get('stage', '')
             if f'-{feature_branch_name}' in version and stage == "PREVIEW":
                 module_id = module.get('id', '')
                 delete(cp_url + f'/cc-ui/v1/modules/{module_id}', username, token)
-                print(f"Deleted module with ID: {module_id} from control plane {cp_url}")
+                print(f"Deleted module with ID: {module_id} Intent: {intent} Flavor: {flavor} Version: {version} from control plane {cp_url}")
