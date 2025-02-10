@@ -48,7 +48,7 @@ if __name__ == '__main__':
     # Load control planes and secrets
     control_planes = read_json_file('control_planes.json')
     secrets = read_json_file('secrets.json')
-    feature_branch_name = os.getenv('GITHUB_REF_NAME', 'refs/heads/develop')
+    feature_branch_name = os.getenv('GITHUB_REF_NAME')
 
     for key, value in control_planes.items():
         cp_url = value.get('URL', "")
