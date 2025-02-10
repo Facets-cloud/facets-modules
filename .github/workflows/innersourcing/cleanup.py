@@ -37,18 +37,16 @@ def delete(url, username, password):
         if response.status_code != 200:
             print(f"Error: Received status code {response.status_code}.")
             print("Response message:", response.text)  # Print the error message from the response
-            return None
 
-        return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error during API call: {e}")
-        return None
 
 if __name__ == '__main__':
     # Load control planes and secrets
     control_planes = read_json_file('control_planes.json')
     secrets = read_json_file('secrets.json')
-    feature_branch_name = os.getenv('GITHUB_REF_NAME', 'refs/heads/develop')
+    feature_branch_name = os.getenv('GITHUB_REF_NAME')
+    print(f'Cleaning Facets preview modules for branch {feature_branch_name}')
 
     for key, value in control_planes.items():
         cp_url = value.get('URL', "")
@@ -59,7 +57,10 @@ if __name__ == '__main__':
 
         for module in modules:
             version = module.get('version', '')
-            if f'-{feature_branch_name}' in version:
+            intent = module.get('intent', '')
+            flavor = module.get('flavor', '')
+            stage = module.get('stage', '')
+            if f'-{feature_branch_name}' in version and stage == "PREVIEW":
                 module_id = module.get('id', '')
                 delete(cp_url + f'/cc-ui/v1/modules/{module_id}', username, token)
-                print(f"Deleted module with ID: {module_id} from control plane {cp_url}")
+                print(f"Deleted module with ID: {module_id} Intent: {intent} Flavor: {flavor} Version: {version} from control plane {cp_url}")
