@@ -13,7 +13,6 @@ concurrency:
 jobs:
   validate-bootstrapper:
     runs-on: iac-arc
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       script_output: ${{ steps.run.outputs.script_output }}
       exit_status: ${{ steps.run.outputs.exit_status }}
@@ -29,7 +28,7 @@ jobs:
           ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
         run: |
           set +e
-          output=$(python .github/workflows/validate-bootstrapper.py)
+          output=$(python .github/workflows/innersourcing/validate-bootstrapper.py)
           exit_status=${PIPESTATUS[0]}
           echo "script_output<<EOF" >> $GITHUB_OUTPUT
           echo "$output" >> $GITHUB_OUTPUT
