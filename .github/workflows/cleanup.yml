@@ -29,9 +29,15 @@ jobs:
           echo '${{ toJson(secrets) }}' > secrets.json
 
       - name: Execute cleanup script
+<<<<<<< HEAD
         run: |
           set -e
           set -o pipefail
           export GITHUB_REF_NAME="${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event.pull_request.head.ref }}"
           echo "Exporting GITHUB_REF_NAME: $GITHUB_REF_NAME"
           python3 .github/workflows/innersourcing/cleanup.py
+=======
+        env:
+          GITHUB_REF_NAME: ${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.pull_request.head.ref }}
+        run: python .github/workflows/innersourcing/cleanup.py
+>>>>>>> 32fb2f4 (Innersourcing cleanup workflow fixes (#250))
