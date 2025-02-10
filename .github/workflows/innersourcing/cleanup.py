@@ -63,7 +63,14 @@ if __name__ == '__main__':
             intent = module.get('intent', '')
             flavor = module.get('flavor', '')
             stage = module.get('stage', '')
+<<<<<<< HEAD
             if ref == feature_branch_name and stage == "PREVIEW":
                 module_id = module.get('id', '')
                 delete(cp_url + f'/cc-ui/v1/modules/{module_id}', username, token)
                 print(f"Deleted module with ID: {module_id} Intent: {intent} Flavor: {flavor} Version: {version} from control plane {cp_url}")
+=======
+            if f'-{feature_branch_name}' in version and stage == "PREVIEW":
+                module_id = module.get('id', '')
+                delete(cp_url + f'/cc-ui/v1/modules/{module_id}', username, token)
+                print(f"Deleted module with ID: {module_id} Intent: {intent} Flavor: {flavor} Version: {version} from control plane {cp_url}")
+>>>>>>> 32fb2f4 (Innersourcing cleanup workflow fixes (#250))
