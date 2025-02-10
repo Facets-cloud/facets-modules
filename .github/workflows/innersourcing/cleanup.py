@@ -49,7 +49,7 @@ if __name__ == '__main__':
     control_planes = read_json_file('control_planes.json')
     secrets = read_json_file('secrets.json')
     feature_branch_name = os.getenv('GITHUB_REF_NAME')
-    print(f'Cleaning preview modules for branch {feature_branch_name}')
+    print(f'Cleaning Facets preview modules for branch {feature_branch_name}')
 
     for key, value in control_planes.items():
         cp_url = value.get('URL', "")
