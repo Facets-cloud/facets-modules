@@ -49,6 +49,7 @@ if __name__ == '__main__':
     control_planes = read_json_file('control_planes.json')
     secrets = read_json_file('secrets.json')
     feature_branch_name = os.getenv('GITHUB_REF_NAME')
+    print(f'Cleaning preview modules for branch {feature_branch_name}')
 
     for key, value in control_planes.items():
         cp_url = value.get('URL', "")
@@ -59,7 +60,8 @@ if __name__ == '__main__':
 
         for module in modules:
             version = module.get('version', '')
-            if f'-{feature_branch_name}' in version:
+            stage = module.get('stage', '')
+            if f'-{feature_branch_name}' in version and stage == "PREVIEW":
                 module_id = module.get('id', '')
                 delete(cp_url + f'/cc-ui/v1/modules/{module_id}', username, token)
                 print(f"Deleted module with ID: {module_id} from control plane {cp_url}")
