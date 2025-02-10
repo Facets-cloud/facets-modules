@@ -25,14 +25,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r .github/workflows/zip_modules/requirements.txt
+          pip install -r .github/workflows/innersourcing/requirements.txt
 
       - name: Generate Module Zips
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           S3_BUCKET_NAME: ${{ vars.FACETS_MODULES_BUCKET_NAME }}
-        run: python .github/workflows/zip_modules/zip_modules.py
+        run: python .github/workflows/innersourcing/zip_modules.py
 
       - name: Post Success to a Slack channel
         id: slack
