@@ -29,5 +29,5 @@ jobs:
 
       - name: Execute cleanup script
         env:
-          GITHUB_REF_NAME: ${{ github.head_ref }}
+          GITHUB_REF_NAME: ${{ github.ref }}
         run: python .github/workflows/innersourcing/cleanup.py
