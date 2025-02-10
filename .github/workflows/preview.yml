@@ -59,7 +59,7 @@ jobs:
         run: |
           set -e
           set -o pipefail
-          GITHUB_REF="${{ ${{ github.ref_name }} }}"
+          GITHUB_REF="${{ github.ref_name }}"
           FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
           # Check if facets.yaml exists
           if [ ! -f "$FACETS_YAML_PATH" ]; then
