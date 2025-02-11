@@ -1,0 +1,18 @@
+{
+    "provides": "mongo_user",
+    "flavors": [
+        "default"
+    ],
+    "supported_clouds": [
+        "aws",
+        "gcp",
+        "azure",
+        "kubernetes"
+    ],
+    "inputs": {},
+    "version": "0.2",
+    "depends_on": [],
+    "lifecycle": "ENVIRONMENT",
+    "input_type": "instance",
+    "composition": {}
+}

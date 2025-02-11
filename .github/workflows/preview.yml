@@ -1,0 +1,101 @@
+name: Preview Module
+
+on:
+  workflow_dispatch:
+    inputs:
+      intent:
+        description: 'Intent for the module'
+        required: true
+      flavor:
+        description: 'Flavor for the module'
+        required: true
+      version:
+        description: 'Version of the module'
+        required: true
+      url:
+        description: 'Control Plane URL'
+        required: false
+      username:
+        description: 'Control Plane Username'
+        required: false
+      token:
+        description: 'Control Plane Token'
+        required: false
+
+jobs:
+  run-command:
+    runs-on: iac-arc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Create control planes JSON file
+        id: set_control_planes
+        run: |
+          set -e
+          set -o pipefail
+          JSON_CONTENT='${{ vars.DEV_CONTROL_PLANES }}'
+          echo "$JSON_CONTENT" > control_planes.json
+
+      - name: Get module directory path
+        id: get_module_path
+        run: |
+          set -e
+          MODULE_DIR_PATH=$(jq -r ".[] | select(.intent == \"${{ github.event.inputs.intent }}\" and .flavor == \"${{ github.event.inputs.flavor }}\" and .version == \"${{ github.event.inputs.version }}\") | .relativePath" index.json)
+
+          # Check if MODULE_DIR_PATH is found
+          if [ -z "$MODULE_DIR_PATH" ]; then
+            echo "Error: Module directory path not found for the intent ${{ github.event.inputs.intent }} flavor ${{ github.event.inputs.flavor }} version ${{ github.event.inputs.version }}."
+            exit 1
+          fi
+
+          echo "MODULE_DIR_PATH=$MODULE_DIR_PATH" >> $GITHUB_ENV
+          echo "MODULE_DIR_PATH=$MODULE_DIR_PATH"
+
+      - name: Update facets.yaml version
+        run: |
+          set -e
+          set -o pipefail
+          GITHUB_REF="${{ github.ref_name }}"
+          FACETS_YAML_PATH="$MODULE_DIR_PATH/facets.yaml"
+          # Check if facets.yaml exists
+          if [ ! -f "$FACETS_YAML_PATH" ]; then
+            echo "Error: facets.yaml not found in the module directory."
+            exit 1
+          fi
+
+          echo "Updating version in $FACETS_YAML_PATH"
+          # Append the GitHub ref to the version in facets.yaml
+          yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
+          yq eval -i ".sample.version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
+
+      - name: Execute command
+        env:
+          ALL_SECRETS: ${{ toJson(secrets) }}
+        run: |
+          set -e
+          set -o pipefail
+          if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
+            # Use provided URL, Username, and Token
+            URL="${{ github.event.inputs.url }}"
+            USERNAME="${{ github.event.inputs.username }}"
+            TOKEN="${{ github.event.inputs.token }}"
+            echo "Processing specified control plane with provided token."
+            curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH"
+          else
+            echo "Processing all control planes"
+            for key in $(jq -r 'keys[]' control_planes.json); do
+              URL=$(jq -r ".$key.URL" control_planes.json)
+              USERNAME=$(jq -r ".$key.Username" control_planes.json)
+              TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
+              TOKEN=$(echo "$ALL_SECRETS" | jq -r ".\"$TOKEN_REF_NAME\"")
+              echo "Registering to control plane $key"
+              curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$MODULE_DIR_PATH"
+            done
+
+            # Wait for all background processes and check for errors
+            wait
+          fi

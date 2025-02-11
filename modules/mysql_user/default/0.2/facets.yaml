@@ -1,0 +1,85 @@
+intent: mysql_user
+flavor: default
+version: '0.2'
+description: Adds mysql_user - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+lifecycle: ENVIRONMENT
+input_type: instance
+composition: {}
+inputs:
+  kubernetes_details:
+    type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: The details of Kubernetes where CRD for managing mysql user will be created
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+  crossplane_details:
+    type: "@output/crossplane"
+    displayName: Crossplane
+    description: Details of crossplane which will be responsible to create mysql users
+    optional: false
+  mysql_details:
+    type: "@output/mysql"
+    displayName: MySQL
+    description: The details of MySQL where the user needs to be created
+    optional: false
+spec:
+  title: MySQL User Spec
+  description: Specification for mysql user
+  type: object
+  properties:
+    permissions:
+      title: Permissions
+      description: Map of permissions that will be provided to the postgres user
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_-]+$"
+        type: object
+        title: Permission
+        description: Permission Object
+        properties:
+          permission:
+            type: string
+            title: Permission
+            description: Permission for the postgres user
+            enum:
+            - RO
+            - RWO
+            - ADMIN
+            - RWC
+            - RWD
+            - RWCT
+          database:
+            type: string
+            title: Database
+            description: Database name where this permission should be given
+            pattern: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          table:
+            type: string
+            title: Table
+            description: Table in the database where this permission should be given
+            patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        required:
+        - permission
+        - database
+        - table
+  required:
+  - permissions
+sample:
+  kind: mysql_user
+  flavor: default
+  version: '0.2'
+  metadata: {}
+  spec:
+    permissions:
+      permission1:
+        permission: ADMIN
+        database: '*'
+        table: '*'
+  disabled: true

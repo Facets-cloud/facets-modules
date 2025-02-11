@@ -2,3 +2,4 @@ name: kong
 type: K8s
 displayName: Kong
 description: A kubernetes deployment of kong
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e590c1939e39d9042_unknown-kong.svg
