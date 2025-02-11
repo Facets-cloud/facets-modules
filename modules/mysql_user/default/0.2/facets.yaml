@@ -19,7 +19,6 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
-<<<<<<< HEAD
   crossplane_details:
     type: "@output/crossplane"
     displayName: Crossplane
