@@ -7,19 +7,25 @@ clouds:
 - gcp
 - azure
 - kubernetes
-depends_on: [ ]
+depends_on: []
 lifecycle: ENVIRONMENT
 input_type: instance
 inputs:
   kubernetes_details:
     optional: false
-    type: "@outputs/kubernetes"
+    type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the CRD for managing mongo user will be created
     default:
-      displayName: Kubernetes Cluster
       resource_type: kubernetes_cluster
       resource_name: default
+  mongodb_auth_operator_details:
+    type: "@output/mongodb_auth_operator"
+    displayName: MongoDB Auth Operator
+    description: The details of MongoDB Auth Operator which is responsible to create mongo users
+    optional: false
   mongo_details:
-    type: "@outputs/mongo"
+    type: "@output/mongo"
     displayName: Mongo
     description: The details of Mongo where the user needs to be created
     optional: false
@@ -69,7 +75,7 @@ spec:
         user:
           type: object
           title: User
-          description: The custom user details 
+          description: The custom user details
           properties:
             username:
               type: string
