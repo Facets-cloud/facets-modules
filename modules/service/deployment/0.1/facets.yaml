@@ -358,7 +358,8 @@ spec:
               x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
               x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
             scaling_on:
-              type: string
+              type: radio
+              default: CPU
               title: Scale based on
               default: CPU
               enum:
