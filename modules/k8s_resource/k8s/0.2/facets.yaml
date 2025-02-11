@@ -20,22 +20,22 @@ spec:
       x-ui-placeholder: Enter kubernetes manifest in YAML format
     customValues:
       type: object
-      title: Custom Values
-      description: The values to be passed on to the chart in the form of a YAML object
+      title: Custom Python Values
+      description: The values to be passed on to the chart in the form of a Python
       x-ui-editor: true
       x-ui-editor-language: python
       x-ui-placeholder: Enter values in YAML format  
     customJson:
       type: object
-      title: Custom Values
-      description: The values to be passed on to the chart in the form of a YAML object
+      title: Custom JSON Values
+      description: The values to be passed on to the chart in the form of a JSON object
       x-ui-editor: true
       x-ui-editor-language: json
       x-ui-placeholder: Enter values in JSON format      
     customScript:
       type: object
-      title: Custom Values
-      description: The values to be passed on to the chart in the form of a YAML object
+      title: Custom Rust Values
+      description: The values to be passed on to the chart in the form Rust
       x-ui-editor: true
       x-ui-editor-language: rust
       x-ui-placeholder: Enter values in Rust format    
