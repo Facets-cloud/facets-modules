@@ -24,7 +24,21 @@ spec:
       description: The values to be passed on to the chart in the form of a YAML object
       x-ui-editor: true
       x-ui-editor-language: python
-      x-ui-placeholder: Enter values in YAML format    
+      x-ui-placeholder: Enter values in YAML format  
+    customJson:
+      type: object
+      title: Custom Values
+      description: The values to be passed on to the chart in the form of a YAML object
+      x-ui-editor: true
+      x-ui-editor-language: json
+      x-ui-placeholder: Enter values in JSON format      
+    customScript:
+      type: object
+      title: Custom Values
+      description: The values to be passed on to the chart in the form of a YAML object
+      x-ui-editor: true
+      x-ui-editor-language: rust
+      x-ui-placeholder: Enter values in Rust format    
     additional_resources:
       type: object
       title: Additional Resources
