@@ -101,9 +101,6 @@ spec:
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-output-type: "iam_policy_arn"
-                    x-ui-api-source:
-                       endpoint: "/cc-ui/v1/dropdown/{{stackName}}/output/{{outputType}}/references"
-                       method: GET
                     x-ui-typeable: true
                 required:
                   - arn
@@ -732,7 +729,7 @@ spec:
         disruption_policy:
           type: object
           title: Disruption Policy
-          description: The disruption policy for the service
+          description: The disruption policy for the service. Both min available and max unavailable cannot be specified simultaneously in disruption policy. You must fill one of the two fields when defining a disruption policy to avoid release failures.
           properties:
             min_available:
               type: string

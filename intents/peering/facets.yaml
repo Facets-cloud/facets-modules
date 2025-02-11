@@ -2,3 +2,4 @@ name: peering
 type: default
 displayName: Peering
 description: Networking connection between VPCs, enabling private communication across environments.
+iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0cc958e099a4e3561cc_peering.svg

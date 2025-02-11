@@ -1,0 +1,12 @@
+name: kubernetes
+out:
+  type: object
+  title: Kubernetes Cluster
+  description: Kubernetes
+  properties:
+    interfaces: null
+    attributes:
+      legacy_outputs:
+        type: object
+        required: true
+        secret: true

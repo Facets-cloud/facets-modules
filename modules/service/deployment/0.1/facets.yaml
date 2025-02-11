@@ -73,9 +73,6 @@ spec:
                     x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
                     x-ui-output-type: "iam_policy_arn"
-                    x-ui-api-source:
-                       endpoint: "/cc-ui/v1/dropdown/{{stackName}}/output/{{outputType}}/references"
-                       method: GET
                     x-ui-typeable: true
                 required:
                   - arn
@@ -142,6 +139,51 @@ spec:
       title: Runtime (Main Application Container)
       description: Customize service runtime settings like ports, healthchecks etc.
       properties:
+        lifecycle:
+          type: object
+          title: Lifecycle
+          description: Define lifecycle hooks for the container (preStop and postStart).
+          properties:
+            preStop:
+              type: object
+              title: PreStop Hook
+              description: Actions to take before the container is stopped.
+              properties:
+                exec:
+                  type: object
+                  title: Exec Command
+                  description: Command to execute inside the container.
+                  properties:
+                    command:
+                      type: array
+                      title: Command
+                      description: Command to run in the container.
+                      items:
+                        type: string
+                      x-ui-command: true
+              required:
+                - exec
+            postStart:
+              type: object
+              title: PostStart Hook
+              description: Actions to take after the container is started.
+              properties:
+                exec:
+                  type: object
+                  title: Exec Command
+                  description: Command to execute inside the container.
+                  properties:
+                    command:
+                      type: array
+                      title: Command
+                      description: Command to run in the container.
+                      items:
+                        type: string
+                      x-ui-command: true
+              required:
+                - exec
+          x-ui-toggle: true
+          x-ui-override-disable: true
         command:
           type: array
           title: Command
@@ -630,6 +672,7 @@ spec:
         - health_checks
         - autoscaling
         - volumes
+        - lifecycle
         - command
         - args
     release:
@@ -704,7 +747,7 @@ spec:
         disruption_policy:
           type: object
           title: Disruption Policy
-          description: The disruption policy for the service
+          description: The disruption policy for the service. Both min available and max unavailable cannot be specified simultaneously in disruption policy. You must fill one of the two fields when defining a disruption policy to avoid release failures.
           properties:
             min_available:
               type: string
