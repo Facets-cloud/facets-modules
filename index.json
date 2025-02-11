@@ -1585,5 +1585,44 @@
       "azure",
       "kubernetes"
     ]
+  },
+  {
+    "intent": "database_operator",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/database_operator/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "crossplane",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/crossplane/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
+  },
+  {
+    "intent": "mongodb_auth_operator",
+    "flavor": "default",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/mongodb_auth_operator/default/0.1/",
+    "clouds": [
+      "aws",
+      "gcp",
+      "azure",
+      "kubernetes"
+    ]
   }
 ]
