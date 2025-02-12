@@ -1,6 +1,6 @@
 # using random_password resource instead of 3_utility/password since minio password has regex constrait [\w+=,.@-]+
 resource "random_password" "minio_password" {
-  count            = local.is_minio_enabled && (local.minio_password != null || local.minio_password != {}) ? 1 : 0
+  count            = local.is_minio_enabled && (local.minio_password == null) ? 1 : 0
   length           = 16
   special          = true
   override_special = "+=,.@-"

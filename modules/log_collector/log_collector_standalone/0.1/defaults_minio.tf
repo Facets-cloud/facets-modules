@@ -7,7 +7,7 @@ locals {
     replicas         = local.minio_replica
     drivesPerNode    = 2
     rootUser         = local.minio_username
-    rootPassword     = try(local.minio_password, random_password.minio_password[0].result)
+    rootPassword     = lookup(lookup(local.minio, "auth", {}), "rootPassword", random_password.minio_password[0].result)
     buckets = [
       {
         name   = "chunks"
