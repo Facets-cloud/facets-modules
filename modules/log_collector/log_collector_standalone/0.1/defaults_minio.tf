@@ -1,4 +1,5 @@
 locals {
+  minio_random_password      =  try(random_password.minio_password[0].result, null)
   minio_instance_name = "${local.instance_name}-minio"
   default_minio = {
     mode             = "standalone"
@@ -7,7 +8,7 @@ locals {
     replicas         = local.minio_replica
     drivesPerNode    = 2
     rootUser         = local.minio_username
-    rootPassword     = lookup(lookup(local.minio, "auth", {}), "rootPassword", random_password.minio_password[0].result)
+    rootPassword     = lookup(lookup(local.minio, "auth", {}), "rootPassword", local.minio_random_password)
     buckets = [
       {
         name   = "chunks"
