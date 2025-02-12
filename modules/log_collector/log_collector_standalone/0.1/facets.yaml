@@ -90,7 +90,6 @@ spec:
         auth:
           title: Authentication
           type: object
-          required: [ "rootUser", "rootPassword" ]
           properties:
             rootUser:
               type: string
