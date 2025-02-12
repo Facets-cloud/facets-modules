@@ -96,7 +96,7 @@ spec:
               minItems: 1
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -107,7 +107,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -118,7 +118,7 @@ spec:
                 - SPOT
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -128,7 +128,7 @@ spec:
               maximum: 200
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             enable_multi_az:
               title: Enable Multi Availability Zones
@@ -136,7 +136,7 @@ spec:
               type: boolean
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             enable_secure_boot:
               title: Enable Secure Boot for Default Nodepool
@@ -144,7 +144,7 @@ spec:
               type: boolean
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]
             iam:
               title: IAM
@@ -168,7 +168,7 @@ spec:
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.node_pools.fc-default.enable
                 values: [true]  
         fc-dedicated:
           title: Facets Dedicated Nodepool Spec
@@ -189,7 +189,7 @@ spec:
               minItems: 1
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -200,7 +200,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -211,7 +211,7 @@ spec:
                 - SPOT
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -221,7 +221,7 @@ spec:
               maximum: 200
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
             enable_secure_boot:
               title: Enable Secure Boot for Default Nodepool
@@ -229,7 +229,7 @@ spec:
               type: boolean
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
             iam:
               title: IAM
@@ -253,7 +253,7 @@ spec:
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.node_pools.fc-dedicated.enable
                 values: [true]
   x-ui-order: ["cluster", "node_pools", "maintenance_windows", "auto_upgrade"]
   required: ["cluster", "node_pools"]
