@@ -82,9 +82,9 @@ jobs:
           set -o pipefail
           IFS=' ' read -r -a dirs <<< "${{ env.changed_dirs }}"
           for key in $(jq -r 'keys[]' control_planes.json); do
-            URL=$(jq -r "$key.URL" control_planes.json)
-            USERNAME=$(jq -r "$key.Username" control_planes.json)
-            TOKEN_REF_NAME=$(jq -r "$key.TokenRef" control_planes.json)
+            URL=$(jq -r ".$key.URL" control_planes.json)
+            USERNAME=$(jq -r ".$key.Username" control_planes.json)
+            TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
             echo "Creating/Updating Intents to $key control plane"
 
@@ -98,7 +98,7 @@ jobs:
 
                 # Send the JSON content using curl with Basic Auth to the specified path
                 echo "Registering module with: $dir"
-                curl -X POST "$URL/cc-ui/v1/intents" \
+                curl -f -X POST "$URL/cc-ui/v1/intents" \
                   -H "Content-Type: application/json" \
                   -u "$USERNAME:$TOKEN" \
                   -d "$JSON_CONTENT"
