@@ -65,7 +65,7 @@ jobs:
           set -e
           set -o pipefail
           if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
-            changed_files=${{ github.event.inputs.module_dirs }}
+            changed_dirs=${{ github.event.inputs.module_dirs }}
           else
             # Fetch changed files
             changed_files=$(git diff --name-only HEAD^ HEAD)
