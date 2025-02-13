@@ -30,5 +30,8 @@ jobs:
 
       - name: Execute cleanup script
         env:
-          GITHUB_REF_NAME: ${{ github.event_name == 'workflow_dispatch' && github.ref || github.event.pull_request.head.ref }}
-        run: python .github/workflows/innersourcing/cleanup.py
+          GITHUB_REF_NAME: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || github.event.pull_request.head.ref }}
+        run: |
+         set -e
+         set -o pipefail
+         python3 .github/workflows/innersourcing/cleanup.py
