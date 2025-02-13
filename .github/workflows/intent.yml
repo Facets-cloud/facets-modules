@@ -98,7 +98,7 @@ jobs:
 
                 # Send the JSON content using curl with Basic Auth to the specified path
                 echo "Registering module with: $dir"
-                curl -X POST "$URL/cc-ui/v1/intents" \
+                curl -f -X POST "$URL/cc-ui/v1/intents" \
                   -H "Content-Type: application/json" \
                   -u "$USERNAME:$TOKEN" \
                   -d "$JSON_CONTENT"
