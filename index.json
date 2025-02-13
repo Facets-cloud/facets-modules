@@ -784,6 +784,19 @@
     ]
   },
   {
+    "intent": "log_collector",
+    "flavor": "loki_standalone_k8s",
+    "version": "0.1",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/log_collector/loki_standalone_k8s/0.1/",
+    "clouds": [
+      "gcp",
+      "kubernetes",
+      "azure",
+      "aws"
+    ]
+  },
+  {
     "intent": "snapshot_schedule",
     "flavor": "default",
     "version": "0.1",
