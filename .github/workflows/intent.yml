@@ -1,0 +1,110 @@
+name: Create/Update Intent
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+      - 'develop'
+    paths:
+      - 'intents/**/facets.yaml'
+  workflow_dispatch:
+    inputs:
+      intent_dirs:
+        description: 'Directories of the module'
+        required: true
+      url:
+        description: 'Control Plane URL'
+        required: true
+      username:
+        description: 'Control Plane Username'
+        required: true
+      token:
+        description: 'Control Plane Token'
+        required: true
+
+jobs:
+  run-command:
+    runs-on: iac-arc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 2
+
+      - name: Create control planes and secrets JSON file
+        id: set_control_planes
+        env:
+          ALL_SECRETS: ${{ toJson(secrets) }}
+        run: |
+          set -e
+          set -o pipefail
+          if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
+            # Use provided URL, Username, and Token
+            echo '{
+              "provided": {
+                "Name": "provided",
+                "URL": "${{ github.event.inputs.url }}",
+                "Username": "${{ github.event.inputs.username }}",
+                "TokenRef": "PROVIDED_TOKEN"
+              }
+            }' > control_planes.json
+            echo '{
+              "PROVIDED_TOKEN": "${{ github.event.inputs.token }}"
+            }' > secrets.json
+          else
+            JSON_CONTENT='${{ vars.DEV_CONTROL_PLANES }}'
+            echo "$JSON_CONTENT" > control_planes.json
+            echo "$ALL_SECRETS" > secrets.json
+          fi
+
+      - name: Get Unique Changed Directories
+        id: changed_dirs
+        run: |
+          set -e
+          set -o pipefail
+          if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
+            changed_dirs=${{ github.event.inputs.intent_dirs }}
+          else
+            # Fetch changed files
+            changed_files=$(git diff --name-only HEAD^ HEAD)
+            # Get unique directories from changed files as a space-separated string
+            changed_dirs=$(echo "$changed_files" | xargs -n 1 dirname | sort -u | tr '\n' ' ')
+          fi
+          # Output the unique directories as an environment variable
+          echo "changed_dirs=$changed_dirs"
+          echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
+
+      - name: Execute command
+        run: |
+          set -e
+          set -o pipefail
+          IFS=' ' read -r -a dirs <<< "${{ env.changed_dirs }}"
+          for key in $(jq -r 'keys[]' control_planes.json); do
+            URL=$(jq -r "$key.URL" control_planes.json)
+            USERNAME=$(jq -r "$key.Username" control_planes.json)
+            TOKEN_REF_NAME=$(jq -r "$key.TokenRef" control_planes.json)
+            TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
+            echo "Creating/Updating Intents to $key control plane"
+
+            # Loop through the unique directories and check for facets.yaml 
+            for dir in "${dirs[@]}"; do
+              if [[ -f "$dir/facets.yaml" ]]; then
+                FACETS_YAML_PATH="$dir/facets.yaml"
+                
+                # Convert YAML contents to JSON
+                JSON_CONTENT=$(yq eval -o=json "$FACETS_YAML_PATH")
+
+                # Send the JSON content using curl with Basic Auth to the specified path
+                echo "Registering module with: $dir"
+                curl -X POST "$URL/cc-ui/v1/intents" \
+                  -H "Content-Type: application/json" \
+                  -u "$USERNAME:$TOKEN" \
+                  -d "$JSON_CONTENT"
+
+              else
+                echo "No facets.yaml found in $dir"
+              fi
+            done
+          done
