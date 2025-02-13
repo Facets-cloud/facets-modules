@@ -1,0 +1,4 @@
+# CODEOWNERS file
+# The infra-release-managers team will be the code owner for all files in this repository
+
+* @Facets-cloud/infra-release-managers
