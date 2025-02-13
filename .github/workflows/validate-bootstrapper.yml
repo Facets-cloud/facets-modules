@@ -28,7 +28,7 @@ jobs:
           ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
         run: |
           set +e
-          output=$(python .github/workflows/innersourcing/validate-bootstrapper.py)
+          output=$(python .github/workflows/innersourcing/validate_bootstrapper.py)
           exit_status=${PIPESTATUS[0]}
           echo "script_output<<EOF" >> $GITHUB_OUTPUT
           echo "$output" >> $GITHUB_OUTPUT

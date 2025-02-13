@@ -1,7 +1,7 @@
 import requests
 import os
 import json
-import base64
+from validate_bootstrapper import post
 from requests.auth import HTTPBasicAuth
 
 def read_json_file(file_path):
@@ -53,6 +53,8 @@ if __name__ == '__main__':
         username = value.get('Username', "")
         token = secrets.get(value.get('TokenRef', ""), '')
         # Assuming the first URL is used for API calls
+        print(f"Executing bootstrap modules in {key} cp")
+        post(cp_url + '/cc-ui/v1/modules/bootstrap', username, token, {})
         modules = get(cp_url + '/cc-ui/v1/modules/all', username, token, {'allowPreviewModules': 'true'})
 
         for module in modules:
