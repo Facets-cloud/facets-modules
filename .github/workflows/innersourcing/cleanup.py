@@ -54,7 +54,7 @@ if __name__ == '__main__':
         token = secrets.get(value.get('TokenRef', ""), '')
         # Assuming the first URL is used for API calls
         print(f"Execuring bootstrap modules in cp {cp_url}")
-        post(cp_url + '/cc-ui/v1/modules/bootstrap', username, token)
+        post(cp_url + '/cc-ui/v1/modules/bootstrap', username, token, {})
         modules = get(cp_url + '/cc-ui/v1/modules/all', username, token, {'allowPreviewModules': 'true'})
 
         for module in modules:
