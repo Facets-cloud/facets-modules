@@ -30,7 +30,7 @@ module "name" {
 }
 
 module "log_collector" {
-  source = "../../log_collector_standalone"
+  source = "github.com/Facets-cloud/facets-modules/log_collector/loki_standalone_k8s/0.1/"
 
   instance      = local.log_collector
   instance_name = lower(var.instance_name)
