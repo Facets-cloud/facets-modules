@@ -82,9 +82,9 @@ jobs:
           set -o pipefail
           IFS=' ' read -r -a dirs <<< "${{ env.changed_dirs }}"
           for key in $(jq -r 'keys[]' control_planes.json); do
-            URL=$(jq -r "$key.URL" control_planes.json)
-            USERNAME=$(jq -r "$key.Username" control_planes.json)
-            TOKEN_REF_NAME=$(jq -r "$key.TokenRef" control_planes.json)
+            URL=$(jq -r ".$key.URL" control_planes.json)
+            USERNAME=$(jq -r ".$key.Username" control_planes.json)
+            TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
             echo "Creating/Updating Intents to $key control plane"
 
