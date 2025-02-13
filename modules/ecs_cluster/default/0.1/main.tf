@@ -1,4 +1,5 @@
 locals {
+  test = true
   metadata  = lookup(var.instance, "metadata", {})
   tags      = merge(var.environment.cloud_tags, lookup(local.metadata, "tags", {}))
   spec      = lookup(var.instance, "spec", {})
