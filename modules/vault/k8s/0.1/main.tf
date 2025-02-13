@@ -1,5 +1,4 @@
 locals {
-  test = true
   advanced                 = lookup(var.instance, "advanced", {})
   k8s                      = lookup(local.advanced, "k8s", {})
   vault                    = lookup(local.k8s, "vault", {})
