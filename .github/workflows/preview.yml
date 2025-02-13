@@ -87,7 +87,7 @@ jobs:
             USERNAME=$(jq -r ".$key.Username" control_planes.json)
             TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
-            echo "Registering to  $key control plane"
+            echo "Registering to $key control plane"
             # Loop through the unique directories and check for facets.yaml 
             for dir in "${dirs[@]}"; do
               if [[ -f "$dir/facets.yaml" ]]; then
