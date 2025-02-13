@@ -797,16 +797,6 @@
     ]
   },
   {
-    "intent": "log_collector",
-    "flavor": "loki_standalone_s3",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/log_collector/loki_standalone_s3/0.1/",
-    "clouds": [
-      "aws"
-    ]
-  },
-  {
     "intent": "snapshot_schedule",
     "flavor": "default",
     "version": "0.1",
