@@ -32,6 +32,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
+          fetch-depth: 2
 
       - name: Create control planes and secrets JSON file
         id: set_control_planes
