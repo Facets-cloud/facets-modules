@@ -65,7 +65,7 @@ jobs:
           set -e
           set -o pipefail
           if [ -n "${{ github.event.inputs.url }}" ] && [ -n "${{ github.event.inputs.username }}" ] && [ -n "${{ github.event.inputs.token }}" ]; then
-            changed_dirs=${{ github.event.inputs.module_dirs }}
+            changed_dirs=${{ github.event.inputs.intent_dirs }}
           else
             # Fetch changed files
             changed_files=$(git diff --name-only HEAD^ HEAD)
@@ -81,23 +81,28 @@ jobs:
           set -e
           set -o pipefail
           IFS=' ' read -r -a dirs <<< "${{ env.changed_dirs }}"
-          GITHUB_REF="${{ github.ref_name }}"
           for key in $(jq -r 'keys[]' control_planes.json); do
-            URL=$(jq -r ".$key.URL" control_planes.json)
-            USERNAME=$(jq -r ".$key.Username" control_planes.json)
-            TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
+            URL=$(jq -r "$key.URL" control_planes.json)
+            USERNAME=$(jq -r "$key.Username" control_planes.json)
+            TOKEN_REF_NAME=$(jq -r "$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
-            echo "Registering to $key control plane"
+            echo "Creating/Updating Intents to $key control plane"
+
             # Loop through the unique directories and check for facets.yaml 
             for dir in "${dirs[@]}"; do
               if [[ -f "$dir/facets.yaml" ]]; then
                 FACETS_YAML_PATH="$dir/facets.yaml"
-                # Append the GitHub ref to the version in facets.yaml
-                echo "Updating version in $FACETS_YAML_PATH"
-                yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
-                yq eval -i ".sample.version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
-                # Register the module as preview
-                curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir"
+                
+                # Convert YAML contents to JSON
+                JSON_CONTENT=$(yq eval -o=json "$FACETS_YAML_PATH")
+
+                # Send the JSON content using curl with Basic Auth to the specified path
+                echo "Registering module with: $dir"
+                curl -X POST "$URL/cc-ui/v1/intents" \
+                  -H "Content-Type: application/json" \
+                  -u "$USERNAME:$TOKEN" \
+                  -d "$JSON_CONTENT"
+
               else
                 echo "No facets.yaml found in $dir"
               fi
