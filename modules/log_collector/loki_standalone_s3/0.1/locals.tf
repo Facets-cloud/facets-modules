@@ -1,6 +1,5 @@
 locals {
   sa_name = lower(module.name.name)
-
   spec   = lookup(var.instance, "spec", {})
   aws_s3 = lookup(local.spec, "aws_s3", {})
 
