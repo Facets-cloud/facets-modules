@@ -140,7 +140,7 @@ sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json'
   kind: log_collector
   version: '0.1'
-  flavor: loki_standalone_k8s
+  flavor: loki_standalone_s3
   disabled: true
   metadata: {}
   spec:
