@@ -1,0 +1,8 @@
+name: azure_vpc
+out:
+  type: object
+  title: Azure VPC
+  description: Outputs from Azure VPC
+  properties:
+    attributes:
+    interfaces:

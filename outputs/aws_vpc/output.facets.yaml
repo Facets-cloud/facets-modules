@@ -1,0 +1,8 @@
+name: aws_vpc
+out:
+  type: object
+  title: AWS VPC
+  description: Outputs from AWS VPC
+  properties:
+    attributes:
+    interfaces:

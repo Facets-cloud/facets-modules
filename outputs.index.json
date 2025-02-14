@@ -163,5 +163,23 @@
     "name": "mongodb_auth_operator",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/mongodb_auth_operator/"
+  },
+  {
+    "name": "azure_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vpc/",
+    "gitRef": "vpc_outputs"
+  },
+  {
+    "name": "aws_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_vpc/",
+    "gitRef": "vpc_outputs"
+  },
+  {
+    "name": "gcp_vpc",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/gcp_vpc/",
+    "gitRef": "vpc_outputs"
   }
 ]
