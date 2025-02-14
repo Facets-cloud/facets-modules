@@ -87,7 +87,6 @@ spec:
               type: string
               title: Chunks Bucket
               description: S3 bucket name for Loki chunks storage
-              pattern: "^[a-z0-9-]+$"
               x-ui-placeholder: "Enter chunks bucket name (e.g., 'chunk-bucket-loki-nlqkbnwmkq')"
               x-ui-error-message: "Bucket name must contain only lowercase letters, numbers, and hyphens."
               x-ui-api-source:
@@ -105,7 +104,6 @@ spec:
               type: string
               title: Ruler Bucket
               description: S3 bucket name for Loki ruler storage
-              pattern: "^[a-z0-9-]+$"
               x-ui-placeholder: "Enter ruler bucket name (e.g., 'ruler-bucket-loki-nlqkbnwmkq')"
               x-ui-error-message: "Bucket name must contain only lowercase letters, numbers, and hyphens."
               x-ui-api-source:
