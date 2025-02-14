@@ -7,7 +7,6 @@ clouds:
   - azure
   - gcp
   - kubernetes
-
 spec:
   title: Loki Configuration
   type: object
