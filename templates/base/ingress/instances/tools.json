@@ -69,6 +69,26 @@
 					"nginx.ingress.kubernetes.io/backend-protocol": "HTTPS"
 				},
 				"disable_auth": true
+			},
+			"k8s-noop-metrics": {
+				"service_name": "noop-404",
+				"path": "/metrics",
+				"port": 443,
+				"domain_prefix": "k8s",
+				"annotations": {
+					"nginx.ingress.kubernetes.io/backend-protocol": "HTTPS"
+				},
+				"disable_auth": true
+			},
+			"k8s-noop-debug": {
+				"service_name": "noop-404",
+				"path": "/debug",
+				"port": 443,
+				"domain_prefix": "k8s",
+				"annotations": {
+					"nginx.ingress.kubernetes.io/backend-protocol": "HTTPS"
+				},
+				"disable_auth": true
 			}
 		},
 		"force_ssl_redirection": true
