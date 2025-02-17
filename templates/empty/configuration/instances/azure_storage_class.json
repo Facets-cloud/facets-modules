@@ -1,0 +1,9 @@
+{
+    "kind": "configuration",
+    "for": "storage_class",
+    "disabled": true,
+    "ui": {
+        "base_resource": true
+    },
+    "version": "0.1"
+}
