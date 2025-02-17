@@ -1,8 +1,0 @@
-name: base-vpc
-clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
-type: AUTO_INJECT
-group: Base
