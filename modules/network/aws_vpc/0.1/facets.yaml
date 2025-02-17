@@ -52,6 +52,7 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
   required: [azs, vpc_cidr, existing_vpc_id]
+  x-ui-order: [create_new_vpc, use_existing_vpc, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
   flavor: aws_vpc
