@@ -255,7 +255,7 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
-  x-ui-order: ["cluster", "node_pools", "maintenance_windows", "auto_upgrade"]
+  x-ui-order: ["node_pools", "cluster", "maintenance_windows", "auto_upgrade"]
   required: ["cluster", "node_pools"]
 sample:
   kind: kubernetes_cluster
