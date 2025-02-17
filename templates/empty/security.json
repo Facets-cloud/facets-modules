@@ -1,0 +1,10 @@
+{
+  "apiVersion": "v1",
+  "kind": "facets.modules.common.security",
+  "disabled": true,
+  "spec": {
+    "falco": {
+      "disabled": true
+    }
+  }
+}
