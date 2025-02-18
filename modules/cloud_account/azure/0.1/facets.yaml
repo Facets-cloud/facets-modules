@@ -1,0 +1,33 @@
+intent: "cloud_account"
+alias-flavors: ["default"]
+flavor: azure_account
+lifecycle: ENVIRONMENT
+version: 0.1
+depends_on: []
+input_type: instance
+composition: {}
+conditional_on_intent: ""
+clouds:
+- azure
+outputs:
+  default:
+    type: "@outputs/cloud_account"
+    providers:
+      azurerm:
+        source: hashicorp/azurerm
+        version: 2.52.0
+        attributes:
+          features: {}
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
+      azurerm3:
+        source: hashicorp/azurerm3
+        version: 3.52.0
+        attributes:
+          features: {}
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
