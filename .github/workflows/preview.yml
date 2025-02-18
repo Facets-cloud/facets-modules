@@ -73,6 +73,8 @@ jobs:
             # Get unique directories from changed files as a space-separated string
             changed_dirs=$(echo "$changed_files" | xargs -n 1 dirname | sort -u | tr '\n' ' ')
           fi
+          # Include only the 'intents' directory
+          changed_dirs=$(echo "$changed_dirs" | tr ' ' '\n' | grep '^modules' | tr '\n' ' ')
           # Output the unique directories as an environment variable
           echo "changed_dirs=$changed_dirs"
           echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
