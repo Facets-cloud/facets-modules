@@ -163,5 +163,40 @@
     "name": "mongodb_auth_operator",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/mongodb_auth_operator/"
+  },
+  {
+    "name": "aws_vpc_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_vpc_details/"
+  },
+  {
+    "name": "azure_vmss_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vmss_details/"
+  },
+  {
+    "name": "ecs_service_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ecs_service_details/"
+  },
+  {
+    "name": "azure_vnet_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/azure_vnet_details/"
+  },
+  {
+    "name": "kubernetes_cluster_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kubernetes_cluster_details/"
+  },
+  {
+    "name": "gcp_network_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/gcp_network_details/"
+  },
+  {
+    "name": "ecs_cluster_details",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/ecs_cluster_details/"
   }
 ]
