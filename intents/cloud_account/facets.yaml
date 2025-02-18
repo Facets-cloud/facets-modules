@@ -1,0 +1,5 @@
+name: cloud_account
+type: Default
+displayName: Cloud Account
+description: Creates a new cloud account per cloud
+iconUrl: ""

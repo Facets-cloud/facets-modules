@@ -1,0 +1,30 @@
+intent: "cloud_account"
+alias-flavors: ["default"]
+flavor: gcp_account
+lifecycle: ENVIRONMENT
+version: 0.1
+depends_on: []
+input_type: instance
+composition: {}
+conditional_on_intent: ""
+clouds:
+- gcp
+spec: {}
+outputs:
+  default:
+    type: "@outputs/cloud_account"
+    providers:
+      google:
+        source: hashicorp/google
+        version: 4.78.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      google5:
+        source: hashicorp/google5
+        version: 5.32.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
