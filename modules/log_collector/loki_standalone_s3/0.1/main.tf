@@ -38,8 +38,4 @@ module "log_collector" {
   cluster       = var.cluster
   baseinfra     = var.baseinfra
   cc_metadata   = var.cc_metadata
-  #  inputs        = var.inputs
-  #  providers = {
-  #    aws.tooling = aws.tooling
-  #  }
 }
