@@ -1,7 +1,7 @@
 locals {
   sa_name = lower(module.name.name)
-  spec   = lookup(var.instance, "spec", {})
-  aws_s3 = lookup(local.spec, "aws_s3", {})
+  spec    = lookup(var.instance, "spec", {})
+  aws_s3  = lookup(local.spec, "aws_s3", {})
 
 
   loki            = lookup(local.spec, "loki", {})
@@ -133,15 +133,6 @@ EOF
   }
 
 
-  log_collector_promtail = {
-    #    promtail = {
-    #      promtail_config = {
-    #        values = local.promtail_config_values
-    #      }
-    #      values = local.promtail_values
-    #    }
-  }
-
   merged_loki_standalone_values = merge(
     local.loki_config,
     local.loki_s3_default_values
@@ -155,65 +146,11 @@ EOF
         loki_standalone = merge(
           local.loki_standalone,
           {
-          values = local.merged_loki_standalone_values
-        }
+            values = local.merged_loki_standalone_values
+          }
         )
       }
       promtail = local.promtail_values
     }
   }
-  #  log_collector_loki = {
-  #    loki-standalone = merge(
-  #      local.loki_helm,
-  #      {
-  #        values = merge(
-  #          local.loki,
-  #          {
-  #            serviceAccount = {
-  #              create = true
-  #              name   = local.sa_name
-  #              annotations = {
-  #                "eks.amazonaws.com/role-arn" = module.irsa.iam_role_arn
-  #              }
-  #            }
-  #            loki = {
-  #              ## https://grafana.com/docs/loki/latest/setup/install/helm/deployment-guides/aws/#loki-helm-chart-configuration
-  #              storage = {
-  #                type = "s3"
-  #                bucketNames = {
-  #                  chunks = local.chunk_bucket_name
-  #                  ruler  = local.ruler_bucket_name
-  #                }
-  #                s3 = {
-  #                  region           = var.cluster.awsRegion
-  #                  s3ForcePathStyle = false
-  #                  insecure         = false
-  #                }
-  #              }
-  #            }
-  #          }
-  #        )
-  #      }
-  #    )
-  #  }
-  #
-  #  log_collector_promtail = {
-  #    promtail = merge(
-  #      local.promtail_helm,
-  #      {
-  #        values = lookup(local.promtail_helm, "values", {})
-  #      }
-  #    )
-  #  }
-  #
-  #  log_collector = {
-  #    flavor = var.instance.flavor
-  #    spec   = local.spec
-  #    advanced = {
-  #      loki = merge(
-  #        local.log_collector_loki,
-  #        local.log_collector_promtail
-  #      )
-  #    }
-  #  }
 }
