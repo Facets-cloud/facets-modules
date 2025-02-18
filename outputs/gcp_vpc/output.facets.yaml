@@ -1,0 +1,8 @@
+name: gcp_vpc
+out:
+  type: object
+  title: GCP VPC
+  description: Outputs from GCP VPC
+  properties:
+    attributes:
+    interfaces:
