@@ -33,7 +33,7 @@ outputs:
           tenant_id: attributes.tenant_id
 sample:
   version: "0.1"
-  flavor: azure_account
+  flavor: azure
   kind: cloud_account
   disabled: false
   spec: {}

@@ -49,7 +49,7 @@ outputs:
               external_id: attributes.external_id
 sample:
   version: "0.1"
-  flavor: aws_account
+  flavor: aws
   kind: cloud_account
   disabled: false
   spec: {}
