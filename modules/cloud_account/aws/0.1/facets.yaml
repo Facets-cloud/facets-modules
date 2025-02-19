@@ -1,6 +1,6 @@
 intent: "cloud_account"
 alias-flavors: ["default"]
-flavor: aws_account
+flavor: aws
 lifecycle: ENVIRONMENT
 version: "0.1"
 depends_on: []
