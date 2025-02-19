@@ -2,7 +2,7 @@ intent: "cloud_account"
 alias-flavors: ["default"]
 flavor: aws_account
 lifecycle: ENVIRONMENT
-version: '0.1'
+version: "0.1"
 depends_on: []
 input_type: instance
 composition: {}
@@ -47,3 +47,9 @@ outputs:
               role_arn: attributes.aws_iam_role
               session_name: attributes.session_name
               external_id: attributes.external_id
+sample:
+  version: "0.1"
+  flavor: aws_account
+  kind: cloud_account
+  disabled: false
+  spec: {}

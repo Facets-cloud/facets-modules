@@ -2,7 +2,7 @@ intent: "cloud_account"
 alias-flavors: ["default"]
 flavor: azure_account
 lifecycle: ENVIRONMENT
-version: 0.1
+version: "0.1"
 depends_on: []
 input_type: instance
 composition: {}
@@ -31,3 +31,9 @@ outputs:
           client_id: attributes.client_id
           client_secret: attributes.client_secret
           tenant_id: attributes.tenant_id
+sample:
+  version: "0.1"
+  flavor: azure_account
+  kind: cloud_account
+  disabled: false
+  spec: {}
