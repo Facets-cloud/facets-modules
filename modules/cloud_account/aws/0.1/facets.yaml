@@ -2,7 +2,7 @@ intent: "cloud_account"
 alias-flavors: ["default"]
 flavor: aws_account
 lifecycle: ENVIRONMENT
-version: 0.1
+version: '0.1'
 depends_on: []
 input_type: instance
 composition: {}
