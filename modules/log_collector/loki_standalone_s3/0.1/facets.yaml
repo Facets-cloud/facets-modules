@@ -1,0 +1,183 @@
+inputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+
+intent: log_collector
+flavor: loki_standalone_s3
+version: '0.1'
+description: Adds log collector module
+clouds:
+  - aws
+spec:
+  title: Loki Configuration
+  type: object
+  properties:
+    loki:
+      title: Loki
+      type: object
+      required: [ "replicas", "volume"]
+      properties:
+        replicas:
+          type: integer
+          title: Replicas
+          description: Number of Loki replicas
+          minimum: 1
+          maximum: 10
+          x-ui-placeholder: "Enter replicas (e.g., 2)"
+          x-ui-error-message: "Replicas must be between 1 and 10."
+        volume:
+          type: string
+          title: Volume
+          description: Storage volume for Loki
+          pattern: "^[0-9]+(\\.[0-9]+)?Gi$"
+          x-ui-placeholder: "e.g., '5Gi' or '10Gi'"
+          x-ui-error-message: "Volume must be in the format 'XGi' (e.g., '5Gi')."
+        loki_standalone:
+          title: Loki Standalone
+          type: object
+          properties:
+            timeout:
+              type: integer
+              title: Timeout
+              description: "Timeout for deployment."
+              minimum: 300
+              maximum: 1800
+              x-ui-placeholder: "Enter timeout in seconds (e.g., 700)"
+              x-ui-error-message: "Timeout must be between 300s (5m) and 1800s (30m)."
+            wait:
+              type: boolean
+              title: Wait
+              description: "Wait for deployment completion."
+            recreate_pods:
+              type: boolean
+              title: Recreate Pods
+              description: "Recreate pods during updates."
+            version:
+              type: string
+              title: Version for loki helm chart
+              description: "Loki chart version"
+            values:
+              type: object
+              title: Custom Values
+              description: Overrides for Loki configuration
+              x-ui-yaml-editor: true
+              x-ui-placeholder: |
+                # Example:
+                # loki:
+                #   singleBinary:
+                #     resources:
+                #       requests:
+                #         memory: "200Mi"
+      x-ui-order: [ "replicas", "volume", "loki_standalone" ]
+    aws_s3:
+      title: AWS S3 Configuration
+      type: object
+      required: [ "bucket_names" ]
+      properties:
+        bucket_names:
+          title: Bucket Names
+          description: S3 bucket name for Loki storage
+          type: object
+          required: [ "chunks", "ruler" ]
+          properties:
+            chunks:
+              type: string
+              title: Chunks Bucket
+              description: S3 bucket name for Loki chunks storage
+              x-ui-placeholder: "Enter chunks bucket name (e.g., 'chunk-bucket-loki-nlqkbnwmkq')"
+              x-ui-error-message: "Bucket name must contain only lowercase letters, numbers, and hyphens."
+              x-ui-api-source:
+                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: "${s3.{{value}}.out.attributes.bucket_name}"
+                filterConditions:
+                  - field: resourceType
+                    value: s3
+            ruler:
+              type: string
+              title: Ruler Bucket
+              description: S3 bucket name for Loki ruler storage
+              x-ui-placeholder: "Enter ruler bucket name (e.g., 'ruler-bucket-loki-nlqkbnwmkq')"
+              x-ui-error-message: "Bucket name must contain only lowercase letters, numbers, and hyphens."
+              x-ui-api-source:
+                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: "${s3.{{value}}.out.attributes.bucket_name}"
+                filterConditions:
+                  - field: resourceType
+                    value: s3
+      x-ui-order: [ "bucket_names" ]
+    promtail:
+      title: Promtail
+      type: object
+      properties:
+        timeout:
+          type: integer
+          title: Timeout
+          description: "Timeout for deployment (default: 600)"
+          minimum: 300
+          x-ui-placeholder: "Enter timeout in seconds."
+          x-ui-error-message: "Timeout must be between 300s (5m) and 1800s (30m)."
+        wait:
+          type: boolean
+          title: Wait
+          description: "Wait for deployment completion."
+        recreate_pods:
+          type: boolean
+          title: Recreate Pods
+          description: "Recreate pods during updates."
+        version:
+          type: string
+          title: Version
+          description: "Promtail chart version"
+          x-ui-placeholder: "Select a version"
+        values:
+          type: object
+          title: Custom Values
+          description: Overrides for Promtail configuration
+          x-ui-yaml-editor: true
+          x-ui-placeholder: |
+            # Example:
+            # promtail:
+            #   config:
+            #     clients:
+            #       - url: http://loki:3100/loki/api/v1/push
+      x-ui-order: [ "timeout", "wait", "recreate_pods", "version", "values" ]
+  required: [ "loki" ]
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json'
+  kind: log_collector
+  version: '0.1'
+  flavor: loki_standalone_s3
+  disabled: true
+  metadata: {}
+  spec:
+    loki:
+      replicas: 2
+      volume: 5Gi
+      loki_standalone:
+        timeout: 700
+        wait: true
+        values: {}
+    minio:
+      replicas: 2
+      volume: 10Gi
+      auth: {}
+      values: {}
+    promtail:
+      timeout: 650
+      wait: true
+      values: {}
+  advanced:
+    loki: { }
