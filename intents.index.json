@@ -332,15 +332,7 @@
     "relativePath": "./intents/mongodb_auth_operator/"
   },
   {
-    "gitUrl":  "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./intents/kms/"
-  },
-  {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./intents/image_pull_secret_injector/"
-  },
-  {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./intents/google_workload_identity/"
+    "relativePath": "./intents/cloud_account/"
   }
 ]
