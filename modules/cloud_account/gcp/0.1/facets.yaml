@@ -30,7 +30,7 @@ outputs:
           credentials: attributes.credentials
 sample:
   version: "0.1"
-  flavor: gcp_account
+  flavor: gcp
   kind: cloud_account
   disabled: false
   spec: {}
