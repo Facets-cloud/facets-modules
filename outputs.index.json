@@ -198,5 +198,10 @@
     "name": "ecs_cluster_details",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ecs_cluster_details/"
+  },
+  {
+    "name": "cloud_account",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cloud_account/"
   }
 ]
