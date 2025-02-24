@@ -41,7 +41,7 @@ resource "kubernetes_secret" "db_conn_details" {
 }
 
 module "mysql_user_resources" {
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   namespace       = local.namespace
   advanced_config = {}
   name            = module.release_name.name
