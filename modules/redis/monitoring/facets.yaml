@@ -3,7 +3,7 @@ flavor: k8s
 version: "0.1"
 clouds:
   - aws
-  - k8s
+  - kubernetes
   - azure
   - gcp
 description: Adds Monitoring to Redis
