@@ -3,7 +3,7 @@ flavor: k8s
 version: "0.1"
 clouds:
   - aws
-  - k8s
+  - kubernetes
   - azure
   - gcp
 description: Provides Gui For Mysql Users to login
@@ -77,4 +77,3 @@ sample:
     size:
       cpu: "500m"
       memory: "1Gi"
-            
