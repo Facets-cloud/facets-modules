@@ -9,18 +9,16 @@ spec:
   description: Specification of the network for azure vpc flavor
   type: object
   properties:
-    create_new_vpc:
-      title: Create New VPC
-      description: Create a new vpc
-      type: boolean
+    choose_vpc_type:
+      title: Choose VPC Type
+      description: Choose the type of VPC
+      type: radio
       x-ui-immutable: true
       x-ui-override-only: true
-    use_existing_vpc:
-      title: Use Existing VPC
-      description: Use an existing vpc
-      type: boolean
-      x-ui-immutable: true
-      x-ui-override-only: true
+      enum:
+        - Create New VPC
+        - Use Existing VPC
+      default: Create New VPC
     azs:
       title: Availability Zones
       description: Availability zones for the vpc
@@ -47,8 +45,8 @@ spec:
       description: To setup network components in an existing vpc
       type: string
       x-ui-visible-if:
-        field: spec.use_existing_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: [Use Existing VPC]
       x-ui-immutable: true
       x-ui-override-only: true
     resource_group_name:
@@ -56,12 +54,12 @@ spec:
       description: To setup network components in an existing vpc
       type: string
       x-ui-visible-if:
-        field: spec.use_existing_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: [Use Existing VPC]
       x-ui-immutable: true
       x-ui-override-only: true
   required: [azs, vpc_cidr, vnetName, resourceGroupName]
-  x-ui-order: [create_new_vpc, use_existing_vpc, vnet_name, resource_group_name, azs, vpc_cidr, enable_multi_az]
+  x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
   flavor: azure_vpc
