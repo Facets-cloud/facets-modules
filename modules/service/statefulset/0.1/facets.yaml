@@ -515,7 +515,6 @@ spec:
             required:
               - path
               - port_name
-          x-ui-skip: true
         volumes:
           type: object
           title: Volumes
