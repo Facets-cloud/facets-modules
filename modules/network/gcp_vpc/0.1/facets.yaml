@@ -16,9 +16,9 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       enum:
-        - create_new_vpc
-        - use_existing_vpc
-        - shared_vpc
+        - Create New VPC
+        - Use Existing VPC
+        - Shared VPC
     azs:
       title: Availability Zones
       description: Availability zones for the vpc
