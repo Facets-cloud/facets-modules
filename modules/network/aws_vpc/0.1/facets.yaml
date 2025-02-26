@@ -9,16 +9,14 @@ spec:
   description: Specification of the network for aws vpc flavor
   type: object
   properties:
-    create_new_vpc:
-      title: Create New VPC
-      description: Create a new vpc
-      type: boolean
-      x-ui-immutable: true
-      x-ui-override-only: true
-    use_existing_vpc:
-      title: Use Existing VPC
-      description: Use an existing vpc
-      type: boolean
+    choose_vpc_type:
+      title: Choose VPC Type
+      description: Choose the type of vpc to create
+      type: radio
+      enum: 
+        - Create New VPC
+        - Use Existing VPC
+      default: Create New VPC
       x-ui-immutable: true
       x-ui-override-only: true
     azs:
@@ -31,7 +29,7 @@ spec:
       title: VPC CIDR
       description: CIDR block for the vpc
       x-ui-placeholder: e.g. 10.45.0.0/16
-      pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b
+      pattern: /^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$/
       x-ui-error-message: Regex for the vpc CIDR block did not match
       type: string
       x-ui-immutable: true
@@ -47,12 +45,12 @@ spec:
       description: To setup network components in an existing vpc
       type: string
       x-ui-visible-if:
-        field: spec.use_existing_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Use Existing VPC"]
       x-ui-immutable: true
       x-ui-override-only: true
   required: [azs, vpc_cidr, existing_vpc_id]
-  x-ui-order: [create_new_vpc, use_existing_vpc, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
+  x-ui-order: [choose_vpc_type, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
   flavor: aws_vpc
