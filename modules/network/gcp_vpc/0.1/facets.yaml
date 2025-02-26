@@ -39,8 +39,8 @@ spec:
       description: To setup network components in an existing vpc
       type: string
       x-ui-visible-if:
-        field: spec.use_existing_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Use Existing VPC"]
       x-ui-immutable: true
       x-ui-override-only: true
     project_id:
@@ -50,8 +50,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_pods_secondary_range_name:
       title: Project Pods Secondary Range Name
       description: Project Pods Secondary Range Name for the vpc
@@ -59,8 +59,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_services_secondary_range_name:
       title: Project Services Secondary Range Name
       description: Project Services Secondary Range Name for the vpc
@@ -68,8 +68,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_allocatable_ip_range:
       title: Project Allocatable IP Range 
       description: Project Allocatable IP Range for the vpc
@@ -77,8 +77,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_subnet_id:
       title: Project Subnet ID
       description: Project Subnet ID for the vpc
@@ -86,8 +86,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_subnet_name:
       title: Project Subnet Name
       description: Project Subnet Name for the vpc
@@ -95,8 +95,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_vpc_id:
       title: Project VPC ID
       description: Project VPC ID for the vpc
@@ -104,8 +104,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_vpc_name:
       title: Project VPC Name
       description: Project VPC Name for the vpc
@@ -113,8 +113,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_google_service_id:
       title: Project Google Service ID
       description: Project Google Service ID for the vpc
@@ -122,8 +122,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
     project_google_service_name:
       title: Project Google Service Name
       description: Project Google Service Name for the vpc
@@ -131,8 +131,8 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
       x-ui-visible-if:
-        field: spec.shared_vpc
-        values: [true]
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
   required: [ vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
   x-ui-order: [ choose_vpc_type, vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
 sample:
