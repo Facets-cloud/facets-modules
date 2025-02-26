@@ -1,5 +1,5 @@
 name: aws_api_gateway
-type: default
+type: Networking
 displayName: AWS API Gateway
 description: Fully managed service to create, publish, and secure APIs at any scale.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e29c72d2d0c6819c3_Default-aws_api_gateway.svg

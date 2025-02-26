@@ -1,5 +1,5 @@
 name: vault
-type: KMS
+type: KMS & Secret Management
 displayName: Vault
 description: Vault is a tool for securely accessing secrets.
 outputs:
