@@ -19,6 +19,7 @@ spec:
         - Create New VPC
         - Use Existing VPC
         - Shared VPC
+      default: Create New VPC
     azs:
       title: Availability Zones
       description: Availability zones for the vpc
