@@ -94,13 +94,8 @@ jobs:
             # Loop through the unique directories and check for facets.yaml 
             for dir in "${dirs[@]}"; do
               if [[ -f "$dir/facets.yaml" ]]; then
-                FACETS_YAML_PATH="$dir/facets.yaml"
-                # Append the GitHub ref to the version in facets.yaml
-                echo "Updating version in $FACETS_YAML_PATH"
-                yq eval -i ".version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
-                yq eval -i ".sample.version += \"-${GITHUB_REF}\"" "$FACETS_YAML_PATH"
                 # Register the module as preview
-                curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir"
+                curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir" -r "${GITHUB_REF}"
               else
                 echo "No facets.yaml found in $dir"
               fi
