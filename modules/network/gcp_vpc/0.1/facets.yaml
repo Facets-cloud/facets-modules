@@ -135,7 +135,7 @@ spec:
         values: [true]
   required: [ vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
   x-ui-order: [ create_new_vpc, use_existing_vpc, shared_vpc, vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
-  sample:
+sample:
   kind: network
   flavor: gcp_vpc
   version: "0.1"
