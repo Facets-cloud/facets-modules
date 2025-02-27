@@ -43,6 +43,7 @@ spec:
           title: Role Name
           description: Name of role and user to be created in postgres
           type: string
+          pattern: "^[a-zA-Z]([a-zA-Z0-9-]*[a-zA-Z0-9])?$"
         role:
           title: Role
           description: Postgres role Specification

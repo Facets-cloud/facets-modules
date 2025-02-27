@@ -78,7 +78,7 @@ module "postgres-user" {
 
 
 module "postgres-grantstatement" {
-  for_each = local.grant_statements
+  for_each = local.hashed_grant_statements
 
   depends_on = [
     kubernetes_secret.db_conn_details,
@@ -86,7 +86,7 @@ module "postgres-grantstatement" {
   ]
 
   source    = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name      = "${local.role_name}-${each.value.database}"
+  name      = each.key
   namespace = local.namespace
   advanced_config = {
     wait = true
@@ -95,7 +95,7 @@ module "postgres-grantstatement" {
     apiVersion = "postgresql.facets.cloud/v1alpha1"
     kind       = "GrantStatement"
     metadata = {
-      name      = "${local.role_name}-${each.value.database}"
+      name      = each.key
       namespace = local.namespace
       annotations = {
         "app.kubernetes.io/managed-by" = "database-operator"
