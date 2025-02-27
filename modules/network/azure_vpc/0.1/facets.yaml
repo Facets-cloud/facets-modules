@@ -29,7 +29,7 @@ spec:
       title: VPC CIDR
       description: CIDR block for the vpc
       x-ui-placeholder: e.g. 10.45.0.0/16
-      pattern: /^(?!10\.0\.0\.0\/16$)(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$/
+      pattern: /^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$/
       x-ui-error-message: Regex for the vpc CIDR block did not match
       type: string
       x-ui-immutable: true
@@ -58,7 +58,7 @@ spec:
         values: [Use Existing VPC]
       x-ui-immutable: true
       x-ui-override-only: true
-  required: [azs, vpc_cidr, vnetName, resourceGroupName]
+  required: [azs, vpc_cidr, vnet_name, resource_group_name]
   x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
