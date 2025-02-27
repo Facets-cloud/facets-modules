@@ -63,7 +63,7 @@ spec:
               x-ui-compare:
                 field: spec.size.reader.cpu
                 comparator: ">="
-                x-ui-error-message: "CPU limit cannot be more than cpu"
+                x-ui-error-message: "CPU limit cannot be less than cpu"
               x-ui-placeholder: "e.g., '500m' or '1'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
             memory_limit:
@@ -75,7 +75,7 @@ spec:
               x-ui-compare:
                 field: spec.size.reader.memory
                 comparator: ">="
-                x-ui-error-message: "Memory limit cannot be more than memory"
+                x-ui-error-message: "Memory limit cannot be less than memory"
               x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
             volume:
@@ -136,7 +136,7 @@ spec:
               x-ui-compare:
                 field: spec.size.writer.cpu
                 comparator: ">="
-                x-ui-error-message: "CPU limit cannot be more than cpu"
+                x-ui-error-message: "CPU limit cannot be less than cpu"
               x-ui-placeholder: "e.g., '500m' or '1'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
             memory_limit:
@@ -148,7 +148,7 @@ spec:
               x-ui-compare:
                 field: spec.size.writer.memory
                 comparator: ">="
-                x-ui-error-message: "Memory limit cannot be more than memory"
+                x-ui-error-message: "Memory limit cannot be less than memory"
               x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
               x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
             volume:
