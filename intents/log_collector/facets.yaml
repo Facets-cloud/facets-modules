@@ -1,5 +1,5 @@
 name: log_collector
-type: log_collector
+type: Log_collector
 displayName: Log Collector
 description: Loki is a horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cca91912f796efe6c1_log_collector.svg

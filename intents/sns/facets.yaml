@@ -1,5 +1,5 @@
 name: sns
-type: default
+type: Queue
 displayName: SNS
 description: Fully managed AWS notification service provider.
 outputs:

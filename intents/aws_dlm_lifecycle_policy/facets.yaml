@@ -1,4 +1,4 @@
 name: aws_dlm_lifecycle_policy
-type: default
+type: Backup
 displayName: AWS DLM Lifecycle Policy
 description: Automates managing the lifecycle of Amazon EBS snapshots, streamlining backup and retention.

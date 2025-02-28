@@ -1,5 +1,5 @@
 name: aws_lambda
-type: default
+type: Application
 displayName: AWS Lambda
 description: Serverless compute service that automatically runs code in response to triggers or events.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333eae25640a6072e81b_Default-aws_lambda.svg

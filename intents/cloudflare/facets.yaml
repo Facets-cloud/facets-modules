@@ -1,5 +1,5 @@
 name: cloudflare
-type: default
+type: Loadbalancer
 displayName: CloudFlare
 description: Global network service that enhances website performance, security, and reliability.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e4e5fbb80fd60422d_Default-cloudflare.svg

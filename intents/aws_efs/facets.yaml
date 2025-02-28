@@ -1,5 +1,5 @@
 name: aws_efs
-type: default
+type: Storage
 displayName: AWS EFS
 description: Provides an Elastic File System (EFS) File System resource.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333efae79e81bc2a0d1e_Default-aws_efs.svg

@@ -1,5 +1,5 @@
 name: mongodb_auth_operator
-type: default
+type: K8s
 displayName: Mongodb Auth Operator
 description: Kubernetes Operator for managing users in MongoDB, defining access permissions and authentication.
 outputs:

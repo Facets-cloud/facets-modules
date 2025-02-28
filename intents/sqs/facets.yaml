@@ -1,5 +1,5 @@
 name: sqs
-type: default
+type: Queue
 displayName: SQS
 description: Fully managed AWS message queuing service.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0cd417c10aff8f0f2a5_sqs.svg

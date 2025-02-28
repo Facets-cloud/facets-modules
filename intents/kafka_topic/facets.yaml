@@ -1,4 +1,4 @@
 name: kafka_topic
-type: default
+type: Queue
 displayName: Kafka Topic
 description: A category or feed name that stores and organizes data in Apache Kafka
