@@ -44,7 +44,7 @@ spec:
       x-ui-immutable: true
       x-ui-override-only: true
   required: [ choose_vpc_type, vnet_name, azs, vpc_cidr ]
-  x-ui-order: [ choose_vpc_type, vnet_name, azs, vpc_cidr]
+  x-ui-order: []
 sample:
   kind: network
   flavor: default
