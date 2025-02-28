@@ -9,6 +9,17 @@ module "unique_name" {
   globally_unique = false
 }
 
+module "grant_statement_names" {
+  for_each        = local.grant_statements
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
+  environment     = var.environment
+  limit           = 53
+  resource_name   = replace("${local.role_name}-${each.value.database}", "_", "-")
+  resource_type   = "postgres_user"
+  is_k8s          = true
+  globally_unique = true
+}
+
 module "user_password" {
   count  = lookup(local.postgres_user, "user_password", "") == "" ? 1 : 0
   source = "github.com/Facets-cloud/facets-utility-modules//password"
@@ -78,7 +89,7 @@ module "postgres-user" {
 
 
 module "postgres-grantstatement" {
-  for_each = local.grant_statements
+  for_each = local.hashed_grant_statements
 
   depends_on = [
     kubernetes_secret.db_conn_details,
@@ -86,7 +97,7 @@ module "postgres-grantstatement" {
   ]
 
   source    = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name      = "${local.role_name}-${each.value.database}"
+  name      = each.key
   namespace = local.namespace
   advanced_config = {
     wait = true
@@ -95,7 +106,7 @@ module "postgres-grantstatement" {
     apiVersion = "postgresql.facets.cloud/v1alpha1"
     kind       = "GrantStatement"
     metadata = {
-      name      = "${local.role_name}-${each.value.database}"
+      name      = each.key
       namespace = local.namespace
       annotations = {
         "app.kubernetes.io/managed-by" = "database-operator"
