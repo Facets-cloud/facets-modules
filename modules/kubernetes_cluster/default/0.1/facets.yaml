@@ -128,7 +128,7 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]
-  x-ui-order: ["node_pools"]
+  x-ui-order: []
   required: ["node_pools"]
 sample:
   kind: kubernetes_cluster
