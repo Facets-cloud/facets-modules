@@ -31,6 +31,7 @@ spec:
         type: integer
         title: Port
         description: Port number where the service needs to be accessible via the loadbalancer its the same port that will be exposed via the loadbalancer
+        x-ui-unique: true
       protocol:
         title: Protocol
         description: the protocol of the port
