@@ -71,7 +71,7 @@ spec:
           x-ui-compare:
             field: spec.size.memory
             comparator: ">="
-            x-ui-error-message: "Memory cannot be less than memory"
+            x-ui-error-message: "Memory limit cannot be less than memory"
           x-ui-placeholder: "Enter memory limit"
           x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
         volume:
