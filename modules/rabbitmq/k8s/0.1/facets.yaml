@@ -1,6 +1,6 @@
 intent: rabbitmq
 flavor: k8s
-version: '0.1'
+version: "0.1"
 description: Adds rabbitmq k8s module
 clouds:
   - aws
@@ -13,7 +13,7 @@ metadata:
   properties:
     namespace:
       type: string
-      title: Namespace 
+      title: Namespace
       description: Namespace in which Mongo should be deployed
       default: default
 spec:
@@ -39,6 +39,10 @@ spec:
           description: Number of CPU cores required
           minLength: 1
           pattern: "^[0-9]+[m]?$"
+          x-ui-compare:
+            field: spec.size.cpu_limit
+            comparator: "<="
+            x-ui-error-message: "CPU cannot be more than CPU limit"
           x-ui-placeholder: "Enter CPU cores"
           x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
         memory:
@@ -47,6 +51,10 @@ spec:
           description: Amount of required memory
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          x-ui-compare:
+            field: spec.size.memory_limit
+            comparator: "<="
+            x-ui-error-message: "Memory cannot be more than memory limit"
           x-ui-placeholder: "Enter memory (Ex. 2Gi)"
           x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
         cpu_limit:
@@ -55,6 +63,10 @@ spec:
           description: CPU limit for the instance
           minLength: 1
           pattern: "^[0-9]+[m]?$"
+          x-ui-compare:
+            field: spec.size.cpu
+            comparator: ">="
+            x-ui-error-message: "CPU limit cannot be less than CPU"
           x-ui-placeholder: "Enter CPU limit"
           x-ui-error-message: "Value doesn't match '^[0-9]+[m]?$' pattern"
         memory_limit:
@@ -63,6 +75,10 @@ spec:
           description: Memory limit for the instance
           minLength: 1
           pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          x-ui-compare:
+            field: spec.size.memory
+            comparator: ">="
+            x-ui-error-message: "Memory limit cannot be less than memory"
           x-ui-placeholder: "Enter memory limit"
           x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
         volume:
@@ -95,7 +111,7 @@ sample:
   version: "0.1"
   flavor: k8s
   kind: rabbitmq
-  metadata: { }
+  metadata: {}
   spec:
     rabbitmq_version: "3.10.19"
     size:
