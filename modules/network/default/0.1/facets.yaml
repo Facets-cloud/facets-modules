@@ -2,7 +2,8 @@ intent: network
 flavor: default
 version: "0.1"
 description: Adds network - default flavor
-clouds: []
+clouds: 
+  - default
 spec:
   title: network
   description: Specification of the network for gcp vpc flavor
