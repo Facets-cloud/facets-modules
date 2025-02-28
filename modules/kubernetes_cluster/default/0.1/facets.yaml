@@ -2,16 +2,16 @@ intent: kubernetes_cluster
 flavor: default
 version: "0.1"
 description: Adds kubernetes cluster - default flavor
-clouds: 
+clouds:
   - default
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for default flavor
   type: object
   properties:
-    nodepools:
+    node_pools:
       title: Nodepool Spec
-      description: Specifications of nodepools to be created
+      description: Specifications of the nodepools for the kubernetes cluster
       type: object
       properties:
         default:
@@ -67,6 +67,14 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true]
+            enable_multi_az:
+              title: Enable Multi Availability Zones
+              description: Set this to true to enable default nodepool in multi availability zones
+              type: boolean
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true] 
         dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
@@ -74,7 +82,7 @@ spec:
           properties:
             enable:
               title: Enable Dedicated Nodepool
-              description: Set this to true to enable Dedicated nodepool
+              description: Set this to true to enable default nodepool
               type: boolean
               x-ui-override-only: true
             instance_types:
@@ -119,8 +127,8 @@ spec:
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
-                values: [true]      
-    x-ui-order: ["nodepools"]
+                values: [true]
+  x-ui-order: ["node_pools"]
   required: ["node_pools"]
 sample:
   kind: kubernetes_cluster
