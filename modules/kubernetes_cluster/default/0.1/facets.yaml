@@ -73,8 +73,8 @@ spec:
           type: object
           properties:
             enable:
-              title: Enable Default Nodepool
-              description: Set this to true to enable default nodepool
+              title: Enable Dedicated Nodepool
+              description: Set this to true to enable Dedicated nodepool
               type: boolean
               x-ui-override-only: true
             instance_types:
@@ -120,7 +120,6 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]      
-      x-ui-order: ["default", "dedicated"]
     x-ui-order: ["nodepools"]
   required: ["node_pools"]
 sample:
