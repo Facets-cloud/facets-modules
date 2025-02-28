@@ -12,7 +12,7 @@ locals {
   privileges             = lookup(local.role, "privileges", {})
   grant_statements       = lookup(local.postgres_user, "grant_statements", {})
   role_name              = lookup(local.postgres_user, "role_name", "") == "" ? module.unique_name[0].name : lookup(local.postgres_user, "role_name", "")
-  connection_details     = lookup(local.spec, "connection_details", {})
+  connection_details     = lookup(local.postgres_user, "connection_details", {})
   sslmode                = lookup(local.connection_details, "sslmode", "disable")
   default_database       = lookup(local.connection_details, "default_database", "postgres")
   hashed_grant_statements = {
