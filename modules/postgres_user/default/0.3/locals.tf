@@ -15,16 +15,8 @@ locals {
   connection_details     = lookup(local.spec, "connection_details", {})
   sslmode                = lookup(local.connection_details, "sslmode", "disable")
   default_database       = lookup(local.connection_details, "default_database", "postgres")
-
-  // generate grant name : rolename-databasename
-  // if length > 53 generate md5 hash for full name
-  // and pick first 53 characters if hash len exceeds 53
   hashed_grant_statements = {
     for k, v in local.grant_statements :
-    (
-      length(replace("${local.role_name}-${v.database}", "_", "-")) > 53 ?
-      substr(md5(replace("${local.role_name}-${v.database}", "_", "-")), 0, 53) :
-      replace("${local.role_name}-${v.database}", "_", "-")
-    ) => v
+    module.grant_statement_names[k].name => v
   }
 }
