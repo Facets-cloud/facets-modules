@@ -15,4 +15,8 @@ locals {
   connection_details     = lookup(local.spec, "connection_details", {})
   sslmode                = lookup(local.connection_details, "sslmode", "disable")
   default_database       = lookup(local.connection_details, "default_database", "postgres")
+  hashed_grant_statements = {
+    for k, v in local.grant_statements :
+    module.grant_statement_names[k].name => v
+  }
 }
