@@ -33,7 +33,7 @@ spec:
               minItems: 1
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-default.enable
+                field: spec.node_pools.default.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -44,7 +44,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-default.enable
+                field: spec.node_pools.default.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -55,7 +55,7 @@ spec:
                 - SPOT
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-default.enable
+                field: spec.node_pools.default.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -65,7 +65,7 @@ spec:
               maximum: 200
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-default.enable
+                field: spec.node_pools.default.enable
                 values: [true]
         dedicated:
           title: Facets Dedicated Nodepool Spec
@@ -86,7 +86,7 @@ spec:
               minItems: 1
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-dedicated.enable
+                field: spec.node_pools.dedicated.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -97,7 +97,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-dedicated.enable
+                field: spec.node_pools.dedicated.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -108,7 +108,7 @@ spec:
                 - SPOT
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-dedicated.enable
+                field: spec.node_pools.dedicated.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -118,7 +118,7 @@ spec:
               maximum: 200
               x-ui-override-only: true
               x-ui-visible-if:
-                field: spec.node_pools.fc-dedicated.enable
+                field: spec.node_pools.dedicated.enable
                 values: [true]      
       x-ui-order: ["default", "dedicated"]
     x-ui-order: ["nodepools"]
