@@ -1631,7 +1631,7 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/kubernetes_cluster/default/0.1/",
-    "clouds": []
+    "clouds": [ "default" ]
   },
   {
     "intent": "network",
@@ -1639,6 +1639,6 @@
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/network/default/0.1/",
-    "clouds": []
+    "clouds": [ "default" ]
   }
 ]
