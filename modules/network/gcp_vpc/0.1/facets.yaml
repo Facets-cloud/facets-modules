@@ -8,6 +8,134 @@ spec:
   title: network
   description: Specification of the network for gcp vpc flavor
   type: object
+  properties:
+    choose_vpc_type:
+      title: Choose VPC Type
+      description: Choose the type of VPC
+      type: radio
+      x-ui-immutable: true
+      x-ui-override-only: true
+      enum:
+        - Create New VPC
+        - Use Existing VPC
+        - Shared VPC
+      default: Create New VPC
+    azs:
+      title: Availability Zones
+      description: Availability zones for the vpc
+      type: array
+      x-ui-immutable: true
+      x-ui-override-only: true
+    vpc_cidr:
+      title: VPC CIDR
+      description: CIDR block for the vpc
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: ^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+    vnet_name:
+      title: Existing VPC Name
+      description: To setup network components in an existing vpc
+      type: string
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Use Existing VPC"]
+      x-ui-immutable: true
+      x-ui-override-only: true
+    project_id:
+      title: Project ID
+      description: Project ID for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_pods_secondary_range_name:
+      title: Project Pods Secondary Range Name
+      description: Project Pods Secondary Range Name for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_services_secondary_range_name:
+      title: Project Services Secondary Range Name
+      description: Project Services Secondary Range Name for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_allocatable_ip_range:
+      title: Project Allocatable IP Range 
+      description: Project Allocatable IP Range for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_subnet_id:
+      title: Project Subnet ID
+      description: Project Subnet ID for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_subnet_name:
+      title: Project Subnet Name
+      description: Project Subnet Name for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_vpc_id:
+      title: Project VPC ID
+      description: Project VPC ID for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_vpc_name:
+      title: Project VPC Name
+      description: Project VPC Name for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_google_service_id:
+      title: Project Google Service ID
+      description: Project Google Service ID for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+    project_google_service_name:
+      title: Project Google Service Name
+      description: Project Google Service Name for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["Shared VPC"]
+  required: [ vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
+  x-ui-order: [ choose_vpc_type, vnet_name, project_id, project_pods_secondary_range_name, project_services_secondary_range_name, project_allocatable_ip_range,  project_subnet_id, project_subnet_name, project_vpc_id, project_vpc_name, project_google_service_id, project_google_service_name, azs, vpc_cidr ]
 sample:
   kind: network
   flavor: gcp_vpc
