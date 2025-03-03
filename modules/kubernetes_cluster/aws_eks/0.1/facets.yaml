@@ -306,7 +306,6 @@ spec:
             description: Service account for the addon
             type: string
             x-ui-override-only: true
-  required: [cluster, nodepools]
   x-ui-order: [nodepools, cluster, tags, addons]
 sample:
   kind: kubernetes_cluster
