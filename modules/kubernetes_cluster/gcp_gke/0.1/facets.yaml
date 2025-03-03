@@ -256,7 +256,6 @@ spec:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
   x-ui-order: ["node_pools", "cluster", "maintenance_windows", "auto_upgrade"]
-  required: ["cluster", "node_pools"]
 sample:
   kind: kubernetes_cluster
   flavor: gcp_gke
