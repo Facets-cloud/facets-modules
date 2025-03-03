@@ -1,0 +1,143 @@
+intent: kubernetes_cluster
+flavor: default
+version: "0.1"
+description: Adds kubernetes cluster - default flavor
+clouds:
+  - default
+spec:
+  title: Kubernetes Cluster
+  description: Specification of the kubernetes cluster for default flavor
+  type: object
+  properties:
+    node_pools:
+      title: Nodepool Spec
+      description: Specifications of the nodepools for the kubernetes cluster
+      type: object
+      properties:
+        default:
+          title: Facets Default Nodepool Spec
+          description: Specifications for facets default nodepool
+          type: object
+          properties:
+            enable:
+              title: Enable Default Nodepool
+              description: Set this to true to enable default nodepool
+              type: boolean
+              x-ui-override-only: true
+            instance_types:
+              title: Instance Types
+              description: List of instance types for worker nodes
+              type: array
+              items:
+                type: string
+              minItems: 1
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true]
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              minimum: 30
+              maximum: 500
+              x-ui-placeholder: e.g. 100
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true]
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              enum:
+                - ON_DEMAND
+                - SPOT
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true]
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              minimum: 1
+              maximum: 200
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true]
+            enable_multi_az:
+              title: Enable Multi Availability Zones
+              description: Set this to true to enable default nodepool in multi availability zones
+              type: boolean
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.default.enable
+                values: [true] 
+        dedicated:
+          title: Facets Dedicated Nodepool Spec
+          description: Specifications for facets dedicated nodepool
+          type: object
+          properties:
+            enable:
+              title: Enable Dedicated Nodepool
+              description: Set this to true to enable default nodepool
+              type: boolean
+              x-ui-override-only: true
+            instance_types:
+              title: Instance Types
+              description: List of instance types for worker nodes
+              type: array
+              items:
+                type: string
+              minItems: 1
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enable
+                values: [true]
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              minimum: 30
+              maximum: 500
+              x-ui-placeholder: e.g. 100
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enable
+                values: [true]
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              enum:
+                - ON_DEMAND
+                - SPOT
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enable
+                values: [true]
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              minimum: 1
+              maximum: 200
+              x-ui-override-only: true
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enable
+                values: [true]
+  x-ui-order: []
+  required: ["node_pools"]
+sample:
+  kind: kubernetes_cluster
+  flavor: default
+  version: "0.1"
+  lifecycle: ENVIRONMENT
+  disabled: true
+  provided: false
+  depends_on: []
+  metadata: {}
+  spec: {}
+  advanced: {}
