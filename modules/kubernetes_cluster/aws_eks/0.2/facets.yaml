@@ -68,6 +68,12 @@ spec:
           description: Specification of default nodepools
           type: object
           properties:
+            instance_types:
+              title: Node Instance Types
+              description: Comma-separated list of instance types for worker nodes
+              type: string
+              x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
+              x-ui-override-only: true
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
@@ -106,6 +112,7 @@ spec:
               description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
               x-ui-override-only: true
+          required: [ "instance_types" ]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -284,7 +291,6 @@ spec:
             description: Service account for the addon
             type: string
             x-ui-override-only: true
-  required: [cluster, nodepools]
 sample:
   kind: kubernetes_cluster
   flavor: aws_eks
