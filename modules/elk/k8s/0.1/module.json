@@ -1,0 +1,20 @@
+{
+  "provides": "elk",
+  "flavors": [
+    "k8s",
+    "default"
+  ],
+  "supported_clouds": [
+    "aws",
+    "gcp",
+    "azure",
+    "kubernetes"
+  ],
+  "inputs": {},
+  "lifecycle": "ENVIRONMENT",
+  "version": "0.1",
+  "depends_on": [],
+  "input_type": "instance",
+  "composition": {},
+  "conditional_on_intent": ""
+}
