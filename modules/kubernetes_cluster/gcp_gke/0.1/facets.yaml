@@ -54,16 +54,19 @@ spec:
           title: Enable Private Nodes
           description: Set this to true to enable private nodes
           type: boolean
+          default: true
           x-ui-override-only: true
         enable_node_auto_provisioning:
           title: Enable Node Auto Provisioning
           description: Set this to true to enable node auto provisioning
           type: boolean
+          default: false
           x-ui-override-only: true
         enable_workload_logging:
           title: Enable Workload Logging
           description: Set this to true to enable workload logging
           type: boolean
+          default: false
           x-ui-override-only: true
         kubernetes_master_authorized_networks:
           title: Kubernetes Master Authorized Networks
@@ -86,6 +89,7 @@ spec:
               title: Enable Default Nodepool
               description: Set this to true to enable default nodepool
               type: boolean
+              default: true
               x-ui-override-only: true
             instance_types:
               title: Instance Types
@@ -102,6 +106,7 @@ spec:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              default: 100
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
@@ -116,6 +121,7 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
+              default: SPOT
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
@@ -126,6 +132,7 @@ spec:
               type: number
               minimum: 1
               maximum: 200
+              default: 200
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
@@ -134,6 +141,7 @@ spec:
               title: Enable Multi Availability Zones
               description: Set this to true to enable default nodepool in multi availability zones
               type: boolean
+              default: false
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
@@ -142,6 +150,7 @@ spec:
               title: Enable Secure Boot for Default Nodepool
               description: Set this to true to enable secure boot for default nodepool
               type: boolean
+              default: false
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
@@ -170,15 +179,17 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]  
+          required: [ "instance_types" ]  
         fc-dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
           type: object
           properties:
             enable:
-              title: Enable Default Nodepool
+              title: Enable Facets Dedicated Nodepool
               description: Set this to true to enable default nodepool
               type: boolean
+              default: true
               x-ui-override-only: true
             instance_types:
               title: Instance Types
@@ -186,6 +197,7 @@ spec:
               type: array
               items:
                 type: string
+              default: ["n2-standard-4"]
               minItems: 1
               x-ui-override-only: true
               x-ui-visible-if:
@@ -197,6 +209,7 @@ spec:
               type: number
               minimum: 30
               maximum: 500
+              default: 100
               x-ui-placeholder: e.g. 100
               x-ui-override-only: true
               x-ui-visible-if:
@@ -209,6 +222,7 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
+              default: SPOT
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
@@ -219,6 +233,7 @@ spec:
               type: number
               minimum: 1
               maximum: 200
+              default: 200
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
@@ -227,6 +242,7 @@ spec:
               title: Enable Secure Boot for Default Nodepool
               description: Set this to true to enable secure boot for default nodepool
               type: boolean
+              default: false
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
