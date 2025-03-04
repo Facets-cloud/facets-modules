@@ -75,6 +75,7 @@ spec:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              default: 100
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
@@ -89,6 +90,7 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
+              default: SPOT
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
@@ -99,6 +101,7 @@ spec:
               type: number
               minimum: 1
               maximum: 200
+              default: 200
               x-ui-override-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
@@ -107,6 +110,7 @@ spec:
               title: Azure Disk Type
               description: The type of the disk which should be used by the default node pool of the Kubernetes Cluster
               type: string
+              default: Managed
               enum:
                 - Ephemeral
                 - Managed
@@ -114,6 +118,7 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
+          required: [ "instance_types" ]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -128,6 +133,7 @@ spec:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              default: 100
               minimum: 30
               maximum: 500
               x-ui-visible-if:
@@ -139,6 +145,7 @@ spec:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
               type: string
+              default: SPOT
               enum:
                 - ON_DEMAND
                 - SPOT
@@ -150,6 +157,7 @@ spec:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
               type: number
+              default: 8
               minimum: 1
               maximum: 200
               x-ui-visible-if:
@@ -160,6 +168,7 @@ spec:
               title: Node Instance Types
               description: Comma-separated list of instance types for worker nodes
               type: string
+              default: standard_D4as_v5
               x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
@@ -169,6 +178,7 @@ spec:
               title: Azure Disk Type
               description: The type of the disk which should be used by the default node pool of the Kubernetes Cluster
               type: string
+              default: Managed
               enum:
                 - Ephemeral
                 - Managed
