@@ -18,13 +18,13 @@ spec:
         - Use Existing VPC
       default: Create New VPC
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     azs:
       title: Availability Zones
       description: Availability zones for the vpc
       type: array
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
@@ -33,13 +33,13 @@ spec:
       x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
       type: string
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     enable_multi_az:
       title: Enable Multi AZ
       description: Enable multi availability zone network
       type: boolean
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     existing_vpc_id:
       title: Existing VPC ID
       description: To setup network components in an existing vpc
@@ -48,7 +48,7 @@ spec:
         field: spec.choose_vpc_type
         values: ["Use Existing VPC"]
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
   required: [azs, vpc_cidr, existing_vpc_id]
   x-ui-order: [choose_vpc_type, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
 sample:
