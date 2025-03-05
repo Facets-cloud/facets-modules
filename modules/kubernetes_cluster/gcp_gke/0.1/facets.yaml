@@ -55,26 +55,26 @@ spec:
           description: Set this to true to enable private nodes
           type: boolean
           default: true
-          x-ui-override-only: true
+          x-ui-overrides-only: true
         enable_node_auto_provisioning:
           title: Enable Node Auto Provisioning
           description: Set this to true to enable node auto provisioning
           type: boolean
           default: false
-          x-ui-override-only: true
+          x-ui-overrides-only: true
         enable_workload_logging:
           title: Enable Workload Logging
           description: Set this to true to enable workload logging
           type: boolean
           default: false
-          x-ui-override-only: true
+          x-ui-overrides-only: true
         kubernetes_master_authorized_networks:
           title: Kubernetes Master Authorized Networks
           description: Authorized networks for kubernetes master
           type: array
           items:
             type: string
-          x-ui-override-only: true
+          x-ui-overrides-only: true
     node_pools:
       title: Nodepool Spec
       description: Specifications of the nodepools for the kubernetes cluster
@@ -90,7 +90,7 @@ spec:
               description: Set this to true to enable default nodepool
               type: boolean
               default: true
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_types:
               title: Instance Types
               description: List of instance types for worker nodes
@@ -98,7 +98,7 @@ spec:
               items:
                 type: string
               minItems: 1
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -110,7 +110,7 @@ spec:
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -122,7 +122,7 @@ spec:
                 - ON_DEMAND
                 - SPOT
               default: SPOT
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -133,7 +133,7 @@ spec:
               minimum: 1
               maximum: 200
               default: 200
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -142,7 +142,7 @@ spec:
               description: Set this to true to enable default nodepool in multi availability zones
               type: boolean
               default: false
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -151,7 +151,7 @@ spec:
               description: Set this to true to enable secure boot for default nodepool
               type: boolean
               default: false
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-default.enable
                 values: [true]
@@ -190,7 +190,7 @@ spec:
               description: Set this to true to enable default nodepool
               type: boolean
               default: true
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_types:
               title: Instance Types
               description: List of instance types for worker nodes
@@ -199,7 +199,7 @@ spec:
                 type: string
               default: ["n2-standard-4"]
               minItems: 1
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
@@ -211,7 +211,7 @@ spec:
               maximum: 500
               default: 100
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
@@ -223,7 +223,7 @@ spec:
                 - ON_DEMAND
                 - SPOT
               default: SPOT
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
@@ -234,7 +234,7 @@ spec:
               minimum: 1
               maximum: 200
               default: 200
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
@@ -243,7 +243,7 @@ spec:
               description: Set this to true to enable secure boot for default nodepool
               type: boolean
               default: false
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
