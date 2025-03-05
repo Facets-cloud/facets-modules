@@ -14,7 +14,7 @@ spec:
       description: Choose the type of VPC
       type: radio
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
       enum:
         - Create New VPC
         - Use Existing VPC
@@ -24,7 +24,7 @@ spec:
       description: Availability zones for the vpc
       type: array
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
@@ -33,13 +33,13 @@ spec:
       x-ui-error-message: "The provided CIDR block is invalid. Ensure it is a valid private IP range in CIDR notation and note that the CIDR block 10.0.0.0/16 is not allowed."
       type: string
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     enable_multi_az:
       title: Enable Multi AZ
       description: Enable multi availability zone network
       type: boolean
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     vnet_name:
       title: Existing VPC Name
       description: To setup network components in an existing vpc
@@ -48,7 +48,7 @@ spec:
         field: spec.choose_vpc_type
         values: [Use Existing VPC]
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     resource_group_name:
       title: Existing Resource Group Name
       description: To setup network components in an existing vpc
@@ -57,7 +57,7 @@ spec:
         field: spec.choose_vpc_type
         values: [Use Existing VPC]
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
   required: [azs, vpc_cidr, vnet_name, resource_group_name]
   x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, azs, vpc_cidr, enable_multi_az]
 sample:
