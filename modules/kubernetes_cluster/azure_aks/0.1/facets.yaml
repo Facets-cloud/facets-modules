@@ -59,7 +59,7 @@ spec:
               title: Enable Default Nodepool
               description: Set this to true to enable default nodepool
               type: boolean
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_types:
               title: Instance Types
               description: List of instance types for worker nodes
@@ -67,7 +67,7 @@ spec:
               items:
                 type: string
               minItems: 1
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
@@ -79,7 +79,7 @@ spec:
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
@@ -91,7 +91,7 @@ spec:
                 - ON_DEMAND
                 - SPOT
               default: SPOT
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
@@ -102,7 +102,7 @@ spec:
               minimum: 1
               maximum: 200
               default: 200
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
@@ -114,7 +114,7 @@ spec:
               enum:
                 - Ephemeral
                 - Managed
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
@@ -128,7 +128,7 @@ spec:
               title: Enable Facets Dedicated Nodepool
               description: Set this to true to enable facets dedicated nodepools
               type: boolean
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
@@ -140,7 +140,7 @@ spec:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -152,7 +152,7 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
@@ -163,7 +163,7 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_type:
               title: Node Instance Types
               description: Comma-separated list of instance types for worker nodes
@@ -173,7 +173,7 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
-              x-ui-override-only: true 
+              x-ui-overrides-only: true 
             azure_disk_type:
               title: Azure Disk Type
               description: The type of the disk which should be used by the default node pool of the Kubernetes Cluster
@@ -182,7 +182,7 @@ spec:
               enum:
                 - Ephemeral
                 - Managed
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]     
