@@ -4,6 +4,47 @@ version: '0.1'
 description: Adds dax_cluster - default flavor
 clouds:
 - aws
+lifecycle: ENVIRONMENT
+input_type: instance
+composition: {}
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/aws_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+spec:
+  title: DAX Cluster Spec
+  description: Specifications for DAX Cluster
+  type: object
+  properties:
+    iam_policies:
+      type: string
+      title: IAM Policy ARN
+      description: The IAM policy ARN for the DAX cluster
+      minLength: 1
+      x-ui-placeholder: "Enter IAM policy ARN for your DAX cluster"
+    size:
+      type: object
+      title: Size
+      description: Sizing for DAX Cluster
+      properties:
+        instance:
+          type: string
+          title: Instance
+          description: The instance type for the DAX cluster
+          minLength: 1
+          x-ui-placeholder: "Enter instance type for your DAX cluster"
+    replication_factor:
+      type: integer
+      title: Replication Factor
+      description: The replication factor for the DAX cluster
+      minimum: 1
+      maximum: 11
+      x-ui-placeholder: "Enter replication factor for your DAX cluster"
+  required: [ "size", "replication_factor"]
+  x-ui-order: [ "size", "replication_factor", "iam_policies"]
 sample:
   kind: dax_cluster
   flavor: default
