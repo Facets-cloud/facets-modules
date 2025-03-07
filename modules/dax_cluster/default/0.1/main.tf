@@ -22,25 +22,23 @@ resource "aws_iam_policy" "dax_policy" {
   description = "Custom policy for DAX cluster"
   policy      = jsonencode({
     "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "dynamodb:*",
-          "dax:*",
-          "application-autoscaling:*",
-          "cloudwatch:PutMetricAlarm",
-          "cloudwatch:DescribeAlarms",
-          "cloudwatch:DeleteAlarms",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "iam:GetRole",
-          "iam:CreateServiceLinkedRole",
-          "iam:PassRole"
-        ],
-        "Resource" : "*"
-      }
+    "Statement": [
+        {
+            "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:BatchGetItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:ConditionCheckItem"
+            ],
+            "Effect": "Allow",
+            "Resource" : "*"
+        }
     ]
   })
 }
