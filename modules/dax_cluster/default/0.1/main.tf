@@ -16,9 +16,38 @@ resource "aws_iam_role" "dax_cluster" {
 EOF
 }
 
+resource "aws_iam_policy" "dax_policy" {
+  count       = lookup(local.spec, "iam_policies", "") == "" ? 1 : 0
+  name        = "${module.name.name}-dax-policy"
+  description = "Custom policy for DAX cluster"
+  policy      = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:*",
+          "dax:*",
+          "application-autoscaling:*",
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:DeleteAlarms",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups",
+          "iam:GetRole",
+          "iam:CreateServiceLinkedRole",
+          "iam:PassRole"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy_attachment" "dax_cluster" {
   name       = "${module.name.name}-iam-policy-attachment"
-  policy_arn = lookup(local.spec, "iam_policies", "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess")
+  policy_arn = lookup(local.spec, "iam_policies", "aws_iam_policy.dax_policy.arn")
   roles      = [aws_iam_role.dax_cluster.name]
 }
 
