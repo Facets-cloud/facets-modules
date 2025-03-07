@@ -7,6 +7,7 @@ clouds:
 - kubernetes
 - azure
 - aws
+<<<<<<< HEAD
 inputs:
   kubernetes_details:
     optional: false
@@ -15,6 +16,8 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+=======
+>>>>>>> 3861f5ba (Reapply "[S73] Feature: Per-Instance Artifactories Module (#210)" (#214))
 spec:
   title: Artifactories
   type: object
