@@ -1,5 +1,5 @@
 name: kafka_user
-type: default
+type: Sharded_user
 displayName: Kafka User
 description: Database user for Kafka instances, defining access permissions and authentication.
 outputs:
