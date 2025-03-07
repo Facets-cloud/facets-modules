@@ -1,4 +1,4 @@
 name: snapshot_schedule
-type: default
+type: Backup
 displayName: Snapshot Schedule
 description: Defines automatic backup schedules for data snapshots, ensuring data availability.
