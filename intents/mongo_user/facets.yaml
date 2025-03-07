@@ -1,5 +1,5 @@
 name: mongo_user
-type: Sharded_user
+type: DB User
 displayName: Mongo User
 description: Database user for MongoDB instances, defining access permissions and authentication.
 outputs:
