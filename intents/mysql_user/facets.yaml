@@ -1,5 +1,5 @@
 name: mysql_user
-type: Sharded_user
+type: DB User
 displayName: MySQL User
 description: User account in MySQL database, specifying roles and access privileges.
 outputs:
