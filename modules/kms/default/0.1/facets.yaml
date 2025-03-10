@@ -1,4 +1,4 @@
-intent: aws_kms
+intent: kms
 flavor: default
 version: '0.1'
 description: Adds AWS KMS
