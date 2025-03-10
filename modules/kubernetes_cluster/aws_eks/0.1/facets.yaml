@@ -96,7 +96,7 @@ spec:
           type: object
           properties:
             instance_types:
-              title: Node Instance Types
+              title: Instance Types
               description: Comma-separated list of instance types for worker nodes
               type: array
               items:
@@ -192,8 +192,8 @@ spec:
                 values: [true]
               x-ui-overrides-only: true
             instance_type:
-              title: Node Instance Types
-              description: Comma-separated list of instance types for worker nodes
+              title: Instance Type
+              description: Instance Type of Facets Dedicated Node Pool
               type: string
               default: m4.xlarge
               x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
@@ -237,8 +237,8 @@ spec:
               default: true
               x-ui-overrides-only: true
             instance_type:
-              title: Instance Type of Ondemand Fallback Node
-              description: Size of the node for ondemand fallback worker node
+              title: Instance Type 
+              description: Instance Type of Ondemand Fallback nodepool
               type: string
               default: m5.2xlarge
               x-ui-overrides-only: true
