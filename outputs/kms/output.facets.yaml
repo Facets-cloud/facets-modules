@@ -1,0 +1,49 @@
+name: kms
+out:
+  type: object
+  title: AWS KMS
+  description: AWS KMS Attributes
+  properties:
+    attributes:
+      kms_key_arn:
+        required: true
+        type: string
+        description: ARN of the KMS key
+      kms_key_id:
+        required: true
+        type: string
+        description: ID of the KMS key
+      kms_key_policy:
+        required: true
+        type: string
+        description: Policy document of the KMS key
+      kms_external_key_expiration_model:
+        required: true
+        type: string
+        description: Expiration model of the external KMS key
+      kms_external_key_state:
+        required: true
+        type: string
+        description: State of the external KMS key
+      kms_external_key_usage:
+        required: true
+        type: string
+        description: Usage of the external KMS key
+      kms_aliases:
+        required: true
+        type: array
+        items:
+          type: string
+        description: List of KMS key aliases
+      kms_grants:
+        required: true
+        type: array
+        items:
+          type: string
+        description: List of grants for the KMS key
+      secrets:
+        required: true
+        type: array
+        items:
+          type: string
+        description: List of secrets
