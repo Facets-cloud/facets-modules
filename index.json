@@ -1668,10 +1668,7 @@
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/eks_aws_auth_config/default/0.1/",
     "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
+      "aws"
     ]
   }
 ]
