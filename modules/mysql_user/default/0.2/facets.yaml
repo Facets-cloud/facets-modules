@@ -69,6 +69,8 @@ spec:
         - permission
         - database
         - table
+  required:
+  - permissions
 sample:
   kind: mysql_user
   flavor: default
