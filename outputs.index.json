@@ -220,7 +220,7 @@
     "relativePath": "./outputs/gcp_vpc/"
   },
   {
-    "name": "aws_kms",
+    "name": "kms",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kms/"
   }
