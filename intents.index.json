@@ -333,6 +333,6 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./intents/aws_auth_config/"
+    "relativePath": "./intents/eks_aws_auth_config/"
   }
 ]

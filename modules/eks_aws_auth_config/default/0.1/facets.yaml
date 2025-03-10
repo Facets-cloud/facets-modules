@@ -1,6 +1,6 @@
 intent: eks_aws_auth_config
 flavor: default
-version: "1.0"
+version: "0.1"
 clouds:
   - aws
 spec:
@@ -76,7 +76,7 @@ inputs:
 sample:
   kind: eks_aws_auth_config
   flavor: climb
-  version: "1.0"
+  version: "0.1"
   spec:
     map_roles:
       role1:
