@@ -53,7 +53,6 @@ sample:
   metadata:
     tags: {}
   spec:
-    iam_policies: arn:aws:iam::aws:policy/aws-service-role/DAXServiceRolePolicy
     size:
       instance: dax.r4.large
     replication_factor: 1
