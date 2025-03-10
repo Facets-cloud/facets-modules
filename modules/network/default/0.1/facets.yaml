@@ -3,7 +3,10 @@ flavor: default
 version: "0.1"
 description: Adds network - default flavor
 clouds: 
-  - default
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: network
   description: Specification of the network for gcp vpc flavor

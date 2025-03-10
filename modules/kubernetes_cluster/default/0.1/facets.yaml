@@ -3,7 +3,10 @@ flavor: default
 version: "0.1"
 description: Adds kubernetes cluster - default flavor
 clouds:
-  - default
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for default flavor
