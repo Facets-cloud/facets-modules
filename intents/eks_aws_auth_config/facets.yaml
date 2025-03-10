@@ -1,7 +1,7 @@
-name: aws_auth_config
+name: eks_aws_auth_config
 type: default
 displayName: AWS Auth Config
 description: Configure aws_auth config map in EKS
 outputs:
 - name: default
-  type: "@output/aws_auth_config"
+  type: "@output/eks_aws_auth_config"
