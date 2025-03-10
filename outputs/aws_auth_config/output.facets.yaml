@@ -1,0 +1,8 @@
+name: aws_auth_config
+out:
+  type: object
+  title: AWS Auth Config Map
+  description: AWS Auth Config Map
+  properties:
+    interfaces: null
+    attributes: null
