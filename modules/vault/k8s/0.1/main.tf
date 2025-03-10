@@ -53,11 +53,7 @@ locals {
 }
 
 module "name" {
-<<<<<<< HEAD
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
-=======
-  source          = "../../3_utility/name"
->>>>>>> 9fd760b (Vault Terraform module (#227))
   is_k8s          = true
   globally_unique = false
   resource_type   = "vault"
