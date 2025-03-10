@@ -23,7 +23,7 @@ spec:
               title: Enable Default Nodepool
               description: Set this to true to enable default nodepool
               type: boolean
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_types:
               title: Instance Types
               description: List of instance types for worker nodes
@@ -31,7 +31,7 @@ spec:
               items:
                 type: string
               minItems: 1
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true]
@@ -42,7 +42,7 @@ spec:
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true]
@@ -53,7 +53,7 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true]
@@ -63,7 +63,7 @@ spec:
               type: number
               minimum: 1
               maximum: 200
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true]
@@ -71,7 +71,7 @@ spec:
               title: Enable Multi Availability Zones
               description: Set this to true to enable default nodepool in multi availability zones
               type: boolean
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.default.enable
                 values: [true] 
@@ -84,7 +84,7 @@ spec:
               title: Enable Dedicated Nodepool
               description: Set this to true to enable default nodepool
               type: boolean
-              x-ui-override-only: true
+              x-ui-overrides-only: true
             instance_types:
               title: Instance Types
               description: List of instance types for worker nodes
@@ -92,7 +92,7 @@ spec:
               items:
                 type: string
               minItems: 1
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]
@@ -103,7 +103,7 @@ spec:
               minimum: 30
               maximum: 500
               x-ui-placeholder: e.g. 100
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]
@@ -114,7 +114,7 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]
@@ -124,7 +124,7 @@ spec:
               type: number
               minimum: 1
               maximum: 200
-              x-ui-override-only: true
+              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enable
                 values: [true]

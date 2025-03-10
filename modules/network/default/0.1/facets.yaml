@@ -14,7 +14,7 @@ spec:
       description: Choose the type of VPC
       type: radio
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
       enum:
         - Create New VPC
         - Use Existing VPC
@@ -24,7 +24,7 @@ spec:
       description: Availability zones for the vpc
       type: array
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
@@ -33,7 +33,7 @@ spec:
       x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
       type: string
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
     vnet_name:
       title: Existing VPC Name
       description: To setup network components in an existing vpc
@@ -42,7 +42,7 @@ spec:
         field: spec.choose_vpc_type
         values: ["Use Existing VPC"]
       x-ui-immutable: true
-      x-ui-override-only: true
+      x-ui-overrides-only: true
   required: [ choose_vpc_type, vnet_name, azs, vpc_cidr ]
   x-ui-order: []
 sample:
