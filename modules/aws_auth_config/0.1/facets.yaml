@@ -1,0 +1,99 @@
+intent: eks_aws_auth_config
+flavor: default
+version: "1.0"
+clouds:
+  - aws
+spec:
+  type: object
+  properties:
+    map_roles:
+      title: Map Roles
+      description: "Map of roles with their corresponding IAM role ARNs, usernames, and groups."
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]+$"
+        properties:
+          rolearn:
+            type: string
+            description: "ARN of the IAM role."
+          username:
+            type: string
+            description: "Username associated with the role."
+          groups:
+            type: object
+            patternProperties:
+              keyPattern: "^[a-zA-Z0-9_.-]+$"
+              properties:
+                name:
+                  type: string
+                  description: "Name of the group."
+            required:
+              - name
+        required:
+          - rolearn
+          - username
+          - groups
+    map_users:
+      title: Map Users
+      description: "Map of users with their corresponding IAM user ARNs, usernames, and groups."
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]+$"
+        properties:
+          userarn:
+            type: string
+            description: "ARN of the IAM user."
+          username:
+            type: string
+            description: "Username associated with the user."
+          groups:
+            type: object
+            patternProperties:
+              keyPattern: "^[a-zA-Z0-9_.-]+$"
+              properties:
+                name:
+                  type: string
+                  description: "Name of the group."
+            required:
+              - name
+        required:
+          - userarn
+          - username
+          - groups
+  required:
+    - map_roles
+    - map_users
+outputs: {}
+inputs:
+  kubernetes_details:
+    type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: The details of Kubernetes where CRD for managing mysql user will be created
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+sample:
+  kind: eks_aws_auth_config
+  flavor: climb
+  version: "1.0"
+  spec:
+    map_roles:
+      role1:
+        rolearn: "arn:aws:iam::123456789012:role/example-role1"
+        username: "example-user1"
+        groups:
+          group1:
+            name: "Admins Group"
+          group2:
+            name: "Developers Group"
+    map_users:
+      user1:
+        userarn: "arn:aws:iam::123456789012:user/example-user1"
+        username: "example-user1"
+        groups:
+          group1:
+            name: "Admins Group"
+          group2:
+            name: "Developers Group"
+
