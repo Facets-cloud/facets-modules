@@ -25,6 +25,7 @@ spec:
       type: array
       x-ui-immutable: true
       x-ui-overrides-only: true
+      x-ui-fetch-az: true
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
