@@ -1,4 +1,4 @@
-name: aws_auth_config
+name: eks_aws_auth_config
 out:
   type: object
   title: AWS Auth Config Map
