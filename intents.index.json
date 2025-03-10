@@ -332,7 +332,7 @@
     "relativePath": "./intents/mongodb_auth_operator/"
   },
   {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "gitUrl":  "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./intents/kms/"
   },
   {
