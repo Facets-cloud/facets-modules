@@ -46,7 +46,7 @@ spec:
               type: boolean
         default_reclaim_policy:
           title: Default Reclaim Policy
-          description: The reclaim policy for the default storage class in a Kubernetes cluster determines how resources are handled after a persistent volume is released. <b>Once set, any changes to the policy will not affect storage classes that have already been created.</b>
+          description: The reclaim policy for the default storage class in a Kubernetes cluster determines how resources are handled after a persistent volume is released. <b>Once set, any changes to the policy will not be reflected on already created storage class.</b>
           type: string
           default: Delete
           enum:
