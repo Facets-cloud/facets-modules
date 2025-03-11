@@ -202,7 +202,6 @@ spec:
           type: object
           title: Health Checks
           description: Ensure service remains responsive and operational. Assess its status and performance.
-          x-ui-override-disable: true
           x-ui-toggle: true
           properties:
             readiness_check_type:
