@@ -25,8 +25,8 @@ controllerManager:
 VALUES
     , yamlencode({
       controllerManager = {
-        tolerations  = concat(var.environment.default_tolerations, var.environment.facets_dedicated_tolerations)
-        nodeSelector = var.environment.facets_dedicated_node_selectors
+        tolerations  = concat(var.environment.default_tolerations, local.facets_dedicated_tolerations)
+        nodeSelector = local.facets_dedicated_node_selectors
       }
     }),
     yamlencode({

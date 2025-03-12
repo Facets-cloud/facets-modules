@@ -24,8 +24,8 @@ controllerManager:
         memory: 64Mi
 VALUES
     , yamlencode({
-      tolerations  = concat(var.environment.default_tolerations, var.environment.facets_dedicated_tolerations)
-      nodeSelector = var.environment.facets_dedicated_node_selectors
+      tolerations  = concat(var.environment.default_tolerations, local.facets_dedicated_tolerations)
+      nodeSelector = local.facets_dedicated_node_selectors
     }),
     yamlencode({
       imagePullSecrets = var.inputs.kubernetes_details.attributes.legacy_outputs.registry_secret_objects
