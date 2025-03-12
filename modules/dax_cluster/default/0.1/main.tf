@@ -16,33 +16,6 @@ resource "aws_iam_role" "dax_cluster" {
 EOF
 }
 
-# resource "aws_iam_policy" "dax_policy" {
-#   count       = lookup(local.spec, "iam_policies", "") == "" ? 1 : 0
-#   name        = "${module.name.name}-dax-policy"
-#   description = "Custom policy for DAX cluster"
-#   policy      = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement": [
-#         {
-#             "Action": [
-#                 "dynamodb:DescribeTable",
-#                 "dynamodb:PutItem",
-#                 "dynamodb:GetItem",
-#                 "dynamodb:UpdateItem",
-#                 "dynamodb:DeleteItem",
-#                 "dynamodb:Query",
-#                 "dynamodb:Scan",
-#                 "dynamodb:BatchGetItem",
-#                 "dynamodb:BatchWriteItem",
-#                 "dynamodb:ConditionCheckItem"
-#             ],
-#             "Effect": "Allow",
-#             "Resource" : "*"
-#         }
-#     ]
-#   })
-# }
-
 resource "aws_iam_policy_attachment" "dax_cluster" {
   name       = "${module.name.name}-iam-policy-attachment"
   policy_arn = lookup(local.spec, "iam_policies", "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess")
