@@ -1,0 +1,20 @@
+name: aws_eventbridge
+out:
+  type: object
+  title: AWS EventBridge
+  description: AWS EventBridge
+  properties:
+    attributes:
+      rule_id:
+        required: true
+        type: object
+        description: Map of aws eventbridge rules to their corresponding rule ids.
+      rule_arn:
+        required: true
+        type: object
+        description: Map of aws eventbridge rules to their corresponding ARN (Amazon Resource Name).
+      rule_name:
+        required: true
+        type: object
+        description: Map of aws eventbridge rules to their corresponding rule names.
+    interfaces: null

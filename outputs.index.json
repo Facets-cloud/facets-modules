@@ -198,5 +198,10 @@
     "name": "ecs_cluster_details",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/ecs_cluster_details/"
+  },
+  {
+    "name": "aws_eventbridge",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_eventbridge/"
   }
 ]
