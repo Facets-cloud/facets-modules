@@ -1,4 +1,4 @@
 name: aws_lambda_permission
-type: default
+type: IAM
 displayName: AWS Lambda Permission
 description: Grants permission to AWS services or users to invoke an AWS Lambda function.

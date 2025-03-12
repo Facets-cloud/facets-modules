@@ -80,6 +80,8 @@ jobs:
           echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
 
       - name: Execute command
+        env:
+          ALL_SECRETS: ${{ toJson(secrets) }}
         run: |
           set -e
           set -o pipefail

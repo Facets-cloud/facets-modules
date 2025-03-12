@@ -1,5 +1,5 @@
 name: crossplane
-type: default
+type: K8s
 displayName: Crossplane
 description: Kubernetes Operator to simplify the management of users and permissions for Mysql databases
 outputs:

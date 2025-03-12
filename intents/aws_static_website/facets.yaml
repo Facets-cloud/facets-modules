@@ -1,4 +1,4 @@
 name: aws_static_website
-type: default
+type: Web Hosting
 displayName: AWS Static Website
 description: S3 hosted static website infrastructure, offering scalable and cost-effective web hosting.

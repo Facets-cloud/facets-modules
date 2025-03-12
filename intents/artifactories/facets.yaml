@@ -5,4 +5,3 @@ description: Provides an Artifactories resource for creating Container Registry 
 outputs:
   - name: default
     type: "@output/artifactories"
-

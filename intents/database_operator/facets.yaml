@@ -1,5 +1,5 @@
 name: database_operator
-type: default
+type: K8s
 displayName: Database Operator
 description: Kubernetes Operator to simplify the management of users and permissions for PostgreSQL databases
 outputs:
