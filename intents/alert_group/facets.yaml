@@ -1,5 +1,5 @@
 name: alert_group
-type: default
+type: Monitoring
 displayName: Alert Group
 description: Collection of alerts to notify on specific triggers, ensuring timely action and incident management.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0ccc5a55d8bbcc134b7_alert_group.svg

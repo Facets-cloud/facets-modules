@@ -1,5 +1,5 @@
 name: postgres_user
-type: default
+type: DB User
 displayName: Postgres User
 description: User account in PostgreSQL, controlling access to databases and managing privileges.
 outputs:
