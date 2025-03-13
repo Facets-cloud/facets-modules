@@ -100,8 +100,6 @@ spec:
               title: Instance Types
               description: Comma-separated list of instance types for worker nodes
               type: array
-              items:
-                type: string
               x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
               x-ui-overrides-only: true
             root_disk_volume:
