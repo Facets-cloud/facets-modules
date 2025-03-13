@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: azure_aks
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds kubernetes cluster - aks flavor
 clouds:
@@ -119,6 +120,7 @@ spec:
                 field: spec.nodepools.default.enable
                 values: [true]
           required: [ "instance_types" ]
+          x-ui-order: [enable, instance_types, node_lifecycle_type, root_disk_volume,  max_nodes, azure_disk_type]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -165,7 +167,7 @@ spec:
                 values: [true]
               x-ui-overrides-only: true
             instance_type:
-              title: Node Instance Types
+              title: Instance Types
               description: Comma-separated list of instance types for worker nodes
               type: string
               default: standard_D4as_v5
@@ -186,6 +188,8 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]     
+          required: [ "instance_type" ]
+          x-ui-order: [enable, instance_type, node_lifecycle_type, root_disk_volume,  max_nodes, azure_disk_type]
   x-ui-order: [nodepools, maintenance_windows, auto_upgrade]
 sample:
   kind: kubernetes_cluster
