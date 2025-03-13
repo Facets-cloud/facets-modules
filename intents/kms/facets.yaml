@@ -1,5 +1,5 @@
 name: kms
 type: default
 displayName: AWS KMS
-description: Provides an AWS KMS resource.
+description: Provisions AWS KMS keys.
 iconUrl: https://icon.icepanel.io/AWS/svg/Security-Identity-Compliance/Key-Management-Service.svg
