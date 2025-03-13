@@ -30,8 +30,6 @@ spec:
               title: Maintenance Day of the Week
               description: Day of week for which the maintenance should be allowed
               type: array
-              items:
-                type: string
               minItems: 1
               maxItmes: 1
               x-ui-error-message: Select a day of the week for maintenance to happen
@@ -65,8 +63,6 @@ spec:
               title: Instance Types
               description: List of instance types for worker nodes
               type: array
-              items:
-                type: string
               minItems: 1
               x-ui-overrides-only: true
               x-ui-visible-if:
