@@ -1,5 +1,6 @@
 intent: network
 flavor: azure_vpc
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds network - azure vpc flavor
 clouds:
@@ -35,12 +36,6 @@ spec:
       type: string
       x-ui-immutable: true
       x-ui-overrides-only: true
-    enable_multi_az:
-      title: Enable Multi AZ
-      description: Enable multi availability zone network
-      type: boolean
-      x-ui-immutable: true
-      x-ui-overrides-only: true
     vnet_name:
       title: Existing VPC Name
       description: To setup network components in an existing vpc
@@ -60,7 +55,7 @@ spec:
       x-ui-immutable: true
       x-ui-overrides-only: true
   required: [azs, vpc_cidr, vnet_name, resource_group_name]
-  x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, azs, vpc_cidr, enable_multi_az]
+  x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, azs, vpc_cidr]
 sample:
   kind: network
   flavor: azure_vpc
