@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: aws_eks
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds kubernetes cluster - eks flavor
 clouds:
@@ -145,6 +146,7 @@ spec:
               type: string
               x-ui-overrides-only: true
           required: ["instance_types"]
+          x-ui-order: [instance_types, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -225,6 +227,8 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
+          required: ["instance_type"]
+          x-ui-order: [ enable, instance_type, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
         ondemand_fallback:
           title: Ondemand Fallback Nodepool Spec
           description: Specifications of Ondemand Fallback Nodepool
@@ -238,7 +242,7 @@ spec:
               x-ui-overrides-only: true
             instance_type:
               title: Instance Type 
-              description: Instance Type of Ondemand Fallback nodepool
+              description: Instance Type
               type: string
               default: m5.2xlarge
               x-ui-overrides-only: true
@@ -280,6 +284,8 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.ondemand_fallback.enable
                 values: [true]
+          required: ["instance_type"]
+          x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
