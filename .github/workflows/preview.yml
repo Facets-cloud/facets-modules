@@ -93,7 +93,7 @@ jobs:
             echo "Registering to $key control plane"
             # Loop through the unique directories and check for facets.yaml 
             for dir in "${dirs[@]}"; do
-              if [[ -f "$dir/facets.yaml" ]]; then
+              if [[ -f "$dir/facets.yaml" ]] && ls $dir/*.tf &> /dev/null; then
                 # Register the module as preview
                 curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir" -r "${GITHUB_REF}"
               else
