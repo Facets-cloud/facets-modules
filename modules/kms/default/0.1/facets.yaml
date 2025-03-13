@@ -4,7 +4,188 @@ version: '0.1'
 description: Adds AWS KMS
 clouds:
   - aws
-spec: {}
+spec:
+  title: KMS Configuration
+  type: object
+  properties:
+    create_external:
+      type: boolean
+      title: Create External
+      description: Whether to create an external key
+    bypass_policy_lockout_safety_check:
+      type: boolean
+      title: Bypass Policy Lockout Safety Check
+      description: By-pass the policy lockout safety check
+    customer_master_key_spec:
+      type: string
+      title: Customer Master Key Spec
+      description: Specifies the type of master key
+    custom_key_store_id:
+      type: string
+      title: Custom Key Store ID
+      description: Custom key store ID
+    deletion_window_in_days:
+      type: integer
+      title: Deletion Window in Days
+      description: Deletion window in days
+      minimum: 7
+      maximum: 30
+    description:
+      type: string
+      title: Description
+      description: Description of the KMS key
+    enable_key_rotation:
+      type: boolean
+      title: Enable Key Rotation
+      description: Whether to enable key rotation
+    is_enabled:
+      type: boolean
+      title: Is Enabled
+      description: Whether the key is enabled
+    key_material_base64:
+      type: string
+      title: Key Material Base64
+      description: Base64-encoded key material
+    key_usage:
+      type: string
+      title: Key Usage
+      description: Usage of the key
+    multi_region:
+      type: boolean
+      title: Multi Region
+      description: Whether the key is multi-region
+    policy:
+      type: object
+      title: Policy
+      description: Key policy JSON
+      x-ui-yaml-editor: true
+    valid_to:
+      type: string
+      format: date-time
+      title: Valid To
+      description: Valid To date
+    enable_default_policy:
+      type: boolean
+      title: Enable Default Policy
+      description: Enable the default policy
+    key_owners:
+      type: array
+      title: Key Owners
+      description: List of key owners
+    key_administrators:
+      type: array
+      title: Key Administrators
+      description: List of key administrators
+    key_users:
+      type: array
+      title: Key Users
+      description: List of key users
+    key_service_users:
+      type: array
+      title: Key Service Users
+      description: List of key service users
+    key_service_roles_for_autoscaling:
+      type: array
+      title: Key Service Roles for Autoscaling
+      description: List of key service roles for autoscaling
+    key_symmetric_encryption_users:
+      type: array
+      title: Key Symmetric Encryption Users
+      description: List of key symmetric encryption users
+    key_hmac_users:
+      type: array
+      title: Key HMAC Users
+      description: List of key HMAC users
+    key_asymmetric_public_encryption_users:
+      type: array
+      title: Key Asymmetric Public Encryption Users
+      description: List of key asymmetric public encryption users
+    key_asymmetric_sign_verify_users:
+      type: array
+      title: Key Asymmetric Sign Verify Users
+      description: List of key asymmetric sign verify users
+    key_statements:
+      type: object
+      title: Key Statements
+      description: Key statements JSON
+      x-ui-yaml-editor: true
+    source_policy_documents:
+      type: array
+      title: Source Policy Documents
+      description: List of source policy documents
+    override_policy_documents:
+      type: array
+      title: Override Policy Documents
+      description: List of override policy documents
+    enable_route53_dnssec:
+      type: boolean
+      title: Enable Route53 DNSSEC
+      description: Enable Route53 DNSSEC
+    route53_dnssec_sources:
+      type: array
+      title: Route53 DNSSEC Sources
+      description: List of Route53 DNSSEC sources
+    rotation_period_in_days:
+      type: integer
+      title: Rotation Period in Days
+      description: Rotation period in days
+      minimum: 1
+      maximum: 365
+    create_replica:
+      type: boolean
+      title: Create Replica
+      description: Whether to create a replica key
+    primary_key_arn:
+      type: string
+      title: Primary Key ARN
+      description: ARN of the primary key
+    create_replica_external:
+      type: boolean
+      title: Create Replica External
+      description: Whether to create an external replica key
+    primary_external_key_arn:
+      type: string
+      title: Primary External Key ARN
+      description: ARN of the primary external key
+    aliases:
+      type: array
+      title: Key Aliases
+      description: List of aliases for the key
+    computed_aliases:
+      type: object
+      title: Computed Aliases
+      description: Object of computed aliases
+      x-ui-yaml-editor: true
+    aliases_use_name_prefix:
+      type: boolean
+      title: Aliases Use Name Prefix
+      description: Whether aliases should use name prefix
+    grants:
+      type: object
+      title: Key Grants
+      description: Object of key grants
+      x-ui-yaml-editor: true
+  x-ui-order:
+    - customer_master_key_spec
+    - custom_key_store_id
+    - description
+    - key_material_base64
+    - key_usage
+    - valid_to
+    - primary_key_arn
+    - primary_external_key_arn
+    - create_external
+    - bypass_policy_lockout_safety_check
+    - deletion_window_in_days
+    - enable_key_rotation
+    - is_enabled
+    - multi_region
+    - enable_default_policy
+    - enable_route53_dnssec
+    - create_replica
+    - create_replica_external
+    - aliases_use_name_prefix
+    - rotation_period_in_days
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/aws_kms/aws_kms.schema.json
