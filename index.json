@@ -578,9 +578,6 @@
     ]
   },
   {
-    "intent": "kms",
-    "flavor": "default",
-    "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/kms/default/0.1/",
     "clouds": [
