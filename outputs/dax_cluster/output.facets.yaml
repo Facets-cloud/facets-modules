@@ -1,0 +1,41 @@
+name: dax_cluster
+out:
+  type: object
+  title: Database Cluster
+  description: Database Cluster
+  properties:
+    attributes: 
+      configuration_endpoint:
+        required: true
+        type: string
+        description: Configuration endpoint of the DAX cluster, consisting of a DNS name and a port number
+      cluster_address:
+        required: true
+        type: string
+        description: The DNS name of the DAX cluster without the port appended
+      arn:
+        required: true
+        type: string
+        description: The Amazon Resource Name (ARN) that uniquely identifies the cluster
+      port:
+        required: true
+        type: string
+        description: The port used by the configuration endpoint
+      node:
+        id:
+          required: true
+          type: string
+          description: The unique identifier of the DAX node
+        address:
+          required: true
+          type: string
+          description: The DNS hostname of the DAX node
+        port:
+          required: true
+          type: string
+          description: The port number that applications should use to connect to this node
+        availability_zone:
+          required: true
+          type: string
+          description: The Availability Zone in which the node is located
+    interfaces: null
