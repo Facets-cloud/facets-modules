@@ -44,6 +44,14 @@ spec:
               title: Enable Rotation for KMS
               description: Specifies whether key rotation is enabled
               type: boolean
+        default_reclaim_policy:
+          title: Default Reclaim Policy
+          description: The reclaim policy for the default storage class in a Kubernetes cluster determines how resources are handled after a persistent volume is released. <b>Once set, any changes to the policy will not be reflected on already created storage class.</b>
+          type: string
+          default: Delete
+          enum:
+            - Delete
+            - Retain
     nodepools:
       title: Nodepool Spec
       description: Specifications of nodepools to be created
