@@ -197,8 +197,6 @@ spec:
               title: Instance Types
               description: List of instance types for worker nodes
               type: array
-              items:
-                type: string
               default: ["n2-standard-4"]
               minItems: 1
               x-ui-overrides-only: true
