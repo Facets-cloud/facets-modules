@@ -35,3 +35,8 @@ variable "environment" {
     namespace = "default"
   }
 }
+
+variable "inputs" {
+  type    = any
+  default = {}
+}
