@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: aws_eks
+alias-flavors: [ "default" ]
 version: "0.2"
 description: Adds kubernetes cluster - eks flavor
 clouds:
@@ -18,9 +19,10 @@ spec:
           title: CloudWatch Log Retention Days
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
           type: number
-          x-ui-placeholder: e.g. 30
           minimum: 1
-          maximum: 3650
+          maximum: 365
+          x-ui-placeholder: e.g. 30
+          x-ui-overrides-only: true
         public_cidr_whitelist:
           title: Public CIDR Whitelist
           description: Comma-separated list of CIDR blocks which can access the Amazon EKS public API server endpoint
@@ -28,6 +30,7 @@ spec:
           x-ui-placeholder: e.g., 10.45.0.0/16,10.60.0.0/16
           pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b(,\s*\b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b)*
           x-ui-error-message: Regex for CIDR block did not match. Make sure valid comma-separated CIDR blocks are given
+          x-ui-overrides-only: true
         kms_keys:
           title: KMS Keys
           description: Specification of aws kms
@@ -40,29 +43,48 @@ spec:
               minimum: 7
               maximum: 30
               x-ui-error-message: Deletion window must be between 7 and 30
+              x-ui-overrides-only: true
             enable_rotation:
               title: Enable Rotation for KMS
               description: Specifies whether key rotation is enabled
               type: boolean
+              x-ui-overrides-only: true
+            rotation_period_in_days:
+              title: Rotation Period for KMS in days
+              description: Specifies Rotation Period for KMS in days
+              type: number
+              minimum: 1
+              maximum: 365
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.cluster.kms_keys.enable_rotation
+                values: [true]
     nodepools:
       title: Nodepool Spec
       description: Specifications of nodepools to be created
       type: object
       properties:
-        enable_ondemand_fallback_nodes:
-          title: Enable Ondemand Fallback Nodes
-          description: Boolean to enable ondemand fallback Nodes
-          type: boolean
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
           type: object
           properties:
+            instance_types:
+              title: Instance Types
+              description: Comma-separated list of instance types for worker nodes
+              type: array
+              items:
+                type: string
+              x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
+              x-ui-overrides-only: true
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              minimum: 30
+              maximum: 500
               x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -70,24 +92,31 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
+              x-ui-overrides-only: true
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
               type: number
               minimum: 1
               maximum: 200
+              x-ui-overrides-only: true
             ami_id:
               title: AMI ID
               description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
+              x-ui-overrides-only: true
             ami_name_filter:
               title: AMI Name Filter
               description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
+              x-ui-overrides-only: true
             ami_owner_id:
               title: AMI Owner ID
               description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
+              x-ui-overrides-only: true
+          required: ["instance_types"]
+          x-ui-order: [instance_types, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -97,11 +126,18 @@ spec:
               title: Enable Facets Dedicated Nodepool
               description: Set this to true to enable facets dedicated nodepools
               type: boolean
+              x-ui-overrides-only: true
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
               type: number
+              minimum: 30
+              maximum: 500
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
               x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
             node_lifecycle_type:
               title: Node Lifecycle Type
               description: Select lifecycle plan for worker nodes
@@ -109,29 +145,55 @@ spec:
               enum:
                 - ON_DEMAND
                 - SPOT
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
               type: number
               minimum: 1
-              maximum: 100
+              maximum: 200
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
             instance_type:
-              title: Node Instance Types
-              description: Comma-separated list of instance types for worker nodes
+              title: Instance Type
+              description: Instance type for Facets Dedicated Node Pool
               type: string
               x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
             ami_id:
               title: AMI ID
               description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
             ami_name_filter:
               title: AMI Name Filter
               description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
             ami_owner_id:
               title: AMI Owner ID
               description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+          required: ["instance_type"]
+          x-ui-order: [ enable, instance_type, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
         ondemand_fallback:
           title: Ondemand Fallback Nodepool Spec
           description: Specifications of Ondemand Fallback Nodepool
@@ -141,34 +203,102 @@ spec:
               title: Enable Ondemand Fallback Nodepool
               description: Boolean to enable ondemand fallback nodepool
               type: boolean
+              x-ui-overrides-only: true
             instance_type:
-              title: Instance Type of Ondemand Fallback Node
+              title: Instance Type 
               description: Size of the node for ondemand fallback worker node
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.ondemand_fallback.enable
+                values: [true]
             max_nodes: 
               title: Max nodes
               description: Maximum number of nodes in nodepool
               type: number
               minimum: 0
               maximum: 100
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.ondemand_fallback.enable
+                values: [true]
             ami_id:
               title: AMI ID
               description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.ondemand_fallback.enable
+                values: [true]
             ami_name_filter:
               title: AMI Name Filter
               description: AMI name filter for AMI image to be used for the kubernetes node.
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.ondemand_fallback.enable
+                values: [true]
             ami_owner_id:
               title: AMI Owner ID
               description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
               type: string
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.ondemand_fallback.enable
+                values: [true]
+          required: ["instance_type"]
+          x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
       x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
+      x-ui-overrides-only: true
+    addons:
+      title: Addons
+      description: Specifications of addons to be installed
+      type: object
+      patternProperties:
+        type: object
+        title: Addon Name
+        keyPattern: "^[a-zA-Z-]+$"
+        properties:
+          enable:
+            title: Enable Addon
+            description: Set this to true to enable the addon
+            type: boolean
+          configuration_values:
+            title: Configuration Values
+            description: Configuration values for the addon
+            type: string
+            x-ui-overrides-only: true
+          resolve_conflicts:
+            title: Resolve Conflicts
+            description: Set this to true to resolve conflicts
+            type: boolean
+            x-ui-overrides-only: true
+          addon_version:
+            title: Addon Version
+            description: Version of the addon
+            type: string
+            x-ui-overrides-only: true
+          tags:
+            title: Addon Tags
+            description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+            type: object
+            x-ui-overrides-only: true
+            x-ui-yaml-editor: true
+          preserve:
+            title: Preserve Addon
+            description: Set this to true to preserve the addon
+            type: boolean
+            x-ui-overrides-only: true
+          service_account_role_arn:
+            title: Service Account Role ARN
+            description: Service account for the addon
+            type: string
+            x-ui-overrides-only: true
 sample:
   kind: kubernetes_cluster
   flavor: aws_eks
