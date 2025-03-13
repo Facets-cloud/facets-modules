@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: gcp_gke
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:
@@ -180,6 +181,7 @@ spec:
                 field: spec.node_pools.fc-default.enable
                 values: [true]  
           required: [ "instance_types" ]  
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_multi_az", "enable_secure_boot", "iam"]
         fc-dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
@@ -271,6 +273,8 @@ spec:
               x-ui-visible-if:
                 field: spec.node_pools.fc-dedicated.enable
                 values: [true]
+          required: [ "instance_types" ]
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_secure_boot", "iam"]
   x-ui-order: ["node_pools", "cluster", "maintenance_windows", "auto_upgrade"]
 sample:
   kind: kubernetes_cluster
