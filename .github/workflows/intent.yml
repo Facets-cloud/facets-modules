@@ -94,16 +94,44 @@ jobs:
             for dir in "${dirs[@]}"; do
               if [[ -f "$dir/facets.yaml" ]]; then
                 FACETS_YAML_PATH="$dir/facets.yaml"
-                
-                # Convert YAML contents to JSON
-                JSON_CONTENT=$(yq eval -o=json "$FACETS_YAML_PATH")
 
-                # Send the JSON content using curl with Basic Auth to the specified path
+                # Create a temporary file for intermediate processing
+                TEMP_JSON=$(mktemp)
+
+                # First convert YAML to JSON
+                yq eval -o=json "$FACETS_YAML_PATH" > "$TEMP_JSON"
+
+                # Process the JSON to handle different formats of outputs
+                TRANSFORMED_JSON=$(jq '
+                  # Check if outputs exists
+                  if has("outputs") then
+                    # If outputs is an array, rename it to intentOutputs
+                    if (.outputs | type) == "array" then
+                      .intentOutputs = .outputs | del(.outputs)
+                    # If outputs is an object (map), convert it to an array of objects with name, type, title
+                    elif (.outputs | type) == "object" then
+                      .intentOutputs = (.outputs | to_entries | map({
+                        name: .key,
+                        type: .value.type,
+                        title: .value.title
+                      })) | del(.outputs)
+                    else
+                      .
+                    end
+                  else
+                    .
+                  end
+                ' "$TEMP_JSON")
+
+                # Send the transformed JSON content using curl with Basic Auth to the specified path
                 echo "Registering module with: $dir"
                 curl -f -X POST "$URL/cc-ui/v1/intents" \
                   -H "Content-Type: application/json" \
                   -u "$USERNAME:$TOKEN" \
-                  -d "$JSON_CONTENT"
+                  -d "$TRANSFORMED_JSON"
+
+                # Clean up temporary file
+                rm "$TEMP_JSON"
 
               else
                 echo "No facets.yaml found in $dir"

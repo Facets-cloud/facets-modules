@@ -1,7 +1,7 @@
 name: sns
 type: Queue
 displayName: SNS
-description: Fully managed AWS notification service provider.
+description: Fully managed AWS notification service provider
 outputs:
   - name: attributes.consumer_policy_arn
     title: "SNS Consumer Permission"
