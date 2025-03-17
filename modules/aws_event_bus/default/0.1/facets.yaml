@@ -4,11 +4,21 @@ version: '0.1'
 description: Adds aws_event_bus - default flavor
 clouds:
 - aws
+spec:
+  title: AWS Event Bus
+  type: object
+  description: Specification of the AWS Event Bus resource intent
+  properties:
+    name:
+      type: string
+      title: Name
+      description: Name of the AWS Event Bus
 sample:
   kind: aws_event_bus
   disabled: true
   version: '0.1'
   metadata: {}
   flavor: default
-  spec: {}
+  spec:
+    name: "sample-event-bus"
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_event_bus/aws_event_bus.schema.json

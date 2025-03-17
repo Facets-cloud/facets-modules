@@ -1,0 +1,8 @@
+name: aws_event_bus
+out:
+  type: object
+  title: AWS Event Bus
+  description: AWS Event Bus
+  properties:
+    attributes:
+    interfaces:
