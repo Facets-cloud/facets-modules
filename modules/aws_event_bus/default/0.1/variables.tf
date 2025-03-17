@@ -1,25 +1,3 @@
-variable "cluster" {
-  type = any
-  default = {
-  }
-}
-
-variable "baseinfra" {
-  type = any
-  default = {
-    k8s_details = {
-      registry_secret_objects = []
-    }
-  }
-}
-
-variable "cc_metadata" {
-  type = any
-  default = {
-    tenant_base_domain : "tenant.facets.cloud"
-  }
-}
-
 variable "instance" {
   description = "The JSON representation of the resource in the Facets blueprint."
   type        = object({
