@@ -131,7 +131,6 @@ spec:
         - ports
   required: []
   x-ui-order:
-    - release
     - runtime
     - knative_annotation
     - env
