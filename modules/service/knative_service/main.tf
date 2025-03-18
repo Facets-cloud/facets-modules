@@ -44,8 +44,8 @@ module "name" {
 
 resource "helm_release" "knative" {
   name            = module.name.name
-  chart           = "https://kiwigrid.github.io"
-  repository      = "kiwigrid/any-resource"
+  chart           = "any-resource"
+  repository      = "kiwigrid"
   namespace       = var.environment.namespace
   version         = "0.1.0"
   cleanup_on_fail = true
