@@ -378,7 +378,7 @@ resource "aws_wafv2_web_acl" "this" {
             }
           }
           dynamic "rule_group_reference_statement" {
-            for_each = for_each = try({ rule_group_reference_statement = statement.value.rule_group_reference_statement }, {})
+            for_each = try({ rule_group_reference_statement = statement.value.rule_group_reference_statement }, {})
             content {
               arn = lookup(rule_group_reference_statement.value, "arn", null)
               dynamic "excluded_rule" {
