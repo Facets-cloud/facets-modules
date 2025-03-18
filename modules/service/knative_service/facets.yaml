@@ -1,5 +1,5 @@
 intent: service
-flavor: knative-service
+flavor: knative_service
 version: "0.1"
 description: Adds service module of flavor knative
 clouds:
