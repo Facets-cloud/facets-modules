@@ -13,19 +13,6 @@ artifact_inputs:
     artifact_type: "docker_image"
 
 inputs:
-  kubernetes_details:
-    optional: false
-    type: "@outputs/kubernetes"
-    default:
-      resource_type: kubernetes_cluster
-      resource_name: default
-    providers:
-      - kubernetes
-      - kubernetes-alpha
-      - helm
-  kubernetes_node_pool_details:
-    type: "@outputs/kubernetes_node_pool"
-    optional: true
   artifactories:
     optional: true
     type: "@outputs/artifactories"
@@ -106,6 +93,12 @@ spec:
             description: Define port allocation to facilitate communication with service
             keyPattern: "^[0-9]+[m]?$"
             properties:
+              name:
+                type: string
+                title: Port Name
+                description: Port name for metrics
+                x-ui-dynamic-enum: spec.runtime.ports.*
+                x-ui-disable-tooltip: "No Ports Available"
               port:
                 type: string
                 title: Port
@@ -134,8 +127,6 @@ spec:
               - port
       required:
         - ports
-        - size
-        - health_checks
       x-ui-order:
         - ports
   required: []
