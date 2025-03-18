@@ -42,17 +42,27 @@ module "name" {
 
 
 
-resource "helm_release" "knative" {
-  name            = module.name.name
-  chart           = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  repository      = "kiwigrid"
-  namespace       = var.environment.namespace
-  version         = "0.1.0"
-  cleanup_on_fail = true
-  timeout         = 720
-  atomic          = false
+#resource "helm_release" "knative" {
+#  name            = module.name.name
+#  chart           = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
+#  repository      = "kiwigrid"
+#  namespace       = var.environment.namespace
+#  version         = "0.1.0"
+#  cleanup_on_fail = true
+#  timeout         = 720
+#  atomic          = false
+#
+#  values = [
+#    yamlencode(local.knative_service_helm_values)
+#  ]
+#}
 
-  values = [
+module "mysql_user_resources" {
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
+  namespace       = var.environment.namespace
+  advanced_config = {}
+  name            = module.name.name
+  resources_data  = [
     yamlencode(local.knative_service_helm_values)
   ]
 }
