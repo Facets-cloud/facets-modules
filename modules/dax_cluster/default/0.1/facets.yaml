@@ -4,9 +4,6 @@ version: '0.1'
 description: Adds dax_cluster - default flavor
 clouds:
 - aws
-lifecycle: ENVIRONMENT
-input_type: instance
-composition: {}
 inputs:
   network_details:
     optional: false
