@@ -44,7 +44,7 @@ module "name" {
 
 resource "helm_release" "knative" {
   name            = module.name.name
-  chart           = "any-resource"
+  chart           = "https://kiwigrid.github.io"
   repository      = "kiwigrid"
   namespace       = var.environment.namespace
   version         = "0.1.0"
@@ -53,7 +53,8 @@ resource "helm_release" "knative" {
   atomic          = false
 
   values = [
-    yamlencode(local.knative_service_helm_values)
+#    yamlencode(local.knative_service_helm_values)
+    local.knative_values
   ]
 }
 
