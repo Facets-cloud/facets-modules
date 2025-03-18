@@ -1,0 +1,23 @@
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+  kubernetes_node_pool_details:
+    type: "@outputs/kubernetes_node_pool"
+    optional: true
+  artifactories:
+    optional: true
+    type: "@outputs/artifactories"
+    default:
+      resource_type: artifactories
+      resource_name: default
+outputs:
+  default:
+    type: "@outputs/service"
