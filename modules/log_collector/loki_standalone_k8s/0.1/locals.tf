@@ -1,9 +1,9 @@
 locals {
   metadata       = lookup(var.instance, "metadata", {})
   loki_namespace = lookup(local.metadata, "namespace", "facets")
-#  instance_name  = lower(var.instance_name)
-  spec           = lookup(var.instance, "spec", {})
-  instance_name    = lower(module.name.name)
+  #  instance_name  = lower(var.instance_name)
+  spec          = lookup(var.instance, "spec", {})
+  instance_name = lower(module.name.name)
 
   loki_flavor      = lookup(local.advanced, "loki", {})
   loki_helm_values = lookup(local.loki_spec, "loki-standalone", {})
@@ -52,7 +52,10 @@ locals {
   query_timeout  = lookup(local.loki_flavor, "query_timeout", 60)
   derived_fields = values(lookup(local.loki_flavor, "derived_fields", {}))
 
-  node_selectors = var.environment.facets_dedicated_node_selectors
-  tolerations    = concat(var.environment.default_tolerations, var.environment.facets_dedicated_tolerations)
+  facets_dedicated_tolerations    = lookup(lookup(lookup(lookup(var.inputs, "kubernetes_details", {}), "attributes", {}), "legacy_outputs", {}), "facets_dedicated_tolerations", lookup(var.environment, "facets_dedicated_tolerations", []))
+  facets_dedicated_node_selectors = lookup(lookup(lookup(lookup(var.inputs, "kubernetes_details", {}), "attributes", {}), "legacy_outputs", {}), "facets_dedicated_node_selectors", lookup(var.environment, "facets_dedicated_node_selectors", {}))
+
+  node_selectors = local.facets_dedicated_node_selectors
+  tolerations    = concat(var.environment.default_tolerations, local.facets_dedicated_tolerations)
 
 }
