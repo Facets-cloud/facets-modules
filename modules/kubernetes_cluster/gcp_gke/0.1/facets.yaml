@@ -76,7 +76,7 @@ spec:
           items:
             type: string
           x-ui-overrides-only: true
-    node_pools:
+    nodepools:
       title: Nodepool Spec
       description: Specifications of the nodepools for the kubernetes cluster
       type: object
