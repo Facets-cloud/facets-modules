@@ -1,67 +1,20 @@
-variable "cluster" {
-  type = any
-
-}
-
-variable "baseinfra" {
-  type = any
-
-}
-
-variable "cc_metadata" {
-  type = any
-}
-
 variable "instance" {
-  type    = any
-  default = {}
+  type = any
 }
 
-variable "advanced" {
-  type    = any
-  default = {}
-}
 
 variable "instance_name" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "inputs" {
   type    = any
-  default = []
+  default = {}
 }
 
 variable "environment" {
-  type    = any
-  default = {}
-}
-
-variable "release_metadata" {
-  type    = any
-  default = {}
-}
-
-variable "instance_type" {
-  type    = string
-  default = ""
-}
-
-variable "iac_version" {
-  type    = string
-  default = ""
-}
-
-variable "generate_release_metadata" {
-  type    = bool
-  default = true
-}
-
-variable "settings" {
-  type    = any
-  default = {}
-}
-
-variable "registry_secret_objects" {
   type = any
+  default = {
+    namespace = "default"
+  }
 }
