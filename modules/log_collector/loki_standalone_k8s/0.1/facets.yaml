@@ -1,12 +1,21 @@
 intent: log_collector
 flavor: loki_standalone_k8s
-version: '0.1'
+version: "0.1"
 description: Adds log collector module
 clouds:
   - aws
   - azure
   - gcp
   - kubernetes
+inputs:
+  kubernetes_details:
+    type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: The details of kubernetes cluster where the loki standalone will be installed
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
 spec:
   title: Loki Configuration
   type: object
@@ -14,7 +23,7 @@ spec:
     loki:
       title: Loki
       type: object
-      required: [ "replicas", "volume"]
+      required: ["replicas", "volume"]
       properties:
         replicas:
           type: integer
@@ -34,7 +43,7 @@ spec:
         loki_standalone:
           title: Loki Standalone
           type: object
-          required: [ "timeout", "wait", "recreate_pods", "version" ]
+          required: ["timeout", "wait", "recreate_pods", "version"]
           properties:
             timeout:
               type: integer
@@ -68,7 +77,7 @@ spec:
                 #     resources:
                 #       requests:
                 #         memory: "200Mi"
-      x-ui-order: [ "replicas", "volume", "loki_standalone" ]
+      x-ui-order: ["replicas", "volume", "loki_standalone"]
     minio:
       title: Minio
       type: object
@@ -112,7 +121,7 @@ spec:
             #   resources:
             #     requests:
             #       memory: "300Mi"
-      x-ui-order: [ "replicas", "volume", "auth", "values" ]
+      x-ui-order: ["replicas", "volume", "auth", "values"]
     promtail:
       title: Promtail
       type: object
@@ -149,12 +158,12 @@ spec:
             #   config:
             #     clients:
             #       - url: http://loki:3100/loki/api/v1/push
-      x-ui-order: [ "timeout", "wait", "recreate_pods", "version", "values" ]
-  required: [ "loki" ]
+      x-ui-order: ["timeout", "wait", "recreate_pods", "version", "values"]
+  required: ["loki"]
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/log_collector/log_collector.schema.json"
   kind: log_collector
-  version: '0.1'
+  version: "0.1"
   flavor: loki_standalone_k8s
   disabled: true
   metadata: {}
@@ -176,4 +185,4 @@ sample:
       wait: true
       values: {}
   advanced:
-    loki: { }
+    loki: {}
