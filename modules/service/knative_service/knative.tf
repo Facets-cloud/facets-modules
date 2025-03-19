@@ -1,7 +1,7 @@
 locals {
   resource_labels = {
-    resource_type = "service"
-    resource_name = var.instance_name
+    resourceType = "service"
+    resourceName = var.instance_name
   }
   // Port mapping
   ports_mapping = [
