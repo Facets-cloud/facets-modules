@@ -3,7 +3,8 @@ module "name" {
   environment     = var.environment
   limit           = 64
   resource_name   = local.cluster_id != "" ? "${local.cluster_id}-${var.instance_name}" : var.instance_name
-  resource_type   = "image_pull_secret_injector"
+  resource_type   = "mage_pull_secret_injector"
+  prefix          = "i"
   globally_unique = false
   is_k8s          = true
 }
