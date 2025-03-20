@@ -34,6 +34,7 @@ locals {
   // Knative service crd objects
   knative_spec = {
     spec = {
+      serviceAccountName = local.enable_irsa ? "${local.sa_name}-sa" : ""
       imagePullSecrets = local.imagePullSecrets_mapping
       containers =[
         {
@@ -65,6 +66,18 @@ locals {
     }
   }
 
+  serviceAccount_values = local.enable_irsa ? {
+    apiVersion = "v1"
+    kind       = "ServiceAccount"
+    metadata = {
+      name      = "${local.sa_name}-sa"
+      namespace = var.environment.namespace
+      labels = local.merged_labels
+      annotations = {
+        "eks.amazonaws.com/role-arn" = module.irsa.0.iam_role_arn
+      }
+    }
+  } : {}
 
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
