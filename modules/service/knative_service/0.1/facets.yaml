@@ -19,10 +19,6 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
-    providers:
-      - kubernetes
-      - kubernetes-alpha
-      - helm
   artifactories:
     optional: true
     type: "@outputs/artifactories"
