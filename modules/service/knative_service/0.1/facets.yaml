@@ -135,11 +135,41 @@ spec:
         - ports
       x-ui-order:
         - ports
+    cloud_permissions:
+      type: object
+      title: Cloud Permissions
+      description: Assign roles, define access levels, and enforce conditions for managing resource security and compliance
+      x-ui-toggle: true
+      properties:
+        aws:
+          type: object
+          title: AWS
+          x-ui-toggle: true
+          properties:
+            iam_policies:
+              type: object
+              title: IAM policies
+              description: Define IAM policies to manage permissions, control-access and secure resources
+              patternProperties:
+                keyPattern: "^[a-zA-Z0-9_.-]*$"
+                title: policy_name
+                properties:
+                  arn:
+                    title: ARN
+                    type: string
+                    pattern: '^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_]+|\$\{[A-Za-z0-9._-]+\})$'
+                    x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
+                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
+                    x-ui-output-type: "iam_policy_arn"
+                    x-ui-typeable: true
+                required:
+                  - arn
   required: []
   x-ui-order:
     - runtime
     - knative_annotation
     - env
+    - cloud_permissions
 outputs:
   default:
     type: "@outputs/service"
