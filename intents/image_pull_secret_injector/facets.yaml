@@ -1,4 +1,4 @@
 name: image_pull_secret_injector
-type: Application
+type: default
 displayName: Image Pull Secret Injector
 description: Provides an Image Pull Secret Injector resource which automatically injects image pull secrets into Kubernetes namespaces or workloads, ensuring seamless access to private container registries.

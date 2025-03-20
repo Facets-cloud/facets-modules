@@ -22,7 +22,7 @@ inputs:
   artifactories:
     type: "@output/artifactories"
     displayName: Artifactories
-    description: The details of all container registries associated with this Artifactory.
+    description: The details of container registries associated with this Artifactory.
     optional: false
     default:
       resource_type: artifactories
