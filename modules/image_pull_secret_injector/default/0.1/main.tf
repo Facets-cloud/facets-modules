@@ -1,9 +1,9 @@
 module "name" {
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
-  limit           = 64
+  limit           = 53
   resource_name   = local.cluster_id != "" ? "${local.cluster_id}-${var.instance_name}" : var.instance_name
-  resource_type   = "mage_pull_secret_injector"
+  resource_type   = "mage-pull-secret-injector"
   prefix          = "i"
   globally_unique = false
   is_k8s          = true
