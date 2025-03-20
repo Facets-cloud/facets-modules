@@ -18,29 +18,7 @@ spec:
         cloudwatch_log_retention_days:
           title: CloudWatch Log Retention Days
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
-          enum:
-            - 0
-            - 1
-            - 3
-            - 5
-            - 7
-            - 14
-            - 30
-            - 60
-            - 90
-            - 120
-            - 150
-            - 180
-            - 365
-            - 400
-            - 545
-            - 731
-            - 1827
-            - 2192
-            - 2557
-            - 2922
-            - 3288
-            - 3653
+          type: number
           default: 365
           x-ui-placeholder: e.g. 30
           x-ui-overrides-only: true
