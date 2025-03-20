@@ -66,7 +66,7 @@ locals {
     }
   }
 
-  serviceAccount_values = local.enable_irsa ? {
+  serviceAccount =  {
     apiVersion = "v1"
     kind       = "ServiceAccount"
     metadata = {
@@ -77,7 +77,8 @@ locals {
         "eks.amazonaws.com/role-arn" = module.irsa.0.iam_role_arn
       }
     }
-  } : {}
+  }
+  serviceAccount = local.enable_irsa ? local.serviceAccount : {}
 
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
