@@ -90,6 +90,6 @@ module "knative_service" {
   name            = module.name.name
   resources_data  = [
     local.knative_values,
-    local.serviceAccount_values
+    local.serviceAccount
   ]
 }
