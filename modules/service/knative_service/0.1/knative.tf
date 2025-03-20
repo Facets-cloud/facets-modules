@@ -78,7 +78,7 @@ locals {
       }
     }
   }
-  serviceAccount = local.enable_irsa ? local.serviceAccount : {}
+  serviceAccount_values = local.enable_irsa ? local.serviceAccount : {}
 
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
