@@ -81,7 +81,7 @@ spec:
       description: Specifications of the nodepools for the kubernetes cluster
       type: object
       properties:
-        fc-default:
+        default:
           title: Facets Default Nodepool Spec
           description: Specifications for facets default nodepool
           type: object
@@ -101,7 +101,7 @@ spec:
               minItems: 1
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -113,7 +113,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -125,7 +125,7 @@ spec:
               default: SPOT
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -136,7 +136,7 @@ spec:
               default: 200
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             enable_multi_az:
               title: Enable Multi Availability Zones
@@ -145,7 +145,7 @@ spec:
               default: false
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             enable_secure_boot:
               title: Enable Secure Boot for Default Nodepool
@@ -154,7 +154,7 @@ spec:
               default: false
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]
             iam:
               title: IAM
@@ -178,11 +178,11 @@ spec:
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
               x-ui-visible-if:
-                field: spec.nodepools.fc-default.enable
+                field: spec.nodepools.default.enable
                 values: [true]  
           required: [ "instance_types" ]  
           x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_multi_az", "enable_secure_boot", "iam"]
-        fc-dedicated:
+        facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
           type: object
@@ -201,7 +201,7 @@ spec:
               minItems: 1
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
             root_disk_volume:
               title: Root Disk Volume
@@ -213,7 +213,7 @@ spec:
               x-ui-placeholder: e.g. 100
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
             node_lifecycle_type:
               title: Node Lifecycle Type
@@ -225,7 +225,7 @@ spec:
               default: SPOT
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
             max_nodes:
               title: Max Nodes
@@ -236,7 +236,7 @@ spec:
               default: 200
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
             enable_secure_boot:
               title: Enable Secure Boot for Default Nodepool
@@ -245,7 +245,7 @@ spec:
               default: false
               x-ui-overrides-only: true
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
             iam:
               title: IAM
@@ -269,7 +269,7 @@ spec:
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
               x-ui-visible-if:
-                field: spec.nodepools.fc-dedicated.enable
+                field: spec.nodepools.facets_dedicated.enable
                 values: [true]
           required: [ "instance_types" ]
           x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_secure_boot", "iam"]
