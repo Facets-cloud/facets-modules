@@ -73,13 +73,13 @@ locals {
       name      = "${local.sa_name}-sa"
       namespace = var.environment.namespace
       labels = local.merged_labels
-      annotations = {
-        "eks.amazonaws.com/role-arn" = module.irsa.0.iam_role_arn
-      }
+      annotations = merge(
+        local.enable_irsa ? { "eks.amazonaws.com/role-arn" = module.irsa.0.iam_role_arn } : {},
+        lookup(var.instance.metadata, "annotations", {})
+      )
     }
   }
   serviceAccount_values = length(local.iam_arns) > 0 ? local.serviceAccount : {}
-
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
     anyResources = {
