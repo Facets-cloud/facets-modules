@@ -18,6 +18,7 @@ locals {
   spec            = lookup(var.instance, "spec", {})
   runtime         = lookup(local.spec, "runtime", {})
   release         = lookup(local.spec, "release", {})
+
   advanced        = lookup(var.instance, "advanced", {})
   advanced_common = lookup(local.advanced, "common", {})
   deployment_id = lookup(local.advanced_common, "pass_deployment_id", false) ? var.environment.deployment_id : ""
@@ -27,6 +28,11 @@ locals {
       deployment_id = local.deployment_id
     } : {}
   )
+
+  aws_cloud_permissions = lookup(lookup(local.spec, "cloud_permissions", {}), "aws", {})
+  iam_arns              = lookup(local.aws_cloud_permissions, "iam_policies", {})
+  enable_irsa           = length(local.iam_arns) > 0 ? true : false
+  sa_name               = lower(var.instance_name)
 }
 
 module "name" {
@@ -36,10 +42,29 @@ module "name" {
   resource_name   = var.instance_name
   resource_type   = "ervice"
   globally_unique = false
-  is_k8s          = false
+  is_k8s          = true
   prefix          = "s"
 }
 
+module "sr-name" {
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
+  is_k8s          = false
+  globally_unique = true
+  resource_name   = local.resource_labels.resourceName
+  resource_type   = local.resource_labels.resourceType
+  limit           = 60
+  environment     = var.environment
+}
+
+module "irsa" {
+  count                 = local.enable_irsa ? 1 : 0
+  source                = "github.com/Facets-cloud/facets-utility-modules//aws_irsa"
+  iam_arns              = local.iam_arns
+  iam_role_name         = "${module.sr-name.name}-sr"
+  namespace             = var.environment.namespace
+  sa_name               = "${local.sa_name}-sa"
+  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.oidc_provider_arn
+}
 
 
 #resource "helm_release" "knative" {
@@ -64,6 +89,7 @@ module "knative_service" {
   advanced_config = {}
   name            = module.name.name
   resources_data  = [
-    local.knative_values
+    local.knative_values,
+    local.serviceAccount_values
   ]
 }
