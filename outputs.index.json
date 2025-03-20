@@ -223,5 +223,10 @@
     "name": "dax_cluster",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/dax_cluster/"
+  },
+  {
+    "name": "kms",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/kms/"
   }
 ]
