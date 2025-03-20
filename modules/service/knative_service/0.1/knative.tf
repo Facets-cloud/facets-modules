@@ -79,7 +79,7 @@ locals {
       )
     }
   }
-  serviceAccount_values = length(local.iam_arns) > 0 ? local.serviceAccount : {}
+#  serviceAccount_values = length(local.iam_arns) > 0 ? local.serviceAccount : {}
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
     anyResources = {
