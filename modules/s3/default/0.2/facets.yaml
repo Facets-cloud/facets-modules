@@ -1,6 +1,6 @@
 intent: s3
 flavor: default
-version: '0.2'
+version: "0.2"
 description: Adds S3 module
 clouds:
   - aws
@@ -9,6 +9,21 @@ spec:
   type: object
   description: Specification of the K8s resource intent
   properties:
+    imports:
+      type: object
+      title: Imports
+      description: Importing existing s3 resources to facets
+      properties:
+        s3_bucket:
+          type: string
+          title: S3 Bucket
+          description: S3 Bucket name that you want to import
+        s3_bucket_policy:
+          type: string
+          title: S3 Bucket Policy
+          description: S3 Bucket Policy name that you want to import
+      required:
+        - s3_bucket
     lifecycle_rule:
       type: object
       title: Lifecycle Rules
@@ -102,6 +117,6 @@ sample:
   flavor: default
   kind: s3
   metadata: {}
-  version: '0.2'
+  version: "0.2"
   spec: {}
   advanced: {}
