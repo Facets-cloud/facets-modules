@@ -16,10 +16,11 @@ spec:
       type: radio
       x-ui-immutable: true
       x-ui-overrides-only: true
-      enum:
-        - Create New VPC
-        - Use Existing VPC
-      default: Create New VPC
+      enum: [
+        { label: Create New VPC, value: create_new_vpc },
+        { label: Use Existing VPC, value: use_existing_vpc }
+      ]
+      default: create_new_vpc
     azs:
       title: Availability Zones
       description: Availability zones for the vpc
