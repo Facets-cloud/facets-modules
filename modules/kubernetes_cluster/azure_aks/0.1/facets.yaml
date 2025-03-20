@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: azure_aks
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds kubernetes cluster - aks flavor
 clouds:
@@ -29,8 +30,6 @@ spec:
               title: Maintenance Day of the Week
               description: Day of week for which the maintenance should be allowed
               type: array
-              items:
-                type: string
               minItems: 1
               maxItmes: 1
               x-ui-error-message: Select a day of the week for maintenance to happen
@@ -45,6 +44,149 @@ spec:
       title: Auto upgrade
       description: Boolean to enable auto upgrade of kubernetes cluster
       type: boolean
+    nodepools:
+      title: Nodepool Spec
+      description: Specifications of nodepools to be created
+      type: object
+      properties:
+        default:
+          title: Default Nodepool Spec
+          description: Specification of default nodepools
+          type: object
+          properties:
+            enable:
+              title: Enable Default Nodepool
+              description: Set this to true to enable default nodepool
+              type: boolean
+              x-ui-overrides-only: true
+            instance_types:
+              title: Instance Types
+              description: List of instance types for worker nodes
+              type: array
+              minItems: 1
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              default: 100
+              minimum: 30
+              maximum: 500
+              x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              enum:
+                - ON_DEMAND
+                - SPOT
+              default: SPOT
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              minimum: 1
+              maximum: 200
+              default: 200
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            azure_disk_type:
+              title: Azure Disk Type
+              description: The type of the disk which should be used by the default node pool of the Kubernetes Cluster
+              type: string
+              default: Managed
+              enum:
+                - Ephemeral
+                - Managed
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+          required: [ "instance_types" ]
+          x-ui-order: [enable, instance_types, node_lifecycle_type, root_disk_volume,  max_nodes, azure_disk_type]
+        facets_dedicated:
+          title: Facets Dedicated Nodepool Spec
+          description: Specifications of facets dedicated nodepools
+          type: object
+          properties:
+            enable:
+              title: Enable Facets Dedicated Nodepool
+              description: Set this to true to enable facets dedicated nodepools
+              type: boolean
+              x-ui-overrides-only: true
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              default: 100
+              minimum: 30
+              maximum: 500
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              default: SPOT
+              enum:
+                - ON_DEMAND
+                - SPOT
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              default: 8
+              minimum: 1
+              maximum: 200
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
+            instance_type:
+              title: Instance Types
+              description: Comma-separated list of instance types for worker nodes
+              type: string
+              default: standard_D4as_v5
+              x-ui-placeholder: e.g. 'm4.xlarge,t3.2xlarge'
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true 
+            azure_disk_type:
+              title: Azure Disk Type
+              description: The type of the disk which should be used by the default node pool of the Kubernetes Cluster
+              type: string
+              default: Managed
+              enum:
+                - Ephemeral
+                - Managed
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]     
+          required: [ "instance_type" ]
+          x-ui-order: [enable, instance_type, node_lifecycle_type, root_disk_volume,  max_nodes, azure_disk_type]
+  x-ui-order: [nodepools, maintenance_windows, auto_upgrade]
 sample:
   kind: kubernetes_cluster
   flavor: azure_aks
