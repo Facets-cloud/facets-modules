@@ -20,6 +20,8 @@ spec:
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
           type: number
           default: 365
+          minimum: 1
+          maximum: 3650
           x-ui-placeholder: e.g. 30
           x-ui-overrides-only: true
         public_cidr_whitelist:

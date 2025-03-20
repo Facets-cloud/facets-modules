@@ -42,7 +42,7 @@ spec:
       type: string
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Use Existing VPC"]
+        values: ["use_existing_vpc"]
       x-ui-immutable: true
       x-ui-overrides-only: true
     host_project_id:
@@ -53,7 +53,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_pods_secondary_range_name:
       title: Host Project Pods Secondary Range Name
       description: Name of the secondary range for pods in the host project's VPC
@@ -62,7 +62,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_pods_secondary_ip_range:
       title: Host Project Pods Secondary IP Range
       description: Name of the secondary range for pods in the host project's VPC
@@ -74,7 +74,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_services_secondary_range_name:
       title: Host Project Services Secondary Range Name
       description: Name of the secondary range for services in the host project's VPC
@@ -83,7 +83,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_services_secondary_ip_range:
       title: Host Project Services Secondary IP Range
       description: CIDR block for the secondary IP range of services in the host project's VPC
@@ -95,7 +95,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_allocatable_ip_range:
       title: Host Project Allocatable IP Range 
       description: Range of IPs allocatable within the host project's VPC
@@ -104,7 +104,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_subnet_id:
       title: Host Project Subnet ID
       description: Identifier for the host project's subnet in the VPC
@@ -113,7 +113,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_subnet_name:
       title: Host Project Subnet Name
       description: Name of the host project's subnet in the VPC
@@ -122,7 +122,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_subnet_ip_range:
       title: Host Project Subnet IP Range
       description: CIDR block for the host project's subnet IP range
@@ -134,7 +134,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_vpc_id:
       title: Host Project VPC ID
       description: Project VPC ID for the vpc
@@ -143,7 +143,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_vpc_name:
       title: Host Project VPC Name
       description: Name of the host project's VPC
@@ -152,7 +152,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_google_service_id:
       title: Host Project Google Service ID
       description: Identifier for the Google service associated with the host project's VPC
@@ -161,7 +161,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
     host_project_google_service_name:
       title: Host Project Google Service Name
       description: Name of the Google service associated with the host project's VPC
@@ -170,7 +170,7 @@ spec:
       x-ui-overrides-only: true
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["Shared VPC"]
+        values: ["shared_vpc"]
   required: [ vnet_name, host_project_id, host_project_pods_secondary_range_name, host_project_pods_secondary_ip_range, host_project_services_secondary_range_name, host_project_services_secondary_ip_range, host_project_allocatable_ip_range,  host_project_subnet_id, host_project_subnet_name, host_project_subnet_ip_range, host_project_vpc_id, host_project_vpc_name, host_project_google_service_id, host_project_google_service_name, azs, vpc_cidr ]
   x-ui-order: [ choose_vpc_type, vnet_name, host_project_id, host_project_pods_secondary_range_name, host_project_pods_secondary_ip_range, host_project_services_secondary_range_name, host_project_services_secondary_ip_range, host_project_allocatable_ip_range,  host_project_subnet_id, host_project_subnet_name, host_project_subnet_ip_range, host_project_vpc_id, host_project_vpc_name, host_project_google_service_id, host_project_google_service_name, azs, vpc_cidr ]
 sample:
