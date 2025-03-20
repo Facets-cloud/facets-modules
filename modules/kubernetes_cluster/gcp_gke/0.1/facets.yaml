@@ -1,5 +1,6 @@
 intent: kubernetes_cluster
 flavor: gcp_gke
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:
@@ -45,16 +46,116 @@ spec:
       title: Auto upgrade
       description: Boolean to enable auto upgrade of kubernetes cluster
       type: boolean
-    node_pools:
+    cluster:
+      title: Cluster
+      description: Specifications of the kubernetes cluster
+      type: object
+      properties:
+        enable_private_nodes:
+          title: Enable Private Nodes
+          description: Set this to true to enable private nodes
+          type: boolean
+          default: true
+          x-ui-overrides-only: true
+        enable_node_auto_provisioning:
+          title: Enable Node Auto Provisioning
+          description: Set this to true to enable node auto provisioning
+          type: boolean
+          default: false
+          x-ui-overrides-only: true
+        enable_workload_logging:
+          title: Enable Workload Logging
+          description: Set this to true to enable workload logging
+          type: boolean
+          default: false
+          x-ui-overrides-only: true
+        kubernetes_master_authorized_networks:
+          title: Kubernetes Master Authorized Networks
+          description: Authorized networks for kubernetes master
+          type: array
+          items:
+            type: string
+          x-ui-overrides-only: true
+    nodepools:
       title: Nodepool Spec
       description: Specifications of the nodepools for the kubernetes cluster
       type: object
       properties:
-        fc-default:
+        default:
           title: Facets Default Nodepool Spec
           description: Specifications for facets default nodepool
           type: object
           properties:
+            enable:
+              title: Enable Default Nodepool
+              description: Set this to true to enable default nodepool
+              type: boolean
+              default: true
+              x-ui-overrides-only: true
+            instance_types:
+              title: Instance Types
+              description: List of instance types for worker nodes
+              type: array
+              items:
+                type: string
+              minItems: 1
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              default: 100
+              minimum: 30
+              maximum: 500
+              x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              enum:
+                - ON_DEMAND
+                - SPOT
+              default: SPOT
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              minimum: 1
+              maximum: 200
+              default: 200
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            enable_multi_az:
+              title: Enable Multi Availability Zones
+              description: Set this to true to enable default nodepool in multi availability zones
+              type: boolean
+              default: false
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
+            enable_secure_boot:
+              title: Enable Secure Boot for Default Nodepool
+              description: Set this to true to enable secure boot for default nodepool
+              type: boolean
+              default: false
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]
             iam:
               title: IAM
               description: IAM specification for facets default nodepool
@@ -76,12 +177,77 @@ spec:
                         type: string
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
-        fc-dedicated:
+              x-ui-visible-if:
+                field: spec.nodepools.default.enable
+                values: [true]  
+          required: [ "instance_types" ]  
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_multi_az", "enable_secure_boot", "iam"]
+        facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
           type: object
           properties:
-           iam:
+            enable:
+              title: Enable Facets Dedicated Nodepool
+              description: Set this to true to enable default nodepool
+              type: boolean
+              default: true
+              x-ui-overrides-only: true
+            instance_types:
+              title: Instance Types
+              description: List of instance types for worker nodes
+              type: array
+              default: ["n2-standard-4"]
+              minItems: 1
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+            root_disk_volume:
+              title: Root Disk Volume
+              description: Disk Size in GiB for worker nodes
+              type: number
+              minimum: 30
+              maximum: 500
+              default: 100
+              x-ui-placeholder: e.g. 100
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+            node_lifecycle_type:
+              title: Node Lifecycle Type
+              description: Select lifecycle plan for worker nodes
+              type: string
+              enum:
+                - ON_DEMAND
+                - SPOT
+              default: SPOT
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+            max_nodes:
+              title: Max Nodes
+              description: Maximum number of worker nodes in the node pool
+              type: number
+              minimum: 1
+              maximum: 200
+              default: 200
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+            enable_secure_boot:
+              title: Enable Secure Boot for Default Nodepool
+              description: Set this to true to enable secure boot for default nodepool
+              type: boolean
+              default: false
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+            iam:
               title: IAM
               description: IAM specification for facets dedicated nodepool
               type: object
@@ -102,6 +268,12 @@ spec:
                         type: string
                         x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
                     x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+          required: [ "instance_types" ]
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_secure_boot", "iam"]
+  x-ui-order: ["nodepools", "cluster", "maintenance_windows", "auto_upgrade"]
 sample:
   kind: kubernetes_cluster
   flavor: gcp_gke
