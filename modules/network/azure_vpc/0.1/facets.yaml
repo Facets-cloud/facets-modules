@@ -43,7 +43,7 @@ spec:
       type: string
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: [Use Existing VPC]
+        values: [use_existing_vpc]
       x-ui-immutable: true
       x-ui-overrides-only: true
     resource_group_name:
@@ -52,7 +52,7 @@ spec:
       type: string
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: [Use Existing VPC]
+        values: [use_existing_vpc]
       x-ui-immutable: true
       x-ui-overrides-only: true
   required: [azs, vpc_cidr, vnet_name, resource_group_name]
