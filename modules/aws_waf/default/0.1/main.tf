@@ -284,7 +284,7 @@ resource "aws_wafv2_web_acl" "this" {
               name        = lookup(managed_rule_group_statement.value, "name", null)
               vendor_name = lookup(managed_rule_group_statement.value, "vendor_name", null)
               dynamic "excluded_rule" {
-                for_each = lookup(managed_rule_group_statement.value, "excluded_rule", null)
+                for_each = lookup(managed_rule_group_statement.value, "excluded_rule", {})
                 content {
                   name = lookup(excluded_rule.value, "name", null)
                 }
@@ -378,7 +378,7 @@ resource "aws_wafv2_web_acl" "this" {
             }
           }
           dynamic "rule_group_reference_statement" {
-            for_each = try({ rule_group_reference_statement = statement.value.rule_group_reference_statement }, {})
+            for_each = contains(keys(statement.value), "rule_group_reference_statement") ? { rule_group_reference_statement = statement.value.rule_group_reference_statement } : {}
             content {
               arn = lookup(rule_group_reference_statement.value, "arn", null)
               dynamic "excluded_rule" {
