@@ -70,3 +70,5 @@ sample:
       cpu_limit: 200m
       memory_limit: 200Mi
     values: {}
+  advanced:
+    inherit_from_base: true
