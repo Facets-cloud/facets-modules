@@ -26,10 +26,10 @@ spec:
           x-ui-overrides-only: true
         public_cidr_whitelist:
           title: Public CIDR Whitelist
-          description: space-separated list of CIDR blocks which can access the Amazon EKS public API server endpoint
+          description: Comma-separated list of CIDR blocks which can access the Amazon EKS public API server endpoint
           type: string
           default: 0.0.0.0/0
-          x-ui-placeholder: e.g., 10.45.0.0/16 10.60.0.0/16
+          x-ui-placeholder: e.g., 10.45.0.0/16,10.60.0.0/16
           pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b(,\s*\b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b)*
           x-ui-error-message: Regex for CIDR block did not match. Make sure valid space-separated CIDR blocks are given
           x-ui-overrides-only: true
