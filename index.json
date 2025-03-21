@@ -249,10 +249,6 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/service/ecs/0.1/"
-  },
-  {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/log_collector/loki_aws_s3/0.1/"
   },
   {
@@ -570,6 +566,10 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/postgres_user/default/0.3/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ecs_service/default/0.1/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
