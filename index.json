@@ -570,5 +570,9 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/ecs_service/default/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/aws_ecs_alb/0.1/"
   }
 ]
