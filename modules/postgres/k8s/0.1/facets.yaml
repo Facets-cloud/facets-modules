@@ -39,6 +39,18 @@ spec:
         - "16.4.0"
         - "17.0.0"
       x-ui-error-message: "Please select a supported Postgres version."
+    random_version:
+      type: string
+      title: Random Version
+      description: Specifies the random version to use.
+      minLength: 1
+      x-ui-placeholder: "e.g., 1"
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      x-ui-error-message: "Please select a supported Postgres version."    
     size:
       type: object
       title: Size
@@ -200,6 +212,7 @@ spec:
     - size
     - postgres_version
   x-ui-order:
+    - random_version
     - postgres_version
     - size
     - db_names
