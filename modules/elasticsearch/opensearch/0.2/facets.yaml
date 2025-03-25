@@ -212,20 +212,249 @@ spec:
               x-ui-visible-if:
                 field: spec.advanced_security_options.master_user_options.autogenerate_master_password
                 values: [false]
+    create_access_policy:
+      type: boolean
+      title: Create Access Policy
+      description: Flag to create access policy for the OpenSearch domain.
+      default: true
+    enable_access_policy:
+      type: boolean
+      title: Enable Access Policy
+      description: Flag to enable access policy for the OpenSearch domain.
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: true
     access_policies:
       type: object
       title: Access Policies
       description: IAM policy document specifying access control for the OpenSearch domain. This can include permissions for various AWS services and users.
       x-ui-yaml-editor: true
-      x-ui-placeholder: Enter IAM policy document in YAML format
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
       default: null
+    access_policy_source_policy_documents:
+      type: object
+      title: Access Policy Source Policy Documents
+      description: List of IAM policy documents specifying source access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: []
     access_policy_override_policy_documents:
       type: object
       title: Access Policy Override Policy Documents
       description: List of IAM policy documents specifying override access control for the OpenSearch domain.
       x-ui-yaml-editor: true
-      x-ui-placeholder: Enter list of override IAM policy documents in YAML format
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
       default: []
+    access_policy_statements:
+      type: object
+      title: Access Policy Statements
+      description: Map of IAM policy statements specifying access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: {}
+    advanced_options:
+      type: object
+      title: Advanced Options
+      description: Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your OpenSearch domain on every apply.
+      x-ui-yaml-editor: true
+      default: {}
+    auto_tune_options:
+      type: object
+      title: Auto Tune Options
+      description: Configuration settings for auto-tuning the OpenSearch domain.
+      x-ui-yaml-editor: true
+      default:
+        desired_state: ENABLED
+        rollback_on_disable: NO_ROLLBACK
+    create_cloudwatch_log_groups:
+      type: boolean
+      title: Create CloudWatch Log Groups
+      description: Flag to create CloudWatch log groups for the OpenSearch domain.
+      default: true
+    cloudwatch_log_group_kms_key_id:
+      type: string
+      title: CloudWatch Log Group KMS Key ID
+      description: KMS Key ID for encrypting CloudWatch log group.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: null
+    cloudwatch_log_group_retention_in_days:
+      type: integer
+      title: CloudWatch Log Group Retention in Days
+      description: Number of days to retain CloudWatch logs.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: 60
+    create_cloudwatch_log_resource_policy:
+      type: boolean
+      title: Create CloudWatch Log Resource Policy
+      description: Flag to create CloudWatch log resource policy for the OpenSearch domain.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: true
+    cloudwatch_log_resource_policy_name:
+      type: string
+      title: CloudWatch Log Resource Policy Name
+      description: Name of the resource policy for CloudWatch logs.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_resource_policy
+        values: [true]
+      default: null
+    log_publishing_options:
+      type: object
+      title: Log Publishing Options
+      description: Configuration settings for publishing logs.
+      items:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            title: Enabled
+            description: Whether given log publishing option is enabled or not.
+            default: true
+          cloudwatch_log_group_arn:
+            type: string
+            title: Cloudwatch Log Group ARN
+            description: ARN of the CloudWatch log group to which logs need to be published. By default, it uses the CloudWatch log group created above.
+            default: null
+          log_type:
+            type: string
+            title: Log Type
+            description: Type of log to publish (INDEX_SLOW_LOGS or SEARCH_SLOW_LOGS).
+            enum:
+            - INDEX_SLOW_LOGS
+            - SEARCH_SLOW_LOGS
+            - ES_APPLICATION_LOGS
+            - AUDIT_LOGS
+      default:
+      - log_type: INDEX_SLOW_LOGS
+      - log_type: SEARCH_SLOW_LOGS
+    create_saml_options:
+      type: boolean
+      title: Create SAML Options
+      description: Flag to create SAML options for the OpenSearch domain.
+      default: false
+    saml_options:
+      type: object
+      title: SAML Options
+      description: Configuration settings for SAML options.
+      x-ui-visible-if:
+        field: spec.create_saml_options
+        values: [true]
+      default: {}
+    create_security_group:
+      type: boolean
+      title: Create Security Group
+      description: Flag to create security group for the OpenSearch domain.
+      default: true
+    security_group_description:
+      type: string
+      title: Security Group Description
+      description: Description of the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: null
+    security_group_name:
+      type: string
+      title: Security Group Name
+      description: Name of the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: null
+    security_group_use_name_prefix:
+      type: boolean
+      title: Security Group Use Name Prefix
+      description: Flag to use name prefix for the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: true
+    domain_endpoint_options:
+      type: object
+      title: Domain Endpoint Options
+      description: Configuration settings for the domain endpoint.
+      x-ui-yaml-editor: true
+      default:
+        enforce_https: true
+        tls_security_policy: Policy-Min-TLS-1-2-2019-07
+    encrypt_at_rest:
+      type: object
+      title: Encrypt at Rest
+      description: Configuration settings for encrypting data at rest.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Flag to enable encryption at rest.
+          default: true
+        kms_key_id:
+          type: string
+          title: KMS Key ID
+          description: KMS key ARN to use for encryption at rest. Defaults to 'aws/es'
+          default: null
+      default:
+        enabled: true
+        kms_key_id: null
+    node_to_node_encryption:
+      type: object
+      title: Node to Node Encryption
+      description: Configuration settings for node-to-node encryption.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Flag to enable node-to-node encryption.
+          default: true
+      default:
+        enabled: true
+    off_peak_window_options:
+      type: object
+      title: Off Peak Window Options
+      description: Configuration settings for off-peak window.
+      x-ui-yaml-editor: true
+      default:
+        enabled: true
+        off_peak_window:
+          hours: 7
+    outbound_connections:
+      type: object
+      title: Outbound Connections
+      description: Configuration settings for outbound connections.
+      x-ui-yaml-editor: true
+      default: {}
+    package_associations:
+      type: object
+      title: Package Associations
+      description: Configuration settings for package associations.
+      x-ui-yaml-editor: true
+      default: {}
+    software_update_options:
+      type: object
+      title: Software Update Options
+      description: Configuration settings for software updates.
+      x-ui-yaml-editor: true
+      default:
+        auto_software_update_enabled: true
+    vpc_endpoints:
+      type: object
+      title: VPC Endpoints
+      description: Configuration settings for VPC endpoints.
+      x-ui-yaml-editor: true
+      default: {}
   required:
     - size
     - elasticsearch_version
@@ -236,8 +465,34 @@ spec:
     - size
     - private
     - advanced_security_options
+    - create_access_policy
+    - enable_access_policy
     - access_policies
+    - access_policy_source_policy_documents
     - access_policy_override_policy_documents
+    - access_policy_statements
+    - advanced_options
+    - auto_tune_options
+    - create_cloudwatch_log_groups
+    - cloudwatch_log_group_kms_key_id
+    - cloudwatch_log_group_retention_in_days
+    - create_cloudwatch_log_resource_policy
+    - cloudwatch_log_resource_policy_name
+    - log_publishing_options
+    - create_saml_options
+    - saml_options
+    - create_security_group
+    - security_group_description
+    - security_group_name
+    - security_group_use_name_prefix
+    - domain_endpoint_options
+    - encrypt_at_rest
+    - node_to_node_encryption
+    - off_peak_window_options
+    - outbound_connections
+    - package_associations
+    - software_update_options
+    - vpc_endpoints
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
