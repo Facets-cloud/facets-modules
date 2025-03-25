@@ -5,7 +5,7 @@ locals {
   }
   // Port mapping
   ports_mapping = [
-    for port_key, port_value in lookup(local.runtime,"ports",{}) : {
+    for port_key, port_value in lookup(local.runtime, "ports", {}) : {
       name          = port_value.name
       containerPort = tonumber(port_value.port)
       protocol      = port_value.protocol
@@ -16,27 +16,27 @@ locals {
   //Env mapping
   env_mapping = [for key, value in local.env_vars :
     {
-      name      = key
-      value     = value
+      name  = key
+      value = value
     }
   ]
   // Image pull secret implementation
   from_artifactories      = lookup(lookup(lookup(var.inputs, "artifactories", {}), "attributes", {}), "registry_secrets_list", [])
   from_kubernetes_cluster = lookup(lookup(lookup(lookup(var.inputs, "kubernetes_details", {}), "attributes", {}), "legacy_outputs", {}), "registry_secret_objects", [])
   registry_secret_objects = length(local.from_artifactories) > 0 ? local.from_artifactories : local.from_kubernetes_cluster
-  imagePullSecrets_mapping = [for secret in local.registry_secret_objects: {
-      name = secret.name
+  imagePullSecrets_mapping = [for secret in local.registry_secret_objects : {
+    name = secret.name
   }]
 
   // Label implementation
-  merged_labels = merge(local.resource_labels,lookup(local.metadata,"labels",{}))
+  merged_labels = merge(local.resource_labels, lookup(local.metadata, "labels", {}))
 
   // Knative service crd objects
   knative_spec = {
     spec = {
       serviceAccountName = local.enable_irsa ? "${local.sa_name}-sa" : ""
-      imagePullSecrets = local.imagePullSecrets_mapping
-      containers =[
+      imagePullSecrets   = local.imagePullSecrets_mapping
+      containers = [
         {
           image = local.image_id
           env   = local.env_mapping
@@ -47,16 +47,16 @@ locals {
   }
 
   knative_metadata = {
-      annotations = lookup(local.spec,"knative_annotation",{})
-      labels = local.merged_labels
+    annotations = lookup(local.spec, "knative_annotation", {})
+    labels      = local.merged_labels
   }
   knative_values = {
     apiVersion = "serving.knative.dev/v1"
-    kind        = "Service"
+    kind       = "Service"
     metadata = {
       name      = module.name.name
       namespace = var.environment.namespace
-      labels = {}
+      labels    = {}
     }
     spec = {
       template = {
@@ -66,20 +66,20 @@ locals {
     }
   }
 
-  serviceAccount =  {
+  serviceAccount = {
     apiVersion = "v1"
     kind       = "ServiceAccount"
     metadata = {
       name      = "${local.sa_name}-sa"
       namespace = var.environment.namespace
-      labels = local.merged_labels
+      labels    = local.merged_labels
       annotations = merge(
         local.enable_irsa ? { "eks.amazonaws.com/role-arn" = module.irsa.0.iam_role_arn } : {},
         lookup(var.instance.metadata, "annotations", {})
       )
     }
   }
-#  serviceAccount_values = length(local.iam_arns) > 0 ? local.serviceAccount : {}
+
   knative_values_yaml = yamlencode(local.knative_values)
   knative_service_helm_values = {
     anyResources = {

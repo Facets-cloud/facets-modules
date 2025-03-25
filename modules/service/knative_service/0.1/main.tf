@@ -13,15 +13,15 @@ locals {
   build_id          = local.build_id_lookup == "NOT_FOUND" ? (local.image_lookup != "NOT_FOUND" ? "NA" : "NOT_FOUND") : local.build_id_lookup
 
 
-  metadata        = lookup(var.instance, "metadata", {})
-  tags            = merge(var.environment.cloud_tags, lookup(local.metadata, "tags", {}))
-  spec            = lookup(var.instance, "spec", {})
-  runtime         = lookup(local.spec, "runtime", {})
-  release         = lookup(local.spec, "release", {})
+  metadata = lookup(var.instance, "metadata", {})
+  tags     = merge(var.environment.cloud_tags, lookup(local.metadata, "tags", {}))
+  spec     = lookup(var.instance, "spec", {})
+  runtime  = lookup(local.spec, "runtime", {})
+  release  = lookup(local.spec, "release", {})
 
   advanced        = lookup(var.instance, "advanced", {})
   advanced_common = lookup(local.advanced, "common", {})
-  deployment_id = lookup(local.advanced_common, "pass_deployment_id", false) ? var.environment.deployment_id : ""
+  deployment_id   = lookup(local.advanced_common, "pass_deployment_id", false) ? var.environment.deployment_id : ""
   env_vars = merge(lookup(local.dep_cluster, "globalVariables", {}),
     lookup(local.advanced_common, "include_common_env_variables", false) ? var.environment.common_environment_variables : {}, lookup(local.spec, "env", {}),
     length(local.deployment_id) > 0 ? {
@@ -67,28 +67,13 @@ module "irsa" {
 }
 
 
-#resource "helm_release" "knative" {
-#  name            = module.name.name
-#  chart           = "https://kiwigrid.github.io"
-#  repository      = "kiwigrid"
-#  namespace       = var.environment.namespace
-#  version         = "0.1.0"
-#  cleanup_on_fail = true
-#  timeout         = 720
-#  atomic          = false
-#
-#  values = [
-##    yamlencode(local.knative_service_helm_values)
-#
-#  ]
-#}
 
 module "knative_service" {
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
   namespace       = var.environment.namespace
   advanced_config = {}
   name            = module.name.name
-  resources_data  = [
+  resources_data = [
     local.knative_values,
     local.serviceAccount
   ]
