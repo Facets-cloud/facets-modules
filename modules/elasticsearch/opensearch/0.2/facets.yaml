@@ -11,10 +11,6 @@ inputs:
     default:
       resource_type: network
       resource_name: default
-  cognito_details:
-    optional: true
-    type: "@output/aws_cognito"
-    displayName: AWS Cognito
 spec:
   title: OpenSearch
   type: object
