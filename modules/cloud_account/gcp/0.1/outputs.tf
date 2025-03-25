@@ -3,7 +3,7 @@ locals {
   output_attributes = {
     project     = lookup(local.cluster, "project", "")
     region      = lookup(local.cluster, "region", "")
-    credentials = sensitive(base64decode(lookup(local.cluster, "serviceAccountKey", "")))
+    credentials = file("/gcp-credentials.json")
     secrets = [
       "project",
       "credentials",
