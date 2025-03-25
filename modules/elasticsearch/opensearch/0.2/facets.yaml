@@ -15,6 +15,10 @@ spec:
   title: OpenSearch
   type: object
   properties:
+    private:
+      type: boolean
+      title: Private
+      description: Set OpenSearch as private
     elasticsearch_version:
       type: string
       title: Opensearch Version
@@ -39,10 +43,6 @@ spec:
       title: Size
       description: Datastore Sizing
       properties:
-        private:
-          type: boolean
-          title: Private
-          description: Set OpenSearch as private
         instance:
           type: string
           title: Instance Type
@@ -210,6 +210,8 @@ spec:
   required:
     - size
     - elasticsearch_version
+    - private
+    - advanced_security_options
   x-ui-order:
     - elasticsearch_version
     - size
