@@ -236,6 +236,8 @@ spec:
     - size
     - private
     - advanced_security_options
+    - access_policies
+    - access_policy_override_policy_documents
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
