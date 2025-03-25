@@ -215,6 +215,8 @@ spec:
   x-ui-order:
     - elasticsearch_version
     - size
+    - private
+    - advanced_security_options
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
