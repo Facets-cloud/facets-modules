@@ -153,9 +153,9 @@ spec:
           type: string
           title: Volume
           description: The size of the volume
-          pattern: "^[0-9]+[G]i?$"
+          pattern: "^[0-9]+$"
           x-ui-placeholder: "Enter volume size"
-          x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+$' pattern"
       required:
         - instance
         - instance_count
@@ -179,34 +179,53 @@ spec:
           x-ui-visible-if:
             field: spec.advanced_security_options.authenticated
             values: [true]
-        master_user_arn:
-          type: string
-          title: Master User ARN
-          description: ARN for the main user
-          x-ui-visible-if:
-            field: spec.advanced_security_options.auth_type
-            values: ["iam_user"]
-        master_user_name:
-          type: string
-          title: Master User Name
-          description: Main user's username
-          x-ui-visible-if:
-            field: spec.advanced_security_options.auth_type
-            values: ["basic_auth"]
-        autogenerate_master_password:
-          type: boolean
-          title: Autogenerate Master Password
-          description: Automatically generate and use a password for the Master User
-          x-ui-visible-if:
-            field: spec.advanced_security_options.auth_type
-            values: ["basic_auth"]
-        master_user_password:
-          type: string
-          title: Master User Name
-          description: Main user's username
-          x-ui-visible-if:
-            field: spec.advanced_security_options.autogenerate_master_password
-            values: [false]
+        master_user_options:
+          type: object
+          title: Master User Options
+          description: Settings for configuring the master user
+          properties:
+            master_user_arn:
+              type: string
+              title: Master User ARN
+              description: IAM ARN for the main user
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["iam_user"]
+            master_user_name:
+              type: string
+              title: Master User Name
+              description: Main user's username
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["basic_auth"]
+            autogenerate_master_password:
+              type: boolean
+              title: Autogenerate Master Password
+              description: Automatically generate and use a password for the Master User
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["basic_auth"]
+            master_user_password:
+              type: string
+              title: Master User Name
+              description: Main user's username
+              x-ui-visible-if:
+                field: spec.advanced_security_options.master_user_options.autogenerate_master_password
+                values: [false]
+    access_policies:
+      type: object
+      title: Access Policies
+      description: IAM policy document specifying access control for the OpenSearch domain. This can include permissions for various AWS services and users.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter IAM policy document in YAML format
+      default: null
+    access_policy_override_policy_documents:
+      type: object
+      title: Access Policy Override Policy Documents
+      description: List of IAM policy documents specifying override access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter list of override IAM policy documents in YAML format
+      default: []
   required:
     - size
     - elasticsearch_version
