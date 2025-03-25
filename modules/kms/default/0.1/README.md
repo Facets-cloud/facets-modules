@@ -1,6 +1,6 @@
-# Terraform Log Collector Module
+# Terraform AWS KMS Module
 
-This folder contains a Log Collector Terraform module that deploys kubernetes objects to monitor logs from application.
+This folder contains a KMS Terraform module that deploys KMS resource.
 
 ## Run this module manually
 
@@ -16,4 +16,4 @@ This folder contains a Log Collector Terraform module that deploys kubernetes ob
 
 - `cd test`
 - Make sure to update values in var block inside go [test file](test/log_collector_test.go)
-- Run `go test -v -run TestLogCollector`
+- Run `go test -v -run TestAWSKms`
