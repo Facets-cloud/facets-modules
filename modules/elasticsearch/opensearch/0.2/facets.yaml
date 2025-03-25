@@ -226,5 +226,9 @@ sample:
       instance: r4.large.search
       instance_count: 2
       volume: 100
+    advanced_security_options:
+      authenticated: true
+      auth_type: basic_auth
+      autogenerate_master_password: true
   version: '0.2'
   disabled: true
