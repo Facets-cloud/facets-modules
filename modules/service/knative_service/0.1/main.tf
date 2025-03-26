@@ -38,12 +38,11 @@ locals {
 module "name" {
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
-  limit           = 255
+  limit           = 253
   resource_name   = var.instance_name
-  resource_type   = "ervice"
+  resource_type   = "service"
   globally_unique = false
   is_k8s          = true
-  prefix          = "s"
 }
 
 module "sr-name" {
