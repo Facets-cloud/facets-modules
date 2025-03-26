@@ -403,6 +403,9 @@ spec:
           type: integer
           title: Throughput
           description: Throughput for the EBS volume.
+          x-ui-visible-if:
+            field: spec.ebs_options.volume_type
+            values: ["gp3"]
           default: null
     encrypt_at_rest:
       type: object
@@ -476,6 +479,7 @@ spec:
     - size
     - private
     - advanced_security_options
+    - ebs_options
     - create_access_policy
     - enable_access_policy
     - access_policies
@@ -498,7 +502,6 @@ spec:
     - security_group_use_name_prefix
     - security_group_rules
     - domain_endpoint_options
-    - ebs_options
     - encrypt_at_rest
     - node_to_node_encryption
     - off_peak_window_options
