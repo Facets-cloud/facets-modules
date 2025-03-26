@@ -1,6 +1,6 @@
 intent: elasticsearch
 flavor: opensearch
-version: '0.2'
+version: "0.2"
 description: Adds Opensearch module of intent Elasticsearch
 clouds:
   - aws
@@ -174,8 +174,8 @@ spec:
           title: Authentication Type
           description: Authentication for OpenSearch using methods such as basic auth or IAM user
           enum:
-          - iam_user
-          - basic_auth
+            - iam_user
+            - basic_auth
           x-ui-visible-if:
             field: spec.advanced_security_options.authenticated
             values: [true]
@@ -334,13 +334,13 @@ spec:
             title: Log Type
             description: Type of log to publish (INDEX_SLOW_LOGS or SEARCH_SLOW_LOGS).
             enum:
-            - INDEX_SLOW_LOGS
-            - SEARCH_SLOW_LOGS
-            - ES_APPLICATION_LOGS
-            - AUDIT_LOGS
+              - INDEX_SLOW_LOGS
+              - SEARCH_SLOW_LOGS
+              - ES_APPLICATION_LOGS
+              - AUDIT_LOGS
       default:
-      - log_type: INDEX_SLOW_LOGS
-      - log_type: SEARCH_SLOW_LOGS
+        - log_type: INDEX_SLOW_LOGS
+        - log_type: SEARCH_SLOW_LOGS
     create_saml_options:
       type: boolean
       title: Create SAML Options
@@ -497,7 +497,7 @@ sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
   kind: elasticsearch
-  metadata: { }
+  metadata: {}
   spec:
     elasticsearch_version: OpenSearch_2.17
     size:
@@ -508,5 +508,5 @@ sample:
       authenticated: true
       auth_type: basic_auth
       autogenerate_master_password: true
-  version: '0.2'
+  version: "0.2"
   disabled: true
