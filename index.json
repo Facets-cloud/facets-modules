@@ -574,5 +574,9 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/image_pull_secret_injector/default/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kms/default/0.1/"
   }
 ]
