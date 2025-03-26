@@ -196,6 +196,8 @@ spec:
               type: string
               title: Master User Name
               description: Main user's username
+              minimum: 1
+              maximum: 64
               x-ui-visible-if:
                 field: spec.advanced_security_options.auth_type
                 values: ["basic_auth"]
@@ -210,6 +212,8 @@ spec:
               type: string
               title: Master User Name
               description: Main user's username
+              minimum: 1
+              maximum: 128
               x-ui-visible-if:
                 field: spec.advanced_security_options.master_user_options.autogenerate_master_password
                 values: [false]
@@ -381,8 +385,8 @@ spec:
         tls_security_policy: Policy-Min-TLS-1-2-2019-07
     ebs_options:
       type: object
-      title: Domain Endpoint Options
-      description: Configuration settings for the domain endpoint.
+      title: EBS Options
+      description: Configuration settings for EBS volumes.
       properties:
         ebs_enabled:
           type: boolean
