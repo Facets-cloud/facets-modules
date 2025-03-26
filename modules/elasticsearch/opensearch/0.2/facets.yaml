@@ -498,6 +498,7 @@ spec:
     - security_group_use_name_prefix
     - security_group_rules
     - domain_endpoint_options
+    - ebs_options
     - encrypt_at_rest
     - node_to_node_encryption
     - off_peak_window_options
