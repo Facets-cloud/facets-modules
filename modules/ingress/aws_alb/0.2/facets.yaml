@@ -43,28 +43,30 @@ spec:
       type: boolean
       title: Private
       description: Set load balancer as private
+      x-ui-overrides-only: true
     domains:
       title: Domains
       description: Map of domain key to rules
       type: object
       x-ui-overrides-only: true
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Domain Object
-        description: Name of the domain object
-        properties:
-          domain:
-            type: string
-            title: Domain
-            description: Host name of the domain
-            pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
-            x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk"
-            x-ui-error-message: "Value doesn't match the format. Eg: example.com, my-domain.co.uk"
-          alias:
-            type: string
-            title: Alias
-            description: Alias for the domain
-        required: [ "domain", "alias" ]
+        ^[a-zA-Z0-9_.-]*$:
+          keyPattern: "^[a-zA-Z0-9_.-]*$"
+          title: Domain Object
+          description: Name of the domain object
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Host name of the domain
+              pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
+              x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk"
+              x-ui-error-message: "Value doesn't match the format. Eg: example.com, my-domain.co.uk"
+            alias:
+              type: string
+              title: Alias
+              description: Alias for the domain
+          required: [ "domain", "alias" ]
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
