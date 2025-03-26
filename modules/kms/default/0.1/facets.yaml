@@ -187,8 +187,6 @@ spec:
     - aliases_use_name_prefix
     - rotation_period_in_days
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/aws_kms/aws_kms.schema.json
   version: '0.1'
   disabled: true
   flavor: default
