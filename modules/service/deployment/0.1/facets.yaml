@@ -41,6 +41,7 @@ spec:
         - Never
     enable_host_anti_affinity:
       type: boolean
+      x-ui-saas-default: true
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
     cloud_permissions:
@@ -56,6 +57,7 @@ spec:
           properties:
             enable_irsa:
               type: boolean
+              x-ui-saas-default: true
               title: Enable IRSA
               description: Enable this to grant fine-grained AWS permissions to Kubernetes workloads using service accounts.
             iam_policies:
