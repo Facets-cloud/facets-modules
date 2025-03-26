@@ -1,5 +1,7 @@
 locals {
-  output_interfaces = {}
+  output_interfaces = {
+    
+  }
   output_attributes = {
     project     = lookup(local.cluster, "project", "")
     region      = lookup(local.cluster, "region", "")
