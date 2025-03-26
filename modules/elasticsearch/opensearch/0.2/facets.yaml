@@ -15,10 +15,6 @@ spec:
   title: OpenSearch
   type: object
   properties:
-    private:
-      type: boolean
-      title: Private
-      description: Set OpenSearch as private
     elasticsearch_version:
       type: string
       title: Opensearch Version
@@ -160,6 +156,10 @@ spec:
         - instance
         - instance_count
         - volume
+    private:
+      type: boolean
+      title: Private
+      description: Set OpenSearch as private
     advanced_security_options:
       type: object
       title: Advanced Security Options
@@ -169,6 +169,7 @@ spec:
           type: boolean
           title: Authenticated
           description: Enable authentication for OpenSearch using methods such as basic auth or IAM user
+          default: false
         auth_type:
           type: string
           title: Authentication Type
@@ -316,28 +317,7 @@ spec:
       type: object
       title: Log Publishing Options
       description: Configuration settings for publishing logs.
-      items:
-        type: object
-        properties:
-          enabled:
-            type: boolean
-            title: Enabled
-            description: Whether given log publishing option is enabled or not.
-            default: true
-          cloudwatch_log_group_arn:
-            type: string
-            title: Cloudwatch Log Group ARN
-            description: ARN of the CloudWatch log group to which logs need to be published. By default, it uses the CloudWatch log group created above.
-            default: null
-          log_type:
-            type: string
-            title: Log Type
-            description: Type of log to publish (INDEX_SLOW_LOGS or SEARCH_SLOW_LOGS).
-            enum:
-              - INDEX_SLOW_LOGS
-              - SEARCH_SLOW_LOGS
-              - ES_APPLICATION_LOGS
-              - AUDIT_LOGS
+      x-ui-yaml-editor: true
       default:
         - log_type: INDEX_SLOW_LOGS
         - log_type: SEARCH_SLOW_LOGS
@@ -383,6 +363,14 @@ spec:
         field: spec.create_security_group
         values: [true]
       default: true
+    security_group_rules:
+      type: object
+      title: Security Group Rules
+      description: Configuration settings for security group rules.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: {}
     domain_endpoint_options:
       type: object
       title: Domain Endpoint Options
@@ -391,6 +379,31 @@ spec:
       default:
         enforce_https: true
         tls_security_policy: Policy-Min-TLS-1-2-2019-07
+    ebs_options:
+      type: object
+      title: Domain Endpoint Options
+      description: Configuration settings for the domain endpoint.
+      properties:
+        ebs_enabled:
+          type: boolean
+          title: EBS Enabled
+          description: Flag to enable EBS.
+          default: true
+        volume_type:
+          type: string
+          title: Volume Type
+          description: Type of EBS volume.
+          default: gp3
+        iops:
+          type: integer
+          title: IOPS
+          description: IOPS for the EBS volume.
+          default: null
+        throughput:
+          type: integer
+          title: Throughput
+          description: Throughput for the EBS volume.
+          default: null
     encrypt_at_rest:
       type: object
       title: Encrypt at Rest
@@ -419,8 +432,6 @@ spec:
           title: Enabled
           description: Flag to enable node-to-node encryption.
           default: true
-      default:
-        enabled: true
     off_peak_window_options:
       type: object
       title: Off Peak Window Options
@@ -485,6 +496,7 @@ spec:
     - security_group_description
     - security_group_name
     - security_group_use_name_prefix
+    - security_group_rules
     - domain_endpoint_options
     - encrypt_at_rest
     - node_to_node_encryption
@@ -504,9 +516,5 @@ sample:
       instance: r4.large.search
       instance_count: 2
       volume: 100
-    advanced_security_options:
-      authenticated: true
-      auth_type: basic_auth
-      autogenerate_master_password: true
   version: "0.2"
   disabled: true
