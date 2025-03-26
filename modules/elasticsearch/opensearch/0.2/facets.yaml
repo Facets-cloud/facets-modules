@@ -334,6 +334,7 @@ spec:
       type: object
       title: SAML Options
       description: Configuration settings for SAML options.
+      x-ui-yaml-editor: true
       x-ui-visible-if:
         field: spec.create_saml_options
         values: [true]
