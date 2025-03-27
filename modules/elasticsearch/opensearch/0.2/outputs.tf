@@ -1,18 +1,18 @@
 locals {
   output_interfaces = {
     http = {
-      connection_string = local.authenticated && local.auth_type == "basic_auth" ? "https://${local.master_user_name}:${local.master_user_password}@${module.opensearch.domain_endpoint}" : "https://${module.opensearch.domain_endpoint}"
+      connection_string = "https://${module.opensearch.domain_endpoint}"
       host              = module.opensearch.domain_endpoint
       username          = local.master_user_name
       password          = sensitive(local.master_user_password)
-      secrets           = local.authenticated && local.auth_type == "basic_auth" ? ["password", "connection_string"] : []
+      secrets           = local.advanced_security_options_enabled && local.auth_type == "basic_auth" ? ["password"] : []
     }
     dashboard = {
-      connection_string = local.authenticated && local.auth_type == "basic_auth" ? "https://${local.master_user_name}:${local.master_user_password}@${module.opensearch.domain_dashboard_endpoint}" : "https://${module.opensearch.domain_dashboard_endpoint}"
+      connection_string = "https://${module.opensearch.domain_dashboard_endpoint}"
       host              = module.opensearch.domain_dashboard_endpoint
       username          = local.master_user_name
       password          = sensitive(local.master_user_password)
-      secrets           = local.authenticated && local.auth_type == "basic_auth" ? ["password", "connection_string"] : []
+      secrets           = local.advanced_security_options_enabled && local.auth_type == "basic_auth" ? ["password"] : []
     }
   }
   output_attributes = {

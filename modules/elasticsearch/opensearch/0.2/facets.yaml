@@ -166,11 +166,11 @@ spec:
       title: Advanced Security Options
       description: Configuration settings for advanced security features in OpenSearch, including authentication methods and user management.
       properties:
-        authenticated:
+        enabled:
           type: boolean
-          title: Authenticated
-          description: Enable authentication for OpenSearch using methods such as basic auth or IAM user
-          default: false
+          title: Enabled
+          description: Enable advanced security features for OpenSearch
+          default: true
         auth_type:
           type: string
           title: Authentication Type
@@ -179,7 +179,7 @@ spec:
             - iam_user
             - basic_auth
           x-ui-visible-if:
-            field: spec.advanced_security_options.authenticated
+            field: spec.advanced_security_options.enabled
             values: [true]
           default: basic_auth
         master_user_options:
@@ -187,7 +187,7 @@ spec:
           title: Master User Options
           description: Settings for configuring the master user
           x-ui-visible-if:
-            field: spec.advanced_security_options.authenticated
+            field: spec.advanced_security_options.enabled
             values: [true]
           properties:
             master_user_arn:
@@ -545,7 +545,7 @@ sample:
       volume: 100
     private: false
     advanced_security_options:
-      authenticated: false
+      enabled: true
     create_access_policy: true
     access_policy_statements: {}
     access_policy_override_policy_documents: []
