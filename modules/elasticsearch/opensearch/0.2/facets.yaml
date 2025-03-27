@@ -245,7 +245,7 @@ spec:
       type: boolean
       title: Create Access Policy
       description: Create and enforce an access policy for the OpenSearch domain, including defining source and override policy documents, as well as policy statements.
-      default: false
+      default: true
     access_policy_source_policy_documents:
       type: object
       title: Access Policy Source Policy Documents

@@ -73,8 +73,8 @@ locals {
   )
 
   vpc_options_lookup = lookup(local.spec, "vpc_options", {})
-  vpc_options = {
-    subnet_ids         = lookup(local.vpc_options_lookup, "subnet_ids", lookup(local.spec, "private", true) ? var.inputs.network_details.attributes.legacy_outputs.vpc_details.private_subnets : var.inputs.network_details.attributes.legacy_outputs.vpc_details.public_subnets)
+  vpc_options = lookup(local.spec, "private", true) ? {
+    subnet_ids         = lookup(local.vpc_options_lookup, "subnet_ids", var.inputs.network_details.attributes.legacy_outputs.vpc_details.private_subnets)
     security_group_ids = lookup(local.vpc_options_lookup, "security_group_ids", [])
-  }
+  } : {}
 }
