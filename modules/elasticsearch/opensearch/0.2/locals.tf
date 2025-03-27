@@ -21,9 +21,9 @@ locals {
       master_user_password = local.master_user_password
     }
     } : {
-    enabled                        = true
+    enabled                        = false
     anonymous_auth_enabled         = true
-    internal_user_database_enabled = true
+    internal_user_database_enabled = false
     master_user_options = {
       master_user_arn      = null
       master_user_name     = null
