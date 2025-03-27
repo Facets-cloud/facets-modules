@@ -55,7 +55,7 @@ module "opensearch" {
   security_group_name                     = lookup(local.spec, "security_group_name", null)
   security_group_rules                    = local.security_group_rules
   security_group_tags                     = merge(lookup(local.spec, "security_group_tags", {}), var.environment.cloud_tags)
-  security_group_use_name_prefix          = lookup(local.spec, "security_group_use_name_prefix", {})
+  security_group_use_name_prefix          = lookup(local.spec, "security_group_use_name_prefix", true)
   software_update_options                 = lookup(local.spec, "software_update_options", { "auto_software_update_enabled" : true })
   tags                                    = merge(lookup(local.spec, "tags", {}), var.environment.cloud_tags)
   vpc_endpoints                           = lookup(local.spec, "vpc_endpoints", {})

@@ -48,14 +48,17 @@ locals {
     throughput  = lookup(local.ebs_options_lookup, "throughput", null)
   }
 
-  default_sg_rule = {
-    type      = "ingress"
-    cidr_ipv4 = var.inputs.network_details.attributes.legacy_outputs.vpc_details.vpc_cidr
-  }
   security_group_rules = merge(
     lookup(local.spec, "security_group_rules", {}),
     {
-      default_rule = local.default_sg_rule
+      ingress_443 = {
+        type        = "ingress"
+        description = "HTTPS access from VPC"
+        from_port   = 443
+        to_port     = 443
+        ip_protocol = "tcp"
+        cidr_ipv4   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.vpc_cidr
+      }
     }
   )
 

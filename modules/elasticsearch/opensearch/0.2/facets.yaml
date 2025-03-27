@@ -505,12 +505,10 @@ spec:
     - private
     - advanced_security_options
     - ebs_options
-    - enable_access_policy
-    - access_policies
     - create_access_policy
+    - access_policy_statements
     - access_policy_source_policy_documents
     - access_policy_override_policy_documents
-    - access_policy_statements
     - advanced_options
     - auto_tune_options
     - create_cloudwatch_log_groups
@@ -548,9 +546,10 @@ sample:
     private: false
     advanced_security_options:
       authenticated: false
-    enable_access_policy: true
-    access_policies: {}
-    create_access_policy: false
+    create_access_policy: true
+    access_policy_statements: {}
+    access_policy_override_policy_documents: []
+    access_policy_source_policy_documents: []
     advanced_options: {}
     auto_tune_options:
       desired_state: ENABLED
