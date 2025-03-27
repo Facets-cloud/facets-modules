@@ -549,7 +549,7 @@ sample:
     advanced_security_options:
       authenticated: false
     enable_access_policy: true
-    access_policies: null
+    access_policies: {}
     create_access_policy: false
     advanced_options: {}
     auto_tune_options:

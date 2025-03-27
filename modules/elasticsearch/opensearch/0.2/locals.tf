@@ -5,7 +5,11 @@ locals {
   advanced_security_options_lookup = lookup(local.spec, "advanced_security_options", { "anonymous_auth_enabled" : false, "enabled" : true })
   master_user_options_lookup       = lookup(local.advanced_security_options_lookup, "master_user_options", {})
   authenticated                    = lookup(lookup(local.spec, "advanced_security_options", {}), "authenticated", false)
+  auth_type                        = lookup(lookup(local.spec, "advanced_security_options", {}), "auth_type", "basic_auth")
   autogenerate_master_password     = lookup(lookup(lookup(local.spec, "advanced_security_options", {}), "master_user_options", {}), "autogenerate_master_password", false)
+
+  master_user_name     = lookup(local.master_user_options_lookup, "master_user_name", null)
+  master_user_password = local.autogenerate_master_password ? module.master-password.0.result : lookup(lookup(local.master_user_options_lookup, "master_user_options", {}), "master_user_name", null)
 
   advanced_security_options = {
     enabled                        = lookup(local.advanced_security_options_lookup, "enabled", true)
@@ -13,8 +17,8 @@ locals {
     internal_user_database_enabled = lookup(local.advanced_security_options_lookup, "internal_user_database_enabled", lookup(local.master_user_options_lookup, "master_user_arn", null) != null ? true : false)
     master_user_options = {
       master_user_arn      = lookup(local.master_user_options_lookup, "master_user_arn", null)
-      master_user_name     = lookup(local.master_user_options_lookup, "master_user_name", null)
-      master_user_password = local.autogenerate_master_password ? module.master-password.result : lookup(lookup(local.master_user_options_lookup, "master_user_options", {}), "master_user_name", null)
+      master_user_name     = local.master_user_name
+      master_user_password = local.master_user_password
     }
   }
 
