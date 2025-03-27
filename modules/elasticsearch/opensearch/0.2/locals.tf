@@ -32,12 +32,12 @@ locals {
   )
 
   aws_cognito_details = lookup(lookup(var.inputs, "cognito_details", {}), "attributes", lookup(local.spec, "cognito_options", {}))
-  cognito_options = {
-    enabled          = length(local.aws_cognito_details) > 0 ? true : false
+  cognito_options = length(local.aws_cognito_details) > 0 ? {
+    enabled          = true
     identity_pool_id = lookup(local.aws_cognito_details, "identity_pool_id", null)
     role_arn         = lookup(local.aws_cognito_details, "role_arn", null)
     user_pool_id     = lookup(local.aws_cognito_details, "user_pool_id", null)
-  }
+  } : {}
 
   ebs_options_lookup = lookup(local.spec, "ebs_options", { "ebs_enabled" : true, "volume_size" : 64, "volume_type" : "gp3" })
   ebs_options = {
