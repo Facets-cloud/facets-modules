@@ -160,6 +160,7 @@ spec:
       type: boolean
       title: Private
       description: Set OpenSearch as private
+      default: false
     advanced_security_options:
       type: object
       title: Advanced Security Options
@@ -184,6 +185,9 @@ spec:
           type: object
           title: Master User Options
           description: Settings for configuring the master user
+          x-ui-visible-if:
+            field: spec.advanced_security_options.authenticated
+            values: [true]
           properties:
             master_user_arn:
               type: string
@@ -401,11 +405,17 @@ spec:
             - gp2
             - io1
             - gp3
+          x-ui-visible-if:
+            field: spec.ebs_options.ebs_enabled
+            values: [true]
           default: gp3
         iops:
           type: integer
           title: IOPS
           description: IOPS for the EBS volume.
+          x-ui-visible-if:
+            field: spec.ebs_options.ebs_enabled
+            values: [true]
           default: null
         throughput:
           type: integer
@@ -429,6 +439,9 @@ spec:
           type: string
           title: KMS Key ID
           description: KMS key ARN to use for encryption at rest. Defaults to 'aws/es'
+          x-ui-visible-if:
+            field: spec.encrypt_at_rest.enabled
+            values: [true]
           default: null
       default:
         enabled: true
@@ -480,8 +493,6 @@ spec:
   required:
     - size
     - elasticsearch_version
-    - private
-    - advanced_security_options
   x-ui-order:
     - elasticsearch_version
     - size
