@@ -222,14 +222,6 @@ spec:
       title: Create Access Policy
       description: Flag to create access policy for the OpenSearch domain.
       default: true
-    enable_access_policy:
-      type: boolean
-      title: Enable Access Policy
-      description: Flag to enable access policy for the OpenSearch domain.
-      x-ui-visible-if:
-        field: spec.create_access_policy
-        values: [true]
-      default: true
     access_policies:
       type: object
       title: Access Policies
