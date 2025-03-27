@@ -484,7 +484,6 @@ spec:
     - advanced_security_options
     - ebs_options
     - create_access_policy
-    - enable_access_policy
     - access_policies
     - access_policy_source_policy_documents
     - access_policy_override_policy_documents
