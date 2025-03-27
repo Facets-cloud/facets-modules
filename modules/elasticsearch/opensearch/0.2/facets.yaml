@@ -148,7 +148,7 @@ spec:
         volume:
           type: string
           title: Volume
-          description: The size of the volume
+          description: The size of the volume (in GiB).
           pattern: "^[0-9]+$"
           x-ui-placeholder: "Enter volume size"
           x-ui-error-message: "Value doesn't match '^[0-9]+$' pattern"
@@ -372,6 +372,7 @@ spec:
       type: object
       title: Security Group Rules
       description: Configuration settings for security group rules.
+      x-ui-yaml-editor: true
       x-ui-visible-if:
         field: spec.create_security_group
         values: [true]
@@ -398,6 +399,11 @@ spec:
           type: string
           title: Volume Type
           description: Type of EBS volume.
+          enum:
+            - standard
+            - gp2
+            - io1
+            - gp3
           default: gp3
         iops:
           type: integer
@@ -407,7 +413,7 @@ spec:
         throughput:
           type: integer
           title: Throughput
-          description: Throughput for the EBS volume.
+          description: Throughput for the EBS volume (in MiB/s).
           x-ui-visible-if:
             field: spec.ebs_options.volume_type
             values: ["gp3"]
