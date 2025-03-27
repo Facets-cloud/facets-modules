@@ -2,7 +2,7 @@ locals {
   spec = lookup(var.instance, "spec", {})
   size = lookup(local.spec, "size", {})
 
-  advanced_security_options_lookup = lookup(local.spec, "advanced_security_options", { "anonymous_auth_enabled" : false, "enabled" : true })
+  advanced_security_options_lookup = lookup(local.spec, "advanced_security_options", {})
   master_user_options_lookup       = lookup(local.advanced_security_options_lookup, "master_user_options", {})
   authenticated                    = lookup(lookup(local.spec, "advanced_security_options", {}), "authenticated", false)
   auth_type                        = lookup(lookup(local.spec, "advanced_security_options", {}), "auth_type", "basic_auth")
@@ -11,15 +11,18 @@ locals {
   master_user_name     = lookup(local.master_user_options_lookup, "master_user_name", null)
   master_user_password = local.autogenerate_master_password ? module.master-password.0.result : lookup(lookup(local.master_user_options_lookup, "master_user_options", {}), "master_user_name", null)
 
-  advanced_security_options = {
+  advanced_security_options = local.authenticated ? {
     enabled                        = lookup(local.advanced_security_options_lookup, "enabled", true)
     anonymous_auth_enabled         = lookup(local.advanced_security_options_lookup, "anonymous_auth_enabled", local.authenticated ? true : false)
-    internal_user_database_enabled = lookup(local.advanced_security_options_lookup, "internal_user_database_enabled", lookup(local.master_user_options_lookup, "master_user_arn", null) == null ? (local.authenticated && local.auth_type == "basic_auth" ? true : null) : false)
+    internal_user_database_enabled = lookup(local.advanced_security_options_lookup, "internal_user_database_enabled", lookup(local.master_user_options_lookup, "master_user_arn", null) == null ? true : false)
     master_user_options = {
       master_user_arn      = lookup(local.master_user_options_lookup, "master_user_arn", null)
       master_user_name     = local.master_user_name
       master_user_password = local.master_user_password
     }
+    } : {
+    enabled : true
+    anonymous_auth_enabled : false
   }
 
   cluster_config_lookup = lookup(local.spec, "cluster_config", {})
