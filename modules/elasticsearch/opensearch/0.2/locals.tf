@@ -21,9 +21,16 @@ locals {
       master_user_password = local.master_user_password
     }
     } : {
-    enabled : true
-    anonymous_auth_enabled : false
+    enabled                        = true
+    anonymous_auth_enabled         = false
+    internal_user_database_enabled = null
+    master_user_options = {
+      master_user_arn      = null
+      master_user_name     = null
+      master_user_password = null
+    }
   }
+
 
   cluster_config_lookup = lookup(local.spec, "cluster_config", {})
   cluster_config = merge(
