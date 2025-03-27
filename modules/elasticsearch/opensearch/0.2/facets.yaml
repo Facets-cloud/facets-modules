@@ -540,7 +540,7 @@ sample:
   spec:
     elasticsearch_version: OpenSearch_2.17
     size:
-      instance: r4.large.search
+      instance: c6g.large.search
       instance_count: 2
       volume: 100
     private: false
