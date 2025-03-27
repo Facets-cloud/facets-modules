@@ -225,6 +225,10 @@ resource "aws_opensearch_domain" "this" {
   }
 
   tags = local.tags
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 ################################################################################
