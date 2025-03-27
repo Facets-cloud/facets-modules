@@ -27,7 +27,7 @@ locals {
     }
   )
 
-  aws_cognito_details = lookup(var.inputs.cognito_details, "attributes", {})
+  aws_cognito_details = lookup(lookup(var.inputs, "cognito_details", {}), "attributes", lookup(local.spec, "cognito_options", {}))
   cognito_options = {
     enabled          = length(local.aws_cognito_details) > 0 ? true : false
     identity_pool_id = lookup(local.aws_cognito_details, "identity_pool_id", null)
