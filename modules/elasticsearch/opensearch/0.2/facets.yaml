@@ -217,10 +217,10 @@ spec:
               x-ui-visible-if:
                 field: spec.advanced_security_options.master_user_options.autogenerate_master_password
                 values: [false]
-    create_access_policy:
+    enable_access_policy:
       type: boolean
-      title: Create Access Policy
-      description: Flag to create access policy for the OpenSearch domain.
+      title: Enable Access Policy
+      description: Enable and apply access policy for the OpenSearch domain.
       default: true
     access_policies:
       type: object
@@ -228,9 +228,14 @@ spec:
       description: IAM policy document specifying access control for the OpenSearch domain. This can include permissions for various AWS services and users.
       x-ui-yaml-editor: true
       x-ui-visible-if:
-        field: spec.create_access_policy
+        field: spec.enable_access_policy
         values: [true]
       default: null
+    create_access_policy:
+      type: boolean
+      title: Create Access Policy
+      description: Create and enforce an access policy for the OpenSearch domain, including defining source and override policy documents, as well as policy statements.
+      default: false
     access_policy_source_policy_documents:
       type: object
       title: Access Policy Source Policy Documents
@@ -275,7 +280,7 @@ spec:
     create_cloudwatch_log_groups:
       type: boolean
       title: Create CloudWatch Log Groups
-      description: Flag to create CloudWatch log groups for the OpenSearch domain.
+      description: Create CloudWatch log groups for the OpenSearch domain.
       default: true
     cloudwatch_log_group_kms_key_id:
       type: string
@@ -296,7 +301,7 @@ spec:
     create_cloudwatch_log_resource_policy:
       type: boolean
       title: Create CloudWatch Log Resource Policy
-      description: Flag to create CloudWatch log resource policy for the OpenSearch domain.
+      description: Create CloudWatch log resource policy for the OpenSearch domain.
       x-ui-visible-if:
         field: spec.create_cloudwatch_log_groups
         values: [true]
@@ -320,7 +325,7 @@ spec:
     create_saml_options:
       type: boolean
       title: Create SAML Options
-      description: Flag to create SAML options for the OpenSearch domain.
+      description: Create SAML options for the OpenSearch domain.
       default: false
     saml_options:
       type: object
@@ -334,7 +339,7 @@ spec:
     create_security_group:
       type: boolean
       title: Create Security Group
-      description: Flag to create security group for the OpenSearch domain.
+      description: Create security group for the OpenSearch domain.
       default: true
     security_group_description:
       type: string
@@ -355,7 +360,7 @@ spec:
     security_group_use_name_prefix:
       type: boolean
       title: Security Group Use Name Prefix
-      description: Flag to use name prefix for the security group.
+      description: Use name prefix for the security group.
       x-ui-visible-if:
         field: spec.create_security_group
         values: [true]
@@ -385,7 +390,7 @@ spec:
         ebs_enabled:
           type: boolean
           title: EBS Enabled
-          description: Flag to enable EBS.
+          description: Enable EBS.
           default: true
         volume_type:
           type: string
@@ -418,7 +423,7 @@ spec:
         enabled:
           type: boolean
           title: Enabled
-          description: Flag to enable encryption at rest.
+          description: Enable encryption at rest.
           default: true
         kms_key_id:
           type: string
@@ -436,7 +441,7 @@ spec:
         enabled:
           type: boolean
           title: Enabled
-          description: Flag to enable node-to-node encryption.
+          description: Enable node-to-node encryption.
           default: true
     off_peak_window_options:
       type: object
@@ -483,8 +488,9 @@ spec:
     - private
     - advanced_security_options
     - ebs_options
-    - create_access_policy
+    - enable_access_policy
     - access_policies
+    - create_access_policy
     - access_policy_source_policy_documents
     - access_policy_override_policy_documents
     - access_policy_statements
