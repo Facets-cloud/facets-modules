@@ -197,17 +197,15 @@ spec:
               x-ui-visible-if:
                 field: spec.advanced_security_options.auth_type
                 values: ["iam_user"]
-              required: true
             master_user_name:
               type: string
               title: Master User Name
-              description: Main user's username
+              description: Master user's username
               minimum: 1
               maximum: 64
               x-ui-visible-if:
                 field: spec.advanced_security_options.auth_type
                 values: ["basic_auth"]
-              required: true
             autogenerate_master_password:
               type: boolean
               title: Autogenerate Master Password
@@ -215,16 +213,20 @@ spec:
               x-ui-visible-if:
                 field: spec.advanced_security_options.auth_type
                 values: ["basic_auth"]
+              default: true
             master_user_password:
               type: string
-              title: Master User Name
-              description: Main user's username
+              title: Master User Password
+              description: Master user's Password
               minimum: 1
               maximum: 128
               x-ui-visible-if:
                 field: spec.advanced_security_options.master_user_options.autogenerate_master_password
                 values: [false]
-              required: true
+          required:
+            - master_user_arn
+            - master_user_name
+            - master_user_password
     enable_access_policy:
       type: boolean
       title: Enable Access Policy
