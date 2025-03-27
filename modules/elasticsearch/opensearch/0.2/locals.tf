@@ -14,7 +14,7 @@ locals {
   advanced_security_options = {
     enabled                        = lookup(local.advanced_security_options_lookup, "enabled", true)
     anonymous_auth_enabled         = lookup(local.advanced_security_options_lookup, "anonymous_auth_enabled", local.authenticated ? true : false)
-    internal_user_database_enabled = lookup(local.advanced_security_options_lookup, "internal_user_database_enabled", lookup(local.master_user_options_lookup, "master_user_arn", null) == null ? true : false)
+    internal_user_database_enabled = lookup(local.advanced_security_options_lookup, "internal_user_database_enabled", lookup(local.master_user_options_lookup, "master_user_arn", null) == null ? (local.authenticated && local.auth_type == "basic_auth" ? true : null) : false)
     master_user_options = {
       master_user_arn      = lookup(local.master_user_options_lookup, "master_user_arn", null)
       master_user_name     = local.master_user_name
