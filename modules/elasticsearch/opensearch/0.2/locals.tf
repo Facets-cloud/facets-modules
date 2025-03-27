@@ -39,7 +39,6 @@ locals {
     user_pool_id     = lookup(local.aws_cognito_details, "user_pool_id", null)
   }
 
-
   ebs_options_lookup = lookup(local.spec, "ebs_options", { "ebs_enabled" : true, "volume_size" : 64, "volume_type" : "gp3" })
   ebs_options = {
     ebs_enabled = lookup(local.ebs_options_lookup, "ebs_enabled", true)
