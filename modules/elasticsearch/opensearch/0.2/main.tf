@@ -19,7 +19,7 @@ module "master-password" {
 }
 
 module "opensearch" {
-  source = "terraform-aws-opensearch-1.1.2"
+  source = "./terraform-aws-opensearch-1.1.2"
 
   access_policies                         = lookup(local.spec, "access_policies", null)
   access_policy_override_policy_documents = lookup(local.spec, "access_policy_override_policy_documents", [])
