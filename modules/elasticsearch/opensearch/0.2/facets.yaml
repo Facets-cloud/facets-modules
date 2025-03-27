@@ -545,5 +545,42 @@ sample:
       instance: r4.large.search
       instance_count: 2
       volume: 100
+    private: false
+    advanced_security_options:
+      authenticated: false
+    enable_access_policy: true
+    access_policies: null
+    create_access_policy: false
+    advanced_options: {}
+    auto_tune_options:
+      desired_state: ENABLED
+      rollback_on_disable: NO_ROLLBACK
+    create_cloudwatch_log_groups: true
+    cloudwatch_log_group_retention_in_days:  60
+    log_publishing_options:
+      - log_type: INDEX_SLOW_LOGS
+      - log_type: SEARCH_SLOW_LOGS
+    create_saml_options: false
+    create_security_group: true
+    security_group_rules: {}
+    domain_endpoint_options:
+      enforce_https: true
+      tls_security_policy: Policy-Min-TLS-1-2-2019-07
+    ebs_options:
+      ebs_enabled: true
+      volume_type: gp3
+    encrypt_at_rest:
+      enabled: true
+    node_to_node_encryption:
+      enabled: true
+    off_peak_window_options:
+        enabled: true
+        off_peak_window:
+          hours: 7
+    outbound_connections: {}
+    package_associations: {}
+    software_update_options:
+        auto_software_update_enabled: true
+    vpc_endpoints: {}
   version: "0.2"
   disabled: true
