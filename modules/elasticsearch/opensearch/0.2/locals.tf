@@ -23,7 +23,7 @@ locals {
     } : {
     enabled                        = true
     anonymous_auth_enabled         = true
-    internal_user_database_enabled = null
+    internal_user_database_enabled = true
     master_user_options = {
       master_user_arn      = null
       master_user_name     = null
