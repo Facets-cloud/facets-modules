@@ -164,7 +164,7 @@ spec:
     advanced_security_options:
       type: object
       title: Advanced Security Options
-      description: Configuration settings for advanced security features in OpenSearch, including authentication methods and user management.
+      description: Configuration settings for advanced security features in OpenSearch, including authentication methods and user management. [Reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearch_domain#advanced_security_options)
       properties:
         enabled:
           type: boolean
@@ -278,7 +278,7 @@ spec:
       x-ui-visible-if:
         field: spec.create_access_policy
         values: [true]
-      default: {}
+      default: []
     advanced_options:
       type: object
       title: Advanced Options
