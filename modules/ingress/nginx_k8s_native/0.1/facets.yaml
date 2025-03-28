@@ -109,7 +109,7 @@ spec:
             title: Annotations (Optional)
             description: Add key-value pairs for configuring ingress annotations. Annotations allow you to customize the behavior of your ingress
             x-ui-error-message: "This is not a valid yaml"
-            default: '{}'
+            default: {}
             x-ui-yaml-editor: true
           grpc:
             type: boolean
