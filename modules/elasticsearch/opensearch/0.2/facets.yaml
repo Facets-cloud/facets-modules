@@ -193,8 +193,8 @@ spec:
           title: Master User Options
           description: Settings for configuring the master user
           x-ui-visible-if:
-            field: spec.advanced_security_options.enabled
-            values: [true]
+            field: spec.advanced_security_options.auth_type
+            values: ["iam_user", "basic_auth"]
           properties:
             master_user_arn:
               type: string
