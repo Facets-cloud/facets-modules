@@ -9,7 +9,7 @@ locals {
   autogenerate_master_password      = lookup(lookup(lookup(local.spec, "advanced_security_options", {}), "master_user_options", {}), "autogenerate_master_password", false)
 
   master_user_name     = lookup(local.master_user_options_lookup, "master_user_name", null)
-  master_user_password = local.autogenerate_master_password ? module.master-password.0.result : lookup(lookup(local.master_user_options_lookup, "master_user_options", {}), "master_user_name", null)
+  master_user_password = local.autogenerate_master_password ? random_password.master-password.0.result : lookup(lookup(local.master_user_options_lookup, "master_user_options", {}), "master_user_name", null)
 
   advanced_security_options = {
     enabled                        = local.advanced_security_options_enabled

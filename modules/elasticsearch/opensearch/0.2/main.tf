@@ -11,11 +11,16 @@ module "name" {
   prefix          = "e"
 }
 
-module "master-password" {
-  count   = local.autogenerate_master_password ? 1 : 0
-  source  = "github.com/Facets-cloud/facets-utility-modules//password"
-  length  = 20
-  special = true
+resource "random_password" "master-password" {
+  count = local.autogenerate_master_password ? 1 : 0
+
+  length           = 20
+  min_upper        = 1
+  min_lower        = 1
+  min_numeric      = 1
+  min_special      = 1
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
 module "opensearch" {
