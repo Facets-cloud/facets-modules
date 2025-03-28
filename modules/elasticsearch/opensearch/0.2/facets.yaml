@@ -170,12 +170,12 @@ spec:
           type: boolean
           title: Enabled
           description: Enable advanced security features for OpenSearch
-          default: true
+          default: false
         anonymous_auth_enabled:
           type: boolean
           title: Anonymous Authentication Enabled
           description: Enable anonymous authentication for OpenSearch
-          default: false
+          default: true
         auth_type:
           type: string
           title: Authentication Type
