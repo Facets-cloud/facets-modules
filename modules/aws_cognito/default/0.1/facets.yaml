@@ -1,0 +1,19 @@
+intent: aws_cognito
+flavor: default
+version: '0.1'
+description: Adds aws_cognito - default flavor
+clouds:
+- aws
+spec:
+  title: AWS Cognito
+  type: object
+  description: Specification of the AWS Cognito intent
+  properties:
+    
+sample:
+  version: '0.1'
+  flavor: default
+  kind: aws_cognito
+  disabled: true
+  spec:
+    
