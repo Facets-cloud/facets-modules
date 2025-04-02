@@ -66,6 +66,11 @@ spec:
         title: Client Object
         description: Name of the client object
         properties:
+          client_name:
+            type: string
+            title: Client Name
+            description: Name of the application client.
+            x-ui-placeholder: "null"
           allowed_oauth_flows_user_pool_client:
             type: boolean
             title: Allowed OAuth Flows User Pool Client
@@ -197,7 +202,7 @@ spec:
       x-ui-placeholder: "60"
       x-ui-visible-if:
         field: spec.clients
-        values: [{}]
+        values: [null]
     client_allowed_oauth_flows_user_pool_client:
       type: boolean
       title: Allowed OAuth Flows User Pool Client
@@ -205,7 +210,7 @@ spec:
       x-ui-placeholder: "true"
       x-ui-visible-if:
         field: spec.clients
-        values: [{}]
+        values: [null]
     client_allowed_oauth_flows:
       type: array
       title: Allowed OAuth Flows
