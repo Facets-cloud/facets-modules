@@ -23,4 +23,12 @@ locals {
     write_attributes                              = lookup(client_config, "write_attributes", [])
     enable_token_revocation                       = lookup(client_config, "enable_token_revocation", true)
   }]
+
+  identity_providers = [for provider_name, provider_config in lookup(local.spec, "identity_providers", {}) : {
+    provider_name     = provider_name
+    provider_type     = lookup(provider_config, "provider_type", "")
+    attribute_mapping = lookup(provider_config, "attribute_mapping", {})
+    idp_identifiers   = lookup(provider_config, "idp_identifiers", [])
+    provider_details  = lookup(provider_config, "provider_details", {})
+  }]
 }
