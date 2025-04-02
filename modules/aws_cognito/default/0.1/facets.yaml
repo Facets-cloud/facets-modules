@@ -60,7 +60,7 @@ spec:
     clients:
       type: object
       title: Clients
-      description: Map of client configurations.
+      description: The client configurations.
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]{1,128}$"
         title: Client Object

@@ -228,5 +228,10 @@
     "name": "kms",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/kms/"
+  },
+  {
+    "name": "aws_cognito",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/aws_cognito/"
   }
 ]
