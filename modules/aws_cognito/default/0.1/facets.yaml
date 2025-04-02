@@ -202,7 +202,7 @@ spec:
       x-ui-placeholder: "60"
       x-ui-visible-if:
         field: spec.clients
-        values: [null]
+        values: [{}]
     client_allowed_oauth_flows_user_pool_client:
       type: boolean
       title: Allowed OAuth Flows User Pool Client
@@ -210,7 +210,7 @@ spec:
       x-ui-placeholder: "true"
       x-ui-visible-if:
         field: spec.clients
-        values: [null]
+        values: [{}]
     client_allowed_oauth_flows:
       type: array
       title: Allowed OAuth Flows
