@@ -1,0 +1,5 @@
+name: aws_cognito
+type: Security
+displayName: AWS Cognito
+description: AWS Cognito provides authentication, authorization, and user management for web and mobile apps.
+iconUrl: https://icon.icepanel.io/AWS/svg/Security-Identity-Compliance/Cognito.svg

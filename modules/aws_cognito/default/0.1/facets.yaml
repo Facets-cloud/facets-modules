@@ -1,19 +1,319 @@
 intent: aws_cognito
 flavor: default
-version: '0.1'
+version: "0.1"
 description: Adds aws_cognito - default flavor
 clouds:
-- aws
+  - aws
 spec:
   title: AWS Cognito
   type: object
   description: Specification of the AWS Cognito intent
   properties:
-    
+    user_pool_name:
+      type: string
+      title: User Pool Name
+      description: Name of the user pool.
+      x-ui-placeholder: "Defaults to the Resource Name"
+    admin_create_user_config:
+      type: object
+      title: Admin Create User Config
+      description: Configuration for creating a new user profile
+      properties:
+        allow_admin_create_user_only:
+          type: boolean
+          title: Allow Admin Create User Only
+          description: Set to True if only the administrator is allowed to create user profiles. Set to False if users can sign themselves up via an app.
+          x-ui-placeholder: "true"
+        email_subject:
+          type: string
+          title: Email Subject
+          description: Subject line for email messages.
+          x-ui-placeholder: "Your verification code"
+        email_message:
+          type: string
+          title: Email Message
+          description: Message template for email messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
+          pattern: ".*({username}.*{####}|{####}.*{username}).*"
+          x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
+          x-ui-placeholder: "{username}, your verification code is `{####}`"
+        sms_message:
+          type: string
+          title: SMS Message
+          description: Message template for SMS messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
+          pattern: ".*({username}.*{####}|{####}.*{username}).*"
+          x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
+          x-ui-placeholder: "{username}, your verification code is `{####}`"
+    alias_attributes:
+      type: array
+      title: Alias Attributes
+      description: Attributes supported as an alias for this user pool.
+      x-ui-placeholder: "null"
+      enum:
+        - email
+        - phone_number
+        - preferred_username
+    auto_verified_attributes:
+      type: array
+      title: Auto Verified Attributes
+      description: Attributes to be auto-verified.
+      x-ui-placeholder: "[]"
+    clients:
+      type: object
+      title: Clients
+      description: Map of client configurations.
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]{1,128}$"
+        title: Client Object
+        description: Name of the client object
+        properties:
+          allowed_oauth_flows_user_pool_client:
+            type: boolean
+            title: Allowed OAuth Flows User Pool Client
+            description: Whether the client is allowed to use OAuth flows with the user pool.
+            x-ui-placeholder: "true"
+          allowed_oauth_flows:
+            type: array
+            title: Allowed OAuth Flows
+            description: List of allowed OAuth flows.
+            x-ui-placeholder: "[]"
+            x-ui-visible-if:
+              field: spec.clients.{{this}}.allowed_oauth_flows_user_pool_client
+              values: [true]
+          allowed_oauth_scopes:
+            type: array
+            title: Allowed OAuth Scopes
+            description: List of allowed OAuth scopes.
+            x-ui-placeholder: "[]"
+            x-ui-visible-if:
+              field: spec.clients.{{this}}.allowed_oauth_flows_user_pool_client
+              values: [true]
+          auth_session_validity:
+            type: integer
+            title: Auth Session Validity
+            description: Time in minutes that the auth session is valid.
+            x-ui-placeholder: "3"
+            minimum: 3
+            maximum: 15
+          callback_urls:
+            type: array
+            title: Callback URLs
+            description: List of callback URLs.
+            x-ui-placeholder: "[]"
+            x-ui-visible-if:
+              field: spec.clients.{{this}}.allowed_oauth_flows_user_pool_client
+              values: [true]
+          default_redirect_uri:
+            type: string
+            title: Default Redirect URI
+            description: Default redirect URI.
+            x-ui-placeholder: ""
+          explicit_auth_flows:
+            type: array
+            title: Explicit Auth Flows
+            description: List of explicit authentication flows.
+            x-ui-placeholder: "[]"
+          generate_secret:
+            type: boolean
+            title: Generate Secret
+            description: Whether to generate a secret for the client.
+            x-ui-placeholder: "true"
+          logout_urls:
+            type: array
+            title: Logout URLs
+            description: List of logout URLs.
+            x-ui-placeholder: "[]"
+            x-ui-visible-if:
+              field: spec.clients.{{this}}.allowed_oauth_flows_user_pool_client
+              values: [true]
+          read_attributes:
+            type: array
+            title: Read Attributes
+            description: List of read attributes.
+            x-ui-placeholder: "[]"
+          access_token_validity:
+            type: integer
+            title: Access Token Validity
+            description: Time limit, between 5 minutes and 1 day, after which the access token is no longer valid and cannot be used. By default, the unit is minutes. The unit can be overridden by a value in client_token_validity_units.access_token.
+            x-ui-placeholder: "60"
+          id_token_validity:
+            type: integer
+            title: ID Token Validity
+            description: Time limit, between 5 minutes and 1 day, after which the ID token is no longer valid and cannot be used. By default, the unit is minutes. The unit can be overridden by a value in client_token_validity_units.id_token.
+            x-ui-placeholder: "60"
+          refresh_token_validity:
+            type: integer
+            title: Refresh Token Validity
+            description: Time limit, between 1 day and 10 years, after which the refresh token is no longer valid and cannot be used. By default, the unit is days. The unit can be overridden by a value in client_token_validity_units.refresh_token.
+            x-ui-placeholder: "30"
+          enable_propagate_additional_user_context_data:
+            type: boolean
+            title: Enable Propagate Additional User Context Data
+            description: Whether to enable propagation of additional user context data.
+            x-ui-placeholder: "false"
+          token_validity_units:
+            type: object
+            title: Token Validity Units
+            description: Units for token validity times.
+            properties:
+              access_token:
+                type: string
+                title: Access Token Unit
+                description: Unit for access token validity time.
+                x-ui-placeholder: "minutes"
+              id_token:
+                type: string
+                title: ID Token Unit
+                description: Unit for ID token validity time.
+                x-ui-placeholder: "minutes"
+              refresh_token:
+                type: string
+                title: Refresh Token Unit
+                description: Unit for refresh token validity time.
+                x-ui-placeholder: "days"
+          supported_identity_providers:
+            type: array
+            title: Supported Identity Providers
+            description: List of supported identity providers.
+            x-ui-placeholder: "[]"
+          prevent_user_existence_errors:
+            type: boolean
+            title: Prevent User Existence Errors
+            description: Whether to prevent user existence errors.
+            x-ui-placeholder: "null"
+          write_attributes:
+            type: array
+            title: Write Attributes
+            description: List of write attributes.
+            x-ui-placeholder: "[]"
+          enable_token_revocation:
+            type: boolean
+            title: Enable Token Revocation
+            description: Whether token revocation is enabled.
+            x-ui-placeholder: "true"
+    client_access_token_validity:
+      type: integer
+      title: Access Token Validity
+      description: Time limit, between 5 minutes and 1 day, after which the access token is no longer valid and cannot be used. By default, the unit is minutes. The unit can be overridden by a value in client_token_validity_units.access_token.
+      x-ui-placeholder: "60"
+      x-ui-visible-if:
+        field: spec.clients
+        values: []
+    client_allowed_oauth_flows_user_pool_client:
+      type: boolean
+      title: Allowed OAuth Flows User Pool Client
+      description: Whether the client is allowed to use OAuth flows with the user pool.
+      x-ui-placeholder: "true"
+    client_allowed_oauth_flows:
+      type: array
+      title: Allowed OAuth Flows
+      description: List of allowed OAuth flows.
+      x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.client_allowed_oauth_flows_user_pool_client
+        values: [true]
+    client_allowed_oauth_scopes:
+      type: array
+      title: Allowed OAuth Scopes
+      description: List of allowed OAuth scopes.
+      x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.client_allowed_oauth_flows_user_pool_client
+        values: [true]
+    client_auth_session_validity:
+      type: integer
+      title: Auth Session Validity
+      description: Time in minutes that the auth session is valid.
+      x-ui-placeholder: "3"
+      minimum: 3
+      maximum: 15
+    client_callback_urls:
+      type: array
+      title: Callback URLs
+      description: List of callback URLs.
+      x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.client_allowed_oauth_flows_user_pool_client
+        values: [true]
+    client_default_redirect_uri:
+      type: string
+      title: Default Redirect URI
+      description: Default redirect URI.
+      x-ui-placeholder: ""
+    client_enable_token_revocation:
+      type: boolean
+      title: Enable Token Revocation
+      description: Whether token revocation is enabled.
+      x-ui-placeholder: "true"
+    client_explicit_auth_flows:
+      type: array
+      title: Explicit Auth Flows
+      description: List of explicit auth flows.
+      x-ui-placeholder: "[]"
+    client_name:
+      type: string
+      title: Client Name
+      description: Name of the application client.
+      x-ui-placeholder: "null"
+    client_generate_secret:
+      type: boolean
+      title: Generate Secret
+      description: Whether a secret is generated.
+      x-ui-placeholder: "true"
+    client_id_token_validity:
+      type: integer
+      title: ID Token Validity
+      description: Time limit, between 5 minutes and 1 day, after which the ID token is no longer valid and cannot be used. By default, the unit is hours. The unit can be overridden by a value in client_token_validity_units.id_token.
+      x-ui-placeholder: "60"
+    client_logout_urls:
+      type: array
+      title: Logout URLs
+      description: List of logout URLs.
+      x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.client_allowed_oauth_flows_user_pool_client
+        values: [true]
+    client_prevent_user_existence_errors:
+      type: boolean
+      title: Prevent User Existence Errors
+      description: Whether user existence errors are prevented.
+      x-ui-placeholder: "null"
+    client_read_attributes:
+      type: array
+      title: Read Attributes
+      description: List of read attributes.
+      x-ui-placeholder: "[]"
+    client_refresh_token_validity:
+      type: integer
+      title: Refresh Token Validity
+      description: Time limit, between 60 minutes and 10 years, after which the refresh token is no longer valid and cannot be used. By default, the unit is days. The unit can be overridden by a value in client_token_validity_units.refresh_token.
+      x-ui-placeholder: "30"
+    client_supported_identity_providers:
+      type: array
+      title: Supported Identity Providers
+      description: List of supported identity providers.
+      x-ui-placeholder: "[]"
+    client_token_validity_units:
+      type: object
+      title: Token Validity Units
+      description: Units for token validity.
+      properties:
+        access_token:
+          type: string
+          x-ui-placeholder: "minutes"
+        id_token:
+          type: string
+          x-ui-placeholder: "minutes"
+        refresh_token:
+          type: string
+          x-ui-placeholder: "days"
+    client_write_attributes:
+      type: array
+      title: Write Attributes
+      description: List of write attributes.
+      x-ui-placeholder: "[]"
 sample:
-  version: '0.1'
+  version: "0.1"
   flavor: default
   kind: aws_cognito
   disabled: true
-  spec:
-    
+  spec: {}
