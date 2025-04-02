@@ -499,7 +499,7 @@ spec:
             title: Scope Name
             description: Name of the resource server scope.
             x-ui-placeholder: "null"
-    
+sample:
   version: "0.1"
   flavor: default
   kind: aws_cognito
