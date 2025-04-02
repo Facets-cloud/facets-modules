@@ -7,7 +7,7 @@ clouds:
 spec:
   title: AWS Cognito
   type: object
-  description: Specification of the AWS Cognito intent
+  description: Specification of the AWS Cognito intent.
   properties:
     user_pool_name:
       type: string
@@ -17,30 +17,41 @@ spec:
     admin_create_user_config:
       type: object
       title: Admin Create User Config
-      description: Configuration settings for admin user creation - See <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#admin_create_user_config" target="_blank">details</a>
-      x-ui-yaml-editor: true
-      default:
-         null
-    admin_create_user_config_allow_admin_create_user_only:
-      type: boolean
-      title: Admin Create User Config Allow Admin Create User Only
-      description: Allow admin to create user only
-      x-ui-placeholder: "true"
-    admin_create_user_config_email_message:
-      type: string
-      title: Admin Create User Config Email Message
-      description: Email message for admin user creation
-      x-ui-placeholder: "{username}, your verification code is `{####}`"
-    admin_create_user_config_email_subject:
-      type: string
-      title: Admin Create User Config Email Subject
-      description: Email subject for admin user creation
-      x-ui-placeholder: "Your verification code"
-    admin_create_user_config_sms_message:
-      type: string
-      title: Admin Create User Config SMS Message
-      description: SMS message for admin user creation
-      x-ui-placeholder: "Your username is {username} and temporary password is `{####}`"
+      description: Settings for creating a new user profile. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#admin_create_user_config" target="_blank">documentation</a>
+      properties:
+        allow_admin_create_user_only:
+          type: boolean
+          title: Allow Admin Create User Only
+          description: Set to True if only the administrator is allowed to create user profiles. Set to False if users can sign themselves up via an app.
+          x-ui-placeholder: "true"
+        email_subject:
+          type: string
+          title: Email Subject
+          description: Subject line for email messages.
+          x-ui-placeholder: "Your verification code"
+          x-ui-visible-if:
+            field: spec.admin_create_user_config.allow_admin_create_user_only
+            values: [true]
+        email_message:
+          type: string
+          title: Email Message
+          description: Message template for email messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
+          pattern: ".*({username}.*{####}|{####}.*{username}).*"
+          x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
+          x-ui-placeholder: "{username}, your verification code is `{####}`"
+          x-ui-visible-if:
+            field: spec.admin_create_user_config.allow_admin_create_user_only
+            values: [true]
+        sms_message:
+          type: string
+          title: SMS Message
+          description: Message template for SMS messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
+          pattern: ".*({username}.*{####}|{####}.*{username}).*"
+          x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
+          x-ui-placeholder: "{username}, your verification code is `{####}`"
+          x-ui-visible-if:
+            field: spec.admin_create_user_config.allow_admin_create_user_only
+            values: [true]
     alias_attributes:
       type: object
       title: Alias Attributes
