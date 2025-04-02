@@ -197,12 +197,15 @@ spec:
       x-ui-placeholder: "60"
       x-ui-visible-if:
         field: spec.clients
-        values: []
+        values: [""]
     client_allowed_oauth_flows_user_pool_client:
       type: boolean
       title: Allowed OAuth Flows User Pool Client
       description: Whether the client is allowed to use OAuth flows with the user pool.
       x-ui-placeholder: "true"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_allowed_oauth_flows:
       type: array
       title: Allowed OAuth Flows
@@ -226,6 +229,9 @@ spec:
       x-ui-placeholder: "3"
       minimum: 3
       maximum: 15
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_callback_urls:
       type: array
       title: Callback URLs
@@ -239,31 +245,49 @@ spec:
       title: Default Redirect URI
       description: Default redirect URI.
       x-ui-placeholder: ""
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_enable_token_revocation:
       type: boolean
       title: Enable Token Revocation
       description: Whether token revocation is enabled.
       x-ui-placeholder: "true"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_explicit_auth_flows:
       type: array
       title: Explicit Auth Flows
       description: List of explicit auth flows.
       x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_name:
       type: string
       title: Client Name
       description: Name of the application client.
       x-ui-placeholder: "null"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_generate_secret:
       type: boolean
       title: Generate Secret
       description: Whether a secret is generated.
       x-ui-placeholder: "true"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_id_token_validity:
       type: integer
       title: ID Token Validity
       description: Time limit, between 5 minutes and 1 day, after which the ID token is no longer valid and cannot be used. By default, the unit is hours. The unit can be overridden by a value in client_token_validity_units.id_token.
       x-ui-placeholder: "60"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_logout_urls:
       type: array
       title: Logout URLs
@@ -277,25 +301,40 @@ spec:
       title: Prevent User Existence Errors
       description: Whether user existence errors are prevented.
       x-ui-placeholder: "null"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_read_attributes:
       type: array
       title: Read Attributes
       description: List of read attributes.
       x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_refresh_token_validity:
       type: integer
       title: Refresh Token Validity
       description: Time limit, between 60 minutes and 10 years, after which the refresh token is no longer valid and cannot be used. By default, the unit is days. The unit can be overridden by a value in client_token_validity_units.refresh_token.
       x-ui-placeholder: "30"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_supported_identity_providers:
       type: array
       title: Supported Identity Providers
       description: List of supported identity providers.
       x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
     client_token_validity_units:
       type: object
       title: Token Validity Units
       description: Units for token validity.
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
       properties:
         access_token:
           type: string
@@ -311,6 +350,9 @@ spec:
       title: Write Attributes
       description: List of write attributes.
       x-ui-placeholder: "[]"
+      x-ui-visible-if:
+        field: spec.clients
+        values: [""]
 sample:
   version: "0.1"
   flavor: default
