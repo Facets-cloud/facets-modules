@@ -42,7 +42,7 @@ module "aws-cognito" {
   client_supported_identity_providers                        = lookup(local.spec, "client_supported_identity_providers", [])
   client_token_validity_units                                = lookup(local.spec, "client_token_validity_units", { "access_token" : "minutes", "id_token" : "minutes", "refresh_token" : "days" })
   client_write_attributes                                    = lookup(local.spec, "client_write_attributes", [])
-  clients                                                    = local.clients
+  clients                                                    = lookup(local.spec, "clients", [])
   default_ui_customization_css                               = lookup(local.spec, "default_ui_customization_css", null)
   default_ui_customization_image_file                        = lookup(local.spec, "default_ui_customization_image_file", null)
   deletion_protection                                        = lookup(local.spec, "deletion_protection", "INACTIVE")
@@ -61,7 +61,7 @@ module "aws-cognito" {
   email_verification_subject                                 = lookup(local.spec, "email_verification_subject", null)
   enable_propagate_additional_user_context_data              = lookup(local.spec, "enable_propagate_additional_user_context_data", false)
   enabled                                                    = lookup(local.spec, "enabled", true)
-  identity_providers                                         = local.identity_providers
+  identity_providers                                         = lookup(local.spec, "identity_providers", [])
   lambda_config                                              = lookup(local.spec, "lambda_config", {})
   lambda_config_create_auth_challenge                        = lookup(local.spec, "lambda_config_create_auth_challenge", null)
   lambda_config_custom_email_sender                          = lookup(local.spec, "lambda_config_custom_email_sender", {})
@@ -101,7 +101,7 @@ module "aws-cognito" {
   software_token_mfa_configuration                           = lookup(local.spec, "software_token_mfa_configuration", {})
   software_token_mfa_configuration_enabled                   = lookup(local.spec, "software_token_mfa_configuration_enabled", false)
   string_schemas                                             = lookup(local.spec, "string_schemas", [])
-  tags                                                       = lookup(local.spec, "tags", {})
+  tags                                                       = merge(lookup(local.spec, "tags", {}), var.environment.cloud_tags)
   temporary_password_validity_days                           = lookup(local.spec, "temporary_password_validity_days", 7)
   user_attribute_update_settings                             = lookup(local.spec, "user_attribute_update_settings", null)
   user_group_description                                     = lookup(local.spec, "user_group_description", null)
