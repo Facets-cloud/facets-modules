@@ -19,7 +19,9 @@ spec:
       title: Admin Create User Config
       description: Configuration for admin user creation
       x-ui-yaml-editor: true
-      x-ui-placeholder: "null # Check to configure admin_create_user_config - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#admin_create_user_config"
+      x-ui-placeholder: "null"
+      default:
+         null # Check to configure admin_create_user_config - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#admin_create_user_config
     admin_create_user_config_allow_admin_create_user_only:
       type: boolean
       title: Admin Create User Config Allow Admin Create User Only
