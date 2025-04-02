@@ -1,0 +1,553 @@
+intent: elasticsearch
+flavor: opensearch
+version: "0.2"
+description: Adds Opensearch module of intent Elasticsearch
+clouds:
+  - aws
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/aws_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+spec:
+  title: OpenSearch
+  type: object
+  properties:
+    elasticsearch_version:
+      type: string
+      title: Opensearch Version
+      description: Version of OpenSearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
+      minLength: 1
+      x-ui-placeholder: "Ex. OpenSearch_2.17"
+      enum:
+        - OpenSearch_2.17
+        - OpenSearch_2.15
+        - OpenSearch_2.13
+        - OpenSearch_2.11
+        - OpenSearch_2.9
+        - OpenSearch_2.7
+        - OpenSearch_2.5
+        - OpenSearch_2.3
+        - OpenSearch_1.3
+        - OpenSearch_1.2
+        - OpenSearch_1.1
+        - OpenSearch_1.0
+    size:
+      type: object
+      title: Size
+      description: Datastore Sizing
+      properties:
+        instance:
+          type: string
+          title: Instance Type
+          description: Instance type of the node
+          enum:
+            - or1.medium.search
+            - or1.large.search
+            - or1.xlarge.search
+            - or1.2xlarge.search
+            - or1.4xlarge.search
+            - or1.8xlarge.search
+            - or1.12xlarge.search
+            - or1.16xlarge.search
+            - im4gn.large.search
+            - im4gn.xlarge.search
+            - im4gn.2xlarge.search
+            - im4gn.4xlarge.search
+            - im4gn.8xlarge.search
+            - im4gn.16xlarge.search
+            - c5.large.search
+            - c5.xlarge.search
+            - c5.2xlarge.search
+            - c5.4xlarge.search
+            - c5.9xlarge.search
+            - c5.18xlarge.search
+            - c6g.large.search
+            - c6g.xlarge.search
+            - c6g.2xlarge.search
+            - c6g.4xlarge.search
+            - c6g.8xlarge.search
+            - c6g.12xlarge.search
+            - i3.large.search
+            - i3.xlarge.search
+            - i3.2xlarge.search
+            - i3.4xlarge.search
+            - i3.8xlarge.search
+            - i3.16xlarge.search
+            - m5.large.search
+            - m5.xlarge.search
+            - m5.2xlarge.search
+            - m5.4xlarge.search
+            - m5.12xlarge.search
+            - m6g.large.search
+            - m6g.xlarge.search
+            - m6g.2xlarge.search
+            - m6g.4xlarge.search
+            - m6g.8xlarge.search
+            - m6g.12xlarge.search
+            - r5.large.search
+            - r5.xlarge.search
+            - r5.2xlarge.search
+            - r5.4xlarge.search
+            - r5.12xlarge.search
+            - r6g.large.search
+            - r6g.xlarge.search
+            - r6g.2xlarge.search
+            - r6g.4xlarge.search
+            - r6g.8xlarge.search
+            - r6g.12xlarge.search
+            - r6gd.large.search
+            - r6gd.xlarge.search
+            - r6gd.2xlarge.search
+            - r6gd.4xlarge.search
+            - r6gd.8xlarge.search
+            - r6gd.12xlarge.search
+            - r6gd.16xlarge.search
+            - t3.small.search
+            - t3.medium.search
+            - c4.large.search
+            - c4.xlarge.search
+            - c4.2xlarge.search
+            - c4.4xlarge.search
+            - c4.8xlarge.search
+            - i2.xlarge.search
+            - i2.2xlarge.search
+            - m3.medium.search
+            - m3.large.search
+            - m3.xlarge.search
+            - m3.2xlarge.search
+            - m4.large.search
+            - m4.xlarge.search
+            - m4.2xlarge.search
+            - m4.4xlarge.search
+            - m4.10xlarge.search
+            - r3.large.search
+            - r3.xlarge.search
+            - r3.2xlarge.search
+            - r3.4xlarge.search
+            - r3.8xlarge.search
+            - r4.large.search
+            - r4.xlarge.search
+            - r4.2xlarge.search
+            - r4.4xlarge.search
+            - r4.8xlarge.search
+            - r4.16xlarge.search
+            - t2.micro.search
+            - t2.small.search
+            - t2.medium.search
+          x-ui-placeholder: "Select instance type"
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: The number of instances to create
+          minimum: 1
+          maximum: 20
+          x-ui-placeholder: "Minimum value 1"
+        volume:
+          type: string
+          title: Volume
+          description: The size of the volume (in GiB).
+          pattern: "^[0-9]+$"
+          x-ui-placeholder: "Enter volume size"
+          x-ui-error-message: "Value doesn't match '^[0-9]+$' pattern"
+      required:
+        - instance
+        - instance_count
+        - volume
+    private:
+      type: boolean
+      title: Private
+      description: Set OpenSearch as private
+      default: false
+    advanced_security_options:
+      type: object
+      title: Advanced Security Options
+      description: Configuration settings for advanced security features in OpenSearch, including authentication methods and user management.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable advanced security features for OpenSearch
+          default: false
+        anonymous_auth_enabled:
+          type: boolean
+          title: Anonymous Authentication Enabled
+          description: Enable anonymous authentication for OpenSearch
+          default: true
+        auth_type:
+          type: string
+          title: Authentication Type
+          description: Authentication for OpenSearch using methods such as basic auth or IAM user
+          enum:
+            - iam_user
+            - basic_auth
+            - none
+          x-ui-visible-if:
+            field: spec.advanced_security_options.enabled
+            values: [true]
+          default: none
+        master_user_options:
+          type: object
+          title: Master User Options
+          description: Settings for configuring the master user
+          x-ui-visible-if:
+            field: spec.advanced_security_options.auth_type
+            values: ["iam_user", "basic_auth"]
+          properties:
+            master_user_arn:
+              type: string
+              title: Master User ARN
+              description: IAM ARN for the main user
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["iam_user"]
+            master_user_name:
+              type: string
+              title: Master User Name
+              description: Master user's username
+              minimum: 1
+              maximum: 64
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["basic_auth"]
+            autogenerate_master_password:
+              type: boolean
+              title: Autogenerate Master Password
+              description: Automatically generate and use a password for the Master User
+              x-ui-visible-if:
+                field: spec.advanced_security_options.auth_type
+                values: ["basic_auth"]
+              default: true
+            master_user_password:
+              type: string
+              title: Master User Password
+              description: Master user's Password
+              minimum: 1
+              maximum: 128
+              x-ui-visible-if:
+                field: spec.advanced_security_options.master_user_options.autogenerate_master_password
+                values: [false]
+          required:
+            - master_user_arn
+            - master_user_name
+            - master_user_password
+    enable_access_policy:
+      type: boolean
+      title: Enable Access Policy
+      description: Enable and apply access policy for the OpenSearch domain.
+      default: true
+    access_policies:
+      type: object
+      title: Access Policies
+      description: IAM policy document specifying access control for the OpenSearch domain. This can include permissions for various AWS services and users.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.enable_access_policy
+        values: [true]
+      default: null
+    create_access_policy:
+      type: boolean
+      title: Create Access Policy
+      description: Create and enforce an access policy for the OpenSearch domain, including defining source and override policy documents, as well as policy statements.
+      default: true
+    access_policy_source_policy_documents:
+      type: object
+      title: Access Policy Source Policy Documents
+      description: List of IAM policy documents specifying source access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: []
+    access_policy_override_policy_documents:
+      type: object
+      title: Access Policy Override Policy Documents
+      description: List of IAM policy documents specifying override access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: []
+    access_policy_statements:
+      type: object
+      title: Access Policy Statements
+      description: Map of IAM policy statements specifying access control for the OpenSearch domain.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_access_policy
+        values: [true]
+      default: []
+    advanced_options:
+      type: object
+      title: Advanced Options
+      description: Key-value string pairs to specify advanced configuration options. Note that the values for these configuration options must be strings (wrapped in quotes) or they may be wrong and cause a perpetual diff, causing Terraform to want to recreate your OpenSearch domain on every apply.
+      x-ui-yaml-editor: true
+      default: {}
+    auto_tune_options:
+      type: object
+      title: Auto Tune Options
+      description: Configuration settings for auto-tuning the OpenSearch domain.
+      x-ui-yaml-editor: true
+      default:
+        desired_state: ENABLED
+        rollback_on_disable: NO_ROLLBACK
+    create_cloudwatch_log_groups:
+      type: boolean
+      title: Create CloudWatch Log Groups
+      description: Create CloudWatch log groups for the OpenSearch domain.
+      default: true
+    cloudwatch_log_group_kms_key_id:
+      type: string
+      title: CloudWatch Log Group KMS Key ID
+      description: KMS Key ID for encrypting CloudWatch log group.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: null
+    cloudwatch_log_group_retention_in_days:
+      type: integer
+      title: CloudWatch Log Group Retention in Days
+      description: Number of days to retain CloudWatch logs.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: 60
+    create_cloudwatch_log_resource_policy:
+      type: boolean
+      title: Create CloudWatch Log Resource Policy
+      description: Create CloudWatch log resource policy for the OpenSearch domain.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_groups
+        values: [true]
+      default: true
+    cloudwatch_log_resource_policy_name:
+      type: string
+      title: CloudWatch Log Resource Policy Name
+      description: Name of the resource policy for CloudWatch logs.
+      x-ui-visible-if:
+        field: spec.create_cloudwatch_log_resource_policy
+        values: [true]
+      default: null
+    log_publishing_options:
+      type: object
+      title: Log Publishing Options
+      description: Configuration settings for publishing logs.
+      x-ui-yaml-editor: true
+      default:
+        - log_type: INDEX_SLOW_LOGS
+        - log_type: SEARCH_SLOW_LOGS
+    create_saml_options:
+      type: boolean
+      title: Create SAML Options
+      description: Create SAML options for the OpenSearch domain.
+      default: false
+    saml_options:
+      type: object
+      title: SAML Options
+      description: Configuration settings for SAML options.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_saml_options
+        values: [true]
+      default: {}
+    create_security_group:
+      type: boolean
+      title: Create Security Group
+      description: Create security group for the OpenSearch domain.
+      default: true
+    security_group_description:
+      type: string
+      title: Security Group Description
+      description: Description of the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: null
+    security_group_name:
+      type: string
+      title: Security Group Name
+      description: Name of the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: null
+    security_group_use_name_prefix:
+      type: boolean
+      title: Security Group Use Name Prefix
+      description: Use name prefix for the security group.
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: true
+    security_group_rules:
+      type: object
+      title: Security Group Rules
+      description: Configuration settings for security group rules.
+      x-ui-yaml-editor: true
+      x-ui-visible-if:
+        field: spec.create_security_group
+        values: [true]
+      default: {}
+    domain_endpoint_options:
+      type: object
+      title: Domain Endpoint Options
+      description: Configuration settings for the domain endpoint.
+      x-ui-yaml-editor: true
+      default:
+        enforce_https: true
+        tls_security_policy: Policy-Min-TLS-1-2-2019-07
+    ebs_options:
+      type: object
+      title: EBS Options
+      description: Configuration settings for EBS volumes.
+      properties:
+        ebs_enabled:
+          type: boolean
+          title: EBS Enabled
+          description: Enable EBS.
+          default: true
+        volume_type:
+          type: string
+          title: Volume Type
+          description: Type of EBS volume.
+          enum:
+            - standard
+            - gp2
+            - io1
+            - gp3
+          x-ui-visible-if:
+            field: spec.ebs_options.ebs_enabled
+            values: [true]
+          default: gp3
+        iops:
+          type: integer
+          title: IOPS
+          description: IOPS for the EBS volume.
+          x-ui-visible-if:
+            field: spec.ebs_options.ebs_enabled
+            values: [true]
+          default: null
+        throughput:
+          type: integer
+          title: Throughput
+          description: Throughput for the EBS volume (in MiB/s).
+          x-ui-visible-if:
+            field: spec.ebs_options.volume_type
+            values: ["gp3"]
+          default: null
+    encrypt_at_rest:
+      type: object
+      title: Encrypt at Rest
+      description: Configuration settings for encrypting data at rest.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable encryption at rest.
+          default: true
+        kms_key_id:
+          type: string
+          title: KMS Key ID
+          description: KMS key ARN to use for encryption at rest. Defaults to 'aws/es'
+          x-ui-visible-if:
+            field: spec.encrypt_at_rest.enabled
+            values: [true]
+          default: null
+      default:
+        enabled: true
+        kms_key_id: null
+    node_to_node_encryption:
+      type: object
+      title: Node to Node Encryption
+      description: Configuration settings for node-to-node encryption.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable node-to-node encryption.
+          default: true
+    off_peak_window_options:
+      type: object
+      title: Off Peak Window Options
+      description: Configuration settings for off-peak window.
+      x-ui-yaml-editor: true
+      default:
+        enabled: true
+        off_peak_window:
+          hours: 7
+    outbound_connections:
+      type: object
+      title: Outbound Connections
+      description: Configuration settings for outbound connections.
+      x-ui-yaml-editor: true
+      default: {}
+    package_associations:
+      type: object
+      title: Package Associations
+      description: Configuration settings for package associations.
+      x-ui-yaml-editor: true
+      default: {}
+    software_update_options:
+      type: object
+      title: Software Update Options
+      description: Configuration settings for software updates.
+      x-ui-yaml-editor: true
+      default:
+        auto_software_update_enabled: true
+    vpc_endpoints:
+      type: object
+      title: VPC Endpoints
+      description: Configuration settings for VPC endpoints.
+      x-ui-yaml-editor: true
+      default: {}
+  required:
+    - size
+    - elasticsearch_version
+  x-ui-order:
+    - elasticsearch_version
+    - size
+    - private
+    - advanced_security_options
+    - ebs_options
+    - create_access_policy
+    - access_policy_statements
+    - access_policy_source_policy_documents
+    - access_policy_override_policy_documents
+    - advanced_options
+    - auto_tune_options
+    - create_cloudwatch_log_groups
+    - cloudwatch_log_group_kms_key_id
+    - cloudwatch_log_group_retention_in_days
+    - create_cloudwatch_log_resource_policy
+    - cloudwatch_log_resource_policy_name
+    - log_publishing_options
+    - create_saml_options
+    - saml_options
+    - create_security_group
+    - security_group_description
+    - security_group_name
+    - security_group_use_name_prefix
+    - security_group_rules
+    - domain_endpoint_options
+    - encrypt_at_rest
+    - node_to_node_encryption
+    - off_peak_window_options
+    - outbound_connections
+    - package_associations
+    - software_update_options
+    - vpc_endpoints
+sample:
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
+  flavor: opensearch
+  kind: elasticsearch
+  metadata: {}
+  spec:
+    elasticsearch_version: OpenSearch_2.17
+    size:
+      instance: c6g.large.search
+      instance_count: 2
+      volume: 100
+  version: "0.2"
+  disabled: true
