@@ -1,0 +1,8 @@
+name: aws_cognito
+out:
+  type: object
+  title: AWS Cognito
+  description: AWS Cognito attributes.
+  properties:
+    attributes:
+    interfaces:
