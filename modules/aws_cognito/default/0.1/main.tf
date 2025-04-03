@@ -16,7 +16,7 @@ module "aws-cognito" {
   source = "./terraform-aws-cognito-user-pool-0.33.0"
 
   # Required
-  user_pool_name = lookup(local.spec, "user_pool_name", module.name.0.name)
+  user_pool_name = lookup(local.spec, "user_pool_name", module.name[0].name)
 
   # Optional
   admin_create_user_config                                   = lookup(local.spec, "admin_create_user_config", {})
