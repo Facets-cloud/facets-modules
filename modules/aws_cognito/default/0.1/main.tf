@@ -27,7 +27,7 @@ module "aws-cognito" {
   alias_attributes                                           = lookup(local.spec, "alias_attributes", null)
   auto_verified_attributes                                   = lookup(local.spec, "auto_verified_attributes", [])
   client_access_token_validity                               = lookup(local.spec, "client_access_token_validity", 60)
-  client_allowed_oauth_flows                                 = lookup(local.spec, "client_allowed_oauth_flows", [])
+  client_allowed_oauth_flows                                 = lookup(local.spec, "client_allowed_oauth_flows", tuple([]))
   client_allowed_oauth_flows_user_pool_client                = lookup(local.spec, "client_allowed_oauth_flows_user_pool_client", true)
   client_allowed_oauth_scopes                                = lookup(local.spec, "client_allowed_oauth_scopes", [])
   client_auth_session_validity                               = lookup(local.spec, "client_auth_session_validity", 3)
