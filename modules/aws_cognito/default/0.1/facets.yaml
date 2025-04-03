@@ -564,6 +564,7 @@ spec:
       type: object
       title: Username Attributes
       description: List of Username attributes for the user pool
+      x-ui-yaml-editor: true
       default: null
     username_configuration:
       type: object
