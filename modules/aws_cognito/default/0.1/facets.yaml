@@ -32,48 +32,49 @@ spec:
           x-ui-visible-if:
             field: spec.admin_create_user_config.allow_admin_create_user_only
             values: [true]
+          default: "Your verification code"
         email_message:
           type: string
           title: Email Message
           description: Message template for email messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
           pattern: ".*({username}.*{####}|{####}.*{username}).*"
           x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
-          x-ui-placeholder: "{username}, your verification code is `{####}`"
           x-ui-visible-if:
             field: spec.admin_create_user_config.allow_admin_create_user_only
             values: [true]
+          default: "{username}, your verification code is `{####}`"
         sms_message:
           type: string
           title: SMS Message
           description: Message template for SMS messages. Must contain {username} and {####} placeholders, for username and temporary password, respectively.
           pattern: ".*({username}.*{####}|{####}.*{username}).*"
           x-ui-error-message: "Value doesn't match '.*({username}.*{####}|{####}.*{username}).*' pattern"
-          x-ui-placeholder: "{username}, your verification code is `{####}`"
           x-ui-visible-if:
             field: spec.admin_create_user_config.allow_admin_create_user_only
             values: [true]
+          default: "{username}, your verification code is `{####}`"
     alias_attributes:
       type: object
       title: Alias Attributes
       description: Alias attributes for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#alias_attributes-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: null
+      default: []
     auto_verified_attributes:
       type: object
       title: Auto Verified Attributes
       description: Attributes that are auto-verified. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#auto_verified_attributes-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: null
+      default: []
     client_access_token_validity:
       type: integer
       title: Client Access Token Validity
       description: Access token validity for the client
-      x-ui-placeholder: "60"
+      default: 60
     client_allowed_oauth_flows_user_pool_client:
       type: boolean
       title: Client Allowed OAuth Flows User Pool Client
       description: Allow OAuth flows for user pool client
-      x-ui-placeholder: "true"
+      default: true
     client_allowed_oauth_flows:
       type: object
       title: Client Allowed OAuth Flows
@@ -96,7 +97,9 @@ spec:
       type: integer
       title: Client Auth Session Validity
       description: Auth session validity for the client
-      x-ui-placeholder: "3"
+      default: 3
+      minimum: 3
+      maximum: 15
     client_callback_urls:
       type: object
       title: Client Callback URLs
@@ -110,12 +113,12 @@ spec:
       type: string
       title: Client Default Redirect URI
       description: Default redirect URI for the client
-      x-ui-placeholder: ""
+      default: ""
     client_enable_token_revocation:
       type: boolean
       title: Client Enable Token Revocation
       description: Enable token revocation for the client
-      x-ui-placeholder: "true"
+      default: true
     client_explicit_auth_flows:
       type: object
       title: Client Explicit Auth Flows
@@ -126,12 +129,12 @@ spec:
       type: boolean
       title: Client Generate Secret
       description: Generate secret for the client
-      x-ui-placeholder: "true"
+      default: true
     client_id_token_validity:
       type: integer
       title: Client ID Token Validity
       description: ID token validity for the client
-      x-ui-placeholder: "60"
+      default: 60
     client_logout_urls:
       type: object
       title: Client Logout URLs
@@ -145,12 +148,17 @@ spec:
       type: string
       title: Client Name
       description: Name of the client
-      x-ui-placeholder: "null"
+      default: ""
+      minimum: 1
+      maximum: 128
     client_prevent_user_existence_errors:
       type: string
       title: Client Prevent User Existence Errors
       description: Prevent user existence errors for the client
-      x-ui-placeholder: "null"
+      enum:
+        - LEGACY
+        - ENABLED
+      default: "LEGACY"
     client_read_attributes:
       type: object
       title: Client Read Attributes
@@ -161,11 +169,11 @@ spec:
       type: integer
       title: Client Refresh Token Validity
       description: Refresh token validity for the client
-      x-ui-placeholder: "30"
+      default: 30
     client_supported_identity_providers:
       type: object
       title: Client Supported Identity Providers
-      description: List of Supported identity providers for the client
+      description: List of Supported identity providers for the client. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_managed_user_pool_client#supported_identity_providers-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
       default: null
     client_token_validity_units:
@@ -203,10 +211,10 @@ spec:
       type: string
       title: Deletion Protection
       description: Deletion protection status
-      x-ui-placeholder: "INACTIVE"
       enum:
         - ACTIVE
         - INACTIVE
+      default: "INACTIVE"
     device_configuration:
       type: object
       title: Device Configuration.
@@ -371,11 +379,21 @@ spec:
       type: string
       title: MFA Configuration
       description: MFA configuration settings
-      x-ui-placeholder: "OFF"
       enum:
         - "OFF"
         - "ON"
       default: "OFF"
+    software_token_mfa_configuration:
+      type: object
+      title: Software Token MFA Configuration
+      description: Software token MFA configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#software_token_mfa_configuration" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: {}
+    software_token_mfa_configuration_enabled:
+      type: boolean
+      title: Software Token MFA Configuration Enabled
+      description: Enable software token MFA
+      x-ui-placeholder: "false"
     number_schemas:
       type: object
       title: Number Schemas.
@@ -397,22 +415,22 @@ spec:
       type: boolean
       title: Password Policy Require Lowercase
       description: Require lowercase letters in password
-      x-ui-placeholder: "true"
+      default: true
     password_policy_require_numbers:
       type: boolean
       title: Password Policy Require Numbers
       description: Require numbers in password
-      x-ui-placeholder: "true"
+      default: true
     password_policy_require_symbols:
       type: boolean
       title: Password Policy Require Symbols
       description: Require symbols in password
-      x-ui-placeholder: "true"
+      default: true
     password_policy_require_uppercase:
       type: boolean
       title: Password Policy Require Uppercase
       description: Require uppercase letters in password
-      x-ui-placeholder: "true"
+      default: true
     password_policy_temporary_password_validity_days:
       type: integer
       title: Password Policy Temporary Password Validity Days
@@ -482,17 +500,6 @@ spec:
       title: SMS Verification Message
       description: SMS verification message
       x-ui-placeholder: "null"
-    software_token_mfa_configuration:
-      type: object
-      title: Software Token MFA Configuration
-      description: Software token MFA configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#software_token_mfa_configuration" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    software_token_mfa_configuration_enabled:
-      type: boolean
-      title: Software Token MFA Configuration Enabled
-      description: Enable software token MFA
-      x-ui-placeholder: "false"
     string_schemas:
       type: object
       title: String Schemas
