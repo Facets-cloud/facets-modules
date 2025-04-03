@@ -1,5 +1,5 @@
 intent: aws_cognito
-flavor: default
+flavor: default_astuto
 version: "0.1"
 description: Adds aws_cognito - default flavor
 clouds:
@@ -592,7 +592,7 @@ spec:
       x-ui-placeholder: "null"
 sample:
   version: "0.1"
-  flavor: default
+  flavor: default_astuto
   kind: aws_cognito
   disabled: true
   spec: {}
