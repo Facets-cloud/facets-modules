@@ -89,5 +89,6 @@ locals {
     }
   ]
 
-  clients = length(var.clients) == 0 && (var.client_name == null || var.client_name == "") ? [] : ([local.clients_parsed, local.clients_default][length(var.clients) > 0 ? 0 : 1])
+  clients = length(var.clients) == 0 && (var.client_name == null || var.client_name == "") ? [] : (length(var.clients) > 0 ? local.clients_parsed : local.clients_default)
+
 }
