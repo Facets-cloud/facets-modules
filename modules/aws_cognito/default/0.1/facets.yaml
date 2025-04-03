@@ -55,7 +55,7 @@ spec:
     alias_attributes:
       type: object
       title: Alias Attributes
-      description: Alias attributes for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/5.49/docs/resources/cognito_user_pool#alias_attributes-1" target="_blank">documentation</a>
+      description: Alias attributes for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#alias_attributes-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
       default: null
     auto_verified_attributes:
