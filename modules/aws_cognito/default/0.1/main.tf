@@ -1,5 +1,5 @@
 module "name" {
-  count = length(lookup(local.spec, "user_pool_name", {})) > 0 ? 1 : 0
+  count = length(lookup(local.spec, "user_pool_name", {})) > 0 ? 0 : 1
 
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
