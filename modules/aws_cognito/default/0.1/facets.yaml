@@ -14,6 +14,14 @@ spec:
       title: User Pool Name
       description: Name of the user pool
       x-ui-placeholder: "Defaults to Resource Name"
+    domain:
+      type: string
+      title: Domain
+      description: Domain for the user pool
+    domain_certificate_arn:
+      type: string
+      title: Domain Certificate ARN
+      description: Certificate ARN for the domain
     admin_create_user_config:
       type: object
       title: Admin Create User Config
@@ -58,145 +66,25 @@ spec:
       title: Alias Attributes
       description: Alias attributes for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#alias_attributes-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: []
+      default: null
+    username_attributes:
+      type: object
+      title: Username Attributes
+      description: List of Username attributes for the user pool
+      x-ui-yaml-editor: true
+      default: null
     auto_verified_attributes:
       type: object
       title: Auto Verified Attributes
       description: Attributes that are auto-verified. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#auto_verified_attributes-1" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: []
-    client_access_token_validity:
-      type: integer
-      title: Client Access Token Validity
-      description: Access token validity for the client
-      default: 60
-    client_allowed_oauth_flows_user_pool_client:
-      type: boolean
-      title: Client Allowed OAuth Flows User Pool Client
-      description: Allow OAuth flows for user pool client
-      default: true
-    client_allowed_oauth_flows:
-      type: object
-      title: Client Allowed OAuth Flows
-      description: List of Allowed OAuth flows for the client. Allowed values - code, implicit, and client_credentials
-      x-ui-yaml-editor: true
-      x-ui-visible-if:
-        field: spec.client_allowed_oauth_flows_user_pool_client
-        values: [true]
-      default: []
-    client_allowed_oauth_scopes:
-      type: object
-      title: Client Allowed OAuth Scopes
-      description: List of Allowed OAuth scopes for the client. Allowed values - phone, email, openid, profile, and aws.cognito.signin.user.admin
-      x-ui-yaml-editor: true
-      x-ui-visible-if:
-        field: spec.client_allowed_oauth_flows_user_pool_client
-        values: [true]
-      default: []
-    client_auth_session_validity:
-      type: integer
-      title: Client Auth Session Validity
-      description: Auth session validity for the client
-      default: 3
-      minimum: 3
-      maximum: 15
-    client_callback_urls:
-      type: object
-      title: Client Callback URLs
-      description: List of Callback URLs for the client
-      x-ui-yaml-editor: true
-      x-ui-visible-if:
-        field: spec.client_allowed_oauth_flows_user_pool_client
-        values: [true]
-      default: []
-    client_default_redirect_uri:
-      type: string
-      title: Client Default Redirect URI
-      description: Default redirect URI for the client
-      default: ""
-    client_enable_token_revocation:
-      type: boolean
-      title: Client Enable Token Revocation
-      description: Enable token revocation for the client
-      default: true
-    client_explicit_auth_flows:
-      type: object
-      title: Client Explicit Auth Flows
-      description: List of Explicit auth flows for the client. Allowed Values - ADMIN_NO_SRP_AUTH, CUSTOM_AUTH_FLOW_ONLY, USER_PASSWORD_AUTH
-      x-ui-yaml-editor: true
-      default: []
-    client_generate_secret:
-      type: boolean
-      title: Client Generate Secret
-      description: Generate secret for the client
-      default: true
-    client_id_token_validity:
-      type: integer
-      title: Client ID Token Validity
-      description: ID token validity for the client
-      default: 60
-    client_logout_urls:
-      type: object
-      title: Client Logout URLs
-      description: List of Logout URLs for the client
-      x-ui-yaml-editor: true
-      x-ui-visible-if:
-        field: spec.client_allowed_oauth_flows_user_pool_client
-        values: [true]
-      default: []
-    client_name:
-      type: string
-      title: Client Name
-      description: Name of the client
-      default: ""
-      minimum: 1
-      maximum: 128
-    client_prevent_user_existence_errors:
-      type: string
-      title: Client Prevent User Existence Errors
-      description: Prevent user existence errors for the client
-      enum:
-        - LEGACY
-        - ENABLED
-      default: "LEGACY"
-    client_read_attributes:
-      type: object
-      title: Client Read Attributes
-      description: List of Read attributes for the client
-      x-ui-yaml-editor: true
-      default: []
-    client_refresh_token_validity:
-      type: integer
-      title: Client Refresh Token Validity
-      description: Refresh token validity for the client
-      default: 30
-    client_supported_identity_providers:
-      type: object
-      title: Client Supported Identity Providers
-      description: List of Supported identity providers for the client. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_managed_user_pool_client#supported_identity_providers-1" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
       default: null
-    client_token_validity_units:
-      type: object
-      title: Client Token Validity Units
-      description: Token validity units for the client. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client#token_validity_units" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default:
-        access_token: minutes
-        id_token: minutes
-        refresh_token: days
-    client_write_attributes:
-      type: object
-      title: Client Write Attributes
-      description: List of Write attributes for the client
-      x-ui-yaml-editor: true
-      default: []
     clients:
       type: object
       title: Clients
       description: List of clients. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client#argument-reference" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: []
+      default: null
     default_ui_customization_css:
       type: string
       title: Default UI Customization CSS
@@ -214,33 +102,22 @@ spec:
       enum:
         - ACTIVE
         - INACTIVE
-      default: "INACTIVE"
+      default: null
     device_configuration:
       type: object
       title: Device Configuration.
       description: Device configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cognito_user_pool#device-configuration" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    device_configuration_challenge_required_on_new_device:
-      type: boolean
-      title: Device Configuration Challenge Required On New Device
-      description: Challenge required on new device
-      x-ui-placeholder: "null"
-    device_configuration_device_only_remembered_on_user_prompt:
-      type: boolean
-      title: Device Configuration Device Only Remembered On User Prompt
-      description: Device only remembered on user prompt
-      x-ui-placeholder: "null"
-    domain:
-      type: string
-      title: Domain
-      description: Domain for the user pool
-      x-ui-placeholder: "null"
-    domain_certificate_arn:
-      type: string
-      title: Domain Certificate ARN
-      description: Certificate ARN for the domain
-      x-ui-placeholder: "null"
+      properties:
+        challenge_required_on_new_device:
+          type: boolean
+          title: Device Configuration Challenge Required On New Device
+          description: Challenge required on new device
+          default: null
+        device_only_remembered_on_user_prompt:
+          type: boolean
+          title: Device Configuration Device Only Remembered On User Prompt
+          description: Device only remembered on user prompt
+          default: null
     email_configuration:
       type: object
       title: Email Configuration
@@ -274,107 +151,23 @@ spec:
           title: Source ARN
           description: The ARN of the source email.
           x-ui-placeholder: ""
-    email_verification_message:
-      type: string
-      title: Email Verification Message
-      description: Email verification message
-      x-ui-placeholder: "null"
-    email_verification_subject:
-      type: string
-      title: Email Verification Subject
-      description: Email verification subject
-      x-ui-placeholder: "null"
     enable_propagate_additional_user_context_data:
       type: boolean
       title: Enable Propagate Additional User Context Data
       description: Enable propagation of additional user context data
-      x-ui-placeholder: "false"
-      default: false
+      default: null
     identity_providers:
       type: object
       title: Identity Providers
       description: List of identity providers. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_provider#argument-reference" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: []
+      default: null
     lambda_config:
       type: object
       title: Lambda Config
       description: Lambda configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#lambda_config" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: {}
-    lambda_config_create_auth_challenge:
-      type: string
-      title: Lambda Config Create Auth Challenge
-      description: Lambda function for creating auth challenge
-      x-ui-placeholder: "null"
-    lambda_config_custom_email_sender:
-      type: object
-      title: Lambda Config Custom Email Sender
-      description: Custom email sender configuration
-      x-ui-yaml-editor: true
-      default: {}
-    lambda_config_custom_message:
-      type: string
-      title: Lambda Config Custom Message
-      description: Custom message lambda function
-      x-ui-placeholder: "null"
-    lambda_config_custom_sms_sender:
-      type: object
-      title: Lambda Config Custom SMS Sender
-      description: Custom SMS sender configuration
-      x-ui-yaml-editor: true
-      default: {}
-    lambda_config_define_auth_challenge:
-      type: string
-      title: Lambda Config Define Auth Challenge
-      description: Lambda function for defining auth challenge
-      x-ui-placeholder: "null"
-    lambda_config_kms_key_id:
-      type: string
-      title: Lambda Config KMS Key ID
-      description: KMS key ID for lambda configuration
-      x-ui-placeholder: "null"
-    lambda_config_post_authentication:
-      type: string
-      title: Lambda Config Post Authentication
-      description: Lambda function for post authentication
-      x-ui-placeholder: "null"
-    lambda_config_post_confirmation:
-      type: string
-      title: Lambda Config Post Confirmation
-      description: Lambda function for post confirmation
-      x-ui-placeholder: "null"
-    lambda_config_pre_authentication:
-      type: string
-      title: Lambda Config Pre Authentication
-      description: Lambda function for pre authentication
-      x-ui-placeholder: "null"
-    lambda_config_pre_sign_up:
-      type: string
-      title: Lambda Config Pre Sign-Up
-      description: Lambda function for pre sign-up
-      x-ui-placeholder: "null"
-    lambda_config_pre_token_generation:
-      type: string
-      title: Lambda Config Pre Token Generation
-      description: Lambda function for pre token generation
-      x-ui-placeholder: "null"
-    lambda_config_pre_token_generation_config:
-      type: object
-      title: Lambda Config Pre Token Generation Config
-      description: Configuration for pre token generation lambda. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#pre_token_configuration_type" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    lambda_config_user_migration:
-      type: string
-      title: Lambda Config User Migration
-      description: Lambda function for user migration
-      x-ui-placeholder: "null"
-    lambda_config_verify_auth_challenge_response:
-      type: string
-      title: Lambda Config Verify Auth Challenge Response
-      description: Lambda function for verifying auth challenge response
-      x-ui-placeholder: "null"
+      default: null
     mfa_configuration:
       type: string
       title: MFA Configuration
@@ -382,222 +175,142 @@ spec:
       enum:
         - "OFF"
         - "ON"
-      default: "OFF"
+      default: null
     software_token_mfa_configuration:
       type: object
       title: Software Token MFA Configuration
       description: Software token MFA configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#software_token_mfa_configuration" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    software_token_mfa_configuration_enabled:
-      type: boolean
-      title: Software Token MFA Configuration Enabled
-      description: Enable software token MFA
-      x-ui-placeholder: "false"
-    number_schemas:
-      type: object
-      title: Number Schemas.
-      description: Number schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: []
-    password_policy:
-      type: object
-      title: Password Policy
-      description: Password policy settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#password_policy" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: null
-    password_policy_minimum_length:
-      type: integer
-      title: Password Policy Minimum Length
-      description: Minimum length for password
-      x-ui-placeholder: "8"
-    password_policy_require_lowercase:
-      type: boolean
-      title: Password Policy Require Lowercase
-      description: Require lowercase letters in password
-      default: true
-    password_policy_require_numbers:
-      type: boolean
-      title: Password Policy Require Numbers
-      description: Require numbers in password
-      default: true
-    password_policy_require_symbols:
-      type: boolean
-      title: Password Policy Require Symbols
-      description: Require symbols in password
-      default: true
-    password_policy_require_uppercase:
-      type: boolean
-      title: Password Policy Require Uppercase
-      description: Require uppercase letters in password
-      default: true
-    password_policy_temporary_password_validity_days:
-      type: integer
-      title: Password Policy Temporary Password Validity Days
-      description: Temporary password validity days
-      x-ui-placeholder: "7"
-    recovery_mechanisms:
-      type: object
-      title: Recovery Mechanisms
-      description: Recovery mechanisms for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#account_recovery_setting" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: []
-    resource_server_identifier:
-      type: string
-      title: Resource Server Identifier
-      description: Identifier for the resource server
-      x-ui-placeholder: "null"
-    resource_server_name:
-      type: string
-      title: Resource Server Name
-      description: Name of the resource server
-      x-ui-placeholder: "null"
-    resource_server_scope_description:
-      type: string
-      title: Resource Server Scope Description
-      description: Description of the resource server scope
-      x-ui-placeholder: "null"
-    resource_server_scope_name:
-      type: string
-      title: Resource Server Scope Name
-      description: Name of the resource server scope
-      x-ui-placeholder: "null"
-    resource_servers:
-      type: object
-      title: Resource Servers
-      description: List of resource servers. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_resource_server#argument-reference" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: []
-    schemas:
-      type: object
-      title: Schemas
-      description: Schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: []
-    sms_authentication_message:
-      type: string
-      title: SMS Authentication Message
-      description: SMS authentication message
-      x-ui-placeholder: "null"
-    sms_configuration:
-      type: object
-      title: SMS Configuration
-      description: SMS configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#sms_configuration" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    sms_configuration_external_id:
-      type: string
-      title: SMS Configuration External ID
-      description: External ID for SMS configuration
-      x-ui-placeholder: ""
-    sms_configuration_sns_caller_arn:
-      type: string
-      title: SMS Configuration SNS Caller ARN
-      description: SNS caller ARN for SMS configuration
-      x-ui-placeholder: ""
-    sms_verification_message:
-      type: string
-      title: SMS Verification Message
-      description: SMS verification message
-      x-ui-placeholder: "null"
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable software token MFA
+          default: null
     string_schemas:
       type: object
       title: String Schemas
       description: String schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: []
+      default: null
+    number_schemas:
+      type: object
+      title: Number Schemas.
+      description: Number schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
+    schemas:
+      type: object
+      title: Schemas
+      description: Schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
+    password_policy:
+      type: object
+      title: Password Policy
+      description: Password policy settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#password_policy" target="_blank">documentation</a>
+      properties:
+        minimum_length:
+          type: integer
+          title: Password Policy Minimum Length
+          description: Minimum length for password
+        require_lowercase:
+          type: boolean
+          title: Require Lowercase
+          description: Require lowercase letters in password
+          default: null
+        require_numbers:
+          type: boolean
+          title: Require Numbers
+          description: Require numbers in password
+          default: null
+        require_symbols:
+          type: boolean
+          title: Require Symbols
+          description: Require symbols in password
+          default: null
+        require_uppercase:
+          type: boolean
+          title: Require Uppercase
+          description: Require uppercase letters in password
+          default: null
+        temporary_password_validity_days:
+          type: integer
+          title: Temporary Password Validity Days
+          description: Temporary password validity days
+    recovery_mechanisms:
+      type: object
+      title: Recovery Mechanisms
+      description: Recovery mechanisms for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#account_recovery_setting" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
+    resource_servers:
+      type: object
+      title: Resource Servers
+      description: List of resource servers. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_resource_server#argument-reference" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
+    sms_configuration:
+      type: object
+      title: SMS Configuration
+      description: SMS configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#sms_configuration" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
+    sms_authentication_message:
+      type: string
+      title: SMS Authentication Message
+      description: SMS authentication message
+    sms_verification_message:
+      type: string
+      title: SMS Verification Message
+      description: SMS verification message
     tags:
       type: object
       title: Tags
       description: Tags for the user pool
       x-ui-yaml-editor: true
-      default: {}
-    temporary_password_validity_days:
-      type: integer
-      title: Temporary Password Validity Days
-      description: Temporary password validity days
-      x-ui-placeholder: "7"
+      default: null
+    user_groups:
+      type: object
+      title: User Groups
+      description: List of user groups. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_group#argument-reference" target="_blank">documentation</a>
+      x-ui-yaml-editor: true
+      default: null
     user_attribute_update_settings:
       type: object
       title: User Attribute Update Settings
       description: User attribute update settings. Allowed Values - email, phone_number
       x-ui-yaml-editor: true
       default: null
-    user_group_description:
-      type: string
-      title: User Group Description
-      description: Description of the user group
-      x-ui-placeholder: "null"
-    user_group_name:
-      type: string
-      title: User Group Name
-      description: Name of the user group
-      x-ui-placeholder: "null"
-    user_group_precedence:
-      type: integer
-      title: User Group Precedence
-      description: Precedence of the user group
-      x-ui-placeholder: "null"
-    user_group_role_arn:
-      type: string
-      title: User Group Role ARN
-      description: Role ARN for the user group
-      x-ui-placeholder: "null"
-    user_groups:
-      type: object
-      title: User Groups
-      description: List of user groups. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_group#argument-reference" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: []
     user_pool_add_ons:
       type: object
       title: User Pool Add-Ons
       description: User pool add-ons settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#user_pool_add_ons" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
-    user_pool_add_ons_advanced_security_mode:
-      type: string
-      title: User Pool Add-Ons Advanced Security Mode
-      description: Advanced security mode for user pool add-ons. Allowed Values - OFF, AUDIT or ENFORCED
-      x-ui-placeholder: "null"
-    username_attributes:
-      type: object
-      title: Username Attributes
-      description: List of Username attributes for the user pool
-      x-ui-yaml-editor: true
-      default: null
+      properties:
+        advanced_security_mode:
+          type: string
+          title: User Pool Add-Ons Advanced Security Mode
+          description: Advanced security mode for user pool add-ons. Allowed Values - OFF, AUDIT or ENFORCED
+          enum:
+            - "OFF"
+            - "AUDIT"
+            - "ENFORCED"
+          default: null
     username_configuration:
       type: object
       title: Username Configuration
       description: Username configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#username_configuration" target="_blank">documentation</a>
-      x-ui-yaml-editor: true
-      default: {}
+      properties:
+        case_sensitive:
+          type: boolean
+          title: Case Sensitive
+          description: Whether username case sensitivity will be applied for all users in the user pool through Cognito APIs
+          default: null
     verification_message_template:
       type: object
       title: Verification Message Template
       description: Verification message template settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#verification_message_template" target="_blank">documentation</a>
       x-ui-yaml-editor: true
-      default: {}
-    verification_message_template_default_email_option:
-      type: string
-      title: Verification Message Template Default Email Option
-      description: Default email option for verification message template
-      enum:
-        - CONFIRM_WITH_CODE
-        - CONFIRM_WITH_LINK
-      default: CONFIRM_WITH_CODE
-    verification_message_template_email_message_by_link:
-      type: string
-      title: Verification Message Template Email Message By Link
-      description: Email message by link for verification message template
-      x-ui-placeholder: "null"
-      pattern: ".*{##Click Here##}.*"
-      x-ui-error-message: "Value doesn't match '.*{##Click Here##}.*' pattern"
-    verification_message_template_email_subject_by_link:
-      type: string
-      title: Verification Message Template Email Subject By Link
-      description: Email subject by link for verification message template
-      x-ui-placeholder: "null"
+      default: null
 sample:
   version: "0.1"
   flavor: default_astuto
