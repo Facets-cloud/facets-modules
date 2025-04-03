@@ -121,7 +121,7 @@ spec:
       title: Client Explicit Auth Flows
       description: List of Explicit auth flows for the client. Allowed Values - ADMIN_NO_SRP_AUTH, CUSTOM_AUTH_FLOW_ONLY, USER_PASSWORD_AUTH
       x-ui-yaml-editor: true
-      x-ui-placeholder: ""
+      default: []
     client_generate_secret:
       type: boolean
       title: Client Generate Secret
@@ -209,8 +209,8 @@ spec:
        - INACTIVE
     device_configuration:
       type: object
-      title: Device Configuration. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cognito_user_pool#device-configuration" target="_blank">documentation</a>
-      description: Device configuration settings
+      title: Device Configuration.
+      description: Device configuration settings. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cognito_user_pool#device-configuration" target="_blank">documentation</a>
       x-ui-yaml-editor: true
       default: {}
     device_configuration_challenge_required_on_new_device:
