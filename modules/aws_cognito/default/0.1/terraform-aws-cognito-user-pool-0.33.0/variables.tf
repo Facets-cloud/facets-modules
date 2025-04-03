@@ -452,7 +452,7 @@ variable "clients" {
 
 variable "client_allowed_oauth_flows" {
   description = "The name of the application client"
-  type        = list(string)
+  type        = tuple(string)
   default     = []
 }
 
