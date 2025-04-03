@@ -19,5 +19,6 @@ locals {
     last_modified_date                     = module.aws-cognito.last_modified_date
     resource_servers_scope_identifiers     = module.aws-cognito.resource_servers_scope_identifiers
     secrets                                = ["client_secrets_map", "client_secrets"]
+    cognito_prefix_domain                  = lookup(local.spec, "domain", null) != null ? "${lookup(local.spec, "domain", null)}.auth.${var.cluster.awsRegion}.amazoncognito.com" : ""
   }
 }
