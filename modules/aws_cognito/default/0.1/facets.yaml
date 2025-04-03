@@ -205,8 +205,8 @@ spec:
       description: Deletion protection status
       x-ui-placeholder: "INACTIVE"
       enum:
-       - ACTIVE
-       - INACTIVE
+        - ACTIVE
+        - INACTIVE
     device_configuration:
       type: object
       title: Device Configuration.
@@ -249,8 +249,8 @@ spec:
           description: The email sending account.
           x-ui-placeholder: "COGNITO_DEFAULT"
           enum:
-          - COGNITO_DEFAULT
-          - DEVELOPER
+            - COGNITO_DEFAULT
+            - DEVELOPER
         reply_to_email_address:
           type: string
           title: Reply To Email Address
@@ -373,12 +373,12 @@ spec:
       description: MFA configuration settings
       x-ui-placeholder: "OFF"
       enum:
-      - "OFF"
-      - "ON"
+        - "OFF"
+        - "ON"
       default: "OFF"
     number_schemas:
       type: object
-      title: Number Schemas. 
+      title: Number Schemas.
       description: Number schemas for the user pool. Refer to the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool#schema" target="_blank">documentation</a>
       x-ui-yaml-editor: true
       default: []
@@ -574,12 +574,17 @@ spec:
       type: string
       title: Verification Message Template Default Email Option
       description: Default email option for verification message template
-      x-ui-placeholder: "null"
+      enum:
+        - CONFIRM_WITH_CODE
+        - CONFIRM_WITH_LINK
+      default: CONFIRM_WITH_CODE
     verification_message_template_email_message_by_link:
       type: string
       title: Verification Message Template Email Message By Link
       description: Email message by link for verification message template
       x-ui-placeholder: "null"
+      pattern: ".*{##Click Here##}.*"
+      x-ui-error-message: "Value doesn't match '.*{##Click Here##}.*' pattern"
     verification_message_template_email_subject_by_link:
       type: string
       title: Verification Message Template Email Subject By Link
