@@ -1,5 +1,5 @@
 module "name" {
-  count = length(lookup(local.spec, "user_pool_name", {})) > 0 ? 0 : 1
+  count = local.is_custom_user_pool_name ? 0 : 1
 
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
@@ -16,7 +16,7 @@ module "aws-cognito" {
   source = "./terraform-aws-cognito-user-pool-0.33.0"
 
   # Required
-  user_pool_name = lookup(local.spec, "user_pool_name", module.name[0].name)
+  user_pool_name = local.is_custom_user_pool_name ? lookup(local.spec, "user_pool_name", "") : module.name[0].name
 
   # Optional
   admin_create_user_config                                   = lookup(local.spec, "admin_create_user_config", {})
