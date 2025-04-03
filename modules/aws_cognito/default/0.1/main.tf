@@ -119,5 +119,5 @@ module "aws-cognito" {
   verification_message_template                              = lookup(local.spec, "verification_message_template", {})
   verification_message_template_default_email_option         = lookup(local.spec, "verification_message_template_default_email_option", null)
   verification_message_template_email_message_by_link        = lookup(local.spec, "verification_message_template_email_message_by_link", null)
-  verification_message_template_email_subject_by_link        = lookup(local.spec, "verification_message_template_email_subject_by_link", null)
+  verification_message_template_email_subject_by_link        =  lookup(local.spec, "verification_message_template_email_subject_by_link", null)
 }
