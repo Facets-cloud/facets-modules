@@ -23,7 +23,6 @@ spec:
           type: boolean
           title: Allow Admin Create User Only
           description: Set to True if only the administrator is allowed to create user profiles. Set to False if users can sign themselves up via an app.
-          default: true
         email_subject:
           type: string
           title: Email Subject
