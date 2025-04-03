@@ -1,0 +1,8 @@
+name: cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    attributes:
+    interfaces:
