@@ -9,10 +9,19 @@ spec:
   type: object
   description: Specification of the K8s resource intent
   properties:
+    enable_import:
+      type: boolean
+      title: Enable Import
+      description: Enable importing existing s3 resources to facets
+      default: false
     imports:
       type: object
       title: Imports
       description: Importing existing s3 resources to facets
+      x-ui-visible-if:
+        field:
+          name: spec.enable_import
+          values: [true]
       properties:
         s3_bucket:
           type: string
