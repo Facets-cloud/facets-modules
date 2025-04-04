@@ -58,7 +58,7 @@ with ThreadPoolExecutor() as executor:
                 if intent and flavor and version:
                     print(f"Zipping intent {intent} flavor {flavor} version {version}")
                     # Create the target zip file path
-                    zip_dir_path = os.path.join(zip_root_dir, intent, flavor, version)
+                    zip_dir_path = os.path.join(str(zip_root_dir), str(intent), str(flavor), str(version))
                     os.makedirs(zip_dir_path, exist_ok=True)
 
                     # Create zip file name
