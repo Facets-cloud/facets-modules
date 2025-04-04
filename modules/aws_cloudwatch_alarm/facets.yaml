@@ -9,161 +9,165 @@ spec:
   type: object
   properties:
     alarms:
-      patternProperties:
-      keyPattern: "^[a-zA-Z0-9_.-]{1,255}$"
       title: Alarms
-      description: Name of the Alarm object. This name must be unique within the AWS account
-      properties:
-        alarm_name:
-          type: string
-          title: Alarm Name
-          description: The name for the alarm. By default, the key name of this object will be used. This name must be unique within the AWS account.
-          minimum: 1
-          maximum: 255
-        alarm_description:
-          type: string
-          title: Alarm Description
-          description: The description for the alarm
-        actions_enabled:
-          type: boolean
-          title: Actions Enabled
-          description: Indicates whether or not actions should be executed when this alarm transitions to the ALARM state
-          default: true
-        alarm_actions:
-          type: object
-          title: Alarm Actions
-          description: The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Name (ARN)
-          x-ui-yaml-editor: true
-        ok_actions:
-          type: object
-          title: OK Actions
-          description: The list of actions to execute when this alarm transitions into an OK state from any other state. Each action is specified as an Amazon Resource Name (ARN).
-          x-ui-yaml-editor: true
-        insufficient_data_actions:
-          type: array
-          title: Insufficient Data Actions
-          description: The list of actions to execute when this alarm transitions into an INSUFFICIENT_DATA state from any other state. Each action is specified as an Amazon Resource Name (ARN).
-          x-ui-yaml-editor: true
-        comparison_operator:
-          type: string
-          title: Comparison Operator
-          description: The arithmetic operation to use when comparing the specified Statistic and Threshold
-          enum:
-            - GreaterThanOrEqualToThreshold
-            - GreaterThanThreshold
-            - LessThanThreshold
-            - LessThanOrEqualToThreshold
-        evaluation_periods:
-          type: integer
-          title: Evaluation Periods
-          description: The number of periods over which data is compared to the specified threshold
-        threshold:
-          type: integer
-          title: Threshold
-          description: The value against which the specified statistic is compared
-        unit:
-          type: string
-          title: Unit
-          description: The unit of the metric associated with the alarm. Specify this only if you are creating an alarm based on a single metric. Do not specify this if you are specifying a Metrics array
-          enum:
-            - None
-            - Seconds
-            - Microseconds
-            - Milliseconds
-            - Bytes
-            - Kilobytes
-            - Megabytes
-            - Gigabytes
-            - Terabytes
-            - Bits
-            - Kilobits
-            - Megabits
-            - Gigabits
-            - Terabits
-            - Percent
-            - Count
-            - Bytes/Second
-            - Kilobytes/Second
-            - Megabytes/Second
-            - Gigabytes/Second
-            - Terabytes/Second
-            - Bits/Second
-            - Kilobits/Second
-            - Megabits/Second
-            - Gigabits/Second
-            - Terabits/Second
-            - Count/Second
-        datapoints_to_alarm:
-          type: integer
-          title: Datapoints to Alarm
-          description: The number of datapoints that must be breaching to trigger the alarm
-        treat_missing_data:
-          type: string
-          title: Treat Missing Data
-          description: Sets how this alarm is to handle missing data points
-          enum:
-            - breaching
-            - notBreaching
-            - ignore
-            - missing
-          default: missing
-        evaluate_low_sample_count_percentiles:
-          type: string
-          title: Evaluate Low Sample Count Percentiles
-          description: Used only for alarms based on percentiles.
-            - ignore
-            - evaluate
-          default: evaluate
-        metric_name:
-          type: string
-          title: Metric Name
-          description: The name for the alarm's associated metric. See docs for <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html" target="_blank">supported metrics</a>
-        namespace:
-          type: string
-          title: Namespace
-          description: The namespace for the alarm's associated metric. See docs for the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/aws-namespaces.html" target="_blank">list of namespaces</a>
-        period:
-          type: integer
-          title: Period
-          description: The period in seconds over which the specified statistic is applied
-          minimum: 10
-        statistic:
-          type: string
-          title: Statistic
-          description: The statistic to apply to the alarm's associated metric
-          enum:
-          - SampleCount
-          - Average
-          - Sum
-          - Minimum
-          - Maximum
-        extended_statistic:
-          type: string
-          title: Extended Statistic
-          description: The percentile statistic for the metric associated with the alarm. Specify a value between p0.0 and p100
-          pattern: "^p(?:100(?:\\.0+)?|(?:\\d{1,2})(?:\\.\\d+)?|0(?:\\.0+)?)$"
-        dimensions:
-          type: object
-          title: Dimensions
-          description: The dimensions for the alarm's associated metric. For the list of available dimensions see the AWS documentation <a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html" target="_blank">here</a>
-          patternProperties:
-            keyPattern: "^[a-zA-Z0-9_.-]{1,255}$"
+      description: Map of Alarms
+      type: object
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]{1,255}$"
+        title: Alarms
+        description: Name of the Alarm object.
+        properties:
+          alarm_name:
             type: string
-        metric_query:
-          type: object
-          title: Metric Query
-          description: Enables you to create an alarm based on a metric math expression. You may specify at most 20. See docs for the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm#nested-fields" target="_blank">nested fields</a>
-        threshold_metric_id:
-          type: string
-          title: Threshold Metric ID
-          description: The ID of the threshold metric. In an alarm based on an anomaly detection model, this is the ID of the ANOMALY_DETECTION_BAND function used as the threshold for the alarm.
-        tags:
-          type: object
-          title: Tags
-          description: A map of tags to assign to the resource
-      required:
-        - comparison_operator
-        - evaluation_periods
+            title: Alarm Name
+            description: The name for the alarm. This name must be unique within the AWS account.
+            minimum: 1
+            maximum: 255
+          alarm_description:
+            type: string
+            title: Alarm Description
+            description: The description for the alarm
+          actions_enabled:
+            type: boolean
+            title: Actions Enabled
+            description: Indicates whether or not actions should be executed when this alarm transitions to the ALARM state
+            default: true
+          alarm_actions:
+            type: object
+            title: Alarm Actions
+            description: The list of actions to execute when this alarm transitions into an ALARM state from any other state. Each action is specified as an Amazon Resource Name (ARN)
+            x-ui-yaml-editor: true
+          ok_actions:
+            type: object
+            title: OK Actions
+            description: The list of actions to execute when this alarm transitions into an OK state from any other state. Each action is specified as an Amazon Resource Name (ARN).
+            x-ui-yaml-editor: true
+          insufficient_data_actions:
+            type: object
+            title: Insufficient Data Actions
+            description: The list of actions to execute when this alarm transitions into an INSUFFICIENT_DATA state from any other state. Each action is specified as an Amazon Resource Name (ARN).
+            x-ui-yaml-editor: true
+          comparison_operator:
+            type: string
+            title: Comparison Operator
+            description: The arithmetic operation to use when comparing the specified Statistic and Threshold
+            enum:
+              - GreaterThanOrEqualToThreshold
+              - GreaterThanThreshold
+              - LessThanThreshold
+              - LessThanOrEqualToThreshold
+          evaluation_periods:
+            type: integer
+            title: Evaluation Periods
+            description: The number of periods over which data is compared to the specified threshold
+          threshold:
+            type: integer
+            title: Threshold
+            description: The value against which the specified statistic is compared
+          unit:
+            type: string
+            title: Unit
+            description: The unit of the metric associated with the alarm. Specify this only if you are creating an alarm based on a single metric. Do not specify this if you are specifying a Metrics array
+            enum:
+              - None
+              - Seconds
+              - Microseconds
+              - Milliseconds
+              - Bytes
+              - Kilobytes
+              - Megabytes
+              - Gigabytes
+              - Terabytes
+              - Bits
+              - Kilobits
+              - Megabits
+              - Gigabits
+              - Terabits
+              - Percent
+              - Count
+              - Bytes/Second
+              - Kilobytes/Second
+              - Megabytes/Second
+              - Gigabytes/Second
+              - Terabytes/Second
+              - Bits/Second
+              - Kilobits/Second
+              - Megabits/Second
+              - Gigabits/Second
+              - Terabits/Second
+              - Count/Second
+          datapoints_to_alarm:
+            type: integer
+            title: Datapoints to Alarm
+            description: The number of datapoints that must be breaching to trigger the alarm
+          treat_missing_data:
+            type: string
+            title: Treat Missing Data
+            description: Sets how this alarm is to handle missing data points
+            enum:
+              - breaching
+              - notBreaching
+              - ignore
+              - missing
+            default: missing
+          evaluate_low_sample_count_percentiles:
+            type: string
+            title: Evaluate Low Sample Count Percentiles
+            description: Used only for alarms based on percentiles.
+              - ignore
+              - evaluate
+            default: evaluate
+          metric_name:
+            type: string
+            title: Metric Name
+            description: The name for the alarm's associated metric. See docs for <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html" target="_blank">supported metrics</a>
+          namespace:
+            type: string
+            title: Namespace
+            description: The namespace for the alarm's associated metric. See docs for the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/aws-namespaces.html" target="_blank">list of namespaces</a>
+          period:
+            type: integer
+            title: Period
+            description: The period in seconds over which the specified statistic is applied
+            minimum: 10
+          statistic:
+            type: string
+            title: Statistic
+            description: The statistic to apply to the alarm's associated metric
+            enum:
+            - SampleCount
+            - Average
+            - Sum
+            - Minimum
+            - Maximum
+          extended_statistic:
+            type: string
+            title: Extended Statistic
+            description: The percentile statistic for the metric associated with the alarm. Specify a value between p0.0 and p100
+            pattern: "^p(?:100(?:\\.0+)?|(?:\\d{1,2})(?:\\.\\d+)?|0(?:\\.0+)?)$"
+          dimensions:
+            type: object
+            title: Dimensions
+            description: The dimensions for the alarm's associated metric. For the list of available dimensions see the AWS documentation <a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/CW_Support_For_AWS.html" target="_blank">here</a>
+            x-ui-yaml-editor: true
+          metric_query:
+            type: object
+            title: Metric Query
+            description: Enables you to create an alarm based on a metric math expression. You may specify at most 20. See docs for the <a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm#nested-fields" target="_blank">nested fields</a>
+            x-ui-yaml-editor: true
+          threshold_metric_id:
+            type: string
+            title: Threshold Metric ID
+            description: The ID of the threshold metric. In an alarm based on an anomaly detection model, this is the ID of the ANOMALY_DETECTION_BAND function used as the threshold for the alarm.
+          tags:
+            type: object
+            title: Tags
+            description: A map of tags to assign to the resource
+            x-ui-yaml-editor: true
+        required:
+          - alarm_name
+          - comparison_operator
+          - evaluation_periods
 sample:
   flavor: astuto-metric_alarm
   kind: aws_cloudwatch_alarm
