@@ -30,3 +30,6 @@ sample:
   spec:
     cluster:
       lifecycle: 'spot'
+outputs:
+  default:
+    type: "@outputs/ecs_cluster"
