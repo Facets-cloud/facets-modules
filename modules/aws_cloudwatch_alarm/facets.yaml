@@ -1,3 +1,8 @@
+intentDetails:
+  type: default
+  description: Adds Metric Alarm module of intent AWS CloudWatch Alarm
+  displayName: AWS CloudWatch Alarm
+  iconUrl: https://icon.icepanel.io/AWS/svg/Management-Governance/CloudWatch.svg
 intent: aws_cloudwatch_alarm
 flavor: astuto-metric_alarm
 version: "0.1"
@@ -116,7 +121,7 @@ spec:
             description: Used only for alarms based on percentiles.
               - ignore
               - evaluate
-            default: evaluate
+            default: null
           metric_name:
             type: string
             title: Metric Name
