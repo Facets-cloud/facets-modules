@@ -279,6 +279,12 @@ spec:
         field: spec.create_access_policy
         values: [true]
       default: []
+    cluster_config:
+      type: object
+      title: Cluster Config
+      description: Configuration block for the cluster of the domain.
+      x-ui-yaml-editor: true
+      default: {}
     advanced_options:
       type: object
       title: Advanced Options
