@@ -6,6 +6,6 @@ locals {
     "gcp_sa_email"     = local.gcp_sa_email
     "gcp_sa_fqn"       = local.gcp_sa_fqn
     "gcp_sa_name"      = local.k8s_sa_gcp_derived_name
-    "gcp_sa_id"        = local.gcp_given_name
+    "gcp_sa_id"        = local.gcp_sa_id
   }
 }

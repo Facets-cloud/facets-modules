@@ -84,11 +84,10 @@ spec:
 
 | Name                             | Description                           |
 | -------------------------------- | ------------------------------------- |
-| gcp\_service\_account            | GCP service account.                  |
-| gcp\_service\_account\_email     | Email address of GCP service account. |
-| gcp\_service\_account\_fqn       | FQN of GCP service account.           |
-| gcp\_service\_account\_name      | Name of GCP service account.          |
-| k8s\_service\_account\_name      | Name of k8s service account.          |
-| k8s\_service\_account\_namespace | Namespace of k8s service account.     |
+| gcp\_sa\_email     | Email address of GCP service account. |
+| gcp\_sa\_fqn       | FQN of GCP service account.           |
+| gcp\_sa\_name      | Name of GCP service account.          |
+| k8s\_sa\_name      | Name of k8s service account.          |
+| k8s\_sa\_namespace | Namespace of k8s service account.     |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

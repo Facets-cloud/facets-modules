@@ -1,3 +1,14 @@
+module "unique_name" {
+  count           = local.gcp_sa_name == "" || local.gcp_sa_name == null ? 1 : 0
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
+  environment     = var.environment
+  limit           = 30
+  resource_name   = local.name
+  resource_type   = "google_workload_identity"
+  is_k8s          = false
+  globally_unique = true
+}
+
 data "google_service_account" "cluster_service_account" {
   count = local.use_existing_gcp_sa ? 1 : 0
 
@@ -50,7 +61,7 @@ resource "null_resource" "annotate-sa" {
   }
 
   provisioner "local-exec" {
-    when = "create"
+    when = create
     environment = {
       SERVER = sensitive(var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.auth.host)
       CA     = sensitive(base64encode(var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.auth.cluster_ca_certificate))

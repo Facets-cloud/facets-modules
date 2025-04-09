@@ -1,6 +1,4 @@
 locals {
-  # GCP service account ids must be <= 30 chars matching regex ^[a-z](?:[-a-z0-9]{4,28}[a-z0-9])$
-  # KSAs do not have this naming restriction.
   spec                            = var.instance.spec
   name                            = lookup(var.instance.spec, "name", null)
   gcp_sa_name                     = lookup(var.instance.spec, "gcp_sa_name", null)
@@ -15,9 +13,10 @@ locals {
   roles_map                       = lookup(var.instance.spec, "roles", {})
   roles                           = toset([for key, value in local.roles_map : lookup(value, "role", null)])
 
-  gcp_given_name          = local.gcp_sa_name != null ? local.gcp_sa_name : trimsuffix(substr(local.name, 0, 30), "-")
+  gcp_given_name          = local.gcp_sa_name == null || local.gcp_sa_name == "" ? module.unique_name[0].name : local.gcp_sa_name
   gcp_sa_email            = local.use_existing_gcp_sa ? data.google_service_account.cluster_service_account[0].email : google_service_account.cluster_service_account[0].email
   gcp_sa_fqn              = "serviceAccount:${local.gcp_sa_email}"
+  gcp_sa_id               = local.use_existing_gcp_sa ? data.google_service_account.cluster_service_account[0].account_id : google_service_account.cluster_service_account[0].account_id
   k8s_given_name          = local.k8s_sa_name != null ? local.k8s_sa_name : local.name
   output_k8s_name         = local.use_existing_k8s_sa ? local.k8s_given_name : kubernetes_service_account.main[0].metadata[0].name
   output_k8s_namespace    = local.use_existing_k8s_sa ? local.namespace : kubernetes_service_account.main[0].metadata[0].namespace

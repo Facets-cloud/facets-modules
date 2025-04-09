@@ -111,10 +111,8 @@ sample:
   disabled: true
   spec:
     name: petclinic
-    gcp_sa_name: petclinic
     use_existing_gcp_sa: false
     gcp_sa_description: GCP Service Account for petclinic application
-    k8s_sa_name: petclinic-sa
     use_existing_k8s_sa: false
     namespace: default
     roles:
