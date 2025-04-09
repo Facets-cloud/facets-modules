@@ -6,21 +6,18 @@ out:
   properties:
     interfaces: null
     attributes:
-      k8s_service_account_name:
+      k8s_sa_name:
         type: string
         required: true
-      k8s_service_account_namespace:
+      k8s_sa_namespace:
         type: string
         required: true
-      gcp_service_account_name:
+      gcp_sa_name:
         type: string
         required: true
-      gcp_service_account_email:
+      gcp_sa_email:
         type: string
         required: true
-      gcp_service_account_fqn:
+      gcp_sa_fqn:
         type: string
-        required: true
-      gcp_service_account:
-        type: object
         required: true
