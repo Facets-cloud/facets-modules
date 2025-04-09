@@ -21,3 +21,6 @@ out:
       gcp_sa_fqn:
         type: string
         required: true
+      gcp_sa_id:
+        type: string
+        required: true

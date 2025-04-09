@@ -37,6 +37,7 @@ variable "inputs" {
           gcp_cloud = object({
             project_id = string
           })
+          registry_secret_objects = any
         })
       })
     })
