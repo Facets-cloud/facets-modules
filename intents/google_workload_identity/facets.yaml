@@ -1,0 +1,7 @@
+name: google_workload_identity
+type: IAM
+displayName: Google Workload Identity
+description: Workload Identity is the recommended way to access GCP services from Kubernetes. [Read more] (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+outputs:
+  default:
+    type: "@outputs/google_workload_identity"
