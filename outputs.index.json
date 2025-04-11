@@ -220,13 +220,8 @@
     "relativePath": "./outputs/gcp_vpc/"
   },
   {
-    "name": "dax_cluster",
+    "name": "cloud_account",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/dax_cluster/"
-  },
-  {
-    "name": "kms",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/kms/"
+    "relativePath": "./outputs/cloud_account/"
   }
 ]
