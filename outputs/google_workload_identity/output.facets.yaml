@@ -1,0 +1,26 @@
+name: google_workload_identity
+out:
+  type: object
+  title: Google Workload Identity
+  description: Workload Identity is the recommended way to access GCP services from Kubernetes. [Read more] (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+  properties:
+    interfaces: null
+    attributes:
+      k8s_sa_name:
+        type: string
+        required: true
+      k8s_sa_namespace:
+        type: string
+        required: true
+      gcp_sa_name:
+        type: string
+        required: true
+      gcp_sa_email:
+        type: string
+        required: true
+      gcp_sa_fqn:
+        type: string
+        required: true
+      gcp_sa_id:
+        type: string
+        required: true
