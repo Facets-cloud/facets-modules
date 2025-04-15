@@ -284,7 +284,7 @@ spec:
                 values: [true]
           required: ["instance_type"]
           x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
-        x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
+      x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
