@@ -593,7 +593,7 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/google_workload_identity/default/0.1/"
+    "relativePath": "./modules/google_workload_identity/default/1.0/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
