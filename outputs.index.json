@@ -230,6 +230,7 @@
     "relativePath": "./outputs/kms/"
   },
   {
+    "name": "google_workload_identity",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/google_workload_identity/"
   }
