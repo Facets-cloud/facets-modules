@@ -1,5 +1,6 @@
 intent: network
 flavor: gcp_vpc
+alias-flavors: [ "default" ]
 version: "0.1"
 description: Adds network - gcp vpc flavor
 clouds:
@@ -8,6 +9,171 @@ spec:
   title: network
   description: Specification of the network for gcp vpc flavor
   type: object
+  properties:
+    choose_vpc_type:
+      title: Choose VPC Type
+      description: Choose the type of VPC
+      type: radio
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      enum: [{ label: Create New VPC, value: create_new_vpc },
+              { label: Use Existing VPC, value: use_existing_vpc },
+              { label: Shared VPC, value: shared_vpc }]
+      default: create_new_vpc
+    azs:
+      title: Availability Zones
+      description: Availability zones for the vpc
+      type: array
+      x-ui-placeholder: e.g. asia-southeast1-a asia-southeast1-b
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-fetch-az: true
+    vpc_cidr:
+      title: VPC CIDR
+      description: CIDR block for the vpc
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: ^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    vnet_name:
+      title: Existing VPC Name
+      description: To setup network components in an existing vpc
+      type: string
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["use_existing_vpc"]
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    host_project_id:
+      title: Host Project ID
+      description: Unique identifier for the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_pods_secondary_range_name:
+      title: Host Project Pods Secondary Range Name
+      description: Name of the secondary range for pods in the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_pods_secondary_ip_range:
+      title: Host Project Pods Secondary IP Range
+      description: Name of the secondary range for pods in the host project's VPC
+      type: string
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: ^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_services_secondary_range_name:
+      title: Host Project Services Secondary Range Name
+      description: Name of the secondary range for services in the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_services_secondary_ip_range:
+      title: Host Project Services Secondary IP Range
+      description: CIDR block for the secondary IP range of services in the host project's VPC
+      type: string
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: ^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_allocatable_ip_range:
+      title: Host Project Allocatable IP Range 
+      description: Range of IPs allocatable within the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_subnet_id:
+      title: Host Project Subnet ID
+      description: Identifier for the host project's subnet in the VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_subnet_name:
+      title: Host Project Subnet Name
+      description: Name of the host project's subnet in the VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_subnet_ip_range:
+      title: Host Project Subnet IP Range
+      description: CIDR block for the host project's subnet IP range
+      type: string
+      x-ui-placeholder: e.g.10.45.0.0/16
+      pattern: ^(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_vpc_id:
+      title: Host Project VPC ID
+      description: Project VPC ID for the vpc
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_vpc_name:
+      title: Host Project VPC Name
+      description: Name of the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_google_service_id:
+      title: Host Project Google Service ID
+      description: Identifier for the Google service associated with the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+    host_project_google_service_name:
+      title: Host Project Google Service Name
+      description: Name of the Google service associated with the host project's VPC
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: ["shared_vpc"]
+  required: [ vnet_name, host_project_id, host_project_pods_secondary_range_name, host_project_pods_secondary_ip_range, host_project_services_secondary_range_name, host_project_services_secondary_ip_range, host_project_allocatable_ip_range,  host_project_subnet_id, host_project_subnet_name, host_project_subnet_ip_range, host_project_vpc_id, host_project_vpc_name, host_project_google_service_id, host_project_google_service_name, azs, vpc_cidr ]
+  x-ui-order: [ choose_vpc_type, vnet_name, host_project_id, host_project_pods_secondary_range_name, host_project_pods_secondary_ip_range, host_project_services_secondary_range_name, host_project_services_secondary_ip_range, host_project_allocatable_ip_range,  host_project_subnet_id, host_project_subnet_name, host_project_subnet_ip_range, host_project_vpc_id, host_project_vpc_name, host_project_google_service_id, host_project_google_service_name, azs, vpc_cidr ]
 sample:
   kind: network
   flavor: gcp_vpc
