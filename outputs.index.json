@@ -220,18 +220,23 @@
     "relativePath": "./outputs/gcp_vpc/"
   },
   {
+    "name": "cloud_account",
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./outputs/cloud_account/"
+  },
+  {
     "name": "dax_cluster",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./outputs/dax_cluster/"
-  },
-  {
-    "name": "kms",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/kms/"
-  },
-  {
-    "name": "google_workload_identity",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./outputs/google_workload_identity/"
+  },	
+  {	
+    "name": "kms",	
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",	
+    "relativePath": "./outputs/kms/"	
+  },	
+  {	
+    "name": "google_workload_identity",	
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",	
+    "relativePath": "./outputs/google_workload_identity/"	
   }
 ]
