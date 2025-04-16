@@ -656,7 +656,7 @@
     "flavor": "default",
     "version": "0.1",
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/google_workload_identity/default/1.0/"
+    "relativePath": "./modules/mongodb_auth_operator/default/1.0/"
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
@@ -697,5 +697,41 @@
     "clouds": [
       "azure"
     ]
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres_user/default/0.3/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ecs_service/default/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ingress/aws_ecs_alb/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/image_pull_secret_injector/default/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/kms/default/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/service/knative_service/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/elasticsearch/opensearch/0.2/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/google_workload_identity/default/1.0/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres/external/0.1/"
   }
 ]
