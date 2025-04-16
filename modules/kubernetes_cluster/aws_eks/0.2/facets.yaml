@@ -78,6 +78,22 @@ spec:
       description: Specifications of nodepools to be created
       type: object
       properties:
+        iam_role_additional_policies:
+          title: IAM Role Additional Policies
+          description: Additional IAM policies to be attached to the node IAM role
+          type: object
+          patternProperties:
+            type: string
+            title: Policy ARN
+            keyPattern: "^[a-zA-Z0-9-]+$"
+            properties:
+              policy_arn:
+                title: Policy ARN
+                description: ARN of the IAM policy to be attached to the node IAM role
+                type: string
+                pattern: "^arn:(aws|aws-cn|aws-us-gov):iam::[0-9]{12}:policy/.*"
+                x-ui-error-message: Invalid ARN format. Make sure valid space-separated ARNs are given
+          x-ui-overrides-only: true
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
@@ -268,6 +284,7 @@ spec:
                 values: [true]
           required: ["instance_type"]
           x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+      x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
