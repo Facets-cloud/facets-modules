@@ -565,141 +565,6 @@
   },
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/artifactories/default/0.1/",
-    "clouds": [
-      "gcp",
-      "kubernetes",
-      "azure",
-      "aws"
-    ]
-  },
-  {
-    "intent": "postgres_user",
-    "flavor": "default",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/postgres_user/default/0.2/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "mysql_user",
-    "flavor": "default",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mysql_user/default/0.2/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "kafka_user",
-    "flavor": "default",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/kafka_user/default/0.2/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "mongo_user",
-    "flavor": "default",
-    "version": "0.2",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mongo_user/default/0.2/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "database_operator",
-    "flavor": "default",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/database_operator/default/0.1/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "crossplane",
-    "flavor": "default",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/crossplane/default/0.1/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "mongodb_auth_operator",
-    "flavor": "default",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mongodb_auth_operator/default/1.0/"
-  },
-  {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/mongodb_auth_operator/default/0.1/",
-    "clouds": [
-      "aws",
-      "gcp",
-      "azure",
-      "kubernetes"
-    ]
-  },
-  {
-    "intent": "cloud_account",
-    "flavor": "aws",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/cloud_account/aws/0.1/",
-    "clouds": [
-      "aws"
-    ]
-  },
-  {
-    "intent": "cloud_account",
-    "flavor": "gcp",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/cloud_account/gcp/0.1/",
-    "clouds": [
-      "gcp"
-    ]
-  },
-  {
-    "intent": "cloud_account",
-    "flavor": "azure",
-    "version": "0.1",
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
-    "relativePath": "./modules/cloud_account/azure/0.1/",
-    "clouds": [
-      "azure"
-    ]
-  },
-  {
-    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/postgres_user/default/0.3/"
   },
   {
@@ -733,5 +598,17 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/postgres/external/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cloud_account/aws/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cloud_account/gcp/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/cloud_account/azure/0.1/"
   }
 ]
