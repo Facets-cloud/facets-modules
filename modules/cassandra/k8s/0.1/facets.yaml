@@ -110,7 +110,6 @@ spec:
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/cassandra/cassandra.schema.json
   flavor: k8s
-  version: '0.1'
   kind: cassandra
   version: "0.1"
   metadata: {}
