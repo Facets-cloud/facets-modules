@@ -1,0 +1,23 @@
+clouds:
+- aws
+description: Dynamodb
+flavor: test-dynamodb
+imports:
+- name: dynamodb_table
+  required: true
+  resource_address: module.dynamodb.aws_dynamodb_table.this[0]
+intent: dynamodb
+outputs:
+  default:
+    type: '@outputs/dynamodb'
+sample:
+  disabled: true
+  flavor: test-dynamodb
+  kind: dynamodb
+  spec: null
+  version: '1.0'
+spec:
+  description: Dynamodb
+  title: Dynamodb
+  type: object
+version: '1.0'

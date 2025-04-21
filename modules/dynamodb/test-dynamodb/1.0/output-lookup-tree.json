@@ -1,0 +1,19 @@
+{
+    "out": {
+        "attributes": {
+            "table_name": {
+                "type": "string"
+            },
+            "table_arn": {
+                "type": "string"
+            },
+            "read_only_policy": {
+                "type": "string"
+            },
+            "read_write_policy": {
+                "type": "string"
+            }
+        },
+        "interfaces": {}
+    }
+}
