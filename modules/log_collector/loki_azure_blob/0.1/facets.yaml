@@ -1,5 +1,5 @@
 intent: log_collector
-flavor: loki_blob
+flavor: loki_azure_blob
 version: '0.1'
 description: Adds log_collector - loki_azure_blob flavor
 clouds:
