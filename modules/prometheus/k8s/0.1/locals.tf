@@ -97,14 +97,14 @@ locals {
     for label in values(lookup(local.spec, "node_selector", {})) :
     label.key => label.value
   }
-  namespace    = lookup(local.metadata, "namespace", var.environment.namespace)
+  namespace = lookup(local.metadata, "namespace", var.environment.namespace)
 
   # Default values for the helm chart
   default_values = {
-    fullnameOverride = module.name.name
+    fullnameOverride                   = module.name.name
     cleanPrometheusOperatorObjectNames = true
     crds = {
-      enabled = lookup(local.prometheusOperatorSpec, "enable_crds", true)
+      enabled = lookup(local.spec, "enable_crds", true)
       upgradeJob = {
         enabled = true
       }
@@ -131,8 +131,8 @@ locals {
         }
       }
       # priorityClassName = "facets-critical"
-      nodeSelector      = local.nodeSelector
-      tolerations       = local.tolerations
+      nodeSelector = local.nodeSelector
+      tolerations  = local.tolerations
     }
     prometheus = {
       enabled = lookup(local.prometheusSpec, "enabled", true)
@@ -197,7 +197,7 @@ locals {
             ]
           }
         ]
-        walCompression    = true
+        walCompression = true
         # priorityClassName = "facets-critical"
       }
     }
@@ -217,8 +217,8 @@ locals {
             memory = lookup(local.alertmanagerSpec.size.resources.limits, "memory", "2Gi")
           }
         }
-        nodeSelector      = local.nodeSelector
-        tolerations       = local.tolerations
+        nodeSelector = local.nodeSelector
+        tolerations  = local.tolerations
         # priorityClassName = "facets-critical"
       }
       config = {
@@ -240,6 +240,13 @@ locals {
               {
                 url           = "http://alertmanager-webhook.default/alerts"
                 send_resolved = true
+              },
+              {
+                url           = "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.environment.cloud_tags.facetsclusterid}/alerts"
+                send_resolved = true
+                http_config = {
+                  bearer_token = var.cc_metadata.cc_auth_token
+                }
               }
             ]
           }
@@ -295,27 +302,27 @@ locals {
           "cluster-autoscaler.kubernetes.io/safe-to-evict" = "true"
         }
         # priorityClassName = "facets-critical"
-        nodeSelector      = local.nodeSelector
-        tolerations       = local.tolerations
+        nodeSelector = local.nodeSelector
+        tolerations  = local.tolerations
       }
       # priorityClassName = "facets-critical"
     }
     "kube-state-metrics" = {
       enabled = lookup(local.kubeStateMetricsSpec, "enabled", true)
-      collectors = [
+      collectors = distinct(concat([
         "certificatesigningrequests", "configmaps", "cronjobs", "daemonsets", "deployments",
         "endpoints", "horizontalpodautoscalers", "verticalpodautoscalers", "ingresses", "jobs",
         "leases", "limitranges", "mutatingwebhookconfigurations", "namespaces", "networkpolicies",
         "nodes", "persistentvolumeclaims", "persistentvolumes", "poddisruptionbudgets", "pods",
         "replicasets", "replicationcontrollers", "resourcequotas", "secrets", "services",
         "statefulsets", "storageclasses", "validatingwebhookconfigurations", "volumeattachments"
-      ]
+      ], lookup(local.kubeStateMetricsSpec, "collectors", [])))
       extraArgs = [
         "--metric-labels-allowlist=pods=[*],nodes=[*],ingresses=[*]"
       ]
       # priorityClassName = "facets-critical"
-      nodeSelector      = local.nodeSelector
-      tolerations       = local.tolerations
+      nodeSelector = local.nodeSelector
+      tolerations  = local.tolerations
     }
     "prometheus-node-exporter" = {
       nodeSelector = {
@@ -340,7 +347,7 @@ locals {
         filters = [
           {
             name   = "tag:facetsclustername"
-            values = [var.environment.name]
+            values = [var.environment.cloud_tags.facetsclustername]
           },
           {
             name   = "tag:facetsresourcetype"
