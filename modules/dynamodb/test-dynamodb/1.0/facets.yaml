@@ -14,10 +14,46 @@ sample:
   disabled: true
   flavor: test-dynamodb
   kind: dynamodb
-  spec: null
-  version: '1.0'
+  spec:
+    attributes:
+      key1:
+        name: LockID
+        type: S
+    hash_key: LockID
+  version: 1.0-local-shrinidhiprabhu
 spec:
-  description: Dynamodb
-  title: Dynamodb
+  description: Specifications for DynamoDB Table
+  properties:
+    attributes:
+      additionalProperties:
+        properties:
+          name:
+            description: The name of the attribute
+            minLength: 1
+            title: Attribute Name
+            type: string
+          type:
+            description: The type of the attribute (S for string, N for number, B
+              for binary)
+            enum:
+            - S
+            - N
+            - B
+            title: Attribute Type
+            type: string
+        required:
+        - name
+        - type
+        type: object
+      description: The attributes of the DynamoDB table
+      title: Attributes
+      type: object
+    hash_key:
+      description: The attribute to use as the hash (partition) key
+      minLength: 1
+      title: Hash Key
+      type: string
+      x-ui-placeholder: Enter the hash key attribute name
+  title: DynamoDB Table Spec
   type: object
-version: '1.0'
+version: 1.0-local-shrinidhiprabhu

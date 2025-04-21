@@ -1,0 +1,26 @@
+clouds:
+- aws
+description: Storage for AWS
+flavor: import-s3
+imports:
+- name: s3_bucket
+  required: true
+  resource_address: aws_s3_bucket.bucket
+- name: s3_bucket_policy
+  required: false
+  resource_address: aws_s3_bucket_policy.external[1]
+intent: s3
+outputs:
+  s3_outputs:
+    type: '@outputs/s3'
+sample:
+  disabled: true
+  flavor: import-s3
+  kind: s3
+  spec: null
+  version: '1.0'
+spec:
+  description: Storage for AWS
+  title: s3
+  type: object
+version: '1.0'
