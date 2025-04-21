@@ -1,18 +1,3 @@
-name: prometheus
-description: Deploys Prometheus monitoring stack on Kubernetes
-provider: kubernetes
-type: monitoring
-version: "0.1"
-
-intent: monitoring
-flavor: k8s
-
-clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
-
 inputs:
   kubernetes_details:
     optional: false
@@ -20,16 +5,36 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
-
+intent: prometheus
+version: "0.1"
+flavor: k8s
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: Prometheus Stack
   type: object
   properties:
+    metadata:
+        type: object
+        title: Metadata
+        description: Metadata for the Prometheus stack
+        properties:
+            namespace:
+            type: string
+            title: Namespace
+            description: Kubernetes namespace for the Prometheus stack
+            default: "default"
+            pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+            x-ui-placeholder: "e.g., monitoring, prometheus, default"
     values:
       type: object
       title: Custom Values
-      description: Additional values to pass to the Prometheus helm chart
-      default: {}
+      description: Additional values to pass to the Prometheus helm chart in YAML format
+      default: "{}"
+      x-ui-yaml-editor: true
 
     retention:
       type: string
@@ -62,35 +67,17 @@ spec:
             - value
 
     tolerations:
-      type: array
+      type: object
       title: Tolerations
-      description: Pod tolerations for Prometheus components
-      items:
-        type: object
-        properties:
-          key:
-            type: string
-            title: Key
-            description: The taint key to tolerate
-          operator:
-            type: string
-            title: Operator
-            description: Operator for the toleration
-            enum:
-              - Equal
-              - Exists
-          value:
-            type: string
-            title: Value
-            description: Value for the toleration
-          effect:
-            type: string
-            title: Effect
-            description: The taint effect to tolerate
-            enum:
-              - NoSchedule
-              - PreferNoSchedule
-              - NoExecute
+      description: Pod tolerations for Prometheus components in YAML format
+      default: "[]"
+      x-ui-yaml-editor: true
+
+    enable_crds:
+      type: boolean
+      title: Install CRDs
+      description: Enable/disable CRD installation
+      default: true
 
     operator:
       type: object
@@ -101,12 +88,10 @@ spec:
           title: Enable Operator
           description: Enable/disable Prometheus operator
           default: true
-        enable_crds:
-          type: boolean
-          title: Install CRDs
-          description: Enable/disable CRD installation
-          default: true
         size:
+          x-ui-visible-if:
+            field: spec.operator.enabled
+            values: [ true ]
           type: object
           title: Operator Size
           properties:
@@ -139,6 +124,9 @@ spec:
     prometheus:
       type: object
       title: Prometheus Server
+      x-ui-visible-if:
+        field: spec.enable_crds
+        values: [ true ]
       properties:
         enabled:
           type: boolean
@@ -148,6 +136,9 @@ spec:
         size:
           type: object
           title: Server Size
+          x-ui-visible-if:
+            field: spec.prometheus.enabled
+            values: [ true ]
           properties:
             volume:
               type: string
@@ -179,37 +170,180 @@ spec:
                       pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
                       default: "4Gi"
 
-    # Similar blocks for grafana, alertmanager, and kube-state-metrics...
+    grafana:
+      type: object
+      title: Grafana
+      x-ui-visible-if:
+        field: spec.enable_crds
+        values: [ true ]
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Grafana
+          description: Enable/disable Grafana
+          default: true
+        size:
+          type: object
+          title: Grafana Size
+          x-ui-visible-if:
+            field: spec.grafana.enabled
+            values: [ true ]
+          properties:
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
 
-  required:
-    - operator
-    - prometheus
+    alertmanager:
+      type: object
+      title: Alertmanager
+      x-ui-visible-if:
+        field: spec.enable_crds
+        values: [ true ]
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Alertmanager
+          description: Enable/disable Alertmanager
+          default: true
+        size:
+          type: object
+          title: Alertmanager Size
+          x-ui-visible-if:
+            field: spec.alertmanager.enabled
+            values: [ true ]
+          properties:
+            volume:
+              type: string
+              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
+              default: "10Gi"
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "2Gi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "2Gi"
 
+    kube-state-metrics:
+      type: object
+      title: Kube State Metrics
+      x-ui-visible-if:
+        field: spec.enable_crds
+        values: [ true ]
+      properties:
+        enabled:
+          type: boolean
+          title: Enable KSM
+          description: Enable/disable kube-state-metrics
+          default: true
+        collectors:
+          type: array
+          title: Collector
+          description: list of collectors
+          x-ui-placeholder: "pass collectors"
+          x-ui-visible-if:
+            field: spec.kube-state-metrics.enabled
+            values: [ true ]
+        size:
+          type: object
+          title: KSM Size
+          x-ui-visible-if:
+            field: spec.kube-state-metrics.enabled
+            values: [ true ]
+          properties:
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
   x-ui-order:
-    - values
+    - operator
+    - enable_crds
+    - prometheus
+    - alertmanager
+    - grafana
+    - kube-state-metrics
     - retention
+    - values
     - node_selector
     - tolerations
-    - operator
-    - prometheus
-    - grafana
-    - alertmanager
-    - kube-state-metrics
 
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/prometheus/prometheus.schema.json
   flavor: k8s
-  metadata: {}
+  metadata:
+    namespace:
   kind: prometheus
   version: "0.1"
+  disabled: true
   spec:
+    enable_crds: true
     retention: "100d"
     node_selector:
     tolerations:
     values: {}
     operator:
       enabled: true
-      enable_crds: true
       size:
         resources:
           requests:
@@ -241,8 +375,8 @@ sample:
             memory: "512Mi"
     alertmanager:
       enabled: true
-      volume: "10Gi"
       size:
+        volume: "10Gi"
         resources:
           requests:
             cpu: "1000m"
@@ -252,6 +386,7 @@ sample:
             memory: "2Gi"
     kube-state-metrics:
       enabled: true
+      collectors: []
       size:
         resources:
           requests:
