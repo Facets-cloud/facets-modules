@@ -13,3 +13,4 @@ out:
         required: true
         type: object
         description: "The Map of Container Registry k8s secrets. Eg: {<container_registry_name>: [{\"name\": \"<k8s_secret_name>\"}]}"
+    interfaces:
