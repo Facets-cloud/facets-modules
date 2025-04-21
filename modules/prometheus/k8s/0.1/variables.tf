@@ -25,3 +25,10 @@ variable "inputs" {
   description = "A map of inputs requested by the module developer."
   type        = map(any)
 }
+
+variable "cc_metadata" {
+  type = any
+  default = {
+    tenant_base_domain : "tenant.facets.cloud"
+  }
+}
