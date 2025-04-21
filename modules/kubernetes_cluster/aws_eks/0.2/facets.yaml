@@ -82,18 +82,8 @@ spec:
           title: IAM Role Additional Policies
           description: Additional IAM policies to be attached to the node IAM role
           type: object
-          patternProperties:
-            type: string
-            title: Policy ARN
-            keyPattern: "^[a-zA-Z0-9-]+$"
-            properties:
-              policy_arn:
-                title: Policy ARN
-                description: ARN of the IAM policy to be attached to the node IAM role
-                type: string
-                pattern: "^arn:(aws|aws-cn|aws-us-gov):iam::[0-9]{12}:policy/.*"
-                x-ui-error-message: Invalid ARN format. Make sure valid space-separated ARNs are given
-          x-ui-overrides-only: true
+          x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
+          x-ui-yaml-editor: true
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
