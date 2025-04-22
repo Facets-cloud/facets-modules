@@ -20,13 +20,13 @@ spec:
         type: object
         properties:
           key:
-            title: ConfigMap Data Key name
+            title: ConfigMap Data Key Name
             description: Key name of the configmap object
             type: string
           value:
             title: ConfigMap Data Object Value
             description: Value of the configmap object
-            type: string
+            type: text
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
