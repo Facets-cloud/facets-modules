@@ -26,7 +26,7 @@ spec:
           value:
             title: ConfigMap Data Object Value
             description: Value of the configmap object
-            type: text
+            type: textarea
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
