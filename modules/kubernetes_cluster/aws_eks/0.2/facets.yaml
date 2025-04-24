@@ -283,6 +283,7 @@ spec:
       type: object
       x-ui-yaml-editor: true
       x-ui-overrides-only: true
+      default: []
     addons:
       title: Addons
       description: Specifications of addons to be installed
@@ -317,6 +318,7 @@ spec:
             type: object
             x-ui-overrides-only: true
             x-ui-yaml-editor: true
+            default: []
           preserve:
             title: Preserve Addon
             description: Set this to true to preserve the addon
