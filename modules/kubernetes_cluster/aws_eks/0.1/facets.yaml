@@ -83,6 +83,7 @@ spec:
           type: object
           x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
           x-ui-yaml-editor: true
+          default: []
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
