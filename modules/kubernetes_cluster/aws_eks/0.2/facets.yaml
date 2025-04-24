@@ -316,7 +316,6 @@ spec:
             title: Addon Tags
             description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
             type: object
-            x-ui-overrides-only: true
             x-ui-yaml-editor: true
             default: []
           preserve:

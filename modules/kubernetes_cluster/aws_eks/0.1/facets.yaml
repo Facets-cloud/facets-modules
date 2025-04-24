@@ -284,7 +284,6 @@ spec:
       x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
-      x-ui-overrides-only: true
       default: []
     addons:
       title: Addons
