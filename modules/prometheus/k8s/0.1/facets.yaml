@@ -5,6 +5,9 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+outputs:
+  default:
+    type: "@outputs/prometheus"
 intent: prometheus
 version: "0.1"
 flavor: k8s
