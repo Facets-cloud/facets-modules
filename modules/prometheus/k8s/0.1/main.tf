@@ -45,7 +45,8 @@ resource "helm_release" "prometheus-operator" {
                 }
                 spec = {
                   # Use existing PVC
-                  volumeName  = module.prometheus-pvc.pvc_name
+                  # volumeName  = module.prometheus-pvc.pvc_name
+                  volumeName  = "${module.name.name}-db-0"
                   accessModes = ["ReadWriteOnce"]
                   resources = {
                     requests = {
@@ -66,7 +67,8 @@ resource "helm_release" "prometheus-operator" {
                 }
                 spec = {
                   # Use existing PVC
-                  volumeName  = module.alertmanager-pvc.pvc_name
+                  # volumeName  = module.alertmanager-pvc.pvc_name
+                  volumeName  = "${module.name.name}-alertmanager-db-0"
                   accessModes = ["ReadWriteOnce"]
                   resources = {
                     requests = {
