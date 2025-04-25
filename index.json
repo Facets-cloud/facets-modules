@@ -598,5 +598,13 @@
   {
     "gitUrl": "https://github.com/Facets-cloud/facets-modules",
     "relativePath": "./modules/postgres/external/0.1/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/postgres/rds/0.2/"
+  },
+  {
+    "gitUrl": "https://github.com/Facets-cloud/facets-modules",
+    "relativePath": "./modules/ecs_cluster/default/0.2/"
   }
 ]
