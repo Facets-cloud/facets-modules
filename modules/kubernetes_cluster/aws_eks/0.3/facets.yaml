@@ -2,6 +2,8 @@ intent: kubernetes_cluster
 flavor: aws_eks
 alias-flavors: [ "default" ]
 version: "0.3"
+clouds:
+  - aws
 title: EKS Cluster with Auto Mode support
 description: A Kubernetes EKS cluster module with auto mode enabled by default and all necessary configurations preset.
 spec:
