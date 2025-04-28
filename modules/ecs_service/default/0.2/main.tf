@@ -106,7 +106,7 @@ module "iam_role_name" {
 }
 
 module "secrets" {
-  source      = "./aws_secret_manager"
+  source      = "github.com/Facets-cloud/facets-modules//modules/ecs_service/default/0.1/aws_secret_manager"
   baseinfra   = var.baseinfra
   cc_metadata = var.cc_metadata
   cluster     = var.cluster
@@ -124,7 +124,7 @@ module "secrets" {
 module "repository_credentials_secrets" {
   count = length(local.repository_credentials) > 0 ? 1 : 0
 
-  source      = "./aws_secret_manager"
+  source      = "github.com/Facets-cloud/facets-modules//modules/ecs_service/default/0.1/aws_secret_manager"
   baseinfra   = var.baseinfra
   cc_metadata = var.cc_metadata
   cluster     = var.cluster
@@ -139,7 +139,7 @@ module "repository_credentials_secrets" {
 }
 
 module "ecs" {
-  source                             = "./terraform-aws-ecs/modules/service"
+  source                             = "github.com/Facets-cloud/facets-modules//modules/ecs_service/default/0.1/terraform-aws-ecs/modules/service"
   alarms                             = lookup(local.advanced_ecs, "alarms", {})
   assign_public_ip                   = lookup(local.advanced_ecs, "assign_public_ip", false)
   autoscaling_max_capacity           = lookup(lookup(local.runtime, "autoscaling", {}), "max", 1)
