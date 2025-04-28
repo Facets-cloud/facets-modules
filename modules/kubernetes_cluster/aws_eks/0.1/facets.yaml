@@ -83,7 +83,7 @@ spec:
           type: object
           x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
           x-ui-yaml-editor: true
-          default: []
+          default: {}
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
@@ -284,7 +284,7 @@ spec:
       x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
-      default: []
+      default: {}
     addons:
       title: Addons
       description: Specifications of addons to be installed
@@ -319,7 +319,7 @@ spec:
             type: object
             x-ui-overrides-only: true
             x-ui-yaml-editor: true
-            default: []
+            default: {}
           preserve:
             title: Preserve Addon
             description: Set this to true to preserve the addon
