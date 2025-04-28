@@ -63,11 +63,14 @@ spec:
               - port
         size:
           type: object
+          title: Size
           properties:
             cpu:
               type: integer
+              title: CPU
             memory:
               type: integer
+              title: Memory
         command:
           type: string
         args:
