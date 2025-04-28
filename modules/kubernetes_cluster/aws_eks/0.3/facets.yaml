@@ -252,7 +252,7 @@ inputs:
     - aws
 outputs:
   default:
-    type: "@output/kubernetes_cluster"
+    type: "@outputs/aws_eks"
     providers:
       kubernetes:
         source: hashicorp/kubernetes
