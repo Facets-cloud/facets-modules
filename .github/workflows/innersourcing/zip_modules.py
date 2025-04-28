@@ -74,7 +74,7 @@ with ThreadPoolExecutor() as executor:
                     for file in files:
                         file_path = os.path.join(root, file)
                         # Write the file into the zip, preserving the original structure
-                        zipf.write(file_path, os.path.relpath(file_path, os.path.dirname(relative_path)))
+                        zipf.write(file_path, os.path.basename(file_path))
             
             # Prepare to upload the zip file to S3
             s3_key = os.path.relpath(zip_file_name, zip_root_dir)  # Path within the S3 bucket
