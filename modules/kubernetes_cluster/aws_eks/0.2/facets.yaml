@@ -78,6 +78,13 @@ spec:
       description: Specifications of nodepools to be created
       type: object
       properties:
+        iam_role_additional_policies:
+          title: IAM Role Additional Policies
+          description: Additional IAM policies to be attached to the node IAM role
+          type: object
+          x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
+          x-ui-yaml-editor: true
+          default: {}
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
@@ -268,6 +275,7 @@ spec:
                 values: [true]
           required: ["instance_type"]
           x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+      x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
@@ -275,6 +283,7 @@ spec:
       type: object
       x-ui-yaml-editor: true
       x-ui-overrides-only: true
+      default: {}
     addons:
       title: Addons
       description: Specifications of addons to be installed
@@ -307,8 +316,8 @@ spec:
             title: Addon Tags
             description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
             type: object
-            x-ui-overrides-only: true
             x-ui-yaml-editor: true
+            default: {}
           preserve:
             title: Preserve Addon
             description: Set this to true to preserve the addon
