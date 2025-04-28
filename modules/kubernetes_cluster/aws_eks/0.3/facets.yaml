@@ -273,3 +273,34 @@ outputs:
           host: attributes.cluster_endpoint
           cluster_ca_certificate: attributes.cluster_ca_cert
           token: attributes.cluster_auth_token
+sample:
+  kind: kubernetes_cluster
+  flavor: aws_eks
+  alias-flavors: [ "default" ]
+  version: "0.3"
+  metadata:
+    name: "eks-cluster"
+  cluster:
+    kubernetes_version: "1.31"
+    cluster_endpoint_public_access: true
+    cluster_endpoint_private_access: true
+    cluster_endpoint_public_access_cidrs: ["0.0.0.0/0"]
+    cluster_endpoint_private_access_cidrs: ["0.0.0.0/0"]
+  nodepools:
+    dedicated:
+      enabled: true
+      desired_size: 2
+      min_size: 1
+      max_size: 3
+      instance_types: "t3.medium"
+      disk_size: 50
+      capacity_type: "SPOT"
+    default:
+      enabled: true
+      desired_size: 2
+      min_size: 1
+      max_size: 3
+      instance_types: "t3.medium"
+      disk_size: 50
+      capacity_type: "SPOT"
+  
