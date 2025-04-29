@@ -38,10 +38,14 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   }
   storage_provisioner = "ebs.csi.eks.amazonaws.com"
   reclaim_policy      = local.default_reclaim_policy
-  parameters = {
-    type = "gp3"
-    encrypted : "true"
-  }
+  parameters = merge(
+    {
+      type      = "gp3"
+      encrypted = "true"
+    },
+    # Generate tagSpecification parameters from local.tags
+    { for i, k in keys(local.tags) : "tagSpecification_${i + 1}" => "${k}=${local.tags[k]}" }
+  )
   allow_volume_expansion = true
   volume_binding_mode    = "Immediate"
 }
