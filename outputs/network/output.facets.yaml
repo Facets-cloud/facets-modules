@@ -1,0 +1,12 @@
+name: vpc
+out:
+  type: object
+  title: VPC Ouptuts
+  description: VPC
+  properties:
+    interfaces: null
+    attributes:
+      legacy_outputs:
+        type: object
+        required: true
+        secret: true
