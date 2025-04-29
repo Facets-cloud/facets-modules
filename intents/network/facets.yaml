@@ -9,7 +9,7 @@ outputs:
   - name: attributes.cidr_block
     title: "CIDR Block"
     type: "@output/aws_vpc"
-  - name: attributes.subnet_id
-    title: "Subnet Id"
+  - name: attributes.azs
+    title: "azs"
     type: "@output/aws_vpc"
   
