@@ -1,0 +1,8 @@
+name: aws_eks
+out:
+  type: object
+  title: AWS EKS
+  description: Outputs from AWS EKS
+  properties:
+    attributes:
+    interfaces:
