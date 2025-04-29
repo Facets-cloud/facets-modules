@@ -244,15 +244,14 @@ spec:
   required:
     - kubernetes_version
 inputs:
-  vpc:
-    type: "@output/aws_vpc"
-    title: VPC
-    description: The VPC where the EKS cluster will be deployed.
-    providers:
-    - aws
+  network_details:
+    type: "@outputs/vpc"
+    default:
+      resource_type: network
+      resource_name: default
 outputs:
   default:
-    type: "@outputs/aws_eks"
+    type: "@outputs/kubernetes"
     providers:
       kubernetes:
         source: hashicorp/kubernetes
