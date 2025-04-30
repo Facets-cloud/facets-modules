@@ -114,9 +114,9 @@ jobs:
             USERNAME=$(jq -r ".$key.Username" control_planes.json)
             TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
-            echo "Registering to $key control plane"
             # Perform the curl command for each directory in facets_dirs
             for dir in "${facets_dirs[@]}"; do
+                echo "Registering module $dir to $key control plane"
                 curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir" -r "${GITHUB_REF}"
             done
           done
