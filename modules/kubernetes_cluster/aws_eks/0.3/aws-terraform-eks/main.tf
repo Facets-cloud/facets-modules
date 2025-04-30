@@ -267,6 +267,7 @@ locals {
 }
 
 resource "aws_eks_access_entry" "this" {
+  provider = "aws593"
   for_each = { for k, v in local.merged_access_entries : k => v if local.create }
 
   cluster_name      = aws_eks_cluster.this[0].id

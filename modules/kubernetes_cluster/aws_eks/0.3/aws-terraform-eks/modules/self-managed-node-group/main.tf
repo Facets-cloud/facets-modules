@@ -94,6 +94,7 @@ module "user_data" {
 ################################################################################
 
 data "aws_ec2_instance_type" "this" {
+  provider = "aws593"
   count = var.create && var.enable_efa_support ? 1 : 0
 
   instance_type = var.instance_type
