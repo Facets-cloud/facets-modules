@@ -202,6 +202,7 @@ resource "aws_ec2_tag" "cluster_primary_security_group" {
 }
 
 resource "aws_cloudwatch_log_group" "this" {
+  provider = "aws593"
   count = local.create && var.create_cloudwatch_log_group ? 1 : 0
 
   name              = "/aws/eks/${var.cluster_name}/cluster"

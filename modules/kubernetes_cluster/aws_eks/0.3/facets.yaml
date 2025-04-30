@@ -250,9 +250,10 @@ outputs:
         source: hashicorp/helm
         version: 2.8.0
         attributes:
-          host: attributes.auth.host
-          token: attributes.auth.token
-          cluster_ca_certificate: attributes.auth.cluster_ca_certificate
+          kubernetes:
+            host: attributes.auth.host
+            token: attributes.auth.token
+            cluster_ca_certificate: attributes.auth.cluster_ca_certificate
       kubernetes-alpha:
         source: hashicorp/kubernetes-alpha
         version: 0.6.0
