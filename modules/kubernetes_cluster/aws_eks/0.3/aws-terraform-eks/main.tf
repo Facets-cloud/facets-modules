@@ -302,7 +302,6 @@ resource "aws_eks_access_policy_association" "this" {
 
 module "kms" {
   source = "./modules/kms"
-
   create = local.create && var.create_kms_key && local.enable_cluster_encryption_config # not valid on Outposts
 
   description             = coalesce(var.kms_key_description, "${var.cluster_name} cluster encryption key")
