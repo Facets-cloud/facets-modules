@@ -301,8 +301,8 @@ resource "aws_eks_access_policy_association" "this" {
 ################################################################################
 
 module "kms" {
-  source  = "${path.module}/kms"
-  version = "2.1.0" # Note - be mindful of Terraform/provider version compatibility between modules
+  source = "./modules/kms"
+  # Removing version attribute as it's not compatible with local module paths
 
   create = local.create && var.create_kms_key && local.enable_cluster_encryption_config # not valid on Outposts
 
