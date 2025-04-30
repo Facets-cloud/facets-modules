@@ -2,4 +2,7 @@ name: network
 type: Networking
 displayName: Network
 description: A collection of connected devices which provides medium to share resources within.
+outputs:
+  - name: default
+    type: "@output/aws_vpc"
   
