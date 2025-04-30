@@ -1013,6 +1013,7 @@ data "aws_subnets" "placement_group" {
 ################################################################################
 
 resource "aws_eks_access_entry" "this" {
+  provider = "aws593"
   count = var.create && var.create_access_entry ? 1 : 0
 
   cluster_name  = var.cluster_name

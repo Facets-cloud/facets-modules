@@ -727,6 +727,7 @@ locals {
 }
 
 data "aws_eks_addon_version" "this" {
+  provider = "aws593"
   for_each = { for k, v in var.cluster_addons : k => v if local.create && !local.create_outposts_local_cluster }
 
   addon_name         = try(each.value.name, each.key)
