@@ -46,3 +46,19 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   allow_volume_expansion = true
   volume_binding_mode    = "Immediate"
 }
+
+module "default_node_pool" {
+  source       = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  name         = "${local.name}-default-node-pool"
+  namespace    = var.environment.namespace
+  release_name = "${local.name}-default-node-pool"
+  data         = local.default_node_pool
+}
+
+module "dedicated_node_pool" {
+  source       = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  name         = "${local.name}-dedicated-node-pool"
+  namespace    = var.environment.namespace
+  release_name = "${local.name}-dedicated-node-pool"
+  data         = local.dedicated_node_pool
+}

@@ -26,4 +26,141 @@ locals {
     }
   }
   tags = merge(var.environment.cloud_tags, lookup(local.spec, "tags", {}))
+  default_node_pool_data = {
+    apiVersion = "karpenter.sh/v1"
+    kind       = "NodePool"
+    metadata = {
+      name = "default-node-pool"
+    }
+    spec = {
+      template = {
+        metadata = {
+          labels = {
+            "managed-by" = "facets"
+          }
+        }
+        spec = {
+          nodeClassRef = {
+            group = "eks.amazonaws.com"
+            kind  = "NodeClass"
+            name  = "default"
+          }
+          requirements = [
+            {
+              key      = "eks.amazonaws.com/instance-category"
+              operator = "In"
+              values   = ["c", "m", "r"]
+            },
+            {
+              key      = "eks.amazonaws.com/instance-cpu"
+              operator = "In"
+              values   = ["4", "8", "16"]
+            },
+            {
+              key      = "topology.kubernetes.io/zone"
+              operator = "In"
+              values   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs
+            },
+            {
+              key      = "kubernetes.io/arch"
+              operator = "In"
+              values   = ["arm64", "amd64"]
+            },
+            {
+              key      = "node.kubernetes.io/instance-type"
+              operator = "In"
+              values   = lookup(local.default_node_pool, "instance_types", [])
+            },
+            {
+              key      = "karpenter.sh/capacity-type"
+              operator = "In"
+              values   = lookup(local.default_node_pool, "capacity_type", [])
+            }
+          ]
+        }
+      }
+      # Limits should ideally be derived from local.default_node_pool configuration
+      limits = {
+        cpu    = lookup(local.default_node_pool, "max_size_cpu", 1000)
+        memory = "${lookup(local.default_node_pool, "max_size_memory", 1000)}Gi"
+      }
+      # Consider adding disruption configuration if needed
+      disruption = {
+        consolidationPolicy = lookup(local.default_node_pool, "disruption_policy", "WhenEmptyOrUnderutilized")
+      }
+    }
+  }
+
+  dedicated_node_pool_data = {
+    apiVersion = "karpenter.sh/v1"
+    kind       = "NodePool"
+    metadata = {
+      name = "dedicated-node-pool"
+    }
+    spec = {
+      template = {
+        metadata = {
+          labels = {
+            managed-by       = "facets"
+            facets-node-type = "facets-dedicated"
+          }
+        }
+        spec = {
+          nodeClassRef = {
+            group = "eks.amazonaws.com"
+            kind  = "NodeClass"
+            name  = "default"
+          }
+          taints = [
+            {
+              key    = "facets.cloud/dedicated"
+              value  = "true"
+              effect = "NO_SCHEDULE"
+            }
+          ]
+          requirements = [
+            {
+              key      = "eks.amazonaws.com/instance-category"
+              operator = "In"
+              values   = ["c", "m", "r"]
+            },
+            {
+              key      = "eks.amazonaws.com/instance-cpu"
+              operator = "In"
+              values   = ["4", "8", "16"]
+            },
+            {
+              key      = "topology.kubernetes.io/zone"
+              operator = "In"
+              values   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs
+            },
+            {
+              key      = "kubernetes.io/arch"
+              operator = "In"
+              values   = ["arm64", "amd64"]
+            },
+            {
+              key      = "node.kubernetes.io/instance-type"
+              operator = "In"
+              values   = lookup(local.dedicated_node_pool, "instance_types", [])
+            },
+            {
+              key      = "karpenter.sh/capacity-type"
+              operator = "In"
+              values   = lookup(local.dedicated_node_pool, "capacity_type", [])
+            }
+          ]
+        }
+      }
+      # Limits should ideally be derived from local.default_node_pool configuration
+      limits = {
+        cpu    = lookup(local.dedicated_node_pool, "max_size_cpu", 1000)
+        memory = "${lookup(local.dedicated_node_pool, "max_size_memory", 1000)}Gi"
+      }
+      # Consider adding disruption configuration if needed
+      disruption = {
+        consolidationPolicy = lookup(local.dedicated_node_pool, "disruption_policy", "WhenEmptyOrUnderutilized")
+      }
+    }
+  }
 }

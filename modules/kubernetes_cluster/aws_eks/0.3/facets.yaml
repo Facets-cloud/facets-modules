@@ -128,36 +128,21 @@ spec:
               title: Enabled
               description: Enable dedicated managed node pool.
               default: false
-            desired_size:
+            max_size_cpu:
               type: number
-              title: Desired Size
-              description: Desired number of worker nodes.
-              default: 2
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Desired size must be between 1 and 200
-              x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
-                values: [true]
-            min_size:
-              type: number
-              title: Minimum Size
-              description: Minimum number of worker nodes.
-              default: 1
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Minimum size must be between 1 and 200
-              x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
-                values: [true]
-            max_size:
-              type: number
-              title: Maximum Size
+              title: Maximum Size (CPU)
               description: Maximum number of worker nodes.
-              default: 3
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Maximum size must be between 1 and 200
+              default: 1000
+              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.cluster.dedicated.enabled
+                values: [true]
+            max_size_memory:
+              type: number
+              title: Maximum Size (Memory)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
               x-ui-visible-if:
                 field: spec.cluster.dedicated.enabled
                 values: [true]
@@ -166,17 +151,6 @@ spec:
               title: Instance Types
               description: EC2 instance types for the worker nodes.
               default: "t3.medium"
-              x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
-                values: [true]
-            disk_size:
-              type: number
-              title: Disk Size
-              description: Disk size in GiB for worker nodes.
-              default: 50
-              minimum: 50
-              maximum: 1000
-              x-ui-error-message: Disk size must be between 50G and 1000G
               x-ui-visible-if:
                 field: spec.cluster.dedicated.enabled
                 values: [true]
@@ -193,11 +167,9 @@ spec:
                 values: [true]
           required:
             - enabled
-            - desired_size
-            - min_size
-            - max_size
+            - max_size_cpu
+            - max_size_memory
             - instance_types
-            - disk_size
             - capacity_type
         default:
           type: object
@@ -210,55 +182,29 @@ spec:
               title: Enabled
               description: Enable default managed node pool.
               default: true
-            desired_size:
+            max_size_cpu:
               type: number
-              title: Desired Size
-              description: Desired number of worker nodes.
-              default: 2
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Desired size must be between 1 and 200
-              x-ui-visible-if:
-                field: spec.cluster.default.enabled
-                values: [true]
-            min_size:
-              type: number
-              title: Minimum Size
-              description: Minimum number of worker nodes.
-              default: 1
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Minimum size must be between 1 and 200
-              x-ui-visible-if:
-                field: spec.cluster.default.enabled
-                values: [true]
-            max_size:
-              type: number
-              title: Maximum Size
+              title: Maximum Size (CPU)
               description: Maximum number of worker nodes.
-              default: 3
-              minimum: 1
-              maximum: 200
-              x-ui-error-message: Maximum size must be between 1 and 200
+              default: 1000
+              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.default.enabled
+                field: spec.cluster.dedicated.enabled
+                values: [true]
+            max_size_memory:
+              type: number
+              title: Maximum Size (Memory)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.cluster.dedicated.enabled
                 values: [true]
             instance_types:
               type: string
               title: Instance Types
               description: EC2 instance types for the worker nodes.
               default: "t3.medium"
-              x-ui-visible-if:
-                field: spec.cluster.default.enabled
-                values: [true]
-            disk_size:
-              type: number
-              title: Disk Size
-              description: Disk size in GiB for worker nodes.
-              default: 50
-              minimum: 50
-              maximum: 1000
-              x-ui-error-message: Disk size must be between 50G and 1000G
               x-ui-visible-if:
                 field: spec.cluster.default.enabled
                 values: [true]
@@ -275,11 +221,9 @@ spec:
                 values: [true]
           required:
             - enabled
-            - desired_size
-            - min_size
-            - max_size
+            - max_size_cpu
+            - max_size_memory
             - instance_types
-            - disk_size
             - capacity_type
   required:
     - kubernetes_version
