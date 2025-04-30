@@ -77,7 +77,29 @@ jobs:
           changed_dirs=$(echo "$changed_dirs" | tr ' ' '\n' | grep '^modules' | tr '\n' ' ')
           # Output the unique directories as an environment variable
           echo "changed_dirs=$changed_dirs"
-          echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
+          
+          # Loop through the unique directories and check for facets.yaml
+          facets_dirs=()
+          for dir in "${changed_dirs[@]}"; do
+              current_dir="$dir"
+              while [[ "$current_dir" != "/" && "$current_dir" != "." ]]; do
+                  if [[ -f "$current_dir/facets.yaml" ]] && ls $current_dir/*.tf &> /dev/null; then
+                      # Check if the directory is already in the facets_dirs array
+                      if ! [[ " ${facets_dirs[@]} " =~ " ${current_dir} " ]]; then
+                          # Add the directory to the facets_dirs array
+                          facets_dirs+=("$current_dir")
+                      fi
+                      break
+                  else
+                      # Move up to the parent directory
+                      current_dir=$(dirname "$current_dir")
+                  fi
+              done
+              if [[ "$current_dir" == "/" || "$current_dir" == "." ]]; then
+                  echo "No facets.yaml along with terraform files found in $dir or any of its parent directories"
+              fi
+          done
+          echo "facets_dirs=$facets_dirs" >> $GITHUB_ENV
 
       - name: Execute command
         env:
@@ -85,7 +107,7 @@ jobs:
         run: |
           set -e
           set -o pipefail
-          IFS=' ' read -r -a dirs <<< "${{ env.changed_dirs }}"
+          IFS=' ' read -r -a facets_dirs <<< "${{ env.facets_dirs }}"
           GITHUB_REF="${{ github.ref_name }}"
           for key in $(jq -r 'keys[]' control_planes.json); do
             URL=$(jq -r ".$key.URL" control_planes.json)
@@ -93,13 +115,8 @@ jobs:
             TOKEN_REF_NAME=$(jq -r ".$key.TokenRef" control_planes.json)
             TOKEN=$(jq -r ".\"$TOKEN_REF_NAME\"" secrets.json)
             echo "Registering to $key control plane"
-            # Loop through the unique directories and check for facets.yaml 
-            for dir in "${dirs[@]}"; do
-              if [[ -f "$dir/facets.yaml" ]] && ls $dir/*.tf &> /dev/null; then
-                # Register the module as preview
+            # Perform the curl command for each directory in facets_dirs
+            for dir in "${facets_dirs[@]}"; do
                 curl -s https://facets-cloud.github.io/facets-schemas/scripts/module_register.sh | bash -s -- -c "$URL" -u "$USERNAME" -t "$TOKEN" -p "$dir" -r "${GITHUB_REF}"
-              else
-                echo "No facets.yaml found in $dir"
-              fi
             done
           done
