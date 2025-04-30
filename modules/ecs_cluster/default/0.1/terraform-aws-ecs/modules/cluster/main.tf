@@ -3,6 +3,7 @@
 ################################################################################
 
 locals {
+  test = true
   execute_command_configuration = jsondecode(try(aws_cloudwatch_log_group.this[0].name, null) != null ? jsonencode({
     logging = "OVERRIDE"
     log_configuration = {
