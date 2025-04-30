@@ -8,7 +8,7 @@ module "name" {
 }
 
 module "eks" {
-  source                                   = "${path.module}/eks"
+  source                                   = "./eks"
   cluster_name                             = local.name
   cluster_version                          = local.kubernetes_version
   cluster_endpoint_public_access           = local.cluster_endpoint_public_access
