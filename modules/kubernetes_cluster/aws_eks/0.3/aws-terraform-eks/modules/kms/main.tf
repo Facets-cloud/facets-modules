@@ -16,6 +16,7 @@ locals {
 ################################################################################
 
 resource "aws_kms_key" "this" {
+  provider = "aws593"
   count = var.create && !var.create_external && !var.create_replica && !var.create_replica_external ? 1 : 0
 
   bypass_policy_lockout_safety_check = var.bypass_policy_lockout_safety_check
