@@ -62,4 +62,5 @@ module "dedicated_node_pool" {
   release_name    = "${local.name}-dedicated-node-pool"
   data            = local.dedicated_node_pool
   advanced_config = {}
+  
 }
