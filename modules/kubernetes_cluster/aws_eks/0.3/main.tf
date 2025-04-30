@@ -45,6 +45,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 }
 
 module "default_node_pool" {
+  depends_on = [ data.aws_eks_cluster.cluster ]
   source       = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name         = "${local.name}-default-node-pool"
   namespace    = var.environment.namespace
@@ -53,6 +54,7 @@ module "default_node_pool" {
 }
 
 module "dedicated_node_pool" {
+  depends_on = [ data.aws_eks_cluster.cluster ]
   source       = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name         = "${local.name}-dedicated-node-pool"
   namespace    = var.environment.namespace
