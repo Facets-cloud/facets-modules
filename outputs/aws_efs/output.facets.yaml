@@ -14,4 +14,3 @@ out:
         type: string
         description: The K8s storage class name
     interfaces:
-      test:
