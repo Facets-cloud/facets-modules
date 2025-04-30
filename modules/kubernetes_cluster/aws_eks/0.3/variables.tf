@@ -6,24 +6,19 @@ variable "instance" {
     version = string
     spec = object({
       kubernetes_version = string
-      auto_mode          = bool
       node_groups = object({
         default = object({
           enabled        = bool
-          desired_size   = number
-          min_size       = number
-          max_size       = number
+          max_size_cpu   = number
+          max_size_memory = number
           instance_types = string
-          disk_size      = number
           capacity_type  = string
         })
         dedicated = object({
           enabled        = bool
-          desired_size   = number
-          min_size       = number
-          max_size       = number
+          max_size_cpu   = number
+          max_size_memory = number
           instance_types = string
-          disk_size      = number
           capacity_type  = string
         })
       })
@@ -33,10 +28,6 @@ variable "instance" {
       enable_cluster_encryption            = bool
     })
   })
-  validation {
-    condition = var.instance.spec.auto_mode == true || var.instance.spec.auto_mode == false
-    error_message = "Invalid auto_mode. Allowed values are 'true' or 'false'. and it can't be null"
-  }
   validation {
     condition = (
       (!var.instance.spec.node_groups.default.enabled || contains(["ON_DEMAND", "SPOT"], var.instance.spec.node_groups.default.capacity_type)) &&
