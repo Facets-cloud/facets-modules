@@ -105,6 +105,8 @@ spec:
               x-ui-visible-if:
                 field: spec.cluster.kms_keys.enable_rotation
                 values: [true]
+        required:
+          - kubernetes_version
     tags:
       type: object
       title: Tags
@@ -226,7 +228,7 @@ spec:
             - instance_types
             - capacity_type
   required:
-    - kubernetes_version
+    - cluster
 inputs:
   network_details:
     type: "@outputs/vpc"
