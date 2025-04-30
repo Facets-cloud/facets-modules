@@ -22,7 +22,7 @@ spec:
           title: Chart
           description:  Name of the Helm chart package
           x-ui-placeholder: Enter name of the helm chart
-          pattern: '^[a-zA-Z]+(-[a-zA-Z]+)*[a-zA-Z]$'
+          pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*[a-zA-Z0-9]$'
           x-ui-error-message: "Invalid format. Only alphabets and hypens are allowed"
         repository:
           type: string
