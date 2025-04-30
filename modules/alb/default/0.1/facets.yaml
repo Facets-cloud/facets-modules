@@ -1,7 +1,7 @@
 intent: alb
 flavor: default
 version: '0.1'
-description: Adds alb - default flavor
+description: Adds alb - default flavor test
 clouds:
 - aws
 spec:
