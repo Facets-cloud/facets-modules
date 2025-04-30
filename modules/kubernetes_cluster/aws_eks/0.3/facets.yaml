@@ -59,12 +59,6 @@ spec:
           description: List of log types to enable for the EKS cluster.
           default: ["api", "audit", "authenticator"]
           x-ui-overrides-only: true
-          enum:
-            - "api"
-            - "audit"
-            - "authenticator"
-            - "controllerManager"
-            - "scheduler"
         enable_cluster_encryption:
           type: boolean
           title: Enable Cluster Encryption
