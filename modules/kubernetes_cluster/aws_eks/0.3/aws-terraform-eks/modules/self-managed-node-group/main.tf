@@ -132,6 +132,7 @@ locals {
 }
 
 resource "aws_launch_template" "this" {
+  provider = "aws593"
   count = var.create && var.create_launch_template ? 1 : 0
 
   dynamic "block_device_mappings" {
