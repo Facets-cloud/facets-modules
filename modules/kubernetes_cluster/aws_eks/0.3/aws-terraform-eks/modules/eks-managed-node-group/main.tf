@@ -394,6 +394,7 @@ locals {
 }
 
 resource "aws_eks_node_group" "this" {
+  provider = "aws593"
   count = var.create ? 1 : 0
 
   # Required

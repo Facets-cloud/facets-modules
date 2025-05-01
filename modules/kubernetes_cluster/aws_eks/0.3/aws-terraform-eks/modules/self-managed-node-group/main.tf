@@ -501,6 +501,7 @@ locals {
 }
 
 resource "aws_autoscaling_group" "this" {
+  provider = "aws593"
   count = var.create && var.create_autoscaling_group ? 1 : 0
 
   availability_zones        = var.availability_zones
