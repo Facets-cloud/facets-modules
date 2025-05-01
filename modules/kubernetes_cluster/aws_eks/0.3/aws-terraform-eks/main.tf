@@ -779,6 +779,7 @@ resource "aws_eks_addon" "this" {
 }
 
 resource "aws_eks_addon" "before_compute" {
+  provider = "aws593"
   # Not supported on outposts
   for_each = { for k, v in var.cluster_addons : k => v if try(v.before_compute, false) && local.create && !local.create_outposts_local_cluster }
 
