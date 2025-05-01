@@ -90,6 +90,7 @@ locals {
       }
     }
   }
+  
   dedicated_node_pool_data = {
     apiVersion = "karpenter.sh/v1"
     kind       = "NodePool"
