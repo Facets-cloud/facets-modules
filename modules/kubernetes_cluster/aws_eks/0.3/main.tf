@@ -48,7 +48,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 
 module "default_node_pool" {
   depends_on      = [data.aws_eks_cluster.cluster]
-  count           = lookup(local.default_node_pool, "enabled", false) ? 1 : 0
+  count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-default-np"
   namespace       = var.environment.namespace
