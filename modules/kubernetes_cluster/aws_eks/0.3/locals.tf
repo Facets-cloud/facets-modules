@@ -90,6 +90,7 @@ locals {
       }
       # Consider adding disruption configuration if needed
       disruption = {
+        consolidateAfter = "1m"
         consolidationPolicy = lookup(local.default_node_pool, "disruption_policy", "WhenEmptyOrUnderutilized")
       }
     }
@@ -162,6 +163,7 @@ locals {
       }
       # Consider adding disruption configuration if needed
       disruption = {
+        consolidateAfter = "1m"
         consolidationPolicy = lookup(local.dedicated_node_pool, "disruption_policy", "WhenEmptyOrUnderutilized")
       }
     }
