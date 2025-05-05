@@ -879,7 +879,7 @@ resource "aws_iam_role" "eks_auto" {
   count = local.create_node_iam_role ? 1 : 0
 
   name        = var.node_iam_role_use_name_prefix ? null : local.node_iam_role_name
-  name_prefix = var.node_iam_role_use_name_prefix ? "${local.node_iam_role_name}-" : null
+  # name_prefix = var.node_iam_role_use_name_prefix ? "${local.node_iam_role_name}-" : null
   path        = var.node_iam_role_path
   description = var.node_iam_role_description
 
