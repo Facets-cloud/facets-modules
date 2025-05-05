@@ -113,7 +113,7 @@ spec:
       description: Tags to apply to the EKS cluster.
       x-ui-toggle: true
       x-ui-yaml-editor: true
-    nodepools:
+    node_pools:
       type: object
       title: Node Pools
       description: Configuration for managed node pools, that are created by facets
