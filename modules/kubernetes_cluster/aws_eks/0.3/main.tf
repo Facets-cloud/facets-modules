@@ -9,7 +9,7 @@ module "name" {
 
 module "eks" {
   source                                   = "./aws-terraform-eks"
-  cluster_name                             = local.name
+  cluster_name                             = "${local.name}-k8s-cluster"
   cluster_compute_config                   = local.cluster_compute_config
   cluster_version                          = local.kubernetes_version
   cluster_endpoint_public_access           = local.cluster_endpoint_public_access
@@ -48,9 +48,9 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 module "default_node_pool" {
   depends_on      = [data.aws_eks_cluster.cluster]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-default-node-pool"
+  name            = "${local.name}-default-np"
   namespace       = var.environment.namespace
-  release_name    = "${local.name}-default-node-pool"
+  release_name    = "${local.name}-default-np"
   data            = local.default_node_pool
   advanced_config = {}
 }
@@ -58,9 +58,9 @@ module "default_node_pool" {
 module "dedicated_node_pool" {
   depends_on      = [data.aws_eks_cluster.cluster]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-dedicated-node-pool"
+  name            = "${local.name}-dedicated-np"
   namespace       = var.environment.namespace
-  release_name    = "${local.name}-dedicated-node-pool"
+  release_name    = "${local.name}-dedicated-np"
   data            = local.dedicated_node_pool
   advanced_config = {}
 
