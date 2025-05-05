@@ -30,10 +30,10 @@ variable "instance" {
   })
   validation {
     condition = (
-      (!var.instance.spec.node_groups.default.enabled || contains(["ON_DEMAND", "SPOT"], var.instance.spec.node_groups.default.capacity_type)) &&
-      (!var.instance.spec.node_groups.dedicated.enabled || contains(["ON_DEMAND", "SPOT"], var.instance.spec.node_groups.dedicated.capacity_type))
+      (!var.instance.spec.node_groups.default.enabled || contains(["on-demand", "spot"], var.instance.spec.node_groups.default.capacity_type)) &&
+      (!var.instance.spec.node_groups.dedicated.enabled || contains(["on-demand", "spot"], var.instance.spec.node_groups.dedicated.capacity_type))
     )
-    error_message = "Invalid capacity_type for enabled node group(s). Allowed values are 'ON_DEMAND' or 'SPOT'."
+    error_message = "Invalid capacity_type for enabled node group(s). Allowed values are 'on-demand' or 'spot'."
   }
 
 }

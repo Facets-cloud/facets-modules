@@ -162,8 +162,8 @@ spec:
               description: Type of capacity associated with the EKS Node Group. Valid values are ON_DEMAND and SPOT.
               default: "SPOT"
               enum:
-                - "ON_DEMAND"
-                - "SPOT"
+                - "on-demand"
+                - "spot"
               x-ui-visible-if:
                 field: spec.cluster.dedicated.enabled
                 values: [true]
@@ -191,7 +191,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.cluster.default.enabled
                 values: [true]
             max_size_memory:
               type: number
@@ -200,7 +200,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.cluster.default.enabled
                 values: [true]
             instance_types:
               type: string
@@ -216,8 +216,8 @@ spec:
               description: Type of capacity associated with the EKS Node Group. Valid values are ON_DEMAND and SPOT.
               default: "SPOT"
               enum:
-                - "ON_DEMAND"
-                - "SPOT"
+                - "on-demand"
+                - "spot"
               x-ui-visible-if:
                 field: spec.cluster.default.enabled
                 values: [true]
