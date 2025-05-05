@@ -15,6 +15,10 @@ locals {
   cluster_endpoint_private_access_cidrs  = lookup(local.cluster, "cluster_endpoint_private_access_cidrs", [])
   cloudwatch_log_group_retention_in_days = lookup(local.cluster, "cloudwatch_log_group_retention_in_days", 90)
   cluster_service_ipv4_cidr              = lookup(local.cluster, "cluster_service_ipv4_cidr", null)
+  cluster_compute_config = {
+    enabled    = true
+    node_pools = ["system"]
+  }
   cluster_security_group_additional_rules = { for idx, cidr in local.cluster_endpoint_private_access_cidrs :
     "ingress_private_cidr_${idx}" => {
       description = "Allow private CIDR ${cidr} access to cluster API"
