@@ -73,12 +73,12 @@ locals {
             {
               key      = "node.kubernetes.io/instance-type"
               operator = "In"
-              values   = lookup(local.default_node_pool, "instance_types", [])
+              values   = lookup(local.default_node_pool, "instance_types", ["t3a.medium", "t3a.xlarge", "m5a.xlarge"])
             },
             {
               key      = "karpenter.sh/capacity-type"
               operator = "In"
-              values   = lookup(local.default_node_pool, "capacity_type", [])
+              values   = lookup(local.default_node_pool, "capacity_type", ["on-demand", "spot"])
             }
           ]
         }
@@ -146,12 +146,12 @@ locals {
             {
               key      = "node.kubernetes.io/instance-type"
               operator = "In"
-              values   = lookup(local.dedicated_node_pool, "instance_types", [])
+              values   = lookup(local.dedicated_node_pool, "instance_types", ["t3a.medium", "t3a.xlarge", "m5a.xlarge"])
             },
             {
               key      = "karpenter.sh/capacity-type"
               operator = "In"
-              values   = lookup(local.dedicated_node_pool, "capacity_type", [])
+              values   = lookup(local.dedicated_node_pool, "capacity_type", ["on-demand", "spot"])
             }
           ]
         }
