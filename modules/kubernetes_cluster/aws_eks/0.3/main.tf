@@ -50,9 +50,9 @@ module "default_node_pool" {
   depends_on      = [data.aws_eks_cluster.cluster]
   count           = lookup(local.default_node_pool, "enabled", false) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fp-default-np"
+  name            = "${local.name}-fcp-default-np"
   namespace       = var.environment.namespace
-  release_name    = "${local.name}-fp-default-np"
+  release_name    = "${local.name}-fcp-default-np"
   data            = local.default_node_pool_data
   advanced_config = {}
 }
@@ -61,9 +61,9 @@ module "dedicated_node_pool" {
   depends_on      = [data.aws_eks_cluster.cluster]
   count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fp-dedicated-np"
+  name            = "${local.name}-fcp-dedicated-np"
   namespace       = var.environment.namespace
-  release_name    = "${local.name}-fp-dedicated-np"
+  release_name    = "${local.name}-fcp-dedicated-np"
   data            = local.dedicated_node_pool_data
   advanced_config = {}
 
