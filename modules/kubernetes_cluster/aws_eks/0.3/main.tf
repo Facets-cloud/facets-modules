@@ -10,6 +10,7 @@ module "name" {
 module "eks" {
   source                                   = "./aws-terraform-eks"
   cluster_name                             = local.name
+  cluster_compute_config                   = local.cluster_compute_config
   cluster_version                          = local.kubernetes_version
   cluster_endpoint_public_access           = local.cluster_endpoint_public_access
   cluster_endpoint_private_access          = local.cluster_endpoint_private_access
