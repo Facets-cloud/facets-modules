@@ -29,6 +29,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   depends_on = [
     module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
   ]
+  
   metadata {
     name = "eks-auto-mode-gp3-sc"
     annotations = {
