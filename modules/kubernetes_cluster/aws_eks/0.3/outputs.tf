@@ -17,7 +17,7 @@ locals {
     oidc_provider           = module.eks.oidc_provider
     oidc_provider_arn       = module.eks.oidc_provider_arn
     legacy_outputs = {
-      registry_secret_objects         = {}
+      registry_secret_objects         = []
       facets_dedicated_tolerations    = []
       facets_dedicated_node_selectors = {}
       k8s_details = {
