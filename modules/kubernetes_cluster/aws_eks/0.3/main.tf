@@ -29,7 +29,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   depends_on = [
     module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
   ]
-  
+
   metadata {
     name = "eks-auto-mode-gp3-sc"
     annotations = {
@@ -52,7 +52,7 @@ module "default_node_pool" {
   name            = "${local.name}-default-np"
   namespace       = var.environment.namespace
   release_name    = "${local.name}-default-np"
-  data            = local.default_node_pool
+  data            = local.default_node_pool_data
   advanced_config = {}
 }
 
@@ -62,7 +62,7 @@ module "dedicated_node_pool" {
   name            = "${local.name}-dedicated-np"
   namespace       = var.environment.namespace
   release_name    = "${local.name}-dedicated-np"
-  data            = local.dedicated_node_pool
+  data            = local.dedicated_node_pool_data
   advanced_config = {}
 
 }
