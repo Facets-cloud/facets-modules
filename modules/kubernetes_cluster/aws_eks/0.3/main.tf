@@ -26,10 +26,7 @@ module "eks" {
 }
 
 resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
-  depends_on = [
-    module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
-  ]
-
+  depends_on = [ module.eks ]
   metadata {
     name = "eks-auto-mode-gp3-sc"
     annotations = {
@@ -47,7 +44,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 }
 
 module "default_node_pool" {
-  depends_on      = [data.aws_eks_cluster.cluster]
+  depends_on      = [module.eks]
   count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-default-np"
@@ -58,7 +55,7 @@ module "default_node_pool" {
 }
 
 module "dedicated_node_pool" {
-  depends_on      = [data.aws_eks_cluster.cluster]
+  depends_on      = [module.eks]
   count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-dedicated-np"
@@ -72,8 +69,7 @@ module "dedicated_node_pool" {
 resource "aws_eks_addon" "addon" {
   provider                 = "aws593"
   depends_on               = [
-    module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster,
-    module.default_node_pool, module.dedicated_node_pool
+    module.eks, module.default_node_pool, module.dedicated_node_pool
   ]
   for_each                 = local.addons
   cluster_name             = module.eks.cluster_name
