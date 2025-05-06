@@ -44,7 +44,6 @@ resource "kubernetes_secret_v1" "facets-admin-token" {
   type = "kubernetes.io/service-account-token"
 }
 
-
 resource "null_resource" "add-k8s-creds-backend" {
   depends_on = [kubernetes_secret_v1.facets-admin-token]
   triggers = {
