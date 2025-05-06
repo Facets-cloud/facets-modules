@@ -26,7 +26,7 @@ module "eks" {
 }
 
 resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
-  depends_on = [ module.eks ]
+  depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
   metadata {
     name = "eks-auto-mode-gp3-sc"
     annotations = {
@@ -44,7 +44,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 }
 
 module "default_node_pool" {
-  depends_on      = [module.eks]
+  depends_on      = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
   count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-default-np"
@@ -55,7 +55,7 @@ module "default_node_pool" {
 }
 
 module "dedicated_node_pool" {
-  depends_on      = [module.eks]
+  depends_on      = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
   count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-dedicated-np"
@@ -63,7 +63,6 @@ module "dedicated_node_pool" {
   release_name    = "${local.name}-fc-dedicated-np"
   data            = local.dedicated_node_pool_data
   advanced_config = {}
-
 }
 
 resource "aws_eks_addon" "addon" {

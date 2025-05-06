@@ -1,4 +1,6 @@
 resource "kubernetes_service_account" "facets-admin" {
+  depends_on = [module.eks]
+  provider   = kubernetes
   metadata {
     name = "facets-admin"
   }
@@ -9,6 +11,7 @@ resource "kubernetes_service_account" "facets-admin" {
 }
 
 resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
+  depends_on = [kubernetes_service_account.facets-admin]
   metadata {
     name = "facets-admin-crb"
   }
@@ -27,6 +30,7 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
 }
 
 resource "kubernetes_secret_v1" "facets-admin-token" {
+  depends_on = [kubernetes_service_account.facets-admin]
   metadata {
     annotations = {
       "kubernetes.io/service-account.name" = "facets-admin"
@@ -36,20 +40,29 @@ resource "kubernetes_secret_v1" "facets-admin-token" {
   type = "kubernetes.io/service-account-token"
 }
 
-resource "null_resource" "add-k8s-creds-backend" {
+# Export credentials to be used by the Terraform providers
+data "kubernetes_secret_v1" "facets-admin-token-data" {
   depends_on = [kubernetes_secret_v1.facets-admin-token]
+  metadata {
+    name = kubernetes_secret_v1.facets-admin-token.metadata[0].name
+    namespace = "default"
+  }
+}
+
+resource "null_resource" "add-k8s-creds-backend" {
+  depends_on = [kubernetes_secret_v1.facets-admin-token, data.kubernetes_secret_v1.facets-admin-token-data]
   triggers = {
     k8s_host = module.eks.cluster_endpoint
   }
   provisioner "local-exec" {
     command = <<EOF
-curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id}/credentials" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"kubernetesApiEndpoint\": \"${module.eks.cluster_endpoint}\", \"kubernetesToken\": \"${kubernetes_secret_v1.facets-admin-token.data["token"]}\"}" -H "X-DEPLOYER-INTERNAL-AUTH-TOKEN: ${var.cc_metadata.cc_auth_token}"
+curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id}/credentials" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"kubernetesApiEndpoint\": \"${module.eks.cluster_endpoint}\", \"kubernetesToken\": \"${data.kubernetes_secret_v1.facets-admin-token-data.data["token"]}\"}" -H "X-DEPLOYER-INTERNAL-AUTH-TOKEN: ${var.cc_metadata.cc_auth_token}"
 EOF
   }
 }
 
 resource "kubernetes_priority_class" "facets-critical" {
-  depends_on = [module.eks]
+  depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
   metadata {
     name = "facets-critical"
   }
