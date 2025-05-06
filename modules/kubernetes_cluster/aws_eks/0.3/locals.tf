@@ -22,6 +22,23 @@ locals {
       addon_version     = "v8.0.0-eksbuild.1"
     }
   }
+  cloud_tags = {
+    facetscontrolplane = split(".", var.cc_metadata.cc_host)[0]
+    cluster            = var.cluster.name
+    facetsclustername  = var.cluster.name
+    facetsclusterid    = var.cluster.id
+  }
+  addons = {
+    for name, attributes in local.cluster_addons : name => {
+      addon_version            = lookup(attributes, "addon_version", null)
+      configuration_values     = lookup(attributes, "configuration_values", null) != null ? lookup(attributes, "configuration_values", null) : null
+      resolve_conflicts        = lookup(attributes, "resolve_conflicts", null)
+      tags                     = merge(lookup(attributes, "tags", {}), local.cloud_tags)
+      preserve                 = lookup(attributes, "preserve", false)
+      service_account_role_arn = lookup(attributes, "service_account_role_arn", null)
+    }
+    if lookup(attributes, "enabled", true)
+  }
   cluster_compute_config = {
     enabled    = true
     node_pools = ["system"]

@@ -22,7 +22,6 @@ module "eks" {
   cluster_security_group_additional_rules  = local.cluster_security_group_additional_rules
   cloudwatch_log_group_retention_in_days   = local.cloudwatch_log_group_retention_in_days
   cluster_service_ipv4_cidr                = local.cluster_service_ipv4_cidr
-  cluster_addons                           = local.cluster_addons
   tags                                     = local.tags
 }
 
@@ -68,4 +67,22 @@ module "dedicated_node_pool" {
   data            = local.dedicated_node_pool_data
   advanced_config = {}
 
+}
+
+resource "aws_eks_addon" "addon" {
+  provider                 = "aws593"
+  depends_on               = [module.eks]
+  for_each                 = local.addons
+  cluster_name             = module.eks.cluster_id
+  addon_name               = each.key
+  addon_version            = each.value["addon_version"]
+  configuration_values     = each.value["configuration_values"]
+  resolve_conflicts        = each.value["resolve_conflicts"]
+  tags                     = each.value["tags"]
+  preserve                 = each.value["preserve"]
+  service_account_role_arn = each.value["service_account_role_arn"]
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
