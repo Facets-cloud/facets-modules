@@ -73,7 +73,7 @@ resource "aws_eks_addon" "addon" {
   provider                 = "aws593"
   depends_on               = [module.eks]
   for_each                 = local.addons
-  cluster_name             = module.eks.cluster_id
+  cluster_name             = module.eks.cluster_name
   addon_name               = each.key
   addon_version            = each.value["addon_version"]
   configuration_values     = each.value["configuration_values"]
