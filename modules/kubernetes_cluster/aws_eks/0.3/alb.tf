@@ -17,5 +17,5 @@ module "ingress_class" {
   namespace       = var.environment.namespace
   release_name    = "${local.name}-fc-alb-ig-class"
   advanced_config = {}
-  data            = local.alb_ig_class_data
+  data            = local.ingress_class_data
 }
