@@ -15,6 +15,13 @@ locals {
   cluster_endpoint_private_access_cidrs  = lookup(local.cluster, "cluster_endpoint_private_access_cidrs", [])
   cloudwatch_log_group_retention_in_days = lookup(local.cluster, "cloudwatch_log_group_retention_in_days", 90)
   cluster_service_ipv4_cidr              = lookup(local.cluster, "cluster_service_ipv4_cidr", null)
+  cluster_addons = {
+    snapshot-controller = {
+      enabled           = true
+      resolve_conflicts = "OVERWRITE"
+      addon_version     = "v8.0.0-eksbuild.1"
+    }
+  }
   cluster_compute_config = {
     enabled    = true
     node_pools = ["system"]

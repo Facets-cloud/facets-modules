@@ -22,6 +22,7 @@ module "eks" {
   cluster_security_group_additional_rules  = local.cluster_security_group_additional_rules
   cloudwatch_log_group_retention_in_days   = local.cloudwatch_log_group_retention_in_days
   cluster_service_ipv4_cidr                = local.cluster_service_ipv4_cidr
+  cluster_addons                           = local.cluster_addons
   tags                                     = local.tags
 }
 
