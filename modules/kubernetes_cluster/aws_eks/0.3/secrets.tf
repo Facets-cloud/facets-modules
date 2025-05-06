@@ -13,7 +13,7 @@ resource "kubernetes_service_account" "facets-admin" {
 
 resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
   depends_on = [
-    module.eks
+    kubernetes_service_account.facets-admin
   ]
   metadata {
     name = "facets-admin-crb"
@@ -31,9 +31,10 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
     namespace = "default"
   }
 }
+
 resource "kubernetes_secret_v1" "facets-admin-token" {
   depends_on = [
-    module.eks
+    kubernetes_service_account.facets-admin
   ]
   metadata {
     annotations = {
@@ -55,7 +56,6 @@ curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id
 EOF
   }
 }
-
 
 resource "kubernetes_priority_class" "facets-critical" {
   depends_on = [module.eks]
