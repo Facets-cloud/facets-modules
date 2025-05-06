@@ -1,6 +1,6 @@
 resource "kubernetes_service_account" "facets-admin" {
   depends_on = [
-    module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
+    module.eks
   ]
   metadata {
     name = "facets-admin"
@@ -13,7 +13,7 @@ resource "kubernetes_service_account" "facets-admin" {
 
 resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
   depends_on = [
-    module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
+    module.eks
   ]
   metadata {
     name = "facets-admin-crb"
@@ -33,7 +33,7 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
 }
 resource "kubernetes_secret_v1" "facets-admin-token" {
   depends_on = [
-    module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster
+    module.eks
   ]
   metadata {
     annotations = {
@@ -58,7 +58,7 @@ EOF
 
 
 resource "kubernetes_priority_class" "facets-critical" {
-  depends_on = [module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster]
+  depends_on = [module.eks]
   metadata {
     name = "facets-critical"
   }
