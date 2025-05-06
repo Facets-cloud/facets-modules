@@ -71,7 +71,7 @@ module "dedicated_node_pool" {
 
 resource "aws_eks_addon" "addon" {
   provider                 = "aws593"
-  depends_on               = [module.eks]
+  depends_on               = [module.eks, data.aws_eks_cluster.cluster, data.aws_eks_cluster_auth.cluster]
   for_each                 = local.addons
   cluster_name             = module.eks.cluster_name
   addon_name               = each.key
