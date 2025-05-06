@@ -20,10 +20,10 @@ spec:
         chart:
           type: string
           title: Chart
-          description:  Name of the Helm chart package
+          description: Name of the Helm chart package
           x-ui-placeholder: Enter name of the helm chart
-          pattern: '^[a-zA-Z]+(-[a-zA-Z]+)*[a-zA-Z]$'
-          x-ui-error-message: "Invalid format. Only alphabets and hypens are allowed"
+          pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*[a-zA-Z0-9]$'
+          x-ui-error-message: "Invalid format. Only alphabets, numbers, and hyphens are allowed"
         repository:
           type: string
           title: Repository
