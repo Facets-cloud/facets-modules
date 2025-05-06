@@ -41,7 +41,7 @@ locals {
   }
   cluster_compute_config = {
     enabled    = true
-    node_pools = ["system"]
+    node_pools = ["system", "general-purpose"]
   }
   cluster_security_group_additional_rules = { for idx, cidr in local.cluster_endpoint_private_access_cidrs :
     "ingress_private_cidr_${idx}" => {
