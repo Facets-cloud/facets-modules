@@ -28,7 +28,6 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
     namespace = "default"
   }
 }
-
 resource "kubernetes_secret_v1" "facets-admin-token" {
   depends_on = [kubernetes_service_account.facets-admin]
   metadata {
