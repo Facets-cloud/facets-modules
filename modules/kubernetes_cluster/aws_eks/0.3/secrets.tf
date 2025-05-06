@@ -1,7 +1,4 @@
 resource "kubernetes_service_account" "facets-admin" {
-  depends_on = [
-    module.eks
-  ]
   metadata {
     name = "facets-admin"
   }
@@ -12,9 +9,6 @@ resource "kubernetes_service_account" "facets-admin" {
 }
 
 resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
-  depends_on = [
-    kubernetes_service_account.facets-admin
-  ]
   metadata {
     name = "facets-admin-crb"
   }
@@ -33,9 +27,6 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
 }
 
 resource "kubernetes_secret_v1" "facets-admin-token" {
-  depends_on = [
-    kubernetes_service_account.facets-admin
-  ]
   metadata {
     annotations = {
       "kubernetes.io/service-account.name" = "facets-admin"
