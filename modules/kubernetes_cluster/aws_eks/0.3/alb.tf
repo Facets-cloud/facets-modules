@@ -1,5 +1,3 @@
-
-
 module "alb" {
   depends_on      = [module.eks]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
