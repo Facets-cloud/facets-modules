@@ -3,7 +3,7 @@
 module "alb" {
   depends_on      = [module.eks]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-alb"
+  name            = "alb"
   namespace       = var.environment.namespace
   release_name    = "${local.name}-fc-alb"
   data            = local.alb_data
@@ -13,7 +13,7 @@ module "alb" {
 module "ingress_class" {
   depends_on      = [module.alb]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-alb-ig-class"
+  name            = "alb"
   namespace       = var.environment.namespace
   release_name    = "${local.name}-fc-alb-ig-class"
   advanced_config = {}
