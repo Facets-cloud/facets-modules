@@ -51,7 +51,6 @@ data "kubernetes_secret_v1" "facets-admin-token-data" {
 }
 
 resource "null_resource" "add-k8s-creds-backend" {
-  provider = kubernetes.k8s
   depends_on = [kubernetes_secret_v1.facets-admin-token, data.kubernetes_secret_v1.facets-admin-token-data]
   triggers = {
     k8s_host = module.eks.cluster_endpoint
