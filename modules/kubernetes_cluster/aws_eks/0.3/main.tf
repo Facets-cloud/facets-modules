@@ -5,6 +5,7 @@ module "k8s_cluster" {
   instance      = var.instance
   instance_name = var.instance_name
   cluster       = var.cluster
+  cc_metadata   = var.cc_metadata
 }
 
 module "alb" {
