@@ -174,7 +174,6 @@ locals {
         cpu    = lookup(local.dedicated_node_pool, "max_size_cpu", 1000)
         memory = "${lookup(local.dedicated_node_pool, "max_size_memory", 1000)}Gi"
       }
-      # Consider adding disruption configuration if needed
       disruption = {
         consolidateAfter    = "1m"
         consolidationPolicy = lookup(local.dedicated_node_pool, "disruption_policy", "WhenEmptyOrUnderutilized")
