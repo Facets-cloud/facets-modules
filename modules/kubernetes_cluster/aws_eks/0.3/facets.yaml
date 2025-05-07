@@ -11,8 +11,26 @@ spec:
   x-ui-order:
     - cluster
     - node_pools
+    - secret_copier
     - tags
   properties:
+    secret_copier:
+      type: object
+      title: Secret Copier
+      description: Configuration for the Secret Copier.
+      x-ui-toggle: true
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable secret copier.
+          default: true
+        values:
+          type: object
+          title: Values
+          description: Values to pass to the secret copier.
+          default: {}
+          x-ui-yaml-editor: true
     cluster:
       type: object
       title: Cluster
