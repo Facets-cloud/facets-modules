@@ -83,7 +83,6 @@ provider "kubernetes" {
   cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate
   token                  = module.k8s_cluster.k8s_details.auth.token
 }
-
 provider "helm" {
   kubernetes {
     host                   = module.k8s_cluster.k8s_details.auth.host
