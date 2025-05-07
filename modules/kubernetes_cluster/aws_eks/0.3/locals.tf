@@ -169,7 +169,6 @@ locals {
           ]
         }
       }
-      # Limits should ideally be derived from local.default_node_pool configuration
       limits = {
         cpu    = lookup(local.dedicated_node_pool, "max_size_cpu", 1000)
         memory = "${lookup(local.dedicated_node_pool, "max_size_memory", 1000)}Gi"
