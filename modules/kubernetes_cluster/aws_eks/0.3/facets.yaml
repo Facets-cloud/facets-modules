@@ -29,14 +29,7 @@ spec:
           type: object
           title: Values
           description: Values to pass to the secret copier.
-          default:
-            resources:
-              requests:
-                cpu: "50m"
-                memory: "256Mi"
-              limits:
-                cpu: "300m"
-                memory: "1000Mi"
+          default: {}
           x-ui-yaml-editor: true
     cluster:
       type: object
@@ -299,6 +292,13 @@ sample:
     cluster_endpoint_private_access: true
     cluster_endpoint_public_access_cidrs: ["0.0.0.0/0"]
     cluster_endpoint_private_access_cidrs: ["0.0.0.0/0"]
+  secret_copier:
+    enabled: true
+    values:
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "256Mi"
   node_pools:
     dedicated:
       enabled: false
