@@ -59,7 +59,6 @@ variable "environment" {
     cloud_tags  = map(string)
   })
 }
-
 variable "inputs" {
   description = "A map of inputs requested by the module developer."
   type = object({
