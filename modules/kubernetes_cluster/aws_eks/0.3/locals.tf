@@ -1,4 +1,5 @@
 locals {
+  name                      = module.name.name
   spec                      = lookup(var.instance, "spec", {})
   cluster                   = lookup(local.spec, "cluster", {})
   node_pools                = lookup(local.spec, "node_pools", {})
