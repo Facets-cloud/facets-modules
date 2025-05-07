@@ -33,9 +33,7 @@ output "legacy_outputs" {
         effect   = "NoSchedule"
       }
     ] : [] : []
-    facets_dedicated_node_selectors = {
-      facets-node-type = "facets-dedicated"
-    }
+    facets_dedicated_node_selectors = {}
     k8s_details = {
       auth = {
         host                   = module.eks.cluster_endpoint
