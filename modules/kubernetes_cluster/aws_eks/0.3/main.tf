@@ -28,7 +28,6 @@ module "ingress_class" {
   data            = local.ingress_class_data
 }
 
-
 resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
   metadata {
