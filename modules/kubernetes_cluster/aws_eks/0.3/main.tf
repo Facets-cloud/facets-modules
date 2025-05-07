@@ -1,9 +1,10 @@
 module "k8s_cluster" {
-  source = "./k8s_cluster"
-  environment = var.environment
-  inputs = var.inputs
-  instance = var.instance
+  source        = "./k8s_cluster"
+  environment   = var.environment
+  inputs        = var.inputs
+  instance      = var.instance
   instance_name = var.instance_name
+  cluster       = var.cluster
 }
 
 module "alb" {
@@ -69,15 +70,15 @@ module "dedicated_node_pool" {
 
 
 provider "kubernetes" {
-  host                   = module.k8s_cluster.auth.host
-  cluster_ca_certificate = module.k8s_cluster.auth.cluster_ca_certificate
-  token                  = module.k8s_cluster.auth.token
+  host                   = module.k8s_cluster.k8s_details.auth.host
+  cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate
+  token                  = module.k8s_cluster.k8s_details.auth.token
 }
 
 provider "helm" {
   kubernetes {
-    host                   = module.k8s_cluster.auth.host
-    cluster_ca_certificate = module.k8s_cluster.auth.cluster_ca_certificate
-    token                  = module.k8s_cluster.auth.token
+    host                   = module.k8s_cluster.k8s_details.auth.host
+    cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate
+    token                  = module.k8s_cluster.k8s_details.auth.token
   }
 }

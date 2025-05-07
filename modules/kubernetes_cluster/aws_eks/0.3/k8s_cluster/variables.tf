@@ -38,6 +38,15 @@ variable "instance" {
 
 }
 
+variable "cluster" {
+  description = "cluster object configuration"
+  type = object({
+    clusterCode = string
+    name = string
+  })
+  default = {}
+}
+
 variable "instance_name" {
   description = "The architectural name for the resource as added in the Facets blueprint designer."
   type        = string
@@ -69,6 +78,7 @@ variable "inputs" {
           vpc_details = object({
             vpc_id             = string
             private_subnet_ids = list(string)
+            public_subnet_ids  = list(string)
           })
         })
       })
