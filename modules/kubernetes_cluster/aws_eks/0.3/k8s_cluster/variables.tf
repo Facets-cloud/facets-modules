@@ -40,10 +40,7 @@ variable "instance" {
 
 variable "cluster" {
   description = "cluster object configuration"
-  type = object({
-    clusterCode = string
-    name = string
-  })
+  type = any
   default = {}
 }
 
