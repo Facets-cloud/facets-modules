@@ -82,3 +82,30 @@ provider "helm" {
     token                  = module.k8s_cluster.k8s_details.auth.token
   }
 }
+
+
+resource "helm_release" "secret-copier" {
+  count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1
+  chart      = lookup(local.secret_copier, "chart", "secret-copier")
+  namespace  = lookup(local.secret_copier, "namespace", local.namespace)
+  name       = lookup(local.secret_copier, "name", "facets-secret-copier")
+  repository = lookup(local.secret_copier, "repository", "https://facets-cloud.github.io/helm-charts")
+  version    = lookup(local.secret_copier, "version", "1.0.2")
+  values = [
+    yamlencode(
+      {
+        resources = {
+          requests = {
+            cpu    = "50m"
+            memory = "256Mi"
+          }
+          limits = {
+            cpu    = "300m"
+            memory = "1000Mi"
+          }
+        }
+      }
+    ),
+    yamlencode(local.user_supplied_helm_values)
+  ]
+}

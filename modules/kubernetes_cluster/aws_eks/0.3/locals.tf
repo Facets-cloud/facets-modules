@@ -1,10 +1,13 @@
 locals {
-  spec                   = lookup(var.instance, "spec", {})
-  cluster                = lookup(local.spec, "cluster", {})
-  node_pools          = lookup(local.spec, "node_pools", {})
-  default_node_pool   = lookup(local.node_pools, "default", {})
-  dedicated_node_pool = lookup(local.node_pools, "dedicated", {})
-  default_reclaim_policy = lookup(local.cluster, "default_reclaim_policy", "Delete")
+  spec                      = lookup(var.instance, "spec", {})
+  cluster                   = lookup(local.spec, "cluster", {})
+  node_pools                = lookup(local.spec, "node_pools", {})
+  default_node_pool         = lookup(local.node_pools, "default", {})
+  dedicated_node_pool       = lookup(local.node_pools, "dedicated", {})
+  default_reclaim_policy    = lookup(local.cluster, "default_reclaim_policy", "Delete")
+  namespace                 = lookup(var.cluster, "namespace", "default")
+  user_supplied_helm_values = lookup(local.secret_copier, "values", {})
+  secret_copier             = lookup(local.spec, "secret-copier", {})
   cloud_tags = {
     facetscontrolplane = split(".", var.cc_metadata.cc_host)[0]
     cluster            = var.cluster.name
@@ -128,7 +131,7 @@ locals {
             {
               key    = "facets.cloud/dedicated"
               value  = "true"
-              effect = "NoSchedule" # Changed from "NO_SCHEDULE" to "NoSchedule"
+              effect = "NoSchedule"
             }
           ]
           requirements = [
