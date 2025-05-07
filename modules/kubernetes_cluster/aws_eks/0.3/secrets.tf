@@ -1,5 +1,5 @@
 resource "kubernetes_service_account" "facets-admin" {
-  depends_on = [module.eks]
+  depends_on = [module.k8s_cluster]
   provider   = kubernetes
   metadata {
     name = "facets-admin"
@@ -61,7 +61,7 @@ EOF
 }
 
 resource "kubernetes_priority_class" "facets-critical" {
-  depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
+  depends_on = [module.k8s_cluster, kubernetes_cluster_role_binding.facets-admin-crb]
   metadata {
     name = "facets-critical"
   }
