@@ -22,6 +22,7 @@ output "k8s_details" {
           cluster_ca_certificate = try(kubernetes_secret_v1.facets-admin-token.data["ca.crt"], "na")
           token                  = try(kubernetes_secret_v1.facets-admin-token.data["token"], "na")
         }
+        eks_auto_mode_enabled    = true
         oidc_provider_arn        = module.eks.oidc_provider_arn
         cluster_id               = module.eks.cluster_id
         cluster_oidc_issuer_url  = module.eks.cluster_oidc_issuer_url
