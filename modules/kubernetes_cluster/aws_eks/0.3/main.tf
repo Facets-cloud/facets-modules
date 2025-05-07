@@ -1,3 +1,12 @@
+module "name" {
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
+  environment     = var.environment
+  limit           = 32
+  resource_name   = var.instance_name
+  resource_type   = "kubernetes_cluster"
+  globally_unique = true
+}
+
 module "k8s_cluster" {
   source        = "./k8s_cluster"
   environment   = var.environment
@@ -29,7 +38,7 @@ module "ingress_class" {
 }
 
 resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
-  depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
+  depends_on = [module.k8s_cluster]
   metadata {
     name = "eks-auto-mode-gp3-sc"
     annotations = {
@@ -47,7 +56,7 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
 }
 
 module "default_node_pool" {
-  depends_on      = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
+  depends_on      = [module.k8s_cluster]
   count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-default-np"
@@ -58,7 +67,7 @@ module "default_node_pool" {
 }
 
 module "dedicated_node_pool" {
-  depends_on      = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
+  depends_on      = [module.k8s_cluster]
   count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-fc-dedicated-np"
@@ -85,6 +94,7 @@ provider "helm" {
 
 
 resource "helm_release" "secret-copier" {
+  depends_on = [module.k8s_cluster]
   count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1
   chart      = lookup(local.secret_copier, "chart", "secret-copier")
   namespace  = lookup(local.secret_copier, "namespace", local.namespace)
