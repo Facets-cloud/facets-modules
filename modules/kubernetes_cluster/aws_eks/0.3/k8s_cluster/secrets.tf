@@ -1,4 +1,5 @@
 resource "kubernetes_service_account" "facets-admin" {
+  provider = kubernetes.k8s
   metadata {
     name = "facets-admin"
   }
@@ -9,6 +10,7 @@ resource "kubernetes_service_account" "facets-admin" {
 }
 
 resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
+  provider = kubernetes.k8s
   depends_on = [kubernetes_service_account.facets-admin]
   metadata {
     name = "facets-admin-crb"
@@ -27,6 +29,7 @@ resource "kubernetes_cluster_role_binding" "facets-admin-crb" {
   }
 }
 resource "kubernetes_secret_v1" "facets-admin-token" {
+  provider = kubernetes.k8s
   depends_on = [kubernetes_service_account.facets-admin]
   metadata {
     annotations = {
@@ -39,6 +42,7 @@ resource "kubernetes_secret_v1" "facets-admin-token" {
 
 # Export credentials to be used by the Terraform providers
 data "kubernetes_secret_v1" "facets-admin-token-data" {
+  provider = kubernetes.k8s
   depends_on = [kubernetes_secret_v1.facets-admin-token]
   metadata {
     name = kubernetes_secret_v1.facets-admin-token.metadata[0].name
@@ -47,6 +51,7 @@ data "kubernetes_secret_v1" "facets-admin-token-data" {
 }
 
 resource "null_resource" "add-k8s-creds-backend" {
+  provider = kubernetes.k8s
   depends_on = [kubernetes_secret_v1.facets-admin-token, data.kubernetes_secret_v1.facets-admin-token-data]
   triggers = {
     k8s_host = module.eks.cluster_endpoint
@@ -59,6 +64,7 @@ EOF
 }
 
 resource "kubernetes_priority_class" "facets-critical" {
+  provider = kubernetes.k8s
   depends_on = [kubernetes_cluster_role_binding.facets-admin-crb]
   metadata {
     name = "facets-critical"
