@@ -44,6 +44,11 @@ variable "cluster" {
   default = {}
 }
 
+variable "cc_metadata" {
+  description = "cc_metadata object configuration"
+  type = any
+}
+
 variable "instance_name" {
   description = "The architectural name for the resource as added in the Facets blueprint designer."
   type        = string
