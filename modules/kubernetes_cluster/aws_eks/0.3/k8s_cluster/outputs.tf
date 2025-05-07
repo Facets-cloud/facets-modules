@@ -31,9 +31,9 @@ output "legacy_outputs" {
       cluster_id               = module.eks.cluster_id
       cluster_oidc_issuer_url  = module.eks.cluster_oidc_issuer_url
       cluster_version          = module.eks.cluster_version
-      node_group_iam_role_arn  = ""
-      node_group_iam_role_name = ""
-      worker_nodes_secgrp      = ""
+      node_group_iam_role_arn  = module.eks.node_iam_role_arn
+      node_group_iam_role_name = module.eks.node_iam_role_name
+      worker_nodes_secgrp      = module.eks.node_security_group_id
     }
     aws_cloud = {
       region = var.cluster.awsRegion

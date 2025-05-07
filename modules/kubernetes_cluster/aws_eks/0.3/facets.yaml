@@ -29,7 +29,14 @@ spec:
           type: object
           title: Values
           description: Values to pass to the secret copier.
-          default: {}
+          default:
+            resources:
+              requests:
+                cpu: "50m"
+                memory: "256Mi"
+              limits:
+                cpu: "300m"
+                memory: "1000Mi"
           x-ui-yaml-editor: true
     cluster:
       type: object
