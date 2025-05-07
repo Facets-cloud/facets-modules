@@ -78,7 +78,6 @@ module "dedicated_node_pool" {
   advanced_config = {}
 }
 
-
 provider "kubernetes" {
   host                   = module.k8s_cluster.k8s_details.auth.host
   cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate

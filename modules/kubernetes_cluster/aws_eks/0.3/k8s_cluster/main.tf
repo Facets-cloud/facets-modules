@@ -38,7 +38,7 @@ module "eks" {
 resource "aws_eks_addon" "addon" {
   provider                 = "aws593"
   depends_on               = [
-    module.eks
+    null_resource.add-k8s-creds-backend
   ]
   for_each                 = local.addons
   cluster_name             = module.eks.cluster_name
