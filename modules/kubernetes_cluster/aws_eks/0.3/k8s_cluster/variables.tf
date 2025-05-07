@@ -81,6 +81,7 @@ variable "inputs" {
             vpc_id             = string
             private_subnet_ids = list(string)
             public_subnet_ids  = list(string)
+            k8s_subnets        = list(string)
           })
         })
       })

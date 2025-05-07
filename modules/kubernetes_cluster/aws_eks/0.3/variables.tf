@@ -69,6 +69,7 @@ variable "inputs" {
           vpc_details = object({
             vpc_id             = string
             private_subnet_ids = list(string)
+            k8s_subnets        = list(string)
           })
         })
       })
