@@ -93,7 +93,6 @@ provider "helm" {
   }
 }
 
-
 resource "helm_release" "secret-copier" {
   depends_on = [module.k8s_cluster]
   count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1

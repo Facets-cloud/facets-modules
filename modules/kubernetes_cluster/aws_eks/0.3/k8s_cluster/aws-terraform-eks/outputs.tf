@@ -38,7 +38,7 @@ output "cluster_endpoint" {
 
 output "cluster_id" {
   description = "The ID of the EKS cluster. Note: currently a value is returned only for local EKS clusters created on Outposts"
-  value       = try(aws_eks_cluster.this[0].cluster_id, "")
+  value       = try(aws_eks_cluster.this[0].id, "")
 }
 
 output "cluster_name" {
