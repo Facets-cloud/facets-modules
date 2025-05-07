@@ -82,3 +82,9 @@ variable "cluster" {
   type = any
   default = {}
 }
+
+variable "cc_metadata" {
+  description = "cc_metadata object configuration"
+  type = any
+  default = {}
+}

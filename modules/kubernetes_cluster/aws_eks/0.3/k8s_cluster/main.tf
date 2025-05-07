@@ -26,8 +26,8 @@ module "eks" {
   cluster_endpoint_public_access_cidrs     = local.cluster_endpoint_public_access_cidrs
   enable_cluster_creator_admin_permissions = true
   cluster_enabled_log_types                = local.cluster_enabled_log_types
-  vpc_id                                   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.vpc_id
-  subnet_ids                               = var.inputs.network_details.attributes.legacy_outputs.vpc_details.k8s_subnets
+  vpc_id                                   = var.vpc_id
+  subnet_ids                               = var.k8s_subnets
   cluster_security_group_additional_rules  = local.cluster_security_group_additional_rules
   cloudwatch_log_group_retention_in_days   = local.cloudwatch_log_group_retention_in_days
   cluster_service_ipv4_cidr                = local.cluster_service_ipv4_cidr
