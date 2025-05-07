@@ -1,29 +1,31 @@
-module "name" {
-  source          = "github.com/Facets-cloud/facets-utility-modules//name"
-  environment     = var.environment
-  limit           = 32
-  resource_name   = var.instance_name
-  resource_type   = "kubernetes_cluster"
-  globally_unique = true
+module "k8s_cluster" {
+  source = "./k8s_cluster"
+  environment = var.environment
+  inputs = var.inputs
+  instance = var.instance
+  instance_name = var.instance_name
 }
 
-module "eks" {
-  source                                   = "./aws-terraform-eks"
-  cluster_name                             = "${substr(var.cluster.name, 0, 38 - 11 - 12)}-${var.cluster.clusterCode}-k8s-cluster"
-  cluster_compute_config                   = local.cluster_compute_config
-  cluster_version                          = local.kubernetes_version
-  cluster_endpoint_public_access           = local.cluster_endpoint_public_access
-  cluster_endpoint_private_access          = local.cluster_endpoint_private_access
-  cluster_endpoint_public_access_cidrs     = local.cluster_endpoint_public_access_cidrs
-  enable_cluster_creator_admin_permissions = true
-  cluster_enabled_log_types                = local.cluster_enabled_log_types
-  vpc_id                                   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.vpc_id
-  subnet_ids                               = var.inputs.network_details.attributes.legacy_outputs.vpc_details.k8s_subnets
-  cluster_security_group_additional_rules  = local.cluster_security_group_additional_rules
-  cloudwatch_log_group_retention_in_days   = local.cloudwatch_log_group_retention_in_days
-  cluster_service_ipv4_cidr                = local.cluster_service_ipv4_cidr
-  tags                                     = local.tags
+module "alb" {
+  depends_on      = [module.k8s_cluster]
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  name            = "alb"
+  namespace       = var.environment.namespace
+  release_name    = "${local.name}-fc-alb"
+  data            = local.alb_data
+  advanced_config = {}
 }
+
+module "ingress_class" {
+  depends_on      = [module.alb]
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  name            = "alb"
+  namespace       = var.environment.namespace
+  release_name    = "${local.name}-fc-alb-ig-class"
+  advanced_config = {}
+  data            = local.ingress_class_data
+}
+
 
 resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   depends_on = [module.eks, kubernetes_cluster_role_binding.facets-admin-crb]
@@ -65,22 +67,17 @@ module "dedicated_node_pool" {
   advanced_config = {}
 }
 
-resource "aws_eks_addon" "addon" {
-  provider                 = "aws593"
-  depends_on               = [
-    module.eks, module.default_node_pool, module.dedicated_node_pool
-  ]
-  for_each                 = local.addons
-  cluster_name             = module.eks.cluster_name
-  addon_name               = each.key
-  addon_version            = each.value["addon_version"]
-  configuration_values     = each.value["configuration_values"]
-  resolve_conflicts        = each.value["resolve_conflicts"]
-  tags                     = each.value["tags"]
-  preserve                 = each.value["preserve"]
-  service_account_role_arn = each.value["service_account_role_arn"]
 
-  lifecycle {
-    prevent_destroy = true
+provider "kubernetes" {
+  host                   = module.k8s_cluster.auth.host
+  cluster_ca_certificate = module.k8s_cluster.auth.cluster_ca_certificate
+  token                  = module.k8s_cluster.auth.token
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = module.k8s_cluster.auth.host
+    cluster_ca_certificate = module.k8s_cluster.auth.cluster_ca_certificate
+    token                  = module.k8s_cluster.auth.token
   }
 }
