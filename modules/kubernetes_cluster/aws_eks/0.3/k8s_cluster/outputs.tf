@@ -18,21 +18,7 @@ output "k8s_details" {
 output "legacy_outputs" {
   value = {
     registry_secret_objects = []
-    facets_dedicated_tolerations = var.cluster.cloud != "KUBERNETES" ? try(var.instance.spec.node_pools.facets-dedicated.enabled, false) ? var.cluster.cloud != "GCP" ? [
-      {
-        key      = "facets.cloud/dedicated"
-        value    = "true"
-        operator = "Equal"
-        effect   = "NoSchedule"
-      }
-      ] : [
-      {
-        key      = "components.gke.io/gke-managed-components"
-        value    = "true"
-        operator = "Equal"
-        effect   = "NoSchedule"
-      }
-    ] : [] : []
+    facets_dedicated_tolerations = []
     facets_dedicated_node_selectors = {}
     k8s_details = {
       auth = {
