@@ -1,0 +1,10 @@
+{
+  "kind": "network",
+  "flavor": "gcp_vpc",
+  "version": "0.1",
+  "lifecycle": "ENVIRONMENT_NO_DEPS",
+  "disabled": true,
+  "depends_on": [],
+  "metadata": {},
+  "spec": {}
+}
