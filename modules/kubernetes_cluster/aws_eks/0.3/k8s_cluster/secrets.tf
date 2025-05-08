@@ -41,24 +41,15 @@ resource "kubernetes_secret_v1" "facets-admin-token" {
   type = "kubernetes.io/service-account-token"
 }
 
-# Export credentials to be used by the Terraform providers
-data "kubernetes_secret_v1" "facets-admin-token-data" {
-  provider = kubernetes.k8s
-  depends_on = [kubernetes_secret_v1.facets-admin-token]
-  metadata {
-    name = kubernetes_secret_v1.facets-admin-token.metadata[0].name
-    namespace = "default"
-  }
-}
 
 resource "null_resource" "add-k8s-creds-backend" {
-  depends_on = [kubernetes_secret_v1.facets-admin-token, data.kubernetes_secret_v1.facets-admin-token-data]
+  depends_on = [kubernetes_secret_v1.facets-admin-token]
   triggers = {
     k8s_host = module.eks.cluster_endpoint
   }
   provisioner "local-exec" {
     command = <<EOF
-curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id}/credentials" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"kubernetesApiEndpoint\": \"${module.eks.cluster_endpoint}\", \"kubernetesToken\": \"${data.kubernetes_secret_v1.facets-admin-token-data.data["token"]}\"}" -H "X-DEPLOYER-INTERNAL-AUTH-TOKEN: ${var.cc_metadata.cc_auth_token}"
+curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id}/credentials" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"kubernetesApiEndpoint\": \"${module.eks.cluster_endpoint}\", \"kubernetesToken\": \"${try(kubernetes_secret_v1.facets-admin-token.data["token"], "na")}\"}" -H "X-DEPLOYER-INTERNAL-AUTH-TOKEN: ${var.cc_metadata.cc_auth_token}"
 EOF
   }
 }
