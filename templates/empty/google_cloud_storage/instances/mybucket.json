@@ -1,0 +1,13 @@
+{
+  "$schema": "https://facets-cloud.github.io/facets-schemas/schemas/google_cloud_storage/google_cloud_storage.schema.json",
+  "kind": "google_cloud_storage",
+  "flavor": "default",
+  "version": "0.1",
+  "metadata": {
+    "tags": {
+      "managed-by": "facets"
+    }
+  },
+  "spec": {},
+  "advanced": {}
+}
