@@ -1,4 +1,5 @@
 resource "kubernetes_service_account" "facets-admin" {
+  depends_on = [ module.eks ]
   provider = kubernetes.k8s
   metadata {
     name = "facets-admin"
