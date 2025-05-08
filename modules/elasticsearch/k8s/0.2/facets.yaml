@@ -2,6 +2,9 @@ intent: elasticsearch
 flavor: k8s
 version: '0.2'
 description: Adds elasticsearch - k8s flavor
+iac-tool: 
+  - terraform
+  - opentofu
 clouds:
 - gcp
 - kubernetes
