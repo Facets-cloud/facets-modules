@@ -90,7 +90,6 @@ provider "helm" {
     token                  = module.k8s_cluster.k8s_details.auth.token
   }
 }
-
 resource "helm_release" "secret-copier" {
   depends_on = [module.k8s_cluster]
   count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1
