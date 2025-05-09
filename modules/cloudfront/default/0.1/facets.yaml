@@ -83,10 +83,16 @@ spec:
                       - allExcept
                       - all
                   cookies:
-                    type: array
+                    type: object
                     title: Cookies
                     description: Contains a list of cookie names
-                    x-ui-placeholder: "Enter the cookie name"
+                    properties:
+                      items:
+                        type: array
+                        description: List of cookie names
+                        items:
+                          type: string
+                          x-ui-placeholder: "Enter the cookie name"
               headers_config:
                 type: object
                 title: Headers Config
@@ -100,10 +106,16 @@ spec:
                       - none
                       - whitelist
                   headers:
-                    type: array
+                    type: object
                     title: Headers
-                  description: List of HTTP header names
-                  x-ui-placeholder: "Enter the header name"
+                    description: List of HTTP header names
+                    properties:
+                      items:
+                        type: array
+                        description: List of HTTP header names
+                        items:
+                          type: string
+                          x-ui-placeholder: "Enter the header name."
               query_strings_config:
                 type: object
                 title: Query Strings Config
@@ -245,10 +257,11 @@ sample:
           cookies_config:
             cookie_behavior: "whitelist"
             cookies:
-              items:
-                - ""
+              items: []
           headers_config:
             header_behavior: "none"
+            headers:
+              items: []
           query_strings_config:
             query_string_behavior: "none"
           enable_accept_encoding_brotli: false
