@@ -60,7 +60,6 @@ spec:
               default: 90
               minimum: 1
               maximum: 365
-              default: 90
               x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.cluster.kms_keys.enable_rotation
