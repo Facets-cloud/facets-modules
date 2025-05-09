@@ -155,7 +155,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.node_pools.dedicated.enabled
                 values: [true]
             max_size_memory:
               type: number
@@ -164,7 +164,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.node_pools.dedicated.enabled
                 values: [true]
             instance_types:
               type: string
@@ -172,7 +172,7 @@ spec:
               description: EC2 instance types for the worker nodes.
               default: "t3.medium"
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.node_pools.dedicated.enabled
                 values: [true]
             capacity_type:
               type: string
@@ -209,7 +209,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.default.enabled
+                field: spec.node_pools.default.enabled
                 values: [true]
             max_size_memory:
               type: number
@@ -218,7 +218,7 @@ spec:
               default: 1000
               x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
               x-ui-visible-if:
-                field: spec.cluster.default.enabled
+                field: spec.node_pools.default.enabled
                 values: [true]
             instance_types:
               type: string
@@ -226,7 +226,7 @@ spec:
               description: EC2 instance types for the worker nodes.
               default: "t3.medium"
               x-ui-visible-if:
-                field: spec.cluster.default.enabled
+                field: spec.node_pools.default.enabled
                 values: [true]
             capacity_type:
               type: string
@@ -237,7 +237,7 @@ spec:
                 - "on-demand"
                 - "spot"
               x-ui-visible-if:
-                field: spec.cluster.default.enabled
+                field: spec.node_pools.default.enabled
                 values: [true]
           required:
             - enabled
