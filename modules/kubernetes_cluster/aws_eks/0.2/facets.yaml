@@ -21,7 +21,7 @@ spec:
         cloudwatch_log_retention_days:
           title: CloudWatch Log Retention Days
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
-          type: number
+          type: integer
           default: 365
           minimum: 1
           maximum: 3650
@@ -44,7 +44,7 @@ spec:
             deletion_window_in_days:
               title: Deletion Window
               description: Waiting period in days after which kms keys are deleted
-              type: number
+              type: integer
               minimum: 7
               maximum: 30
               default: 7
@@ -59,7 +59,7 @@ spec:
             rotation_period_in_days:
               title: Rotation Period for KMS in days
               description: Specifies Rotation Period for KMS in days
-              type: number
+              type: integer
               default: 90
               minimum: 1
               maximum: 365
@@ -102,7 +102,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               default: 100
               minimum: 30
               maximum: 500
@@ -120,7 +120,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 200
@@ -155,7 +155,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               default: 100
               minimum: 30
               maximum: 500
@@ -179,7 +179,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 8
@@ -244,7 +244,7 @@ spec:
             max_nodes: 
               title: Max nodes
               description: Maximum number of nodes in nodepool
-              type: number
+              type: integer
               minimum: 0
               maximum: 100
               default: 100
