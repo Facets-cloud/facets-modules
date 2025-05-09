@@ -23,7 +23,7 @@ spec:
           description:  Name of the Helm chart package
           x-ui-placeholder: Enter name of the helm chart
           pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*[a-zA-Z0-9]$'
-          x-ui-error-message: "Invalid format. Only alphabets and hypens are allowed"
+          x-ui-error-message: "Invalid format. Only alphabets, numbers and hypens are allowed"
         repository:
           type: string
           title: Repository
