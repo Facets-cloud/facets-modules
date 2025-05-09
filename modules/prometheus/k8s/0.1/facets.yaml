@@ -1,0 +1,411 @@
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@output/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+outputs:
+  default:
+    type: "@outputs/prometheus"
+intent: prometheus
+version: "0.1"
+flavor: k8s
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Prometheus Stack
+  type: object
+  properties:
+    metadata:
+        type: object
+        title: Metadata
+        description: Metadata for the Prometheus stack
+        properties:
+            namespace:
+              type: string
+              title: Namespace
+              description: Kubernetes namespace for the Prometheus stack
+              default: "default"
+              pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+              x-ui-placeholder: "e.g., monitoring, prometheus, default"
+    values:
+      type: object
+      title: Custom Values
+      description: Additional values to pass to the Prometheus helm chart in YAML format
+      default: "{}"
+      x-ui-yaml-editor: true
+
+    node_selector:
+      type: object
+      title: Node Selector
+      description: Node selector configuration for Prometheus components
+      patternProperties:
+        "^[a-zA-Z0-9_.-]*$":
+          type: object
+          title: Node Selector Label
+          description: Node selector label configuration
+          properties:
+            key:
+              type: string
+              title: Label Key
+              description: Kubernetes node label key
+            value:
+              type: string
+              title: Label Value
+              description: Value for the node selector label
+          required:
+            - key
+            - value
+
+    tolerations:
+      type: object
+      title: Tolerations
+      description: Pod tolerations for Prometheus components in YAML format
+      default: "[]"
+      x-ui-yaml-editor: true
+
+    enable_crds:
+      type: boolean
+      title: Install CRDs
+      description: Enable/disable CRD installation
+      default: true
+
+    operator:
+      type: object
+      title: Prometheus Operator
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Operator
+          description: Enable/disable Prometheus operator
+          default: true
+        size:
+          x-ui-visible-if:
+            field: spec.operator.enabled
+            values: [ true ]
+          type: object
+          title: Operator Size
+          properties:
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Request
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Request
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Limit
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Limit
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+
+    prometheus:
+      type: object
+      title: Prometheus Server
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Prometheus
+          description: Enable/disable Prometheus server
+          default: true
+        retention:
+          type: string
+          title: Data Retention
+          description: Time duration Prometheus shall retain data for
+          default: "100d"
+          pattern: "^[0-9]+(d|h|m)$"
+          x-ui-visible-if:
+            field: spec.prometheus.enabled
+            values: [ true ]
+          x-ui-placeholder: "e.g., 100d, 24h, 1440m"
+        size:
+          type: object
+          title: Server Size
+          x-ui-visible-if:
+            field: spec.prometheus.enabled
+            values: [ true ]
+          properties:
+            volume:
+              type: string
+              title: Volume Size
+              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
+              default: "100Gi"
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Request
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      title: Memory Request
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "4Gi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Limit
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      title: Memory Limit
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "4Gi"
+
+    grafana:
+      type: object
+      title: Grafana
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Grafana
+          description: Enable/disable Grafana
+          default: true
+        size:
+          type: object
+          title: Grafana Size
+          x-ui-visible-if:
+            field: spec.grafana.enabled
+            values: [ true ]
+          properties:
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Request
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Request
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Limit
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Limit
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+
+    alertmanager:
+      type: object
+      title: Alertmanager
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Alertmanager
+          description: Enable/disable Alertmanager
+          default: true
+        size:
+          type: object
+          title: Alertmanager Size
+          x-ui-visible-if:
+            field: spec.alertmanager.enabled
+            values: [ true ]
+          properties:
+            volume:
+              type: string
+              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
+              default: "10Gi"
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Request
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      title: Memory Request
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "2Gi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Limit
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "1000m"
+                    memory:
+                      type: string
+                      title: Memory Limit
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "2Gi"
+
+    kube-state-metrics:
+      type: object
+      title: Kube State Metrics
+      properties:
+        enabled:
+          type: boolean
+          title: Enable KSM
+          description: Enable/disable kube-state-metrics
+          default: true
+        collectors:
+          type: array
+          title: Collector
+          description: list of collectors
+          x-ui-placeholder: "pass collectors"
+          x-ui-visible-if:
+            field: spec.kube-state-metrics.enabled
+            values: [ true ]
+        size:
+          type: object
+          title: KSM Size
+          x-ui-visible-if:
+            field: spec.kube-state-metrics.enabled
+            values: [ true ]
+          properties:
+            resources:
+              type: object
+              properties:
+                requests:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Request
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Request
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+                limits:
+                  type: object
+                  properties:
+                    cpu:
+                      type: string
+                      title: CPU Limit
+                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+                      default: "200m"
+                    memory:
+                      type: string
+                      title: Memory Limit
+                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+                      default: "512Mi"
+  x-ui-order:
+    - metadata
+    - operator
+    - enable_crds
+    - prometheus
+    - alertmanager
+    - grafana
+    - kube-state-metrics
+    - node_selector
+    - tolerations
+    - values
+
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/prometheus/prometheus.schema.json
+  flavor: k8s
+  metadata:
+    namespace:
+  kind: prometheus
+  version: "0.1"
+  disabled: true
+  spec:
+    enable_crds: true
+    node_selector: {}
+    tolerations: []
+    values: {}
+    operator:
+      enabled: true
+      size:
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
+    prometheus:
+      enabled: true
+      retention: "100d"
+      size:
+        volume: "100Gi"
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "4Gi"
+          limits:
+            cpu: "1000m"
+            memory: "4Gi"
+    grafana:
+      enabled: true
+      size:
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
+    alertmanager:
+      enabled: true
+      size:
+        volume: "10Gi"
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "2Gi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+    kube-state-metrics:
+      enabled: true
+      collectors: []
+      size:
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
