@@ -17,13 +17,13 @@ spec:
     min_node_count:
       title: Min Node Count
       description: Minimum number of nodes which should exist within this node pool
-      type: number
+      type: integer
       minimum: 0
       maximum: 100
     max_node_count:
       title: Max Node Count
       description: Maximum number of nodes which should exist within this node pool
-      type: number
+      type: integer
       minimum: 0
       maximum: 100
     is_public:
@@ -33,7 +33,7 @@ spec:
     disk_size:
       title: Disk Size
       description: Size of the Disk in GiB for node in this node pool
-      type: number
+      type: integer
       minimum: 50
       maximum: 1000
     azs:

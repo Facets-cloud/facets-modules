@@ -31,11 +31,11 @@ spec:
           replication_factor:
             title: Replication Factor
             description: The replication factor for each partition in the topic being created.
-            type: number
+            type: integer
           partitions:
             title: Partitions
             description: "The number of partitions for the topic being created or altered."
-            type: number
+            type: integer
           configs:
             title: Configs
             description: A topic configuration override for the topic

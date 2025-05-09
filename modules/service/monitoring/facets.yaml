@@ -146,7 +146,7 @@ spec:
               title: Severity
               description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: number
+              type: integer
               title: Threshold
               description: The threshold cpu throttling percentage at which the alert is triggered
               minimum: 0
