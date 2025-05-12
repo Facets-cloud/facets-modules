@@ -2,7 +2,7 @@ resource "helm_release" "database-operator" {
   name             = "database-operator"
   repository       = "https://facets-cloud.github.io/helm-charts"
   chart            = "database-operator"
-  version          = lookup(local.database_operator, "version", "1.0.1")
+  version          = lookup(local.database_operator, "version", "1.1.0")
   cleanup_on_fail  = lookup(local.database_operator, "cleanup_on_fail", true)
   namespace        = local.namespace
   create_namespace = lookup(local.database_operator, "create_namespace", false)
