@@ -534,9 +534,7 @@ spec:
                   name:
                     type: string
                     title: Name
-                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: Config map name
-                    x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                     x-ui-typeable: true
                     x-ui-api-source:
                       endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
@@ -611,9 +609,7 @@ spec:
                   claim_name:
                     type: string
                     title: Claim Name
-                    pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
                     description: PVC name
-                    x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                     x-ui-typeable: true
                     x-ui-api-source:
                       endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
@@ -882,8 +878,6 @@ spec:
                           type: string
                           title: Name
                           description: Config map name
-                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                           x-ui-typeable: true
                           x-ui-api-source:
                             endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
@@ -956,8 +950,6 @@ spec:
                           type: string
                           title: Claim Name
                           description: PVC name
-                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                           x-ui-typeable: true
                           x-ui-api-source:
                             endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
@@ -1132,8 +1124,6 @@ spec:
                           type: string
                           title: Name
                           description: Config map name
-                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                           x-ui-typeable: true
                           x-ui-api-source:
                             endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
@@ -1206,8 +1196,6 @@ spec:
                           type: string
                           title: Claim Name
                           description: PVC name
-                          pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                          x-ui-error-message: "Value doesn't match pattern, it should start with an alphanumeric character and should be in range of 3-20 characters"
                           x-ui-typeable: true
                           x-ui-api-source:
                             endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
