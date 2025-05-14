@@ -15,10 +15,6 @@ spec:
       type: boolean
       title: Basic Authentication
       description: Enable/disable basic auth
-    grpc:
-      type: boolean
-      title: GRPC
-      description: Enable/disable GRPC support
     private:
       type: boolean
       title: Private
@@ -46,6 +42,41 @@ spec:
             title: Alias
             description: Alias for the domain
         required: [ "domain", "alias" ]
+    more_set_headers:
+      type: object
+      title: Custom Response Headers
+      description: Custom response headers for the ingress resource
+      x-ui-toggle: true
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        title: Header
+        description: Header name
+        type: string
+        properties:
+          header_name:
+            type: string
+            title: Header Key
+            description: The Header key
+            pattern: "^[A-Za-z0-9-]+$"
+            x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
+            x-ui-typeable: true
+            enum: [
+              "X-Frame-Options",
+              "Content-Security-Policy",
+              "Referrer-Policy",
+              "X-Content-Type-Options",
+              "X-Xss-Protection",
+              "reflected-xss",
+              "Cache-Control",
+              "Cache-Control",
+              "Vary",
+              "Content-Disposition",
+              "X-Tenant-ID"
+            ]
+          header_value:
+            type: textarea
+            title: Header Value
+            description: The Header value
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
@@ -60,6 +91,13 @@ spec:
             type: boolean
             title: Enable Rule
             description: Enable/Diaable Rule
+          domain_prefix:
+            type: string
+            title: Domain Prefix
+            description: Subdomain prefix
+            pattern: '^(?!-)[a-z0-9-]{1,18}(?<!-)$'
+            x-ui-placeholder: "Enter the subdomain you want to expose your application"
+            x-ui-error-message: "Value doesn't match pattern, max characters of 20, only hyphen special characters is accepted with numbers and alphabets and should not start or end with hyphen"
           service_name:
             type: string
             title: Service Name
@@ -101,17 +139,54 @@ spec:
             x-ui-placeholder: "Enter path to which your application will be accessible"
             x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
             default: '/'
+          enable_rewrite_target:
+            type: boolean
+            title: Enable Rewrite Target
+            description: Toggle Rewrite Target
           rewrite_target:
             type: string
             title: Rewrite Target
             description: Target URI where the traffic must be redirected
-          domain_prefix:
-            type: string
-            title: Domain Prefix
-            description: Subdomain prefix
-            pattern: '^(?!-)[a-z0-9-]{1,18}(?<!-)$'
-            x-ui-placeholder: "Enter the subdomain you want to expose your application"
-            x-ui-error-message: "Value doesn't match pattern, max characters of 20, only hyphen special characters is accepted with numbers and alphabets and should not start or end with hyphen"
+            x-ui-visible-if:
+              field: spec.rules.{{this}}.enable_rewrite_target
+              values: [true]
+          enable_header_based_routing:
+            type: boolean
+            title: Enable Header-Based Routing
+            description: Toggle header-based conditional routing
+          header_based_routing:
+            type: object
+            title: Header-Based Routing Configuration
+            description: Set up routing rules based on specific header values
+            x-ui-visible-if:
+              field: spec.rules.{{this}}.enable_header_based_routing
+              values: [true]
+            properties:
+              header_name:
+                type: string
+                title: Header Key
+                description: The Header key for conditional routing
+                pattern: "^[A-Za-z0-9-]+$"
+                x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
+                x-ui-typeable: true
+                enum: [
+                  "X-Frame-Options",
+                  "Content-Security-Policy",
+                  "Referrer-Policy",
+                  "X-Content-Type-Options",
+                  "X-Xss-Protection",
+                  "reflected-xss",
+                  "Cache-Control",
+                  "Cache-Control",
+                  "Vary",
+                  "Content-Disposition",
+                  "X-Tenant-ID"
+                ]
+              header_value:
+                type: textarea
+                title: Header Value
+                description: The Header value to trigger conditional routing
+            required: ["header_name", "header_value"]
           annotations:
             type: object
             title: Annotations (Optional)
@@ -119,17 +194,10 @@ spec:
             x-ui-error-message: "This is not a valid yaml"
             default: {}
             x-ui-yaml-editor: true
-          grpc:
-            type: boolean
-            title: GRPC
-            description: Enable/disable GRPC protocol
-            x-ui-visible-if:
-              field: spec.grpc
-              values: [false]
           more_set_headers:
             type: object
-            title: More Set Headers
-            description: Set more headers for the ingress resource
+            title: Custom Response Headers
+            description: Custom response headers for the ingress resource
             x-ui-toggle: true
             patternProperties:
               keyPattern: "^[a-zA-Z0-9_.-]*$"
@@ -158,21 +226,15 @@ spec:
                     "X-Tenant-ID"
                   ]
                 header_value:
-                  type: string
+                  type: textarea
                   title: Header Value
                   description: The Header value
-          affinity:
+          session_affinity:
             type: object
-            title: Affinity
-            description: Configure session affinity settings
+            title:  Session Affinity
+            description: Configure Session affinity settings
             x-ui-toggle: true
             properties:
-              type:
-                type: string
-                title: Affinity Type
-                description: Type of the affinity, set this to cookie to enable session affinity
-                x-ui-typeable: true
-                enum: ["cookie"]
               session_cookie_name:
                 type: string
                 title: Session Cookie Name
@@ -386,99 +448,26 @@ spec:
                         title: Header Value
                         description: The Header value
                   required: ["left", "operator", "right"]
-          validating_webhook:
+          canary_by_weight:
             type: object
-            title: Validating Webhooks
-            description: Configure validating webhooks for the ingress controller
+            title: Canary by Weight
+            description: Canary by Weight
             x-ui-toggle: true
-            patternProperties:
-              keyPattern: "^[a-zA-Z0-9_.-]*$"
-              title: Webhook
-              description: Name of the webhook
-              properties:
-                name:
-                  type: string
-                  title: Name
-                  description: Name of the webhook
-                matchPolicy:
-                  type: string
-                  title: Match Policy
-                  description: Match policy for the webhook
-                  enum: ["Exact", "Equivalent"]
-                rules:
-                  type: object
-                  title: Rules
-                  description: Rules for the webhook
-                  patternProperties:
-                    keyPattern: "^[a-zA-Z0-9_.-]*$"
-                    title: Rule
-                    description: Name of the rule
-                    properties:
-                      apiGroups:
-                        type: array
-                        title: API Groups
-                        description: List of API groups for the webhook rule
-                      apiVersions:
-                        type: array
-                        title: API Versions
-                        description: List of API versions for the webhook rule
-                      operations:
-                        type: array
-                        title: Operations
-                        description: List of operations for the webhook rule
-                      resources:
-                        type: array
-                        title: Resources
-                        description: List of resources for the webhook rule
-                failurePolicy:
-                  type: string
-                  title: Failure Policy
-                  description: Failure policy for the webhook
-                  enum: ["Fail", "Ignore"]
-                sideEffects:
-                  type: string
-                  title: Side Effects
-                  description: Side effects of the webhook
-                  enum: ["None", "NoneOnDryRun"]
-                admissionReviewVersions:
-                  type: array
-                  title: Admission Review Versions
-                  description: Admission review versions supported by the webhook
-                clientConfig:
-                  type: object
-                  title: Client Config
-                  description: Client configuration for the webhook
-                  properties:
-                    service:
-                      type: object
-                      title: Service
-                      description: Service configuration for the webhook
-                      properties:
-                        namespace:
-                          type: string
-                          title: Namespace
-                          description: Namespace of the service
-                        name:
-                          type: string
-                          title: Name
-                          description: Name of the service
-                        path:
-                          type: string
-                          title: Path
-                          description: Path for the service
-      required: ["service_name", "path", "port"]  
+            properties:
+              weight:
+                type: integer
+                title: Weight
+                description: The weight for canary routing (0-100)
+                minimum: 0
+                maximum: 100
+                x-ui-error-message: "Weight must be an integer between 0 and 100"
+      required: ["service_name", "path", "port"]
     pdb:
       type: object
       title: Pod Disruption Budget
       description: Configure Pod Disruption Budget for the ingress controller
       x-ui-toggle: true
       properties:             
-        matchLabels:
-          type: object
-          title: Selector Match Labels
-          description: Labels to match for the selector
-          x-ui-yaml-editor: true
-          x-ui-placeholder: Enter labels in YAML format
         minAvailable:
           type: string
           title: Minimum Available
@@ -491,18 +480,12 @@ spec:
           description: Maximum number of pods that can be unavailable during a disruption
           pattern: "^([1-9][0-9]*|([1-9][0-9]?|100)%)$"
           x-ui-error-message: "Value must be a positive integer or a percentage between 1% and 100%"
-        unhealthyPodEvictionPolicy:
-          type: string
-          title: Unhealthy Pod Eviction Policy
-          description: Policy for evicting unhealthy pods
-          enum: ["AlwaysAllow", "IfHealthyBudget"]
-          x-ui-error-message: "Value must be either 'AlwaysAllow' or 'IfHealthyBudget'"
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
   required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basic_auth", "grpc", "private", "domains", "rules", "pdb", "force_ssl_redirection"]
+  x-ui-order: ["basic_auth", "grpc", "private", "domains", more_set_headers, "rules", "pdb", "force_ssl_redirection"]
 sample:
   kind: ingress
   flavor: nginx_k8s_native_test
