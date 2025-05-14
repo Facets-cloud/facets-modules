@@ -45,7 +45,7 @@ spec:
     more_set_headers:
       type: object
       title: Custom Response Headers
-      description: Custom response headers for the ingress resource
+      description: Common Custom response headers applied across rules
       x-ui-toggle: true
       patternProperties:
         keyPattern: "^[a-zA-Z0-9_.-]*$"
@@ -187,13 +187,6 @@ spec:
                 title: Header Value
                 description: The Header value to trigger conditional routing
             required: ["header_name", "header_value"]
-          annotations:
-            type: object
-            title: Annotations (Optional)
-            description: Add key-value pairs for configuring ingress annotations. Annotations allow you to customize the behavior of your ingress
-            x-ui-error-message: "This is not a valid yaml"
-            default: {}
-            x-ui-yaml-editor: true
           more_set_headers:
             type: object
             title: Custom Response Headers
@@ -448,20 +441,37 @@ spec:
                         title: Header Value
                         description: The Header value
                   required: ["left", "operator", "right"]
-          canary_by_weight:
+          annotations:
             type: object
-            title: Canary by Weight
-            description: Canary by Weight
-            x-ui-toggle: true
-            properties:
-              weight:
-                type: integer
-                title: Weight
-                description: The weight for canary routing (0-100)
-                minimum: 0
-                maximum: 100
-                x-ui-error-message: "Weight must be an integer between 0 and 100"
+            title: Annotations (Optional)
+            description: Add key-value pairs for configuring ingress annotations. Annotations allow you to customize the behavior of your ingress
+            x-ui-error-message: "This is not a valid yaml"
+            default: {}
+            x-ui-yaml-editor: true
       required: ["service_name", "path", "port"]
+    custom_error_pages:
+      type: object
+      title: Custom Error Pages
+      description: Configure custom error pages
+      x-ui-toggle: true
+      patternProperties:
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        title: Custom Error Page Object
+        description: Name of the Custom Error Page object
+        properties:
+          error_code:
+            type: string
+            title: Error Code
+            description: The error code for which the custom page is to be shown
+            x-ui-typeable: true
+            enum: [
+              "404",
+              "503"
+            ]
+          page_content:
+            type: textarea
+            title: Custom Error Page Content
+            description: The HTML content for the custom error page
     pdb:
       type: object
       title: Pod Disruption Budget
@@ -485,7 +495,7 @@ spec:
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
   required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basic_auth", "grpc", "private", "domains", more_set_headers, "rules", "pdb", "force_ssl_redirection"]
+  x-ui-order: ["basic_auth", "grpc", "private", "domains", more_set_headers, "rules", "pdb", "custom_error_pages", force_ssl_redirection"]
 sample:
   kind: ingress
   flavor: nginx_k8s_native_test
