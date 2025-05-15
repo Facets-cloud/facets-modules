@@ -37,7 +37,7 @@ Each domain entry includes:
 - **`domain`** (`string`, required): Fully qualified domain name (e.g., `app.example.com`)
 - **`alias`** (`string`, required): Internal alias to reference the domain
 
-Rules (Required)
+✅ **Rules** *(Required)*
 Ingress rules define how the traffic is routed to Kubernetes services.
 
 Each rule includes:
