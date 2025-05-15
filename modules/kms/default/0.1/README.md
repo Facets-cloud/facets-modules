@@ -1,19 +1,54 @@
-# Terraform AWS KMS Module
+# AWS KMS Module
 
-This folder contains a KMS Terraform module that deploys KMS resource.
+## Overview
 
-## Run this module manually
+This Terraform module provisions an [AWS Key Management Service (KMS)](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) key and manages its lifecycle, configuration, and access control. It supports the creation of customer-managed keys (CMKs), key policies, grants, aliases, automatic rotation, and optional replication across multiple regions. This module is designed to be flexible and suitable for both internal and external key usage, with enhanced support for AWS services like Route53 DNSSEC and autoscaling integrations.
 
-- `cd test`
-- Make sure you pass the right kubernetes config path in [provider.tf](test/providers.tf)
-- Run `terraform init`
-- Run `terraform apply`
-  - **Note:** _Optional flag `-auto-approve` to skip interactive approval of plan before applying_
-- When you're done, run `terraform destroy`
-  - **Note:** _Optional flag `-auto-approve` to skip interactive approval of plan before destroying_
+## Configurability
 
-## Running automated tests against this module
+The following input parameters are supported under the `spec` block:
 
-- `cd test`
-- Make sure to update values in var block inside go [test file](test/log_collector_test.go)
-- Run `go test -v -run TestAWSKms`
+- **`create_external`** (`boolean`) – Whether to create an external key.
+- **`bypass_policy_lockout_safety_check`** (`boolean`) – Bypass AWS safety checks for key policy.
+- **`customer_master_key_spec`** (`string`) – CMK spec (e.g., `SYMMETRIC_DEFAULT`, `RSA_2048`).
+- **`custom_key_store_id`** (`string`) – ID of the custom key store (CloudHSM).
+- **`deletion_window_in_days`** (`integer`) – Days before key deletion (min: 7, max: 30).
+- **`description`** (`string`) – Text description of the key.
+- **`enable_key_rotation`** (`boolean`) – Enable auto-rotation (only for symmetric keys).
+- **`is_enabled`** (`boolean`) – Whether the key is enabled on creation.
+- **`key_material_base64`** (`string`) – Base64 key material (used with import).
+- **`key_usage`** (`string`) – Use type (`ENCRYPT_DECRYPT`, `SIGN_VERIFY`, etc.).
+- **`multi_region`** (`boolean`) – Enable multi-region key support.
+- **`policy`** (`object`) – Custom key policy JSON.
+- **`valid_to`** (`string`, RFC3339) – Expiration time for the key.
+- **`enable_default_policy`** (`boolean`) – Attach default AWS KMS policy.
+- **`key_owners`, `key_administrators`, `key_users`** (`list(string)`) – IAM principals.
+- **`key_service_users`, `key_service_roles_for_autoscaling`** (`list(string)`) – Service-linked roles.
+- **`key_symmetric_encryption_users`, `key_hmac_users`** (`list(string)`) – Symmetric & HMAC users.
+- **`key_asymmetric_public_encryption_users`, `key_asymmetric_sign_verify_users`** (`list(string)`) – Asymmetric key users.
+- **`key_statements`** (`object`) – Additional IAM policy statements.
+- **`source_policy_documents`, `override_policy_documents`** (`list(object)`) – Policy layering control.
+- **`enable_route53_dnssec`** (`boolean`) – Enable Route53 DNSSEC integration.
+- **`route53_dnssec_sources`** (`list(string)`) – Sources for DNSSEC trust.
+- **`rotation_period_in_days`** (`integer`) – Custom rotation interval (1–365 days).
+- **`create_replica`** (`boolean`) – Create cross-region replica.
+- **`primary_key_arn`, `primary_external_key_arn`** (`string`) – Source key ARN for replica.
+- **`create_replica_external`** (`boolean`) – Create external replica.
+- **`aliases`** (`list(string)`) – Key aliases like `alias/my-key`.
+- **`computed_aliases`** (`object`) – Dynamically generated aliases.
+- **`aliases_use_name_prefix`** (`boolean`) – Prefix aliases with context.
+- **`grants`** (`object`) – Key grants in JSON.
+
+## Usage
+
+- **KMS Key Policy** – A user-defined or default IAM policy governing key access control.
+
+- **KMS Key Aliases** – One or more user-defined or computed aliases to simplify referencing the key.
+
+- **KMS Grants** – Optional fine-grained key grants allowing access to specific AWS services or IAM roles.
+
+- **Replica Keys** – If enabled, creates replica keys in additional regions for cross-region support and high availability.
+
+- **Route53 DNSSEC Configuration** – (Optional) Integrates the key with Route53 for DNSSEC signing of hosted zones.
+
+All of these resources are driven by the fields set under the `spec` block of the module. See the [Configurability](#configurability) section for all supported input parameters.

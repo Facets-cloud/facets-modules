@@ -1,19 +1,59 @@
-# Terraform Artifactories Module
+# Artifactories Module
 
-This is a artifactories per instance module
+## Overview
 
-## Run this module manually
+This module provisions **container registry credentials as Kubernetes secrets** from configured container registries (referred to as *artifactories*) within your project. These secrets can be used by workloads to authenticate with registries such as DockerHub, JFrog Artifactory, GitHub Container Registry, etc.
 
-- `cd test`
-- Make sure you add/update details in [provider.tf](test/providers.tf)
-- Run `terraform init`
-- Run `terraform apply`
-  - **Note:** _Optional flag `-auto-approve` to skip interactive approval of plan before applying_
-- When you're done, run `terraform destroy`
-  - **Note:** _Optional flag `-auto-approve` to skip interactive approval of plan before destroying_
+It supports two modes:
 
-## Running automated tests against this module
+- Including **all container registries** mapped to the current project.
+- Defining a **custom list** of container registries by name.
 
-- `cd test`
-- Make sure to update `config_path` in var block inside go [test file](test/artifactories_test.go)
-- Run `go test -v -run Artifactories`
+The secrets are generated automatically and injected into the associated Kubernetes cluster for use in imagePullSecrets or custom workloads.
+
+## Inputs
+
+This module requires an input reference to the target Kubernetes cluster.
+
+- `kubernetes_details` (required):  
+  A reference to the Kubernetes cluster where registry secrets should be created. This input is automatically populated with the default Kubernetes cluster unless overridden.
+
+---
+
+## Configurability
+
+### ✅ metadata
+
+- `metadata`: *(optional)*  
+  Metadata block for resource description or naming overrides. Can be left empty.
+
+---
+
+### ✅ spec
+
+Defines whether to include all registries or specify selected registries.
+
+- `include_all`: *(boolean)*  
+  If set to `true`, all container registries mapped to the project will be included, and the `artifactories` field should be omitted.
+
+- `artifactories`: *(object, optional)*  
+  A map of container registry identifiers to their names. This should be used only if `include_all` is `false`. Each entry must include a `name` property that matches a registry defined in the control plane.
+
+## Usage
+
+When the Artifactories module is included in your blueprint:
+
+It will create Kubernetes image pull secrets for container registries defined in the project.
+
+These secrets are injected into the target Kubernetes cluster and can be referenced by workloads using imagePullSecrets.
+
+You can choose to:
+
+Include all registries mapped to the project by enabling the include_all flag.
+
+Manually specify registries using the artifactories block if you only want secrets for specific registries.
+
+The module ensures each secret corresponds to the correct credentials of the associated container registry.
+
+These secrets simplify the process of authenticating private container image pulls for deployments across your environments.
+
