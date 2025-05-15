@@ -1,0 +1,182 @@
+intent: google_cloud_storage
+flavor: default
+version: '0.2'
+clouds:
+- gcp
+description: Creates and manages a Google Cloud Storage bucket with configurable options.
+spec:
+  title: Google Cloud Storage Bucket
+  description: Creates and manages a Google Cloud Storage bucket with configurable
+    options.
+  type: object
+  properties:
+    location:
+      type: string
+      title: Bucket Location
+      description: The GCS location where the bucket will be created. If not specified,
+        it will use the environment's region.
+      x-ui-overrides-only: true
+      enum:
+      - US
+      - EU
+      - ASIA
+      - US-CENTRAL1
+      - US-EAST1
+      - US-EAST4
+      - US-EAST5
+      - US-SOUTH1
+      - US-WEST1
+      - US-WEST2
+      - US-WEST3
+      - US-WEST4
+      - NORTHAMERICA-NORTHEAST1
+      - NORTHAMERICA-NORTHEAST2
+      - NORTHAMERICA-SOUTH1
+      - SOUTHAMERICA-EAST1
+      - SOUTHAMERICA-WEST1
+      - EUROPE-CENTRAL2
+      - EUROPE-NORTH1
+      - EUROPE-NORTH2
+      - EUROPE-SOUTHWEST1
+      - EUROPE-WEST1
+      - EUROPE-WEST2
+      - EUROPE-WEST3
+      - EUROPE-WEST4
+      - EUROPE-WEST6
+      - EUROPE-WEST8
+      - EUROPE-WEST9
+      - EUROPE-WEST10
+      - EUROPE-WEST12
+      - ASIA-EAST1
+      - ASIA-EAST2
+      - ASIA-NORTHEAST1
+      - ASIA-NORTHEAST2
+      - ASIA-NORTHEAST3
+      - ASIA-SOUTHEAST1
+      - ASIA-SOUTHEAST2
+      - ASIA-SOUTH1
+      - ASIA-SOUTH2
+      - ME-CENTRAL1
+      - ME-CENTRAL2
+      - ME-WEST1
+      - AUSTRALIA-SOUTHEAST1
+      - AUSTRALIA-SOUTHEAST2
+      - AFRICA-SOUTH1
+      - ASIA1
+      - EUR4
+      - EUR5
+      - EUR7
+      - EUR8
+      - NAM4
+    storage_class:
+      type: string
+      title: Storage Class
+      description: The storage class of the bucket. See https://cloud.google.com/storage/docs/storage-classes
+      enum:
+      - STANDARD
+      - NEARLINE
+      - COLDLINE
+      - ARCHIVE
+      default: STANDARD
+    versioning_enabled:
+      type: boolean
+      title: Enable Versioning
+      description: Whether to enable versioning for this bucket
+      default: false
+    lifecycle_rules:
+      type: object
+      title: Lifecycle Rules
+      description: Lifecycle rules for objects in the bucket
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Lifecycle Rules
+          description: Whether to enable lifecycle rules for this bucket
+          default: false
+        age_days:
+          type: number
+          title: Age in Days
+          description: Age in days after which objects will be transitioned/deleted
+            based on the action
+          default: 30
+          minimum: 0
+        action:
+          type: string
+          title: Lifecycle Action
+          description: Action to take when lifecycle rule conditions are met
+          enum:
+          - Delete
+          - SetStorageClass
+          default: Delete
+        storage_class:
+          type: string
+          title: Target Storage Class
+          description: The target storage class to transition to if action is SetStorageClass
+          enum:
+          - NEARLINE
+          - COLDLINE
+          - ARCHIVE
+          default: NEARLINE
+          x-ui-visible-if:
+            field: spec.lifecycle_rules.action
+            values:
+            - SetStorageClass
+    uniform_bucket_level_access:
+      type: boolean
+      title: Uniform Bucket-Level Access
+      description: When set to true, enables Uniform bucket-level access to the bucket
+      default: true
+    custom_labels:
+      type: object
+      title: Custom Labels
+      description: A map of key-value pairs to assign to the bucket
+      x-ui-yaml-editor: true
+      default: {}
+    requester_pays:
+      type: boolean
+      title: Requester Pays
+      description: Enables Requester Pays on the bucket
+      default: false
+  required:
+  - storage_class
+  - versioning_enabled
+  - uniform_bucket_level_access
+inputs:
+  cloud_account:
+    type: '@output/cloud_account'
+    providers:
+    - google
+outputs:
+  default:
+    type: '@output/google_cloud_storage_bucket'
+  attributes.read_only_role:
+    type: '@output/gcp_iam_role_name'
+    title: Read-Only IAM Role
+    description: The predefined IAM role for read-only access to the bucket
+  attributes.read_write_role:
+    type: '@output/gcp_iam_role_name'
+    title: Read-Write IAM Role
+    description: The predefined IAM role for read-write access to the bucket
+  attributes.bucket_iam_condition_expression:
+    type: '@output/gcp_iam_condition_expression'
+    title: Bucket IAM Condition Expression
+    description: An IAM condition expression using startsWith to match this specific
+      bucket
+sample:
+  kind: google_cloud_storage
+  flavor: default
+  version: '0.2'
+  spec:
+    storage_class: STANDARD
+    versioning_enabled: false
+    lifecycle_rules:
+      enabled: false
+      age_days: 30
+      action: Delete
+      storage_class: NEARLINE
+    uniform_bucket_level_access: true
+    custom_labels: {}
+    requester_pays: false
+iac:
+  validated_files:
+  - variables.tf
