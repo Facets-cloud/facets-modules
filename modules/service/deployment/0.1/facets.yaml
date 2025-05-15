@@ -95,6 +95,23 @@ spec:
                     pattern: '(^roles\/[A-Za-z_.-]+$)|(^\${.+}$)'
                     x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
                     x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: roles/firestore.serviceAgent"
+                    x-ui-typeable: true
+                    enum:
+                    - "roles/storage.objectViewer"
+                    - "roles/storage.objectAdmin"
+                    - "roles/storage.admin"
+                    - "roles/pubsub.viewer"
+                    - "roles/pubsub.editor"
+                    - "roles/pubsub.admin"
+                    - "roles/run.viewer"
+                    - "roles/run.developer"
+                    - "roles/run.admin"
+                    - "roles/secretmanager.viewer"
+                    - "roles/secretmanager.secretVersionManager"
+                    - "roles/secretmanager.admin"
+                    - "roles/cloudkms.viewer"
+                    - "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+                    - "roles/cloudkms.admin"
                   condition:
                     type: object
                     title: Condition
@@ -104,6 +121,8 @@ spec:
                       expression:
                         title: Expression
                         type: string
+                        x-ui-output-type: gcp_iam_condition_expression
+                        x-ui-typeable: true
                       title:
                         title: Title
                         type: string

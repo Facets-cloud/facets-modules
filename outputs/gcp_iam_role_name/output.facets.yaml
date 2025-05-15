@@ -1,0 +1,5 @@
+name: gcp_iam_role_name
+out:
+  type: string
+  title: GCP IAM Role Name
+  description: GCP IAM Role Name

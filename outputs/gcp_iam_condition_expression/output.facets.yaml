@@ -1,0 +1,5 @@
+name: gcp_iam_condition_expression
+out:
+  type: string
+  title: GCP IAM condition expression
+  description: GCP IAM condition expression
