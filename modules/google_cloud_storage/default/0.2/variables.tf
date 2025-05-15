@@ -5,6 +5,7 @@ variable "instance" {
     flavor  = string
     version = string
     spec = object({
+      location                    = optional(string)
       storage_class               = string
       versioning_enabled          = bool
       uniform_bucket_level_access = bool
