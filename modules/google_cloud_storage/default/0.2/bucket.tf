@@ -9,7 +9,7 @@ locals {
   base_name = "${var.environment.unique_name}-${var.instance_name}"
 
   # Convert to lowercase and replace invalid characters with hyphens
-  sanitized_name = lower(replace(local.base_name, "/[^a-z0-9-]/", "-"))
+  sanitized_name = lower(regexreplace(local.base_name, "[^a-z0-9-]", "-"))
 
   # Ensure the name is not longer than 63 characters (GCS bucket name limit)
   # If it would be too long, truncate it but keep the environment prefix and ensure uniqueness
