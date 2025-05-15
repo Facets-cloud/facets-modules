@@ -3,3 +3,6 @@ type: Storage
 displayName: Google Cloud Storage
 description: A unified, scalable, and highly durable object storage solution by Google Cloud for storing and retrieving any amount of data at any time.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e02da2c978f0b0452_Storage-google_cloud_storage.svg
+outputs:
+  - name: default
+    type: "@output/google_cloud_storage_bucket"
