@@ -2,14 +2,3 @@ name: network
 type: Networking
 displayName: Network
 description: A collection of connected devices which provides medium to share resources within.
-outputs:
-  - name: attributes.vpc_id
-    title: "VPC Id"
-    type: "@output/aws_vpc"
-  - name: attributes.cidr_block
-    title: "CIDR Block"
-    type: "@output/aws_vpc"
-  - name: attributes.azs
-    title: "azs"
-    type: "@output/aws_vpc"
-  
