@@ -43,7 +43,3 @@ This flavor is compatible with the following platforms:
 - **Azure**
 - **GCP**
 - **Kubernetes (Generic)**
-
-### Schema Reference
-
-The configuration is validated against the following schema:
