@@ -5,6 +5,9 @@ version: "0.1"
 description: Adds kubernetes cluster - aks flavor
 clouds:
   - azure
+inputs:
+  network_details:
+    type: "@outputs/azure_vpc"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for azure aks flavor
