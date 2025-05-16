@@ -61,7 +61,3 @@ The service module is configured using a YAML definition file that follows a sta
 3. **Resource Allocation**: Define CPU, memory, and scaling parameters based on application requirements.  
 4. **Deployment Configuration**: Set up strategies for updates, health checks, and container lifecycle.  
 5. **Optional Features**: Configure additional capabilities like init containers, sidecars, and cloud permissions as needed.  
-
-The framework handles the generation of appropriate Kubernetes manifests based on your configuration, ensuring consistency across environments while adhering to cloud-specific best practices.
-
-Refer to the schema documentation for complete details on all available configuration options.
