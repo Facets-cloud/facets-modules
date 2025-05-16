@@ -35,12 +35,6 @@ The framework offers extensive configuration options for your service deployment
 - **Metrics**: Define metrics endpoints for monitoring  
 - **Volumes**: Mount various volume types (ConfigMaps, Secrets, PVCs, HostPath)  
 
-### Deployment Management
-
-- **Image configuration**: Specify container images and pull policies  
-- **Deployment strategy**: Configure RollingUpdate or Recreate strategies  
-- **Disruption policies**: Set minimum availability during updates  
-
 ### Advanced Features
 
 - **Init containers**: Configure containers that run before application containers  
