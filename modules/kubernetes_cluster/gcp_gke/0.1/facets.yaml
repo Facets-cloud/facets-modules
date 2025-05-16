@@ -5,6 +5,9 @@ version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:
   - gcp
+inputs:
+  network_details:
+    type: "@outputs/gcp_vpc"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for gcp gke flavor

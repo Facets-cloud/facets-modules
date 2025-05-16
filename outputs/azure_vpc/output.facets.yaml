@@ -1,8 +1,83 @@
 name: azure_vpc
 out:
   type: object
-  title: Azure VPC
-  description: Outputs from Azure VPC
+  title: Azure VPC Module Outputs
+  description: Combined outputs including legacy attributes for Azure VPC infrastructure
   properties:
     attributes:
+      legacy_attributes:
+        required: true
+        type: object
+        properties:
+          vpc_details:
+            type: object
+            description: VPC details from the Azure VPC module
+            properties:
+              vpc_id:
+                type: string
+                description: The ID of the Azure virtual network
+              private_subnets:
+                type: array
+                description: List of private subnet IDs
+              default_security_group_id:
+                type: string
+                description: The ID of the default security group
+              cluster_azresource_group:
+                type: string
+                description: Name of the Azure resource group for the cluster
+              cluster_azresource_group_id:
+                type: string
+                description: ID of the Azure resource group for the cluster
+              existing_azresource_group:
+                type: string
+                description: Name of an existing Azure resource group if being used
+              existing_azresource_group_id:
+                type: string
+                description: ID of an existing Azure resource group if being used
+              k8s_subnets:
+                type: array
+                description: List of Kubernetes subnet IDs
+              public_subnets:
+                type: array
+                description: List of public subnet IDs
+              database_subnets:
+                type: array
+                description: List of database subnet IDs
+              functions_subnets:
+                type: array
+                description: List of Azure Functions subnet IDs
+              gateway_subnets:
+                type: array
+                description: List of gateway subnet IDs
+              cache_subnets:
+                type: array
+                description: List of cache subnet IDs
+              private_link_service_subnets:
+                type: array
+                description: List of private link service subnet IDs
+              azs:
+                type: array
+                description: List of availability zones in use
+              vpc_cidr:
+                type: string
+                description: The CIDR block of the VPC
+          azure_cloud:
+            type: object
+            description: Azure cloud environment details
+            properties:
+              location:
+                type: string
+                description: Azure region location
+              resource_group:
+                type: string
+                description: Name of the Azure resource group
+              resource_group_id:
+                type: string
+                description: ID of the Azure resource group
+              subscriptionId:
+                type: string
+                description: Full Azure subscription ID path
+              tenantId:
+                type: string
+                description: Azure tenant ID
     interfaces:
