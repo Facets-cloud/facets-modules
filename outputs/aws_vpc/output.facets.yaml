@@ -5,16 +5,4 @@ out:
   description: Outputs from AWS VPC
   properties:
     attributes:
-      vpc_id:
-        required: true
-        type: string
-        description: VPC ID
-      cidr_block:
-        required: true
-        type: string
-        description: CIDR Block of the VPC
-      azs:
-        required: true
-        type: array
-        description: List of Availability Zones in the VPC
     interfaces:
