@@ -1,0 +1,46 @@
+# MySQL Kubernetes Flavor Documentation
+
+## Overview
+
+The `mysql - k8s` flavor provides a Kubernetes-native deployment model for running MySQL on any CNCF-conformant Kubernetes cluster, including managed services across AWS, Azure, GCP, or on-prem Kubernetes environments. Versioned as `0.2`, this flavor allows fine-grained control over CPU, memory, and volume resources for both writer and reader nodes. Reader nodes support optional horizontal scaling with instance counts.
+
+## Configurability
+
+### MySQL Version
+
+Choose from supported versions:
+- `8.0.34`
+- `8.0.4`
+- `8.4.3`
+- `9.0.1`
+
+_Current selection_: `8.4.3`
+
+### Size Configuration
+
+#### Writer Node Configuration
+Configure resource requests and limits for the primary database node:
+
+- **CPU**: `1`  
+- **Memory**: `1Gi`  
+- **CPU Limit**: `1`  
+- **Memory Limit**: `1Gi`  
+- **Volume**: `8Gi`
+
+#### Reader Node Configuration
+Supports horizontal scaling of read replicas. Includes resource limits to maintain efficiency:
+
+- **CPU**: `1`  
+- **Memory**: `1Gi`  
+- **CPU Limit**: `1`  
+- **Memory Limit**: `1Gi`  
+- **Volume**: `8Gi`  
+- **Instance Count**: `2`
+
+### Cloud Providers
+
+This flavor is compatible with the following platforms:
+- **AWS**
+- **Azure**
+- **GCP**
+- **Kubernetes (Generic)**
