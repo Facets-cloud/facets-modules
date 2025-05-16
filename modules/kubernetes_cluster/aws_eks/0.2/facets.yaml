@@ -18,7 +18,7 @@ spec:
         cloudwatch_log_retention_days:
           title: CloudWatch Log Retention Days
           description: Retention period in days for cloudwatch Logs generated for this eks cluster
-          type: number
+          type: integer
           default: 365
           minimum: 1
           maximum: 3650
@@ -41,7 +41,7 @@ spec:
             deletion_window_in_days:
               title: Deletion Window
               description: Waiting period in days after which kms keys are deleted
-              type: number
+              type: integer
               minimum: 7
               maximum: 30
               default: 7
@@ -56,7 +56,7 @@ spec:
             rotation_period_in_days:
               title: Rotation Period for KMS in days
               description: Specifies Rotation Period for KMS in days
-              type: number
+              type: integer
               default: 90
               minimum: 1
               maximum: 365
@@ -78,6 +78,13 @@ spec:
       description: Specifications of nodepools to be created
       type: object
       properties:
+        iam_role_additional_policies:
+          title: IAM Role Additional Policies
+          description: Additional IAM policies to be attached to the node IAM role
+          type: object
+          x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
+          x-ui-yaml-editor: true
+          default: {}
         default:
           title: Default Nodepool Spec
           description: Specification of default nodepools
@@ -92,7 +99,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               default: 100
               minimum: 30
               maximum: 500
@@ -110,7 +117,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 200
@@ -145,7 +152,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               default: 100
               minimum: 30
               maximum: 500
@@ -169,7 +176,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 8
@@ -234,7 +241,7 @@ spec:
             max_nodes: 
               title: Max nodes
               description: Maximum number of nodes in nodepool
-              type: number
+              type: integer
               minimum: 0
               maximum: 100
               default: 100
@@ -268,6 +275,7 @@ spec:
                 values: [true]
           required: ["instance_type"]
           x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+      x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
     tags:
       title: Kubernetes Cluster Tags
       description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
@@ -275,6 +283,7 @@ spec:
       type: object
       x-ui-yaml-editor: true
       x-ui-overrides-only: true
+      default: {}
     addons:
       title: Addons
       description: Specifications of addons to be installed
@@ -307,8 +316,8 @@ spec:
             title: Addon Tags
             description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
             type: object
-            x-ui-overrides-only: true
             x-ui-yaml-editor: true
+            default: {}
           preserve:
             title: Preserve Addon
             description: Set this to true to preserve the addon
