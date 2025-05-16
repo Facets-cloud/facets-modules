@@ -57,7 +57,7 @@ spec:
                 - db-custom-32-122880
               x-ui-error-message: "Please select a valid instance type."
             volume:
-              type: number
+              type: integer
               title: Volume
               description: The size of the volume in GB.
               minimum: 10
@@ -104,7 +104,7 @@ spec:
                 - db-custom-32-122880
               x-ui-error-message: "Please select a valid instance type."
             volume:
-              type: number
+              type: integer
               title: Volume
               description: The size of the volume in GB.
               minimum: 10

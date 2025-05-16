@@ -23,7 +23,7 @@ spec:
             start_hour:
               title: Start Hour
               description: Start hour for maintenance window
-              type: number
+              type: integer
               minimum: 0
               maximum: 23
             days_of_week:
@@ -39,7 +39,7 @@ spec:
             duration:
               title: Maintenance Duration
               description: Duration of maintenance in hours
-              type: number
+              type: integer
               minimum: 1
               maximum: 24
     auto_upgrade:
@@ -106,7 +106,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               default: 100
               minimum: 30
               maximum: 500
@@ -130,7 +130,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 200
@@ -206,7 +206,7 @@ spec:
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
-              type: number
+              type: integer
               minimum: 30
               maximum: 500
               default: 100
@@ -230,7 +230,7 @@ spec:
             max_nodes:
               title: Max Nodes
               description: Maximum number of worker nodes in the node pool
-              type: number
+              type: integer
               minimum: 1
               maximum: 200
               default: 200
