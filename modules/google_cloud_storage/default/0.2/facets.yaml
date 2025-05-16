@@ -177,6 +177,3 @@ sample:
     uniform_bucket_level_access: true
     custom_labels: {}
     requester_pays: false
-iac:
-  validated_files:
-  - variables.tf
