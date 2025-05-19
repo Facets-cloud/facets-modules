@@ -174,8 +174,8 @@ spec:
               minimum: 1
               maximum: 100
               x-ui-placeholder: "Enter instance count"
-    required:
-      - data
+      required:
+        - data
   required:
     - size
     - elasticsearch_version
