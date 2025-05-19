@@ -3,10 +3,10 @@ flavor: knative_service
 version: "0.1"
 description: Adds service module of flavor knative
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
@@ -31,7 +31,8 @@ spec:
   properties:
     release:
       title: Release
-      description: Manage version releases to deploy updates and maintain software integrity
+      description: Manage version releases to deploy updates and maintain software
+        integrity
       type: object
       properties:
         image:
@@ -58,30 +59,30 @@ spec:
               title: Pull Policy
               description: ImagePullPolicy
               enum:
-                - IfNotPresent
-                - Always
-                - Never
-          required: [ "artifactory", "name" ]
+              - IfNotPresent
+              - Always
+              - Never
+          required: ["artifactory", "name"]
           x-ui-skip: true
     env:
       title: Environment Variables
       description: Map of environment variables passed to init container.
       type: object
-      patternPorperties:
-        title: Evironment Variable
-        description: Environment Variable
-        keyPattern: "^[a-zA-Z][a-zA-Z0-9_-.]*$"
-        type: string
+      patternProperties:
+        "^[a-zA-Z][a-zA-Z0-9_-.]*$":
+          title: Environment Variables
+          description: Environment Variables
+          type: string
       x-ui-yaml-editor: true
     knative_annotation:
       type: object
       title: Knative serving annotation
       description: Annotation for Knative service annotation
-      patternPorperties:
-        title: Evironment Variable
-        description: Environment Variable
-        keyPattern: "^[a-zA-Z][a-zA-Z0-9_-.]*$"
-        type: string
+      patternProperties:
+        "^[a-zA-Z][a-zA-Z0-9_-.]*$":
+          title: Environment Variables
+          description: Environment Variables
+          type: string
       x-ui-yaml-editor: true
     runtime:
       type: object
@@ -94,51 +95,57 @@ spec:
           x-ui-override-disable: true
           description: Port mappings
           patternProperties:
-            type: object
-            title: Port Name
-            description: Define port allocation to facilitate communication with service
-            keyPattern: "^[0-9]+[m]?$"
-            properties:
-              name:
-                type: string
-                title: Port Name
-                description: Port name for metrics
-                x-ui-dynamic-enum: spec.runtime.ports.*
-                x-ui-disable-tooltip: "No Ports Available"
-              port:
-                type: string
-                title: Port
-                description: Port on which application is running
-                pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                x-ui-unique: true
-                x-ui-placeholder: "Enter the port number to expose for your application container"
-                x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
-              service_port:
-                type: string
-                title: Service Port
-                description: Port from which application service can be exposed
-                pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                x-ui-unique: true
-                x-ui-placeholder: "Enter the port number to expose for your application service"
-                x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
-              protocol:
-                type: string
-                title: Protocol
-                description: TCP or UDP
-                enum:
+            "^[0-9]+[m]?$":
+              type: object
+              title: Port Name
+              description: Define port allocation to facilitate communication with
+                service
+              properties:
+                name:
+                  type: string
+                  title: Port Name
+                  description: Port name for metrics
+                  x-ui-dynamic-enum: spec.runtime.ports.*
+                  x-ui-disable-tooltip: "No Ports Available"
+                port:
+                  type: string
+                  title: Port
+                  description: Port on which application is running
+                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+                  x-ui-unique: true
+                  x-ui-placeholder: "Enter the port number to expose for your application
+                    container"
+                  x-ui-error-message: "Value doesn't match pattern, it should be number
+                    ranging from 1-65535"
+                service_port:
+                  type: string
+                  title: Service Port
+                  description: Port from which application service can be exposed
+                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+                  x-ui-unique: true
+                  x-ui-placeholder: "Enter the port number to expose for your application
+                    service"
+                  x-ui-error-message: "Value doesn't match pattern, it should be number
+                    ranging from 1-65535"
+                protocol:
+                  type: string
+                  title: Protocol
+                  description: TCP or UDP
+                  enum:
                   - tcp
                   - udp
-            required:
+              required:
               - protocol
               - port
       required:
-        - ports
+      - ports
       x-ui-order:
-        - ports
+      - ports
     cloud_permissions:
       type: object
       title: Cloud Permissions
-      description: Assign roles, define access levels, and enforce conditions for managing resource security and compliance
+      description: Assign roles, define access levels, and enforce conditions for
+        managing resource security and compliance
       x-ui-toggle: true
       properties:
         aws:
@@ -149,27 +156,29 @@ spec:
             iam_policies:
               type: object
               title: IAM policies
-              description: Define IAM policies to manage permissions, control-access and secure resources
+              description: Define IAM policies to manage permissions, control-access
+                and secure resources
               patternProperties:
-                keyPattern: "^[a-zA-Z0-9_.-]*$"
-                title: policy_name
-                properties:
-                  arn:
-                    title: ARN
-                    type: string
-                    pattern: '^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_]+|\$\{[A-Za-z0-9._-]+\})$'
-                    x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
-                    x-ui-error-message: "Value doesn't match pattern, accepted value pattern Eg: arn:aws:iam::123456789012:policy/policy1"
-                    x-ui-output-type: "iam_policy_arn"
-                    x-ui-typeable: true
-                required:
+                "^[a-zA-Z0-9_.-]*$":
+                  title: policy_name
+                  properties:
+                    arn:
+                      title: ARN
+                      type: string
+                      pattern: '^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_]+|\$\{[A-Za-z0-9._-]+\})$'
+                      x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
+                      x-ui-error-message: "Value doesn't match pattern, accepted value
+                        pattern Eg: arn:aws:iam::123456789012:policy/policy1"
+                      x-ui-output-type: "iam_policy_arn"
+                      x-ui-typeable: true
+                  required:
                   - arn
   required: []
   x-ui-order:
-    - runtime
-    - knative_annotation
-    - env
-    - cloud_permissions
+  - runtime
+  - knative_annotation
+  - env
+  - cloud_permissions
 outputs:
   default:
     type: "@outputs/service"

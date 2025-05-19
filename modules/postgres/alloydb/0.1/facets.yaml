@@ -3,7 +3,7 @@ flavor: alloydb
 version: "0.1"
 description: Adds Postgres module of flavor alloydb
 clouds:
-  - gcp
+- gcp
 spec:
   title: AlloyDB
   type: object
@@ -13,9 +13,9 @@ spec:
       title: Postgres Version
       description: Specifies the Postgres version to use.
       enum:
-        - "12.11"
-        - "13.3"
-        - "14.0"
+      - "12.11"
+      - "13.3"
+      - "14.0"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
@@ -35,9 +35,9 @@ spec:
               maximum: 96
               x-ui-error-message: "CPU must be between 1 and 96."
           required:
-            - cpu
+          - cpu
           x-ui-order:
-            - cpu
+          - cpu
         reader:
           type: object
           title: Reader
@@ -58,53 +58,57 @@ spec:
               maximum: 10
               x-ui-error-message: "Instance count must be between 0 and 10."
           required:
-            - cpu
-            - instance_count
+          - cpu
+          - instance_count
           x-ui-order:
-            - cpu
-            - instance_count
+          - cpu
+          - instance_count
       required:
-        - writer
+      - writer
       x-ui-order:
-        - writer
-        - reader
+      - writer
+      - reader
     db_names:
       type: array
       title: Additional Database Names
       description: List of additional databases to be created.
-      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
-      x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
+      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,
+        [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
+      x-ui-error-message: "Database names must start with an alphanumeric character
+        and should be separated by commas"
     db_schemas:
       type: object
       title: Additional Database Schemas
       description: Map of additonal schemas to be created.
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9-_]+$"
-        title: Database Schemas
-        description: Database schema row item which contains schema name and database name in which schema will be created.
-        properties:
-          db:
-            title: Database Name
-            type: string
-            description: Name of the database under which schema will be created.
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-            x-ui-error-message: Database name must start with an alphabet or underscore and should contain only alphanumeric characters and underscores
-          schema:
-            title: Database Schema
-            type: string
-            description: Name of the schema which needs to be created.
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-        required:
+        "^[a-zA-Z0-9-_]+$":
+          title: Database Schemas
+          description: Database schema row item which contains schema name and database
+            name in which schema will be created.
+          properties:
+            db:
+              title: Database Name
+              type: string
+              description: Name of the database under which schema will be created.
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+              x-ui-error-message: Database name must start with an alphabet or underscore
+                and should contain only alphanumeric characters and underscores
+            schema:
+              title: Database Schema
+              type: string
+              description: Name of the schema which needs to be created.
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          required:
           - db
           - schema
   required:
-    - size
-    - postgres_version
+  - size
+  - postgres_version
   x-ui-order:
-    - postgres_version
-    - size
-    - db_names
-    - db_schemas
+  - postgres_version
+  - size
+  - db_names
+  - db_schemas
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
