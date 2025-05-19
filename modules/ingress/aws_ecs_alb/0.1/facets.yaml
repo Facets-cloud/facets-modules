@@ -3,7 +3,7 @@ flavor: aws_ecs_alb
 version: "0.1"
 description: Configures AWS ECS with Application Load Balancer
 clouds:
-  - aws
+- aws
 metadata:
   title: Metadata of AWS ECS ALB
   type: object
@@ -30,166 +30,168 @@ spec:
       title: Forwarding Rules
       description: Map of rules for forwarding traffic
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_-]+$"
-        properties:
-          ecs_service_arn:
-            type: string
-            title: ECS Service ARN
-            description: ARN of the ECS service
-            x-ui-api-source:
-              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
-              method: GET
-              params:
-                includeContent: false
-              labelKey: resourceName
-              valueKey: resourceName
-              valueTemplate: "${ecs_service.{{value}}.out.attributes.ecs_service_arn}"
-              filterConditions:
+        "^[a-zA-Z0-9_-]+$":
+          properties:
+            ecs_service_arn:
+              type: string
+              title: ECS Service ARN
+              description: ARN of the ECS service
+              x-ui-api-source:
+                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: "${ecs_service.{{value}}.out.attributes.ecs_service_arn}"
+                filterConditions:
                 - field: resourceType
                   value: ecs_service
-            x-ui-typeable: true
-          port:
-            type: integer
-            title: Port
-            description: Port to forward traffic to
-          priority:
-            type: integer
-            title: Priority
-            description: Priority of the rule
-          path:
-            type: string
-            title: Path Pattern
-            description: Path pattern for the rule
-          domain_prefix:
-            type: string
-            title: Domain Prefix
-            description: Domain prefix for the rule
-          health_check:
-            x-ui-toggle: true
-            type: object
-            title: Health Check Configuration
-            description: Health check settings for the target group
-            properties:
-              protocol:
-                type: string
-                enum: ["HTTP", "HTTPS", "TCP", "TLS"]
-                title: Protocol
-                description: Protocol for health check
-                default: "HTTP"
-              path:
-                type: string
-                title: Path
-                description: Path for health check
-                default: "/"
-              matcher:
-                type: string
-                title: Matcher
-                description: Matcher for health check
-                default: "200-499"
-              interval:
-                type: integer
-                title: Interval
-                description: Interval for health check in seconds
-                default: 30
-                minimum: 5
-                maximum: 300
-              timeout:
-                type: integer
-                title: Timeout
-                description: Timeout for health check in seconds
-                default: 5
-                minimum: 2
-                maximum: 120
-              healthy_threshold:
-                type: integer
-                title: Healthy Threshold
-                description: Number of successful checks before considering the target healthy
-                default: 2
-                minimum: 2
-                maximum: 10
-              unhealthy_threshold:
-                type: integer
-                title: Unhealthy Threshold
-                description: Number of failed checks before considering the target unhealthy
-                default: 2
-                minimum: 2
-                maximum: 10
-          oidc_authentication:
-            type: string
-            title: OIDC Authentication
-            description: Name of the OIDC authentication to use
-            x-ui-dynamic-enum: spec.oidc_authentications.*.name
+              x-ui-typeable: true
+            port:
+              type: integer
+              title: Port
+              description: Port to forward traffic to
+            priority:
+              type: integer
+              title: Priority
+              description: Priority of the rule
+            path:
+              type: string
+              title: Path Pattern
+              description: Path pattern for the rule
+            domain_prefix:
+              type: string
+              title: Domain Prefix
+              description: Domain prefix for the rule
+            health_check:
+              x-ui-toggle: true
+              type: object
+              title: Health Check Configuration
+              description: Health check settings for the target group
+              properties:
+                protocol:
+                  type: string
+                  enum: ["HTTP", "HTTPS", "TCP", "TLS"]
+                  title: Protocol
+                  description: Protocol for health check
+                  default: "HTTP"
+                path:
+                  type: string
+                  title: Path
+                  description: Path for health check
+                  default: "/"
+                matcher:
+                  type: string
+                  title: Matcher
+                  description: Matcher for health check
+                  default: "200-499"
+                interval:
+                  type: integer
+                  title: Interval
+                  description: Interval for health check in seconds
+                  default: 30
+                  minimum: 5
+                  maximum: 300
+                timeout:
+                  type: integer
+                  title: Timeout
+                  description: Timeout for health check in seconds
+                  default: 5
+                  minimum: 2
+                  maximum: 120
+                healthy_threshold:
+                  type: integer
+                  title: Healthy Threshold
+                  description: Number of successful checks before considering the
+                    target healthy
+                  default: 2
+                  minimum: 2
+                  maximum: 10
+                unhealthy_threshold:
+                  type: integer
+                  title: Unhealthy Threshold
+                  description: Number of failed checks before considering the target
+                    unhealthy
+                  default: 2
+                  minimum: 2
+                  maximum: 10
+            oidc_authentication:
+              type: string
+              title: OIDC Authentication
+              description: Name of the OIDC authentication to use
+              x-ui-dynamic-enum: spec.oidc_authentications.*.name
     oidc_authentications:
       x-ui-toggle: true
       type: object
       title: OIDC Authentications
       description: Map of OIDC authentication configurations
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_-]+$"
-        properties:
-          name:
-            type: string
-            title: Authentication Name
-            description: Name of the OIDC authentication
-          authorization_endpoint:
-            type: string
-            title: Authorization Endpoint
-            description: URL of the authorization endpoint
-          client_id:
-            type: string
-            title: Client ID
-            description: Client ID for OIDC
-          client_secret:
-            type: string
-            title: Client Secret
-            description: Client secret for OIDC
-          issuer:
-            type: string
-            title: Issuer
-            description: Issuer URL for OIDC
-          token_endpoint:
-            type: string
-            title: Token Endpoint
-            description: URL of the token endpoint
-          user_info_endpoint:
-            type: string
-            title: User Info Endpoint
-            description: URL of the user info endpoint
-          on_unauthenticated_request:
-            type: string
-            title: On Unauthenticated Request
-            description: Action to take on unauthenticated requests
-            enum:
+        "^[a-zA-Z0-9_-]+$":
+          properties:
+            name:
+              type: string
+              title: Authentication Name
+              description: Name of the OIDC authentication
+            authorization_endpoint:
+              type: string
+              title: Authorization Endpoint
+              description: URL of the authorization endpoint
+            client_id:
+              type: string
+              title: Client ID
+              description: Client ID for OIDC
+            client_secret:
+              type: string
+              title: Client Secret
+              description: Client secret for OIDC
+            issuer:
+              type: string
+              title: Issuer
+              description: Issuer URL for OIDC
+            token_endpoint:
+              type: string
+              title: Token Endpoint
+              description: URL of the token endpoint
+            user_info_endpoint:
+              type: string
+              title: User Info Endpoint
+              description: URL of the user info endpoint
+            on_unauthenticated_request:
+              type: string
+              title: On Unauthenticated Request
+              description: Action to take on unauthenticated requests
+              enum:
               - deny
               - allow
               - authenticate
-          session_cookie_name:
-            type: string
-            title: Session Cookie Name
-            description: Name of the session cookie
-          session_timeout:
-            type: integer
-            title: Session Timeout
-            description: Timeout for the session in seconds
-          scope:
-            type: string
-            title: Scope
-            description: The set of user claims to be requested from the IdP
-          authentication_request_extra_params:
-            type: object
-            title: Authentication Request Extra Params
-            description: Additional query parameters for the authentication request
-            patternProperties:
-              keyPattern: "^[a-zA-Z0-9_-]+$"
-              properties:
-                key:
-                  type: string
-                  title: Key
-                  description: The key of the query parameter
-                value:
-                  type: string
-                  title: Value
-                  description: The value of the query parameter
+            session_cookie_name:
+              type: string
+              title: Session Cookie Name
+              description: Name of the session cookie
+            session_timeout:
+              type: integer
+              title: Session Timeout
+              description: Timeout for the session in seconds
+            scope:
+              type: string
+              title: Scope
+              description: The set of user claims to be requested from the IdP
+            authentication_request_extra_params:
+              type: object
+              title: Authentication Request Extra Params
+              description: Additional query parameters for the authentication request
+              patternProperties:
+                "^[a-zA-Z0-9_-]+$":
+                  properties:
+                    key:
+                      type: string
+                      title: Key
+                      description: The key of the query parameter
+                    value:
+                      type: string
+                      title: Value
+                      description: The value of the query parameter
     additional_domains:
       x-ui-overrides-only: true
       x-ui-toggle: true
@@ -197,24 +199,24 @@ spec:
       title: Additional Domains
       description: Map of additional domains and their certificate ARNs
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_-]+$"
-        properties:
-          domain:
-            type: string
-            title: Domain
-            description: Additional domain name
-          certificate_arn:
-            type: string
-            title: Certificate ARN
-            description: ARN of the certificate for the domain
+        "^[a-zA-Z0-9_-]+$":
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Additional domain name
+            certificate_arn:
+              type: string
+              title: Certificate ARN
+              description: ARN of the certificate for the domain
   required:
-    - public
-    - rules
+  - public
+  - rules
   x-ui-order:
-    - public
-    - rules
-    - oidc_authentications
-    - additional_domains
+  - public
+  - rules
+  - oidc_authentications
+  - additional_domains
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/aws_ecs_alb.schema.json
