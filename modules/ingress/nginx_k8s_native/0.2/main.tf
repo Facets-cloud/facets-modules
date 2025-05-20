@@ -421,6 +421,19 @@ locals {
               "nginx.ingress.kubernetes.io/session-cookie-max-age" = tostring(lookup(lookup(value, "session_affinity", {}), "session_cookie_max_age", ""))
             } : {}
           ) : {},
+          # Add CORS annotations if enabled
+          lookup(value, "cors", null) != null && lookup(lookup(value, "cors", {}), "enable", false) == true ? merge(
+            {
+              "nginx.ingress.kubernetes.io/enable-cors" = "true"
+            },
+            lookup(lookup(value, "cors", {}), "allow_headers", null) != null ? {
+              "nginx.ingress.kubernetes.io/cors-allow-headers" = join(",", [
+                for header_name, enabled in lookup(lookup(value, "cors", {}), "allow_headers", {}) :
+                replace(header_name, "_", "-")
+                if enabled == true
+              ])
+            } : {}
+          ) : {},
           # Process configuration snippets for headers - merge common headers with rule-specific headers
           # with rule-level headers taking precedence in case of duplicates
           lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ? {
