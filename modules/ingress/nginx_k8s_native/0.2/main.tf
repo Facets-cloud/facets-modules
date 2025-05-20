@@ -186,6 +186,16 @@ locals {
       lookup(v, "disable", false) == false
     )
   }
+
+  # Identify rules that have header-based routing with default_backend
+  header_based_routing_with_default_backend = {
+    for k, v in local.ingressObjectsFiltered :
+    k => v
+    if lookup(v, "enable_header_based_routing", false) == true &&
+    lookup(v, "header_based_routing", null) != null &&
+    lookup(lookup(v, "header_based_routing", {}), "default_backend", null) != null &&
+    lookup(lookup(v, "header_based_routing", {}), "default_backend", "") != ""
+  }
   user_supplied_proxy_set_headers = lookup(lookup(local.user_supplied_helm_values, "controller", {}), "proxySetHeaders", {})
   request_id_exists               = can(regex(".*\\$request_id.*", join(" ", values(local.user_supplied_proxy_set_headers))))
   proxy_set_headers = {
@@ -394,6 +404,127 @@ resource "aws_route53_record" "cluster-base-domain-wildcard" {
 
 
 locals {
+  # Create a map for default backend ingress resources
+  default_backend_ingress_resources = {
+    for key, value in local.header_based_routing_with_default_backend : "${key}-default" => {
+      apiVersion = "networking.k8s.io/v1"
+      kind       = "Ingress"
+      metadata = {
+        name      = "${lower(var.instance_name)}-${key}-default"
+        namespace = var.environment.namespace
+        annotations = merge(
+          local.cert_manager_common_annotations,
+          local.nginx_annotations,
+          lookup(value, "annotations", {}),
+          lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
+          lookup(value, "grpc", false) ? {
+            "nginx.ingress.kubernetes.io/backend-protocol" : "GRPC"
+          } : {},
+          # Add rewrite-target annotation if enabled
+          lookup(value, "enable_rewrite_target", false) == true && lookup(value, "rewrite_target", null) != null ? {
+            "nginx.ingress.kubernetes.io/rewrite-target" = lookup(value, "rewrite_target", "")
+          } : {},
+          # Process configuration snippets for headers
+          lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ||
+          lookup(var.instance.spec, "conditional_set_headers", null) != null || lookup(value, "conditional_set_headers", null) != null ? {
+            "nginx.ingress.kubernetes.io/configuration-snippet" = join("", concat(
+              # Process more_set_headers
+              [
+                for header_name in distinct(concat(
+                  # Get all header names from common headers
+                  [
+                    for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "")
+                    if lookup(header_config, "header_name", "") != ""
+                  ],
+                  # Get all header names from rule-level headers
+                  [
+                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "")
+                    if lookup(header_config, "header_name", "") != ""
+                  ]
+                )) :
+                # For each unique header name, check if it exists in rule-level headers first, then fall back to common headers
+                (
+                  contains([
+                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "")
+                  ], header_name) ?
+                  # If header exists in rule-level, use that value
+                  "more_set_headers \"${header_name}: ${lookup(
+                    {
+                      for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                      lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                      if lookup(header_config, "header_name", "") == header_name
+                    },
+                    header_name,
+                    ""
+                  )}\";\n" :
+                  # Otherwise use common header value
+                  "more_set_headers \"${header_name}: ${lookup(
+                    {
+                      for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
+                      lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                      if lookup(header_config, "header_name", "") == header_name
+                    },
+                    header_name,
+                    ""
+                  )}\";\n"
+                )
+              ],
+              # Process rule-level conditional_set_headers (these take precedence over common ones)
+              lookup(value, "conditional_set_headers", null) != null ? [
+                for condition_key, condition_config in lookup(value, "conditional_set_headers", {}) :
+                "if (${lookup(condition_config, "left", "")} ${lookup(condition_config, "operator", "=")} \"${lookup(condition_config, "right", "")}\") {\n${join("", [
+                  for header_key, header_config in lookup(condition_config, "headers", {}) :
+                  "  add_header ${lookup(header_config, "header_name", "")} \"${lookup(header_config, "header_value", "")}\";\n"
+                  if lookup(header_config, "header_name", "") != ""
+                ])}}${condition_key != element(keys(lookup(value, "conditional_set_headers", {})), length(keys(lookup(value, "conditional_set_headers", {}))) - 1) ? "\n" : ""}"
+              ] : [],
+              # Process common conditional_set_headers if no rule-level ones exist
+              lookup(value, "conditional_set_headers", null) == null && lookup(var.instance.spec, "conditional_set_headers", null) != null ? [
+                for condition_key, condition_config in var.instance.spec.conditional_set_headers :
+                "if (${lookup(condition_config, "left", "")} ${lookup(condition_config, "operator", "=")} \"${lookup(condition_config, "right", "")}\") {\n${join("", [
+                  for header_key, header_config in lookup(condition_config, "headers", {}) :
+                  "  add_header ${lookup(header_config, "header_name", "")} \"${lookup(header_config, "header_value", "")}\";\n"
+                  if lookup(header_config, "header_name", "") != ""
+                ])}}${condition_key != element(keys(var.instance.spec.conditional_set_headers), length(keys(var.instance.spec.conditional_set_headers)) - 1) ? "\n" : ""}"
+              ] : []
+            ))
+          } : {}
+        )
+      }
+      spec = {
+        ingressClassName = local.name
+        rules = [{
+          host = value.host
+          http = {
+            paths = [{
+              path     = length(regexall("\\.[a-zA-Z]+$", value.path)) > 0 || length(regexall("\\(.+\\)|\\[\\^?\\w+\\]", value.path)) > 0 ? trim(value.path, "*") : format("%s%s", trim(value.path, "*"), ".*$")
+              pathType = "Prefix"
+              backend = {
+                service = {
+                  name = lookup(lookup(value, "header_based_routing", {}), "default_backend", "")
+                  port = {
+                    name = lookup(value, "port_name", null)
+                    number = lookup(value, "port_name", null) != null ? null : (
+                      lookup(value, "port", null) != null ? tonumber(lookup(value, "port", null)) : null
+                    )
+                  }
+                }
+              }
+            }]
+          }
+        }]
+        tls = [{
+          hosts      = local.disable_endpoint_validation ? tolist([lookup(value, "domain", null), "*.${lookup(value, "domain", null)}"]) : tolist([value.host])
+          secretName = local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
+        }]
+      }
+    }
+  }
+
+  # Regular ingress resources (with canary annotations for header-based routing)
   ingress_resources = {
     for key, value in local.ingressObjectsFiltered : key => {
       apiVersion = "networking.k8s.io/v1"
@@ -551,6 +682,21 @@ locals {
 
 module "ingress_resources" {
   for_each = local.ingress_resources
+
+  source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  depends_on = [
+    helm_release.nginx_ingress_ctlr, aws_route53_record.cluster-base-domain, kubernetes_service_v1.external_name
+  ]
+
+  name            = "${lower(var.instance_name)}-${each.key}"
+  namespace       = var.environment.namespace
+  advanced_config = {}
+  data            = each.value
+}
+
+# Create default backend ingress resources for header-based routing
+module "default_backend_ingress_resources" {
+  for_each = local.default_backend_ingress_resources
 
   source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   depends_on = [
