@@ -1,7 +1,19 @@
 locals {
-  tenant_provider           = lower(lookup(var.cc_metadata, "cc_tenant_provider", "aws"))
-  advanced_config           = lookup(lookup(var.instance, "advanced", {}), "nginx_ingress_controller", {})
-  user_supplied_helm_values = lookup(local.advanced_config, "values", {})
+  tenant_provider = lower(lookup(var.cc_metadata, "cc_tenant_provider", "aws"))
+  advanced_config = lookup(lookup(var.instance, "advanced", {}), "nginx_ingress_controller", {})
+  # Get user supplied helm values and merge with PDB configuration
+  base_helm_values = lookup(local.advanced_config, "values", {})
+
+  # Create PDB configuration for remote chart
+  pdb_helm_values = {
+    controller = {
+      minAvailable   = lookup(lookup(var.instance.spec, "pdb", {}), "minAvailable", null)
+      maxUnavailable = lookup(lookup(var.instance.spec, "pdb", {}), "maxUnavailable", null)
+    }
+  }
+
+  # Merge user supplied values with PDB configuration
+  user_supplied_helm_values = merge(local.base_helm_values, local.chart_version_specified ? local.pdb_helm_values : {})
   ingressRoutes             = { for x, y in lookup(var.instance.spec, "rules", {}) : x => y }
   record_type               = lookup(var.inputs.kubernetes_details.attributes, "lb_service_record_type", var.environment.cloud == "AWS" ? "CNAME" : "A")
   #If environment name and instance exceeds 33 , take md5
@@ -215,7 +227,15 @@ locals {
   enable_custom_error_pages = length(local.error_pages_data) > 0
 
   # Create a simple checksum for the ConfigMap content
-  error_pages_checksum            = local.enable_custom_error_pages ? md5(jsonencode(local.error_pages_data)) : ""
+  error_pages_checksum = local.enable_custom_error_pages ? md5(jsonencode(local.error_pages_data)) : ""
+
+  # Extract PDB configuration from facets.yaml
+  pdb_config          = lookup(var.instance.spec, "pdb", {})
+  pdb_min_available   = lookup(local.pdb_config, "minAvailable", null)
+  pdb_max_unavailable = lookup(local.pdb_config, "maxUnavailable", null)
+
+  # Determine if we need to create a PDB
+  create_pdb                      = !local.chart_version_specified && (local.pdb_min_available != null || local.pdb_max_unavailable != null)
   user_supplied_proxy_set_headers = lookup(lookup(local.user_supplied_helm_values, "controller", {}), "proxySetHeaders", {})
   request_id_exists               = can(regex(".*\\$request_id.*", join(" ", values(local.user_supplied_proxy_set_headers))))
   proxy_set_headers = {
@@ -302,8 +322,8 @@ controller:
     enabled: true
     controllerValue: "k8s.io/${local.name}-ingress-nginx"
   ingressClass: ${local.name}
-  minAvailable: null
-  maxUnavailable: null
+  minAvailable: ${local.pdb_min_available != null ? local.pdb_min_available : "null"}
+  maxUnavailable: ${local.pdb_min_available == null && local.pdb_max_unavailable != null ? local.pdb_max_unavailable : "null"}
   rbac:
     create: true
   resources:
@@ -773,6 +793,46 @@ module "custom_error_pages_configmap" {
       namespace = var.environment.namespace
     }
     data = local.error_pages_data
+  }
+}
+
+# Create PodDisruptionBudget for the controller when using local chart
+module "controller_pdb" {
+  count = local.create_pdb ? 1 : 0
+
+  source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+  depends_on = [
+    helm_release.nginx_ingress_ctlr
+  ]
+
+  name            = "${local.name}-controller"
+  namespace       = var.environment.namespace
+  advanced_config = {}
+  data = {
+    apiVersion = "policy/v1"
+    kind       = "PodDisruptionBudget"
+    metadata = {
+      name      = "${local.name}-controller"
+      namespace = var.environment.namespace
+      labels = {
+        "app.kubernetes.io/name"       = "ingress-nginx"
+        "app.kubernetes.io/instance"   = local.name
+        "app.kubernetes.io/component"  = "controller"
+        "app.kubernetes.io/managed-by" = "Terraform"
+      }
+    }
+    spec = {
+      selector = {
+        matchLabels = {
+          "app.kubernetes.io/name"      = "ingress-nginx"
+          "app.kubernetes.io/instance"  = local.name
+          "app.kubernetes.io/component" = "controller"
+        }
+      }
+      # Only one of minAvailable or maxUnavailable can be specified
+      minAvailable   = local.pdb_min_available != null ? local.pdb_min_available : null
+      maxUnavailable = local.pdb_min_available == null && local.pdb_max_unavailable != null ? local.pdb_max_unavailable : null
+    }
   }
 }
 
