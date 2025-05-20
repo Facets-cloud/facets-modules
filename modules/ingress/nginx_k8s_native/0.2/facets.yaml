@@ -210,9 +210,27 @@ spec:
                   title: Header Value
                   description: The Header value to trigger conditional routing
                   x-ui-textarea: true
+                default_backend:
+                  type: string
+                  title: Default Service
+                  description: Default service to route to if the header value doesn't
+                    match any conditions
+                  x-ui-api-source:
+                    endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                    method: GET
+                    params:
+                      includeContent: false
+                    labelKey: resourceName
+                    valueKey: resourceName
+                    valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                    filterConditions:
+                    - field: resourceType
+                      value: service
+                  x-ui-typeable: true
               required:
               - header_name
               - header_value
+              - default_backend
             more_set_headers:
               type: object
               title: Custom Response Headers
