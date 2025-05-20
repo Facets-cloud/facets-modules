@@ -406,6 +406,21 @@ locals {
             "nginx.ingress.kubernetes.io/canary-by-header"       = lookup(lookup(value, "header_based_routing", {}), "header_name", "")
             "nginx.ingress.kubernetes.io/canary-by-header-value" = lookup(lookup(value, "header_based_routing", {}), "header_value", "")
           } : {},
+          # Add session affinity annotations if configured
+          lookup(value, "session_affinity", null) != null ? merge(
+            {
+              "nginx.ingress.kubernetes.io/affinity" = "cookie"
+            },
+            lookup(lookup(value, "session_affinity", {}), "session_cookie_name", null) != null ? {
+              "nginx.ingress.kubernetes.io/session-cookie-name" = lookup(lookup(value, "session_affinity", {}), "session_cookie_name", "")
+            } : {},
+            lookup(lookup(value, "session_affinity", {}), "session_cookie_expires", null) != null ? {
+              "nginx.ingress.kubernetes.io/session-cookie-expires" = tostring(lookup(lookup(value, "session_affinity", {}), "session_cookie_expires", ""))
+            } : {},
+            lookup(lookup(value, "session_affinity", {}), "session_cookie_max_age", null) != null ? {
+              "nginx.ingress.kubernetes.io/session-cookie-max-age" = tostring(lookup(lookup(value, "session_affinity", {}), "session_cookie_max_age", ""))
+            } : {}
+          ) : {},
           # Process configuration snippets for headers - merge common headers with rule-specific headers
           # with rule-level headers taking precedence in case of duplicates
           lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ? {
