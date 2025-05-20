@@ -60,6 +60,18 @@ locals {
     ])
   } : {}
 
+  # Process conditional_set_headers into configuration snippet if present
+  conditional_set_headers_config = lookup(var.instance.spec, "conditional_set_headers", null) != null ? {
+    "nginx.ingress.kubernetes.io/configuration-snippet" = join("", [
+      for condition_key, condition_config in var.instance.spec.conditional_set_headers :
+      "if (${lookup(condition_config, "left", "")} ${lookup(condition_config, "operator", "=")} \"${lookup(condition_config, "right", "")}\") {\n${join("", [
+        for header_key, header_config in lookup(condition_config, "headers", {}) :
+        "  add_header ${lookup(header_config, "header_name", "")} \"${lookup(header_config, "header_value", "")}\";\n"
+        if lookup(header_config, "header_name", "") != ""
+      ])}}${condition_key != element(keys(var.instance.spec.conditional_set_headers), length(keys(var.instance.spec.conditional_set_headers)) - 1) ? "\n" : ""}"
+    ])
+  } : {}
+
   common_annotations = merge(
     {
       "nginx.ingress.kubernetes.io/use-regex" : "true"
@@ -78,7 +90,8 @@ locals {
       "nginx.ingress.kubernetes.io/proxy-read-timeout" : "300"
       "nginx.ingress.kubernetes.io/proxy-send-timeout" : "300"
     },
-    local.more_set_headers_config
+    local.more_set_headers_config,
+    local.conditional_set_headers_config
   )
   aws_annotations = merge(
     lookup(var.instance.spec, "private", false) == true ? {
@@ -436,50 +449,72 @@ locals {
           ) : {},
           # Process configuration snippets for headers - merge common headers with rule-specific headers
           # with rule-level headers taking precedence in case of duplicates
-          lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ? {
-            "nginx.ingress.kubernetes.io/configuration-snippet" = join("", [
-              for header_name in distinct(concat(
-                # Get all header names from common headers
-                [
-                  for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
-                  lookup(header_config, "header_name", "")
-                  if lookup(header_config, "header_name", "") != ""
-                ],
-                # Get all header names from rule-level headers
-                [
-                  for header_key, header_config in lookup(value, "more_set_headers", {}) :
-                  lookup(header_config, "header_name", "")
-                  if lookup(header_config, "header_name", "") != ""
-                ]
-              )) :
-              # For each unique header name, check if it exists in rule-level headers first, then fall back to common headers
-              (
-                contains([
-                  for header_key, header_config in lookup(value, "more_set_headers", {}) :
-                  lookup(header_config, "header_name", "")
-                ], header_name) ?
-                # If header exists in rule-level, use that value
-                "more_set_headers \"${header_name}: ${lookup(
-                  {
-                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
-                    lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
-                    if lookup(header_config, "header_name", "") == header_name
-                  },
-                  header_name,
-                  ""
-                )}\";\n" :
-                # Otherwise use common header value
-                "more_set_headers \"${header_name}: ${lookup(
-                  {
+          lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ||
+          lookup(var.instance.spec, "conditional_set_headers", null) != null || lookup(value, "conditional_set_headers", null) != null ? {
+            "nginx.ingress.kubernetes.io/configuration-snippet" = join("", concat(
+              # Process more_set_headers
+              [
+                for header_name in distinct(concat(
+                  # Get all header names from common headers
+                  [
                     for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
-                    lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
-                    if lookup(header_config, "header_name", "") == header_name
-                  },
-                  header_name,
-                  ""
-                )}\";\n"
-              )
-            ])
+                    lookup(header_config, "header_name", "")
+                    if lookup(header_config, "header_name", "") != ""
+                  ],
+                  # Get all header names from rule-level headers
+                  [
+                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "")
+                    if lookup(header_config, "header_name", "") != ""
+                  ]
+                )) :
+                # For each unique header name, check if it exists in rule-level headers first, then fall back to common headers
+                (
+                  contains([
+                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "")
+                  ], header_name) ?
+                  # If header exists in rule-level, use that value
+                  "more_set_headers \"${header_name}: ${lookup(
+                    {
+                      for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                      lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                      if lookup(header_config, "header_name", "") == header_name
+                    },
+                    header_name,
+                    ""
+                  )}\";\n" :
+                  # Otherwise use common header value
+                  "more_set_headers \"${header_name}: ${lookup(
+                    {
+                      for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
+                      lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                      if lookup(header_config, "header_name", "") == header_name
+                    },
+                    header_name,
+                    ""
+                  )}\";\n"
+                )
+              ],
+              # Process rule-level conditional_set_headers (these take precedence over common ones)
+              lookup(value, "conditional_set_headers", null) != null ? [
+                for condition_key, condition_config in lookup(value, "conditional_set_headers", {}) :
+                "if (${lookup(condition_config, "left", "")} ${lookup(condition_config, "operator", "=")} \"${lookup(condition_config, "right", "")}\") {\n${join("", [
+                  for header_key, header_config in lookup(condition_config, "headers", {}) :
+                  "  add_header ${lookup(header_config, "header_name", "")} \"${lookup(header_config, "header_value", "")}\";\n"
+                  if lookup(header_config, "header_name", "") != ""
+                ])}}${condition_key != element(keys(lookup(value, "conditional_set_headers", {})), length(keys(lookup(value, "conditional_set_headers", {}))) - 1) ? "\n" : ""}"
+              ] : [],
+              # Process common conditional_set_headers if no rule-level ones exist
+              lookup(value, "conditional_set_headers", null) == null && lookup(var.instance.spec, "conditional_set_headers", null) != null ? [
+                for condition_key, condition_config in var.instance.spec.conditional_set_headers :
+                "if (${lookup(condition_config, "left", "")} ${lookup(condition_config, "operator", "=")} \"${lookup(condition_config, "right", "")}\") {\n${join("", [
+                  for header_key, header_config in lookup(condition_config, "headers", {}) :
+                  "  add_header ${lookup(header_config, "header_name", "")} \"${lookup(header_config, "header_value", "")}\";\n"
+                  if lookup(header_config, "header_name", "") != ""
+                ])}}${condition_key != element(keys(var.instance.spec.conditional_set_headers), length(keys(var.instance.spec.conditional_set_headers)) - 1) ? "\n" : ""}"
+              ] : []
+            ))
           } : {}
         )
       }
