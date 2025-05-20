@@ -168,6 +168,9 @@ locals {
       ) && (
       # Include objects where service_name is not null or an empty string
       lookup(v, "service_name", null) != null && lookup(v, "service_name", "") != ""
+      ) && (
+      # Exclude objects where disable is set to true
+      lookup(v, "disable", false) == false
     )
   }
   user_supplied_proxy_set_headers = lookup(lookup(local.user_supplied_helm_values, "controller", {}), "proxySetHeaders", {})
@@ -536,6 +539,6 @@ output "legacy_resource_details" {
         resource_type = "ingress_rules_infra"
         resource_name = k
         key           = k
-    }]
+    } if lookup(v, "disable", false) == false]
   )
 }

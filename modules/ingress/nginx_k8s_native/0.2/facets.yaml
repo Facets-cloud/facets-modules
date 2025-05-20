@@ -105,9 +105,9 @@ spec:
           description: Name of the ingress object
           type: object
           properties:
-            enable:
+            disable:
               type: boolean
-              title: Enable Rule
+              title: Disable Rule
               description: Enable/Diaable Rule
             domain_prefix:
               type: string
