@@ -1,0 +1,129 @@
+intent: "cloud_account"
+flavor: default
+version: "0.1"
+description: Module to configure and provision resources within a cloud account
+clouds:
+- aws
+- gcp
+- azure
+spec:
+  description: Module to configure and provision resources within a cloud account
+    (AWS, GCP, Azure)
+  properties:
+    cloud_account:
+      description: Select the cloud account to use (must be previously linked)
+      title: Cloud Account
+      type: string
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/accounts/
+        filterConditions:
+          - field: accountType
+            value: CLOUD
+          - field: provider
+            type: dynamic
+            value: spec.cloud_provider
+        labelKey: name
+        method: GET
+        params:
+          includeContent: false
+        valueKey: name
+    cloud_provider:
+      default: aws
+      description: Select the cloud provider (AWS, GCP, Azure)
+      enum:
+        - AWS
+        - GCP
+        - AZURE
+      title: Cloud Provider
+      type: string
+  required:
+    - cloud_provider
+    - cloud_account
+  title: Cloud Account Manager
+  type: object
+  x-ui-order:
+    - cloud_provider
+    - cloud_account
+
+outputs:
+  default:
+    type: "@outputs/cloud_account"
+    providers:
+      azurerm:
+        source: hashicorp/azurerm
+        version: 2.52.0
+        attributes:
+          features: { }
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
+      azurerm3:
+        source: hashicorp/azurerm3
+        version: 3.52.0
+        attributes:
+          features: { }
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
+      google-beta:
+        source: hashicorp/google-beta
+        version: 6.23.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      google:
+        source: hashicorp/google
+        version: 6.23.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      google5:
+        source: hashicorp/google5
+        version: 5.32.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      aws:
+        source: hashicorp/aws
+        version: "= 3.74.0"
+        attributes:
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
+      aws4:
+        source: hashicorp/aws4
+        version: "= 4.53.0"
+        attributes:
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
+      aws5:
+        source: hashicorp/aws5
+        version: "= 5.49.0"
+        attributes:
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
+sample:
+  version: "0.1"
+  flavor: default
+  kind: cloud_account
+  disabled: false
+  spec: {}
