@@ -196,6 +196,26 @@ locals {
     lookup(lookup(v, "header_based_routing", {}), "default_backend", null) != null &&
     lookup(lookup(v, "header_based_routing", {}), "default_backend", "") != ""
   }
+
+  # Extract custom error pages and error codes
+  custom_error_pages     = lookup(var.instance.spec, "custom_error_pages", {})
+  has_custom_error_pages = length(local.custom_error_pages) > 0
+
+  # Create a map of error codes to page content
+  error_pages_data = local.has_custom_error_pages ? {
+    for k, v in local.custom_error_pages :
+    lookup(v, "error_code", "") => lookup(v, "page_content", "")
+    if lookup(v, "error_code", "") != "" && lookup(v, "page_content", "") != ""
+  } : {}
+
+  # Create a comma-separated list of error codes for the custom-http-errors config
+  custom_http_errors = length(local.error_pages_data) > 0 ? join(",", keys(local.error_pages_data)) : ""
+
+  # Determine if we should enable custom error pages based on actual data
+  enable_custom_error_pages = length(local.error_pages_data) > 0
+
+  # Create a simple checksum for the ConfigMap content
+  error_pages_checksum            = local.enable_custom_error_pages ? md5(jsonencode(local.error_pages_data)) : ""
   user_supplied_proxy_set_headers = lookup(lookup(local.user_supplied_helm_values, "controller", {}), "proxySetHeaders", {})
   request_id_exists               = can(regex(".*\\$request_id.*", join(" ", values(local.user_supplied_proxy_set_headers))))
   proxy_set_headers = {
@@ -227,6 +247,8 @@ locals {
 resource "helm_release" "nginx_ingress_ctlr" {
   name = local.name
   wait = lookup(local.advanced_config, "wait", true)
+
+  depends_on = [module.custom_error_pages_configmap]
 
   repository  = local.chart_version_specified ? "https://kubernetes.github.io/ingress-nginx" : null
   chart       = local.chart_version_specified ? "ingress-nginx" : "${path.module}/../../../charts/ingress-nginx/ingress-nginx-4.2.6.tgz"
@@ -301,6 +323,7 @@ controller:
   config:
     annotations-risk-level: ${lookup(var.instance.spec, "annotations_risk_level", "Critical")}
     enable-underscores-in-headers: "${lookup(local.advanced_config, "enable-underscores-in-headers", false)}"
+    ${length(local.custom_http_errors) > 0 ? "custom-http-errors: \"${local.custom_http_errors}\"" : ""}
   extraEnvs:
     - name: "TZ"
       value: ${var.environment.timezone}
@@ -323,12 +346,36 @@ controller:
         key: kubernetes.azure.com/scalesetpriority
         operator: Equal
         value: spot
-
+${length(keys(local.error_pages_data)) > 0 ? <<DEFAULTBACKEND
+defaultBackend:
+  enabled: true
+  image:
+    registry: registry.k8s.io
+    image: ingress-nginx/nginx-errors
+    tag: v20230505@sha256:3600dcd1bbd0d05959bb01af4b272714e94d22d24a64e91838e7183c80e53f7f
+  extraVolumes:
+    - name: "${lower(var.instance_name)}-custom-error-pages"
+      configMap:
+        name: "${lower(var.instance_name)}-custom-error-pages"
+        items: [
+          ${join(",\n          ", [
+    for error_code in keys(local.error_pages_data) :
+    "{ \"key\": \"${error_code}\", \"path\": \"${error_code}.html\" }"
+])}
+        ]
+  extraVolumeMounts:
+    - name: "${lower(var.instance_name)}-custom-error-pages"
+      mountPath: "/www"
+  podAnnotations:
+    # Add checksum annotation to force restart when ConfigMap changes
+    checksum/config: "${local.error_pages_checksum}"
+DEFAULTBACKEND
+: ""}
 VALUES
-    , yamlencode(local.user_supplied_helm_values)
-    , yamlencode(local.proxy_set_headers)
-    , local.chart_version_specified ? yamlencode({ controller = { allowSnippetAnnotations = true } }) : yamlencode({})
-  , yamlencode(local.user_supplied_helm_values)]
+, yamlencode(local.user_supplied_helm_values)
+, yamlencode(local.proxy_set_headers)
+, local.chart_version_specified ? yamlencode({ controller = { allowSnippetAnnotations = true } }) : yamlencode({})
+, yamlencode(local.user_supplied_helm_values)]
 }
 
 # secret with the auth details
@@ -707,6 +754,26 @@ module "default_backend_ingress_resources" {
   namespace       = var.environment.namespace
   advanced_config = {}
   data            = each.value
+}
+
+# Create ConfigMap for custom error pages if they exist
+module "custom_error_pages_configmap" {
+  count = length(local.error_pages_data) > 0 ? 1 : 0
+
+  source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
+
+  name            = "${lower(var.instance_name)}-custom-error-pages"
+  namespace       = var.environment.namespace
+  advanced_config = {}
+  data = {
+    apiVersion = "v1"
+    kind       = "ConfigMap"
+    metadata = {
+      name      = "${lower(var.instance_name)}-custom-error-pages"
+      namespace = var.environment.namespace
+    }
+    data = local.error_pages_data
+  }
 }
 
 resource "kubernetes_service_v1" "external_name" {
