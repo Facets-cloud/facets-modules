@@ -229,13 +229,10 @@ locals {
   # Create a simple checksum for the ConfigMap content
   error_pages_checksum = local.enable_custom_error_pages ? md5(jsonencode(local.error_pages_data)) : ""
 
-  # Extract PDB configuration from facets.yaml
-  pdb_config          = lookup(var.instance.spec, "pdb", {})
-  pdb_min_available   = lookup(local.pdb_config, "minAvailable", null)
-  pdb_max_unavailable = lookup(local.pdb_config, "maxUnavailable", null)
-
-  # Determine if we need to create a PDB
-  create_pdb                      = !local.chart_version_specified && (local.pdb_min_available != null || local.pdb_max_unavailable != null)
+  # Extract PDB configuration from facets.yaml (only for remote charts)
+  pdb_config                      = lookup(var.instance.spec, "pdb", {})
+  pdb_min_available               = lookup(local.pdb_config, "minAvailable", null)
+  pdb_max_unavailable             = lookup(local.pdb_config, "maxUnavailable", null)
   user_supplied_proxy_set_headers = lookup(lookup(local.user_supplied_helm_values, "controller", {}), "proxySetHeaders", {})
   request_id_exists               = can(regex(".*\\$request_id.*", join(" ", values(local.user_supplied_proxy_set_headers))))
   proxy_set_headers = {
@@ -480,8 +477,7 @@ locals {
         name      = "${lower(var.instance_name)}-${key}-default"
         namespace = var.environment.namespace
         annotations = merge(
-          local.cert_manager_common_annotations,
-          local.nginx_annotations,
+          local.annotations,
           lookup(value, "annotations", {}),
           lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
           lookup(value, "grpc", false) ? {
@@ -796,45 +792,7 @@ module "custom_error_pages_configmap" {
   }
 }
 
-# Create PodDisruptionBudget for the controller when using local chart
-module "controller_pdb" {
-  count = local.create_pdb ? 1 : 0
 
-  source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  depends_on = [
-    helm_release.nginx_ingress_ctlr
-  ]
-
-  name            = "${local.name}-controller"
-  namespace       = var.environment.namespace
-  advanced_config = {}
-  data = {
-    apiVersion = "policy/v1"
-    kind       = "PodDisruptionBudget"
-    metadata = {
-      name      = "${local.name}-controller"
-      namespace = var.environment.namespace
-      labels = {
-        "app.kubernetes.io/name"       = "ingress-nginx"
-        "app.kubernetes.io/instance"   = local.name
-        "app.kubernetes.io/component"  = "controller"
-        "app.kubernetes.io/managed-by" = "Terraform"
-      }
-    }
-    spec = {
-      selector = {
-        matchLabels = {
-          "app.kubernetes.io/name"      = "ingress-nginx"
-          "app.kubernetes.io/instance"  = local.name
-          "app.kubernetes.io/component" = "controller"
-        }
-      }
-      # Only one of minAvailable or maxUnavailable can be specified
-      minAvailable   = local.pdb_min_available != null ? local.pdb_min_available : null
-      maxUnavailable = local.pdb_min_available == null && local.pdb_max_unavailable != null ? local.pdb_max_unavailable : null
-    }
-  }
-}
 
 resource "kubernetes_service_v1" "external_name" {
   for_each = local.external_services
