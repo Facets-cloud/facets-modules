@@ -1,7 +1,7 @@
 locals {
-  username          = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? "${var.instance_name}user" : ""
-  password          = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? random_string.basic-auth-pass[0].result : ""
-  is_auth_enabled   = length(local.username) > 0 && length(local.password) > 0 ? true : false
+  username        = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? "${var.instance_name}user" : ""
+  password        = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? random_string.basic-auth-pass[0].result : ""
+  is_auth_enabled = length(local.username) > 0 && length(local.password) > 0 ? true : false
   output_attributes = {
     base_domain = local.base_domain
   }

@@ -1,5 +1,5 @@
 intent: ingress
-flavor: nginx_k8s_native_test
+flavor: nginx_k8s_native
 version: '0.2'
 description: Adds Ingress module
 clouds:
@@ -7,6 +7,17 @@ clouds:
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   title: Nginx Ingress Controller
   type: object
@@ -25,490 +36,558 @@ spec:
       type: object
       x-ui-overrides-only: true
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Domain Object
-        description: Name of the domain object
-        properties:
-          domain:
-            type: string
-            title: Domain
-            description: Host name of the domain
-            pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
-            x-ui-unique: true
-            x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk"
-            x-ui-error-message: "Value doesn't match the format. Eg: example.com, my-domain.co.uk"
-          alias:
-            type: string
-            title: Alias
-            description: Alias for the domain
-        required: [ "domain", "alias" ]
+        ^[a-zA-Z0-9_.-]*$:
+          title: Domain Object
+          description: Name of the domain object
+          type: object
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Host name of the domain
+              pattern: ^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$
+              x-ui-unique: true
+              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com,
+                my-domain.co.uk'
+              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com,
+                my-domain.co.uk'
+            alias:
+              type: string
+              title: Alias
+              description: Alias for the domain
+          required:
+          - domain
+          - alias
     more_set_headers:
       type: object
       title: Custom Response Headers
       description: Common Custom response headers applied across rules
       x-ui-toggle: true
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Header
-        description: Header name
-        type: string
-        properties:
-          header_name:
-            type: string
-            title: Header Key
-            description: The Header key
-            pattern: "^[A-Za-z0-9-]+$"
-            x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
-            x-ui-typeable: true
-            enum: [
-              "X-Frame-Options",
-              "Content-Security-Policy",
-              "Referrer-Policy",
-              "X-Content-Type-Options",
-              "X-Xss-Protection",
-              "reflected-xss",
-              "Cache-Control",
-              "Cache-Control",
-              "Vary",
-              "Content-Disposition",
-              "X-Tenant-ID"
-            ]
-          header_value:
-            type: textarea
-            title: Header Value
-            description: The Header value
+        ^[a-zA-Z0-9_.-]*$:
+          title: Custom Response Header
+          description: Custom Response Header
+          type: object
+          properties:
+            header_name:
+              type: string
+              title: Header Key
+              description: The Header key
+              pattern: ^[A-Za-z0-9-]+$
+              x-ui-error-message: Header key must contain only alphanumeric characters
+                and hyphens
+              x-ui-typeable: true
+              enum:
+              - X-Frame-Options
+              - Content-Security-Policy
+              - Referrer-Policy
+              - X-Content-Type-Options
+              - X-Xss-Protection
+              - reflected-xss
+              - Cache-Control
+              - Cache-Control
+              - Vary
+              - Content-Disposition
+              - X-Tenant-ID
+            header_value:
+              type: string
+              title: Header Value
+              description: The Header value
+              x-ui-textarea: true
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
       x-ui-override-disable: true
       type: object
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Ingress Object
-        description: Name of the ingress object
-        properties:
-          enable:
-            type: boolean
-            title: Enable Rule
-            description: Enable/Diaable Rule
-          domain_prefix:
-            type: string
-            title: Domain Prefix
-            description: Subdomain prefix
-            pattern: '^(?!-)[a-z0-9-]{1,18}(?<!-)$'
-            x-ui-placeholder: "Enter the subdomain you want to expose your application"
-            x-ui-error-message: "Value doesn't match pattern, max characters of 20, only hyphen special characters is accepted with numbers and alphabets and should not start or end with hyphen"
-          service_name:
-            type: string
-            title: Service Name
-            description: Kubernetes service name
-            x-ui-api-source:
-              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
-              method: GET
-              params:
-                includeContent: false
-              labelKey: resourceName
-              valueKey: resourceName
-              valueTemplate: "${service.{{value}}.out.attributes.service_name}"
-              filterConditions:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Ingress Object
+          description: Name of the ingress object
+          type: object
+          properties:
+            enable:
+              type: boolean
+              title: Enable Rule
+              description: Enable/Diaable Rule
+            domain_prefix:
+              type: string
+              title: Domain Prefix
+              description: Subdomain prefix
+              pattern: ^(?!-)[a-z0-9-]{1,18}(?<!-)$
+              x-ui-placeholder: Enter the subdomain you want to expose your application
+              x-ui-error-message: Value doesn't match pattern, max characters of 20,
+                only hyphen special characters is accepted with numbers and alphabets
+                and should not start or end with hyphen
+            service_name:
+              type: string
+              title: Service Name
+              description: Kubernetes service name
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                filterConditions:
                 - field: resourceType
                   value: service
-            x-ui-typeable: true
-          port:
-            type: string
-            title: Port
-            description: Service port number
-            x-ui-api-source:
-              endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview"
-              dynamicProperties:
-                serviceName:
-                  key: service_name
-                  lookup: regex
-                  x-ui-lookup-regex: '\${[^.]+\.([^.]+).*'
-              method: GET
-              labelKey: port
-              valueKey: port
-              path: ports
-            x-ui-disable-tooltip: "No Ports Found or Service not selected"
-            x-ui-typeable: true
-          path:
-            type: string
-            title: Path
-            description: Path of the application
-            pattern: '^(/[^/]+)*(/)?$'
-            x-ui-placeholder: "Enter path to which your application will be accessible"
-            x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
-            default: '/'
-          enable_rewrite_target:
-            type: boolean
-            title: Enable Rewrite Target
-            description: Toggle Rewrite Target
-          rewrite_target:
-            type: string
-            title: Rewrite Target
-            description: Target URI where the traffic must be redirected
-            x-ui-visible-if:
-              field: spec.rules.{{this}}.enable_rewrite_target
-              values: [true]
-          enable_header_based_routing:
-            type: boolean
-            title: Enable Header-Based Routing
-            description: Toggle header-based conditional routing
-          header_based_routing:
-            type: object
-            title: Header-Based Routing Configuration
-            description: Set up routing rules based on specific header values
-            x-ui-visible-if:
-              field: spec.rules.{{this}}.enable_header_based_routing
-              values: [true]
-            properties:
-              header_name:
-                type: string
-                title: Header Key
-                description: The Header key for conditional routing
-                pattern: "^[A-Za-z0-9-]+$"
-                x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
-                x-ui-typeable: true
-                enum: [
-                  "X-Frame-Options",
-                  "Content-Security-Policy",
-                  "Referrer-Policy",
-                  "X-Content-Type-Options",
-                  "X-Xss-Protection",
-                  "reflected-xss",
-                  "Cache-Control",
-                  "Cache-Control",
-                  "Vary",
-                  "Content-Disposition",
-                  "X-Tenant-ID"
-                ]
-              header_value:
-                type: textarea
-                title: Header Value
-                description: The Header value to trigger conditional routing
-            required: ["header_name", "header_value"]
-          more_set_headers:
-            type: object
-            title: Custom Response Headers
-            description: Custom response headers for the ingress resource
-            x-ui-toggle: true
-            patternProperties:
-              keyPattern: "^[a-zA-Z0-9_.-]*$"
-              title: Header
-              description: Header name
+              x-ui-typeable: true
+            port:
               type: string
+              title: Port
+              description: Service port number
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview
+                dynamicProperties:
+                  serviceName:
+                    key: service_name
+                    lookup: regex
+                    x-ui-lookup-regex: \${[^.]+\.([^.]+).*
+                method: GET
+                labelKey: port
+                valueKey: port
+                path: ports
+              x-ui-disable-tooltip: No Ports Found or Service not selected
+              x-ui-typeable: true
+            path:
+              type: string
+              title: Path
+              description: Path of the application
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter path to which your application will be accessible
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /<path>
+                etc'
+              default: /
+            enable_rewrite_target:
+              type: boolean
+              title: Enable Rewrite Target
+              description: Toggle Rewrite Target
+            rewrite_target:
+              type: string
+              title: Rewrite Target
+              description: Target URI where the traffic must be redirected
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.enable_rewrite_target
+                values:
+                - true
+            enable_header_based_routing:
+              type: boolean
+              title: Enable Header-Based Routing
+              description: Toggle header-based conditional routing
+            header_based_routing:
+              type: object
+              title: Header-Based Routing Configuration
+              description: Set up routing rules based on specific header values
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.enable_header_based_routing
+                values:
+                - true
               properties:
                 header_name:
                   type: string
                   title: Header Key
-                  description: The Header key
-                  pattern: "^[A-Za-z0-9-]+$"
-                  x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
+                  description: The Header key for conditional routing
+                  pattern: ^[A-Za-z0-9-]+$
+                  x-ui-error-message: Header key must contain only alphanumeric characters
+                    and hyphens
                   x-ui-typeable: true
-                  enum: [
-                    "X-Frame-Options",
-                    "Content-Security-Policy",
-                    "Referrer-Policy",
-                    "X-Content-Type-Options",
-                    "X-Xss-Protection",
-                    "reflected-xss",
-                    "Cache-Control",
-                    "Cache-Control",
-                    "Vary",
-                    "Content-Disposition",
-                    "X-Tenant-ID"
-                  ]
+                  enum:
+                  - X-Frame-Options
+                  - Content-Security-Policy
+                  - Referrer-Policy
+                  - X-Content-Type-Options
+                  - X-Xss-Protection
+                  - reflected-xss
+                  - Cache-Control
+                  - Cache-Control
+                  - Vary
+                  - Content-Disposition
+                  - X-Tenant-ID
                 header_value:
-                  type: textarea
+                  type: string
                   title: Header Value
-                  description: The Header value
-          session_affinity:
-            type: object
-            title:  Session Affinity
-            description: Configure Session affinity settings
-            x-ui-toggle: true
-            properties:
-              session_cookie_name:
-                type: string
-                title: Session Cookie Name
-                description: Name of the cookie that will be created
-                pattern: "^[a-zA-Z0-9_-]+$"
-                x-ui-error-message: "Cookie name must contain only alphanumeric characters, underscores, and hyphens"
-              session_cookie_expires:
-                type: integer
-                title: Session Cookie Expires
-                description: Legacy version of the previous annotation for compatibility with older browsers, generates an Expires cookie directive by adding the seconds to the current date
-                minimum: 0
-                x-ui-error-message: "Expires value must be a non-negative integer"
-              session_cookie_max_age:
-                type: integer
-                title: Session Cookie Max Age
-                description: Time until the cookie expires, corresponds to the Max-Age cookie directive (in seconds)
-                minimum: 0
-                x-ui-error-message: "Max Age value must be a non-negative integer"
-          cors:
-            type: object
-            title: CORS
-            description: Configure Cross-Origin Resource Sharing (CORS) settings
-            x-ui-toggle: true
-            properties:
-              enable:
-                type: boolean
-                title: Enable CORS
-                description: Enable Cross-Origin Resource Sharing (CORS) in an Ingress rule
-              allow_headers:
-                title: Allow Headers
-                description: Controls which headers are accepted for CORS
-                type: object
-                x-ui-visible-if:
-                  field: spec.rules.{{this}}.cors.enable
-                  values: [true]
-                properties:
-                  Accept:
-                    type: boolean
-                    title: Accept
-                    description: Informs the server about the types of data that can be sent back
-                  Accept_Encoding:
-                    type: boolean
-                    title: Accept-Encoding
-                    description: Specifies the encoding algorithms the client can understand
-                  Accept_Language:
-                    type: boolean
-                    title: Accept-Language
-                    description: Indicates the natural language and locale that the client prefers
-                  Access_Control_Allow_Origin:
-                    type: boolean
-                    title: Access-Control-Allow-Origin
-                    description: Specifies which origins can access the resource
-                  Authorization:
-                    type: boolean
-                    title: Authorization
-                    description: Contains the credentials to authenticate a user with a server
-                  Buid:
-                    type: boolean
-                    title: Buid
-                    description: Custom header, likely for business unit ID
-                  Cache_Control:
-                    type: boolean
-                    title: Cache-Control
-                    description: Directives for caching mechanisms in both requests and responses
-                  Connection:
-                    type: boolean
-                    title: Connection
-                    description: Controls whether the network connection stays open after the current transaction finishes
-                  Content_Type:
-                    type: boolean
-                    title: Content-Type
-                    description: Indicates the media type of the resource
-                  DNT:
-                    type: boolean
-                    title: DNT
-                    description: Expresses the user's tracking preference
-                  Host:
-                    type: boolean
-                    title: Host
-                    description: Specifies the domain name of the server and the TCP port number
-                  If_Modified_Since:
-                    type: boolean
-                    title: If-Modified-Since
-                    description: Allows a 304 Not Modified to be returned if content is unchanged
-                  Keep_Alive:
-                    type: boolean
-                    title: Keep-Alive
-                    description: Controls how long a persistent connection should stay open
-                  Origin:
-                    type: boolean
-                    title: Origin
-                    description: Indicates where a fetch originates from
-                  Pragma:
-                    type: boolean
-                    title: Pragma
-                    description: Implementation-specific header that may have various effects anywhere along the request-response chain
-                  Range:
-                    type: boolean
-                    title: Range
-                    description: Indicates the part of a document that the server should return
-                  Referer:
-                    type: boolean
-                    title: Referer
-                    description: The address of the previous web page from which a link to the currently requested page was followed
-                  RequestorUUID:
-                    type: boolean
-                    title: RequestorUUID
-                    description: Custom header, likely for unique identifier of the requestor
-                  Sec_Fetch_Dest:
-                    type: boolean
-                    title: Sec-Fetch-Dest
-                    description: Indicates the request's destination
-                  Sec_Fetch_Mode:
-                    type: boolean
-                    title: Sec-Fetch-Mode
-                    description: Indicates the mode of the request
-                  Sec_Fetch_Site:
-                    type: boolean
-                    title: Sec-Fetch-Site
-                    description: Indicates the relationship between a request initiator's origin and the origin of the requested resource
-                  Serviceid:
-                    type: boolean
-                    title: Serviceid
-                    description: Custom header, likely for identifying a specific service
-                  Source:
-                    type: boolean
-                    title: Source
-                    description: Custom header, likely for identifying the source of the request
-                  User_Agent:
-                    type: boolean
-                    title: User-Agent
-                    description: Contains information about the user agent originating the request
-                  X_Requested_With:
-                    type: boolean
-                    title: X-Requested-With
-                    description: Mainly used to identify Ajax requests
-                  X_Tenant_Id:
-                    type: boolean
-                    title: X-Tenant-Id
-                    description: Custom header, likely for multi-tenant applications to identify the tenant
-                  X_User_Id:
-                    type: boolean
-                    title: X-User-Id
-                    description: Custom header, likely for identifying the user
-                  X_Wis_Token:
-                    type: boolean
-                    title: X-Wis-Token
-                    description: Custom header, likely for authentication or session management
-          conditional_set_headers:
-            type: object
-            title: Conditional Set Headers
-            description: Set headers conditionally based on the path
-            x-ui-toggle: true
-            patternProperties:
-              keyPattern: "^[a-zA-Z0-9_.-]*$"
-              title: Conditional Set Headers Object
-              description: Name of the conditional set headers object
-              properties:
-                left:
-                  type: string
-                  title: Left Operand
-                  description: Left side of the condition
-                  pattern: "^\\$[a-zA-Z_][a-zA-Z0-9_]*$"
-                operator:
-                  type: string
-                  title: Operator
-                  description: Comparison operator
-                  enum: [
-                    "=",
-                    "~"
-                  ]
-                right:
-                  type: string
-                  title: Right Operand
-                  description: Right side of the condition
-                  pattern: '^(/[^/]+)*(/)?$'
-                  x-ui-placeholder: "Enter path to which your application will be accessible"
-                  x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
-                headers:
+                  description: The Header value to trigger conditional routing
+                  x-ui-textarea: true
+              required:
+              - header_name
+              - header_value
+            more_set_headers:
+              type: object
+              title: Custom Response Headers
+              description: Custom response headers for the ingress resource
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  title: Custom Response Header
+                  description: Custom Response Header
                   type: object
-                  title: Headers
-                  description: Headers to be set when this condition satisfies
-                  patternProperties:
-                    keyPattern: "^[a-zA-Z0-9_.-]*$"
-                    title: Header
-                    description: Header name
-                    type: string
-                    properties:
-                      header_name:
-                        type: string
-                        title: Header Key
-                        description: The Header key
-                        pattern: "^[A-Za-z0-9-]+$"
-                        x-ui-error-message: "Header key must contain only alphanumeric characters and hyphens"
-                        x-ui-typeable: true
-                        enum: [
-                          "X-Frame-Options",
-                          "Content-Security-Policy",
-                          "Referrer-Policy",
-                          "X-Content-Type-Options",
-                          "X-Xss-Protection",
-                          "reflected-xss",
-                          "Cache-Control",
-                          "Cache-Control",
-                          "Vary",
-                          "Content-Disposition",
-                          "X-Tenant-ID"
-                        ]
-                      header_value:
-                        type: string
-                        title: Header Value
-                        description: The Header value
-                  required: ["left", "operator", "right"]
-          annotations:
-            type: object
-            title: Annotations (Optional)
-            description: Add key-value pairs for configuring ingress annotations. Annotations allow you to customize the behavior of your ingress
-            x-ui-error-message: "This is not a valid yaml"
-            default: {}
-            x-ui-yaml-editor: true
-      required: ["service_name", "path", "port"]
+                  properties:
+                    header_name:
+                      type: string
+                      title: Header Key
+                      description: The Header key
+                      pattern: ^[A-Za-z0-9-]+$
+                      x-ui-error-message: Header key must contain only alphanumeric
+                        characters and hyphens
+                      x-ui-typeable: true
+                      enum:
+                      - X-Frame-Options
+                      - Content-Security-Policy
+                      - Referrer-Policy
+                      - X-Content-Type-Options
+                      - X-Xss-Protection
+                      - reflected-xss
+                      - Cache-Control
+                      - Cache-Control
+                      - Vary
+                      - Content-Disposition
+                      - X-Tenant-ID
+                    header_value:
+                      type: string
+                      title: Header Value
+                      description: The Header value
+                      x-ui-textarea: true
+            session_affinity:
+              type: object
+              title: Session Affinity
+              description: Configure Session affinity settings
+              x-ui-toggle: true
+              properties:
+                session_cookie_name:
+                  type: string
+                  title: Session Cookie Name
+                  description: Name of the cookie that will be created
+                  pattern: ^[a-zA-Z0-9_-]+$
+                  x-ui-error-message: Cookie name must contain only alphanumeric characters,
+                    underscores, and hyphens
+                session_cookie_expires:
+                  type: integer
+                  title: Session Cookie Expires
+                  description: Legacy version of the previous annotation for compatibility
+                    with older browsers, generates an Expires cookie directive by
+                    adding the seconds to the current date
+                  minimum: 0
+                  x-ui-error-message: Expires value must be a non-negative integer
+                session_cookie_max_age:
+                  type: integer
+                  title: Session Cookie Max Age
+                  description: Time until the cookie expires, corresponds to the Max-Age
+                    cookie directive (in seconds)
+                  minimum: 0
+                  x-ui-error-message: Max Age value must be a non-negative integer
+            cors:
+              type: object
+              title: CORS
+              description: Configure Cross-Origin Resource Sharing (CORS) settings
+              x-ui-toggle: true
+              properties:
+                enable:
+                  type: boolean
+                  title: Enable CORS
+                  description: Enable Cross-Origin Resource Sharing (CORS) in an Ingress
+                    rule
+                allow_headers:
+                  title: Allow Headers
+                  description: Controls which headers are accepted for CORS
+                  type: object
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enable
+                    values:
+                    - true
+                  properties:
+                    Accept:
+                      type: boolean
+                      title: Accept
+                      description: Informs the server about the types of data that
+                        can be sent back
+                    Accept_Encoding:
+                      type: boolean
+                      title: Accept-Encoding
+                      description: Specifies the encoding algorithms the client can
+                        understand
+                    Accept_Language:
+                      type: boolean
+                      title: Accept-Language
+                      description: Indicates the natural language and locale that
+                        the client prefers
+                    Access_Control_Allow_Origin:
+                      type: boolean
+                      title: Access-Control-Allow-Origin
+                      description: Specifies which origins can access the resource
+                    Authorization:
+                      type: boolean
+                      title: Authorization
+                      description: Contains the credentials to authenticate a user
+                        with a server
+                    Buid:
+                      type: boolean
+                      title: Buid
+                      description: Custom header, likely for business unit ID
+                    Cache_Control:
+                      type: boolean
+                      title: Cache-Control
+                      description: Directives for caching mechanisms in both requests
+                        and responses
+                    Connection:
+                      type: boolean
+                      title: Connection
+                      description: Controls whether the network connection stays open
+                        after the current transaction finishes
+                    Content_Type:
+                      type: boolean
+                      title: Content-Type
+                      description: Indicates the media type of the resource
+                    DNT:
+                      type: boolean
+                      title: DNT
+                      description: Expresses the user's tracking preference
+                    Host:
+                      type: boolean
+                      title: Host
+                      description: Specifies the domain name of the server and the
+                        TCP port number
+                    If_Modified_Since:
+                      type: boolean
+                      title: If-Modified-Since
+                      description: Allows a 304 Not Modified to be returned if content
+                        is unchanged
+                    Keep_Alive:
+                      type: boolean
+                      title: Keep-Alive
+                      description: Controls how long a persistent connection should
+                        stay open
+                    Origin:
+                      type: boolean
+                      title: Origin
+                      description: Indicates where a fetch originates from
+                    Pragma:
+                      type: boolean
+                      title: Pragma
+                      description: Implementation-specific header that may have various
+                        effects anywhere along the request-response chain
+                    Range:
+                      type: boolean
+                      title: Range
+                      description: Indicates the part of a document that the server
+                        should return
+                    Referer:
+                      type: boolean
+                      title: Referer
+                      description: The address of the previous web page from which
+                        a link to the currently requested page was followed
+                    RequestorUUID:
+                      type: boolean
+                      title: RequestorUUID
+                      description: Custom header, likely for unique identifier of
+                        the requestor
+                    Sec_Fetch_Dest:
+                      type: boolean
+                      title: Sec-Fetch-Dest
+                      description: Indicates the request's destination
+                    Sec_Fetch_Mode:
+                      type: boolean
+                      title: Sec-Fetch-Mode
+                      description: Indicates the mode of the request
+                    Sec_Fetch_Site:
+                      type: boolean
+                      title: Sec-Fetch-Site
+                      description: Indicates the relationship between a request initiator's
+                        origin and the origin of the requested resource
+                    Serviceid:
+                      type: boolean
+                      title: Serviceid
+                      description: Custom header, likely for identifying a specific
+                        service
+                    Source:
+                      type: boolean
+                      title: Source
+                      description: Custom header, likely for identifying the source
+                        of the request
+                    User_Agent:
+                      type: boolean
+                      title: User-Agent
+                      description: Contains information about the user agent originating
+                        the request
+                    X_Requested_With:
+                      type: boolean
+                      title: X-Requested-With
+                      description: Mainly used to identify Ajax requests
+                    X_Tenant_Id:
+                      type: boolean
+                      title: X-Tenant-Id
+                      description: Custom header, likely for multi-tenant applications
+                        to identify the tenant
+                    X_User_Id:
+                      type: boolean
+                      title: X-User-Id
+                      description: Custom header, likely for identifying the user
+                    X_Wis_Token:
+                      type: boolean
+                      title: X-Wis-Token
+                      description: Custom header, likely for authentication or session
+                        management
+            conditional_set_headers:
+              type: object
+              title: Conditional Set Headers
+              description: Set headers conditionally based on the path
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  title: Conditional Set Headers Object
+                  description: Name of the conditional set headers object
+                  type: object
+                  properties:
+                    left:
+                      type: string
+                      title: Left Operand
+                      description: Left side of the condition
+                      pattern: ^\$[a-zA-Z_][a-zA-Z0-9_]*$
+                    operator:
+                      type: string
+                      title: Operator
+                      description: Comparison operator
+                      enum:
+                      - '='
+                      - '~'
+                    right:
+                      type: string
+                      title: Right Operand
+                      description: Right side of the condition
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter path to which your application will
+                        be accessible
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / or
+                        /<path> etc'
+                    headers:
+                      type: object
+                      title: Headers
+                      description: Headers to be set when this condition satisfies
+                      patternProperties:
+                        ^[a-zA-Z0-9_.-]*$:
+                          title: Header
+                          description: Header name
+                          type: object
+                          properties:
+                            header_name:
+                              type: string
+                              title: Header Key
+                              description: The Header key
+                              pattern: ^[A-Za-z0-9-]+$
+                              x-ui-error-message: Header key must contain only alphanumeric
+                                characters and hyphens
+                              x-ui-typeable: true
+                              enum:
+                              - X-Frame-Options
+                              - Content-Security-Policy
+                              - Referrer-Policy
+                              - X-Content-Type-Options
+                              - X-Xss-Protection
+                              - reflected-xss
+                              - Cache-Control
+                              - Cache-Control
+                              - Vary
+                              - Content-Disposition
+                              - X-Tenant-ID
+                            header_value:
+                              type: string
+                              title: Header Value
+                              description: The Header value
+                              x-ui-textarea: true
+                      required:
+                      - left
+                      - operator
+                      - right
+            annotations:
+              type: object
+              title: Annotations (Optional)
+              description: Add key-value pairs for configuring ingress annotations.
+                Annotations allow you to customize the behavior of your ingress
+              x-ui-error-message: This is not a valid yaml
+              default: {}
+              x-ui-yaml-editor: true
+      required:
+      - service_name
+      - path
+      - port
     custom_error_pages:
       type: object
       title: Custom Error Pages
       description: Configure custom error pages
       x-ui-toggle: true
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Custom Error Page Object
-        description: Name of the Custom Error Page object
-        properties:
-          error_code:
-            type: string
-            title: Error Code
-            description: The error code for which the custom page is to be shown
-            x-ui-typeable: true
-            enum: [
-              "404",
-              "503"
-            ]
-          page_content:
-            type: textarea
-            title: Custom Error Page Content
-            description: The HTML content for the custom error page
+        ^[a-zA-Z0-9_.-]*$:
+          title: Custom Error Page Object
+          description: Name of the Custom Error Page object
+          type: object
+          properties:
+            error_code:
+              type: string
+              title: Error Code
+              description: The error code for which the custom page is to be shown
+              x-ui-typeable: true
+              enum:
+              - '404'
+              - '503'
+            page_content:
+              type: string
+              title: Custom Error Page Content
+              description: The HTML content for the custom error page
+              x-ui-textarea: true
     pdb:
       type: object
       title: Pod Disruption Budget
       description: Configure Pod Disruption Budget for the ingress controller
       x-ui-toggle: true
-      properties:             
+      properties:
         minAvailable:
           type: string
           title: Minimum Available
           description: Minimum number of pods that must be available during a disruption
-          pattern: "^([1-9][0-9]*|([1-9][0-9]?|100)%)$"
-          x-ui-error-message: "Value must be a positive integer or a percentage between 1% and 100%"
+          pattern: ^([1-9][0-9]*|([1-9][0-9]?|100)%)$
+          x-ui-error-message: Value must be a positive integer or a percentage between
+            1% and 100%
         maxUnavailable:
           type: string
           title: Maximum Unavailable
           description: Maximum number of pods that can be unavailable during a disruption
-          pattern: "^([1-9][0-9]*|([1-9][0-9]?|100)%)$"
-          x-ui-error-message: "Value must be a positive integer or a percentage between 1% and 100%"
+          pattern: ^([1-9][0-9]*|([1-9][0-9]?|100)%)$
+          x-ui-error-message: Value must be a positive integer or a percentage between
+            1% and 100%
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
-  required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basic_auth", "grpc", "private", "domains", more_set_headers, "rules", "pdb", "custom_error_pages", force_ssl_redirection"]
+  required:
+  - private
+  - rules
+  - force_ssl_redirection
+  x-ui-order:
+  - basic_auth
+  - grpc
+  - private
+  - domains
+  - more_set_headers
+  - rules
+  - pdb
+  - custom_error_pages
+  - force_ssl_redirection"
 sample:
   kind: ingress
-  flavor: nginx_k8s_native_test
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
+  flavor: nginx_k8s_native
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
   disabled: true
   version: '0.2'
   metadata:
-    annotations: { }
+    annotations: {}
   spec:
     private: false
     basic_auth: false
     grpc: false
-    domains: { }
-    rules: { }
+    domains: {}
+    rules: {}
     force_ssl_redirection: true
+iac:
+  validated_files:
+  - variables.tf

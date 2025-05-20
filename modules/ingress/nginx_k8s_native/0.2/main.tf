@@ -5,10 +5,10 @@ locals {
   ingressRoutes             = { for x, y in lookup(var.instance.spec, "rules", {}) : x => y }
   record_type               = lookup(var.inputs.kubernetes_details.attributes, "lb_service_record_type", var.environment.cloud == "AWS" ? "CNAME" : "A")
   #If environment name and instance exceeds 33 , take md5
-  instance_env_name   = length(var.environment.unique_name) + length(var.instance_name) + length(var.cc_metadata.tenant_base_domain) >= 60 ? substr(md5("${var.instance_name}-${var.environment.unique_name}"), 0, 20) : "${var.instance_name}-${var.environment.unique_name}"
-  check_domain_prefix = coalesce(lookup(local.advanced_config, "domain_prefix_override", null), local.instance_env_name)
-  base_domain         = lower("${local.check_domain_prefix}.${var.cc_metadata.tenant_base_domain}") # domains are to be always lowercase
-  base_subdomain      = "*.${local.base_domain}"
+  instance_env_name          = length(var.environment.unique_name) + length(var.instance_name) + length(var.cc_metadata.tenant_base_domain) >= 60 ? substr(md5("${var.instance_name}-${var.environment.unique_name}"), 0, 20) : "${var.instance_name}-${var.environment.unique_name}"
+  check_domain_prefix        = coalesce(lookup(local.advanced_config, "domain_prefix_override", null), local.instance_env_name)
+  base_domain                = lower("${local.check_domain_prefix}.${var.cc_metadata.tenant_base_domain}") # domains are to be always lowercase
+  base_subdomain             = "*.${local.base_domain}"
   dns_validation_secret_name = lower("nginx-ingress-cert-${var.instance_name}")
   # Append base domain to the list of domains from json file
   add_base_domain = {
@@ -54,8 +54,9 @@ locals {
   # Process more_set_headers into configuration snippet if present
   more_set_headers_config = lookup(var.instance.spec, "more_set_headers", null) != null ? {
     "nginx.ingress.kubernetes.io/configuration-snippet" = join("", [
-      for header_name, header_value in var.instance.spec.more_set_headers :
-      "more_set_headers \"${header_name}: ${header_value}\";\n"
+      for header_key, header_config in var.instance.spec.more_set_headers :
+      "more_set_headers \"${lookup(header_config, "header_name", "")}: ${lookup(header_config, "header_value", "")}\";\n"
+      if lookup(header_config, "header_name", "") != ""
     ])
   } : {}
 
@@ -132,7 +133,7 @@ locals {
     var.environment.cloud == "GCP" ? local.gcp_annotations : {},
     var.environment.cloud == "AZURE" ? local.azure_annotations : {},
     local.additional_ingress_annotations_without_auth,
-    lookup(lookup(var.instance,"metadata",{}), "annotations", {})
+    lookup(lookup(var.instance, "metadata", {}), "annotations", {})
   )
   nginx_annotations = {
     for key, value in local.annotations :
@@ -149,7 +150,7 @@ locals {
       "cert-manager.io/renew-before" : lookup(local.advanced_config, "renew_cert_before", "720h") // 30days; value must be parsable by https://pkg.go.dev/time#ParseDuration
     },
     { // overriding common annotations from instance.metadata
-      for key, value in lookup(lookup(var.instance,"metadata",{}), "annotations", {}) :
+      for key, value in lookup(lookup(var.instance, "metadata", {}), "annotations", {}) :
       key => value if can(regex("^cert-manager\\.io", key))
     }
   )
@@ -184,13 +185,13 @@ locals {
   name                        = lower(var.environment.namespace == "default" ? "${var.instance_name}" : "${var.environment.namespace}-${var.instance_name}")
   disable_endpoint_validation = lookup(local.advanced_config, "disable_endpoint_validation", false) || lookup(var.instance.spec, "private", false)
   external_services = {
-    for k,v in local.ingressObjectsFiltered :
+    for k, v in local.ingressObjectsFiltered :
     k => {
-      namespace = lookup(v, "namespace", var.environment.namespace)
-      service_name = "ext-svc-${k}"
+      namespace     = lookup(v, "namespace", var.environment.namespace)
+      service_name  = "ext-svc-${k}"
       external_name = "${v.service_name}.${lookup(v, "namespace", var.environment.namespace)}.svc.cluster.local"
-      port_name = lookup(v, "port_name", null)
-      port = lookup(v, "port", null)
+      port_name     = lookup(v, "port_name", null)
+      port          = lookup(v, "port", null)
     }
     if lookup(v, "namespace", var.environment.namespace) != var.environment.namespace
   }
@@ -201,10 +202,10 @@ resource "helm_release" "nginx_ingress_ctlr" {
   name = local.name
   wait = lookup(local.advanced_config, "wait", true)
 
-  repository = local.chart_version_specified ? "https://kubernetes.github.io/ingress-nginx" : null
-  chart      = local.chart_version_specified ? "ingress-nginx" : "${path.module}/../../../charts/ingress-nginx/ingress-nginx-4.2.6.tgz"
-  version    = local.chart_version_specified ? lookup(var.instance.spec, "ingress_chart_version", "4.12.1") : null
-  namespace = var.environment.namespace
+  repository  = local.chart_version_specified ? "https://kubernetes.github.io/ingress-nginx" : null
+  chart       = local.chart_version_specified ? "ingress-nginx" : "${path.module}/../../../charts/ingress-nginx/ingress-nginx-4.2.6.tgz"
+  version     = local.chart_version_specified ? lookup(var.instance.spec, "ingress_chart_version", "4.12.1") : null
+  namespace   = var.environment.namespace
   max_history = 10
   values = [
     var.environment.cloud == "AWS" ?
@@ -299,8 +300,8 @@ controller:
 
 VALUES
     , yamlencode(local.user_supplied_helm_values)
-  , yamlencode(local.proxy_set_headers)
-  , local.chart_version_specified ? yamlencode({ controller = { allowSnippetAnnotations = true } }) : yamlencode({})
+    , yamlencode(local.proxy_set_headers)
+    , local.chart_version_specified ? yamlencode({ controller = { allowSnippetAnnotations = true } }) : yamlencode({})
   , yamlencode(local.user_supplied_helm_values)]
 }
 
@@ -338,7 +339,7 @@ data "kubernetes_service" "nginx-ingress-ctlr" {
 }
 
 resource "aws_route53_record" "cluster-base-domain" {
-  count   = local.tenant_provider == "aws" ? 1 : 0
+  count = local.tenant_provider == "aws" ? 1 : 0
   depends_on = [
     helm_release.nginx_ingress_ctlr
   ]
@@ -356,7 +357,7 @@ resource "aws_route53_record" "cluster-base-domain" {
   }
 }
 resource "aws_route53_record" "cluster-base-domain-wildcard" {
-  count   = local.tenant_provider == "aws" ? 1 : 0
+  count = local.tenant_provider == "aws" ? 1 : 0
   depends_on = [
     helm_release.nginx_ingress_ctlr
   ]
@@ -376,59 +377,124 @@ resource "aws_route53_record" "cluster-base-domain-wildcard" {
 }
 
 
-resource "kubernetes_ingress_v1" "example_ingress" {
-  for_each = local.ingressObjectsFiltered
+locals {
+  ingress_resources = {
+    for key, value in local.ingressObjectsFiltered : key => {
+      apiVersion = "networking.k8s.io/v1"
+      kind       = "Ingress"
+      metadata = {
+        name      = "${lower(var.instance_name)}-${key}"
+        namespace = var.environment.namespace
+        annotations = merge(
+          local.cert_manager_common_annotations,
+          local.nginx_annotations,
+          lookup(value, "annotations", {}),
+          lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
+          lookup(value, "grpc", false) ? {
+            "nginx.ingress.kubernetes.io/backend-protocol" : "GRPC"
+          } : {},
+          # Add rewrite-target annotation if enabled
+          lookup(value, "enable_rewrite_target", false) == true && lookup(value, "rewrite_target", null) != null ? {
+            "nginx.ingress.kubernetes.io/rewrite-target" = lookup(value, "rewrite_target", "")
+          } : {},
+          # Add header-based routing annotation if enabled (using canary approach)
+          lookup(value, "enable_header_based_routing", false) == true && lookup(value, "header_based_routing", null) != null ? {
+            "nginx.ingress.kubernetes.io/canary"                 = "true"
+            "nginx.ingress.kubernetes.io/canary-by-header"       = lookup(lookup(value, "header_based_routing", {}), "header_name", "")
+            "nginx.ingress.kubernetes.io/canary-by-header-value" = lookup(lookup(value, "header_based_routing", {}), "header_value", "")
+          } : {},
+          # Process configuration snippets for headers - merge common headers with rule-specific headers
+          # with rule-level headers taking precedence in case of duplicates
+          lookup(var.instance.spec, "more_set_headers", null) != null || lookup(value, "more_set_headers", null) != null ? {
+            "nginx.ingress.kubernetes.io/configuration-snippet" = join("", [
+              for header_name in distinct(concat(
+                # Get all header names from common headers
+                [
+                  for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
+                  lookup(header_config, "header_name", "")
+                  if lookup(header_config, "header_name", "") != ""
+                ],
+                # Get all header names from rule-level headers
+                [
+                  for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                  lookup(header_config, "header_name", "")
+                  if lookup(header_config, "header_name", "") != ""
+                ]
+              )) :
+              # For each unique header name, check if it exists in rule-level headers first, then fall back to common headers
+              (
+                contains([
+                  for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                  lookup(header_config, "header_name", "")
+                ], header_name) ?
+                # If header exists in rule-level, use that value
+                "more_set_headers \"${header_name}: ${lookup(
+                  {
+                    for header_key, header_config in lookup(value, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                    if lookup(header_config, "header_name", "") == header_name
+                  },
+                  header_name,
+                  ""
+                )}\";\n" :
+                # Otherwise use common header value
+                "more_set_headers \"${header_name}: ${lookup(
+                  {
+                    for header_key, header_config in lookup(var.instance.spec, "more_set_headers", {}) :
+                    lookup(header_config, "header_name", "") => lookup(header_config, "header_value", "")
+                    if lookup(header_config, "header_name", "") == header_name
+                  },
+                  header_name,
+                  ""
+                )}\";\n"
+              )
+            ])
+          } : {}
+        )
+      }
+      spec = {
+        ingressClassName = local.name
+        rules = [{
+          host = value.host
+          http = {
+            paths = [{
+              path     = length(regexall("\\.[a-zA-Z]+$", value.path)) > 0 || length(regexall("\\(.+\\)|\\[\\^?\\w+\\]", value.path)) > 0 ? trim(value.path, "*") : format("%s%s", trim(value.path, "*"), ".*$")
+              pathType = "Prefix"
+              backend = {
+                service = {
+                  name = contains(keys(local.external_services), key) ? "ext-svc-${key}" : value.service_name
+                  port = {
+                    name = lookup(value, "port_name", null)
+                    number = lookup(value, "port_name", null) != null ? null : (
+                      lookup(value, "port", null) != null ? tonumber(lookup(value, "port", null)) : null
+                    )
+                  }
+                }
+              }
+            }]
+          }
+        }]
+        tls = [{
+          hosts      = local.disable_endpoint_validation ? tolist([lookup(value, "domain", null), "*.${lookup(value, "domain", null)}"]) : tolist([value.host])
+          secretName = local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
+        }]
+      }
+    }
+  }
+}
+
+module "ingress_resources" {
+  for_each = local.ingress_resources
+
+  source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   depends_on = [
     helm_release.nginx_ingress_ctlr, aws_route53_record.cluster-base-domain, kubernetes_service_v1.external_name
   ]
-  metadata {
-    name      = "${lower(var.instance_name)}-${each.key}"
-    namespace = var.environment.namespace
-    annotations = merge(
-      local.cert_manager_common_annotations,
-      local.nginx_annotations,
-      lookup(each.value, "annotations", {}),
-      lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(each.value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
-      lookup(each.value, "grpc", false) ? {
-        "nginx.ingress.kubernetes.io/backend-protocol" : "GRPC"
-      } : {},
-      # Process rule-specific more_set_headers into configuration snippet if present
-      lookup(each.value, "more_set_headers", null) != null ? {
-        "nginx.ingress.kubernetes.io/configuration-snippet" = join("", [
-          for header_name, header_value in each.value.more_set_headers :
-          "more_set_headers \"${header_name}: ${header_value}\";\n"
-        ])
-      } : {}
-    )
-  }
-  spec {
-    ingress_class_name = local.name # new 2.14 need to uncomment when this is upgraded
-    rule {
-      host = each.value.host
-      http {
-        path {
-          path      = length(regexall("\\.[a-zA-Z]+$", each.value.path)) > 0 || length(regexall("\\(.+\\)|\\[\\^?\\w+\\]", each.value.path)) > 0 ? trim(each.value.path, "*") : format("%s%s", trim(each.value.path, "*"), ".*$")
-          path_type = "Prefix"
-          backend {
-            service {
-              name = contains(keys(local.external_services), each.key) ? "ext-svc-${each.key}" : each.value.service_name
-              port {
-                name   = lookup(each.value, "port_name", null)
-                number = lookup(each.value, "port_name", null) != null ? null : lookup(each.value, "port", null)
-              }
-            }
-          }
-        }
-      }
-    }
-    tls {
-      hosts       = local.disable_endpoint_validation ? tolist([lookup(each.value, "domain", null), "*.${lookup(each.value, "domain", null)}"]) : tolist([each.value.host])
-      secret_name = local.disable_endpoint_validation ? lookup(each.value, "certificate_reference", null) == "" ? null : lookup(each.value, "certificate_reference", null) : lookup(each.value, "domain_prefix", null) == null || lookup(each.value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${each.value.domain_key}") : lower("${var.instance_name}-${each.value.domain_key}-${each.value.domain_prefix}")
-    }
-  }
-  lifecycle {
-    ignore_changes = [metadata[0].name]
-  }
+
+  name            = "${lower(var.instance_name)}-${each.key}"
+  namespace       = var.environment.namespace
+  advanced_config = {}
+  data            = each.value
 }
 
 resource "kubernetes_service_v1" "external_name" {
@@ -438,12 +504,12 @@ resource "kubernetes_service_v1" "external_name" {
     namespace = var.environment.namespace
   }
   spec {
-    type         = "ExternalName"
+    type          = "ExternalName"
     external_name = each.value.external_name
     port {
-      name       = each.value.port_name
-      port       = each.value.port
-      target_port = each.value.port
+      name        = each.value.port_name
+      port        = each.value.port != null ? tonumber(each.value.port) : null
+      target_port = each.value.port != null ? tonumber(each.value.port) : null
     }
   }
 }
