@@ -3,10 +3,10 @@ flavor: aws_vpc
 version: "0.1"
 description: Adds network - aws vpc flavor
 clouds:
-- aws
+  - aws
 outputs:
-  default:
-    type: "@outputs/aws_vpc"
+  - name: default
+    type: "@output/aws_vpc"
 spec:
   title: network
   description: Specification of the network for aws vpc flavor
