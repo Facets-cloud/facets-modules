@@ -18,32 +18,33 @@ spec:
       default: false
     subscriptions:
       type: object
-      title: Subscriptions 
+      title: Subscriptions
       description: Subscriptions for sns
       patternProperties:
-        type: object
-        title: Sqs
-        description: Define subscriptions for sqs
-        properties:
-          protocol:
-            type: string
-            title: Protocol
-            description: Protocol for sns subscription
-            enum:
+        "^[a-zA-Z0-9_-]*$":
+          type: object
+          title: Sqs
+          description: Define subscriptions for sqs
+          properties:
+            protocol:
+              type: string
+              title: Protocol
+              description: Protocol for sns subscription
+              enum:
               - sqs
-          endpoint:
-            type: string
-            title: Endpoint
-            description: Endpoint of the aws resource
-            x-ui-placeholder: "Enter the endpoint or arn of the resource"
-          raw_message_delivery:
-            type: boolean
-            title: Enable Raw Message Delivery
-            default: false
-            description: Enable raw message delivery for this endpoint
+            endpoint:
+              type: string
+              title: Endpoint
+              description: Endpoint of the aws resource
+              x-ui-placeholder: "Enter the endpoint or arn of the resource"
+            raw_message_delivery:
+              type: boolean
+              title: Enable Raw Message Delivery
+              default: false
+              description: Enable raw message delivery for this endpoint
     triggers:
       type: object
-      title: Triggers 
+      title: Triggers
       description: Triggers that can publish to this SNS
       properties:
         s3:
@@ -56,9 +57,9 @@ spec:
               type: string
               title: Name
               description: Name of S3 Bucket
-            arn: 
-              type: string 
-              title: ARN 
+            arn:
+              type: string
+              title: ARN
               description: ARN of the S3 bucket
             events:
               type: array
