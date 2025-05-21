@@ -30,107 +30,118 @@ spec:
       title: Origins
       description: Specify the origin where CloudFront sends requests for the files
       patternProperties:
-        type: object
-        title: Origin
-        description: Origin configuration
-        keyPattern: '^[a-zA-Z0-9_.-]*$'
-        properties:
-          domain_name:
-            type: string
-            title: Domain Name
-            description: Domain name of the origin
-            x-ui-placeholder: "Enter the domain name of the origin"
-            x-ui-error-message: "Value doesn't match pattern, it should be domain name eg: test.s3.ap-south-1.amazonaws.com"
+        '^[a-zA-Z0-9_.-]*$':
+          type: object
+          title: Origin
+          description: Origin configuration
+          properties:
+            domain_name:
+              type: string
+              title: Domain Name
+              description: Domain name of the origin
+              x-ui-placeholder: "Enter the domain name of the origin"
+              x-ui-error-message: "Value doesn't match pattern, it should be domain
+                name eg: test.s3.ap-south-1.amazonaws.com"
     cache_policies:
       type: object
       title: Cache Policies
       description: Cache policies for the CloudFront distribution
       patternProperties:
-        type: object
-        title: Cache Policy
-        description: Cache policy configuration
-        keyPattern: ^[a-zA-Z0-9_.-]*$'
-        properties:
-          max_ttl:
-            type: integer
-            title: Max TTL
-            description: Maximum time to live in seconds.
-          min_ttl:
-            type: integer
-            title: Min TTL
-            description: Minimum time to live in seconds.
-          default_ttl:
-            type: integer
-            title: Default time to live in seconds.
-            description: Default TTL
-          parameters_in_cache_key_and_forwarded_to_origin:
-            type: object
-            title: Parameters
-            description: Parameters for cache key and forwarding to origin
-            properties:
-              cookies_config:
-                type: object
-                title: Cookies Config
-                description: Determines whether any cookies in viewer requests are included in the cache key
-                properties:
-                  cookie_behavior:
-                    type: string
-                    title: Cookie Behavior
-                    description: Determines whether any cookies in viewer requests are included in the cache key and in requests that CloudFront sends to the origin
-                    enum:
+        ^[a-zA-Z0-9_.-]*$':
+          type: object
+          title: Cache Policy
+          description: Cache policy configuration
+          properties:
+            max_ttl:
+              type: integer
+              title: Max TTL
+              description: Maximum time to live in seconds.
+            min_ttl:
+              type: integer
+              title: Min TTL
+              description: Minimum time to live in seconds.
+            default_ttl:
+              type: integer
+              title: Default time to live in seconds.
+              description: Default TTL
+            parameters_in_cache_key_and_forwarded_to_origin:
+              type: object
+              title: Parameters
+              description: Parameters for cache key and forwarding to origin
+              properties:
+                cookies_config:
+                  type: object
+                  title: Cookies Config
+                  description: Determines whether any cookies in viewer requests are
+                    included in the cache key
+                  properties:
+                    cookie_behavior:
+                      type: string
+                      title: Cookie Behavior
+                      description: Determines whether any cookies in viewer requests
+                        are included in the cache key and in requests that CloudFront
+                        sends to the origin
+                      enum:
                       - none
                       - whitelist
                       - allExcept
                       - all
-                  cookies:
-                    type: array
-                    title: Cookies
-                    description: Contains a list of cookie names
-                    x-ui-placeholder: "Enter the cookie name"
-              headers_config:
-                type: object
-                title: Headers Config
-                description: Determines whether any HTTP headers are included in the cache key and in requests that CloudFront sends to the origin
-                properties:
-                  header_behavior:
-                    type: string
-                    title: Header Behavior
-                    description: Determines whether any HTTP headers are included in the cache key
-                    enum:
+                    cookies:
+                      type: array
+                      title: Cookies
+                      description: Contains a list of cookie names
+                      x-ui-placeholder: "Enter the cookie name"
+                headers_config:
+                  type: object
+                  title: Headers Config
+                  description: Determines whether any HTTP headers are included in
+                    the cache key and in requests that CloudFront sends to the origin
+                  properties:
+                    header_behavior:
+                      type: string
+                      title: Header Behavior
+                      description: Determines whether any HTTP headers are included
+                        in the cache key
+                      enum:
                       - none
                       - whitelist
-                  headers:
-                    type: array
-                    title: Headers
-                  description: List of HTTP header names
-                  x-ui-placeholder: "Enter the header name"
-              query_strings_config:
-                type: object
-                title: Query Strings Config
-                description: Determines whether any URL query strings in viewer requests are included in the cache key
-                properties:
-                  query_string_behavior:
-                    type: string
-                    title: Query String Behavior
-                    description: Determines whether any URL query strings in viewer requests are included in the cache key and in requests that CloudFront sends to the origin
-                    enum:
-                      - none
-                      - whitelist
-                      - allExcept
-                      - all
-                  query_strings:
-                    type: array
-                    title: Query Strings
-                    description: Contains a list of query string names
+                    headers:
+                      type: array
+                      title: Headers
+                    description: List of HTTP header names
                     x-ui-placeholder: "Enter the header name"
-              enable_accept_encoding_brotli:
-                type: boolean
-                title: Enable Brotli
-                description: Determines whether the Accept-Encoding HTTP header is included in the cache key
-              enable_accept_encoding_gzip:
-                type: boolean
-                title: Enable Gzip
-                description: Determines whether the Accept-Encoding HTTP header is included in the cache key
+                query_strings_config:
+                  type: object
+                  title: Query Strings Config
+                  description: Determines whether any URL query strings in viewer
+                    requests are included in the cache key
+                  properties:
+                    query_string_behavior:
+                      type: string
+                      title: Query String Behavior
+                      description: Determines whether any URL query strings in viewer
+                        requests are included in the cache key and in requests that
+                        CloudFront sends to the origin
+                      enum:
+                      - none
+                      - whitelist
+                      - allExcept
+                      - all
+                    query_strings:
+                      type: array
+                      title: Query Strings
+                      description: Contains a list of query string names
+                      x-ui-placeholder: "Enter the header name"
+                enable_accept_encoding_brotli:
+                  type: boolean
+                  title: Enable Brotli
+                  description: Determines whether the Accept-Encoding HTTP header
+                    is included in the cache key
+                enable_accept_encoding_gzip:
+                  type: boolean
+                  title: Enable Gzip
+                  description: Determines whether the Accept-Encoding HTTP header
+                    is included in the cache key
     default_cache_behavior:
       type: object
       title: Default Cache Behavior
@@ -144,73 +155,83 @@ spec:
         target_origin_id:
           type: string
           title: Target Origin ID
-          description: The value of ID for the origin that you want CloudFront to route requests to
+          description: The value of ID for the origin that you want CloudFront to
+            route requests to
           x-ui-placeholder: "Enter the target origin ID"
         allowed_methods:
           type: array
           title: Allowed Methods
-          description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
+          description: Controls which HTTP methods CloudFront processes and forwards
+            to your Amazon S3 bucket or your custom origin
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
         cached_methods:
           type: array
           title: Cached Methods
-          description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
+          description: Controls whether CloudFront caches the response to requests
+            using the specified HTTP methods
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
         viewer_protocol_policy:
           type: string
           title: Viewer Protocol Policy
-          description: The protocol that viewers can use to access the files in the origin
+          description: The protocol that viewers can use to access the files in the
+            origin
           enum:
-            - allow-all
-            - redirect-to-https
-            - https-only
+          - allow-all
+          - redirect-to-https
+          - https-only
     ordered_cache_behaviors:
       type: object
       title: Ordered Cache Behaviors
       description: Ordered cache behaviors configuration
       patternProperties:
-        type: object
-        title: Cache Behavior
-        description: Cache behavior configuration
-        keyPattern: '^[a-zA-Z0-9_.-]*$'
-        properties:
-          cache_policy_name:
-            type: string
-            title: Cache Policy Name
-            description: Name of the cache policy
-            x-ui-placeholder: "Enter the cache policy name"
-          path_pattern:
-            type: string
-            title: Path Pattern
-            description: The pattern that specifies which requests to apply the behavior to
-            x-ui-placeholder: "Enter the path pattern"
-          target_origin_id:
-            type: string
-            title: Target Origin ID
-            description: The value of ID for the origin that you want CloudFront to route requests to
-            x-ui-placeholder: "Enter the target origin ID"
-          viewer_protocol_policy:
-            type: string
-            title: Viewer Protocol Policy
-            description: The protocol that viewers can use to access the files in the origin
-            enum:
+        '^[a-zA-Z0-9_.-]*$':
+          type: object
+          title: Cache Behavior
+          description: Cache behavior configuration
+          properties:
+            cache_policy_name:
+              type: string
+              title: Cache Policy Name
+              description: Name of the cache policy
+              x-ui-placeholder: "Enter the cache policy name"
+            path_pattern:
+              type: string
+              title: Path Pattern
+              description: The pattern that specifies which requests to apply the
+                behavior to
+              x-ui-placeholder: "Enter the path pattern"
+            target_origin_id:
+              type: string
+              title: Target Origin ID
+              description: The value of ID for the origin that you want CloudFront
+                to route requests to
+              x-ui-placeholder: "Enter the target origin ID"
+            viewer_protocol_policy:
+              type: string
+              title: Viewer Protocol Policy
+              description: The protocol that viewers can use to access the files in
+                the origin
+              enum:
               - allow-all
               - redirect-to-https
               - https-only
-          allowed_methods:
-            type: array
-            title: Allowed Methods
-            description: Controls which HTTP methods CloudFront processes and forwards to your Amazon S3 bucket or your custom origin
-            x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
-          cached_methods:
-            type: array
-            title: Cached Methods
-            description: Controls whether CloudFront caches the response to requests using the specified HTTP methods
-            x-ui-placeholder: Enter cached methods eg. GET, HEADS
-          compress:
-            type: boolean
-            title: Compress
-            description: Determines whether you want CloudFront to automatically compress certain files for this cache behavior.
+            allowed_methods:
+              type: array
+              title: Allowed Methods
+              description: Controls which HTTP methods CloudFront processes and forwards
+                to your Amazon S3 bucket or your custom origin
+              x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
+            cached_methods:
+              type: array
+              title: Cached Methods
+              description: Controls whether CloudFront caches the response to requests
+                using the specified HTTP methods
+              x-ui-placeholder: Enter cached methods eg. GET, HEADS
+            compress:
+              type: boolean
+              title: Compress
+              description: Determines whether you want CloudFront to automatically
+                compress certain files for this cache behavior.
     aws_waf_id:
       type: string
       title: AWS WAF ID
@@ -246,7 +267,7 @@ sample:
             cookie_behavior: "whitelist"
             cookies:
               items:
-                - ""
+              - ""
           headers_config:
             header_behavior: "none"
           query_strings_config:
@@ -257,11 +278,11 @@ sample:
       cache_policy_name: ""
       target_origin_id: ""
       allowed_methods:
-        - GET
-        - HEAD
+      - GET
+      - HEAD
       cached_methods:
-        - GET
-        - HEAD
+      - GET
+      - HEAD
       viewer_protocol_policy: "allow-all"
     ordered_cache_behaviors:
       cache1:
@@ -270,10 +291,10 @@ sample:
         target_origin_id: ""
         viewer_protocol_policy: "redirect-to-https"
         allowed_methods:
-          - GET
-          - HEAD
+        - GET
+        - HEAD
         cached_methods:
-          - GET
-          - HEAD
+        - GET
+        - HEAD
         compress: true
     waf_id: ""

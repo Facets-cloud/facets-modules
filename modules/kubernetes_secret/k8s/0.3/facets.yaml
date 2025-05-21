@@ -2,10 +2,10 @@ intent: kubernetes_secret
 flavor: k8s
 version: '0.3'
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   type: object
   properties:
@@ -14,19 +14,19 @@ spec:
       type: object
       description: Data objects containing key, value pair
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Data Object Block
-        description: something
-        type: object
-        properties:
-          key:
-            title: Kubernetes secret Data Key name
-            description: Key name of the kubernetes secret object
-            type: string
-          value:
-            title: Kubernetes secret Data Object Value
-            description: Value of the kubernetes secret object
-            type: textarea
+        "^[a-zA-Z0-9_.-]*$":
+          title: Data Object Block
+          description: something
+          type: object
+          properties:
+            key:
+              title: Kubernetes secret Data Key name
+              description: Key name of the kubernetes secret object
+              type: string
+            value:
+              title: Kubernetes secret Data Object Value
+              description: Value of the kubernetes secret object
+              type: textarea
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
