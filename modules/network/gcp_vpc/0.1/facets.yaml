@@ -5,6 +5,9 @@ version: "0.1"
 description: Adds network - gcp vpc flavor
 clouds:
   - gcp
+outputs:
+  - name: default
+    type: "@output/gcp_vpc"
 spec:
   title: network
   description: Specification of the network for gcp vpc flavor
