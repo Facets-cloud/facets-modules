@@ -1,10 +1,10 @@
 intent: kubernetes_cluster
 flavor: aws_eks
-alias-flavors: [ "default" ]
+alias-flavors: ["default"]
 version: "0.1"
 description: Adds kubernetes cluster - eks flavor
 clouds:
-  - aws
+- aws
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for aws eks flavor
@@ -17,7 +17,8 @@ spec:
       properties:
         cloudwatch_log_retention_days:
           title: CloudWatch Log Retention Days
-          description: Retention period in days for cloudwatch Logs generated for this eks cluster
+          description: Retention period in days for cloudwatch Logs generated for
+            this eks cluster
           type: integer
           default: 365
           minimum: 1
@@ -26,12 +27,15 @@ spec:
           x-ui-overrides-only: true
         public_cidr_whitelist:
           title: Public CIDR Whitelist
-          description: Comma-separated list of CIDR blocks which can access the Amazon EKS public API server endpoint
+          description: Comma-separated list of CIDR blocks which can access the Amazon
+            EKS public API server endpoint
           type: string
           default: 0.0.0.0/0
           x-ui-placeholder: e.g., 10.45.0.0/16,10.60.0.0/16
-          pattern: \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b(,\s*\b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b)*
-          x-ui-error-message: Regex for CIDR block did not match. Make sure valid space separated CIDR blocks are given
+          pattern: 
+            \b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b(,\s*\b((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\/(3[0-2]|[1-2]?[0-9])\b)*
+          x-ui-error-message: Regex for CIDR block did not match. Make sure valid
+            space separated CIDR blocks are given
           x-ui-overrides-only: true
         kms_keys:
           title: KMS Keys
@@ -64,12 +68,15 @@ spec:
                 values: [true]
         default_reclaim_policy:
           title: Default Reclaim Policy
-          description: The reclaim policy for the default storage class in a Kubernetes cluster determines how resources are handled after a persistent volume is released. <b>Once set, any changes to the policy will not be reflected on already created storage class.</b>
+          description: The reclaim policy for the default storage class in a Kubernetes
+            cluster determines how resources are handled after a persistent volume
+            is released. <b>Once set, any changes to the policy will not be reflected
+            on already created storage class.</b>
           type: string
           default: Delete
           enum:
-            - Delete
-            - Retain
+          - Delete
+          - Retain
     nodepools:
       title: Nodepool Spec
       description: Specifications of nodepools to be created
@@ -79,7 +86,8 @@ spec:
           title: IAM Role Additional Policies
           description: Additional IAM policies to be attached to the node IAM role
           type: object
-          x-ui-placeholder: "Enter the key-value pair for the policies in YAML format. Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
+          x-ui-placeholder: "Enter the key-value pair for the policies in YAML format.
+            Eg. s3-read-only: arn:aws:iam::1234:policy/s3-read-only"
           x-ui-yaml-editor: true
           default: {}
         default:
@@ -108,8 +116,8 @@ spec:
               type: string
               default: SPOT
               enum:
-                - ON_DEMAND
-                - SPOT
+              - ON_DEMAND
+              - SPOT
               x-ui-overrides-only: true
             max_nodes:
               title: Max Nodes
@@ -121,21 +129,25 @@ spec:
               x-ui-overrides-only: true
             ami_id:
               title: AMI ID
-              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              description: AMI ID of the AMI image to be used in for the kubernetes
+                node. This should be self owned ami.
               type: string
               x-ui-overrides-only: true
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for AMI image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes
+                node.
               type: string
               x-ui-overrides-only: true
             ami_owner_id:
               title: AMI Owner ID
-              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
+              description: AMI owner id of the AMI image to be used for the kubernetes
+                node while using a name filter.
               type: string
               x-ui-overrides-only: true
           required: ["instance_types"]
-          x-ui-order: [instance_types, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+          x-ui-order: [instance_types, node_lifecycle_type, root_disk_volume, max_nodes,
+            ami_id, ami_name_filter, ami_owner_id]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications of facets dedicated nodepools
@@ -165,8 +177,8 @@ spec:
               type: string
               default: SPOT
               enum:
-                - ON_DEMAND
-                - SPOT
+              - ON_DEMAND
+              - SPOT
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
@@ -194,7 +206,8 @@ spec:
               x-ui-overrides-only: true
             ami_id:
               title: AMI ID
-              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              description: AMI ID of the AMI image to be used in for the kubernetes
+                node. This should be self owned ami.
               type: string
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
@@ -202,7 +215,8 @@ spec:
               x-ui-overrides-only: true
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for AMI image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes
+                node.
               type: string
               x-ui-overrides-only: true
               x-ui-visible-if:
@@ -210,14 +224,16 @@ spec:
                 values: [true]
             ami_owner_id:
               title: AMI Owner ID
-              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
+              description: AMI owner id of the AMI image to be used for the kubernetes
+                node while using a name filter.
               type: string
               x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
           required: ["instance_type"]
-          x-ui-order: [ enable, instance_type, node_lifecycle_type, root_disk_volume, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+          x-ui-order: [enable, instance_type, node_lifecycle_type, root_disk_volume,
+            max_nodes, ami_id, ami_name_filter, ami_owner_id]
         ondemand_fallback:
           title: Ondemand Fallback Nodepool Spec
           description: Specifications of Ondemand Fallback Nodepool
@@ -230,7 +246,7 @@ spec:
               default: true
               x-ui-overrides-only: true
             instance_type:
-              title: Instance Type 
+              title: Instance Type
               description: Instance Type
               type: string
               default: m5.2xlarge
@@ -238,7 +254,7 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.ondemand_fallback.enable
                 values: [true]
-            max_nodes: 
+            max_nodes:
               title: Max nodes
               description: Maximum number of nodes in nodepool
               type: integer
@@ -251,7 +267,8 @@ spec:
                 values: [true]
             ami_id:
               title: AMI ID
-              description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
+              description: AMI ID of the AMI image to be used in for the kubernetes
+                node. This should be self owned ami.
               type: string
               x-ui-overrides-only: true
               x-ui-visible-if:
@@ -259,7 +276,8 @@ spec:
                 values: [true]
             ami_name_filter:
               title: AMI Name Filter
-              description: AMI name filter for AMI image to be used for the kubernetes node.
+              description: AMI name filter for AMI image to be used for the kubernetes
+                node.
               type: string
               x-ui-overrides-only: true
               x-ui-visible-if:
@@ -267,18 +285,22 @@ spec:
                 values: [true]
             ami_owner_id:
               title: AMI Owner ID
-              description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
+              description: AMI owner id of the AMI image to be used for the kubernetes
+                node while using a name filter.
               type: string
               x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.nodepools.ondemand_fallback.enable
                 values: [true]
           required: ["instance_type"]
-          x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter, ami_owner_id]
+          x-ui-order: [enable, instance_type, max_nodes, ami_id, ami_name_filter,
+            ami_owner_id]
         x-ui-order: [default, facets_dedicated, ondemand_fallback, iam_role_additional_policies]
     tags:
       title: Kubernetes Cluster Tags
-      description: "Enter key-value pair for tags, to be added to the cluster, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      description: "Enter key-value pair for tags, to be added to the cluster, in
+        YAML format. Eg. key: value (provide a space after ':' as expected in the
+        YAML format)"
       x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
@@ -288,46 +310,48 @@ spec:
       description: Specifications of addons to be installed
       type: object
       patternProperties:
-        type: object
-        title: Addon Name
-        keyPattern: "^[a-zA-Z-]+$"
-        properties:
-          enable:
-            title: Enable Addon
-            description: Set this to true to enable the addon
-            type: boolean
-          configuration_values:
-            title: Configuration Values
-            description: Configuration values for the addon
-            type: string
-            x-ui-overrides-only: true
-          resolve_conflicts:
-            title: Resolve Conflicts
-            description: Set this to true to resolve conflicts
-            type: boolean
-            x-ui-overrides-only: true
-          addon_version:
-            title: Addon Version
-            description: Version of the addon
-            type: string
-            x-ui-overrides-only: true
-          tags:
-            title: Addon Tags
-            description: "Enter key-value pair for tags, to be added to the addon, in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
-            type: object
-            x-ui-overrides-only: true
-            x-ui-yaml-editor: true
-            default: {}
-          preserve:
-            title: Preserve Addon
-            description: Set this to true to preserve the addon
-            type: boolean
-            x-ui-overrides-only: true
-          service_account_role_arn:
-            title: Service Account Role ARN
-            description: Service account for the addon
-            type: string
-            x-ui-overrides-only: true
+        "^[a-zA-Z-]+$":
+          type: object
+          title: Addon Name
+          properties:
+            enable:
+              title: Enable Addon
+              description: Set this to true to enable the addon
+              type: boolean
+            configuration_values:
+              title: Configuration Values
+              description: Configuration values for the addon
+              type: string
+              x-ui-overrides-only: true
+            resolve_conflicts:
+              title: Resolve Conflicts
+              description: Set this to true to resolve conflicts
+              type: boolean
+              x-ui-overrides-only: true
+            addon_version:
+              title: Addon Version
+              description: Version of the addon
+              type: string
+              x-ui-overrides-only: true
+            tags:
+              title: Addon Tags
+              description: "Enter key-value pair for tags, to be added to the addon,
+                in YAML format. Eg. key: value (provide a space after ':' as expected
+                in the YAML format)"
+              type: object
+              x-ui-overrides-only: true
+              x-ui-yaml-editor: true
+              default: {}
+            preserve:
+              title: Preserve Addon
+              description: Set this to true to preserve the addon
+              type: boolean
+              x-ui-overrides-only: true
+            service_account_role_arn:
+              title: Service Account Role ARN
+              description: Service account for the addon
+              type: string
+              x-ui-overrides-only: true
   x-ui-order: [nodepools, cluster, tags, addons]
 sample:
   kind: kubernetes_cluster

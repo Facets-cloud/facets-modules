@@ -18,36 +18,40 @@ spec:
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
       patternProperties:
-        title: Topics
-        keyPattern: '^[a-zA-Z0-9_.-]*$'
-        description: The name of the Kafka Topic to be created
-        type: object
-        properties:
-          topic_name:
-            title: Topic Name
-            description: The name of the topic.
-            type: string
-            pattern: '^[a-zA-Z0-9_.-]*$'
-          replication_factor:
-            title: Replication Factor
-            description: The replication factor for each partition in the topic being created.
-            type: integer
-          partitions:
-            title: Partitions
-            description: "The number of partitions for the topic being created or altered."
-            type: integer
-          configs:
-            title: Configs
-            description: A topic configuration override for the topic
-            type: object
-            x-ui-yaml-editor: true
-            x-ui-placeholder: "Enter the configs key/value pair. Eg. segment.ms: 20000"
-        required:
+        '^[a-zA-Z0-9_.-]*$':
+          title: Topics
+          description: The name of the Kafka Topic to be created
+          type: object
+          properties:
+            topic_name:
+              title: Topic Name
+              description: The name of the topic.
+              type: string
+              pattern: '^[a-zA-Z0-9_.-]*$'
+            replication_factor:
+              title: Replication Factor
+              description: The replication factor for each partition in the topic
+                being created.
+              type: integer
+            partitions:
+              title: Partitions
+              description: "The number of partitions for the topic being created or
+                altered."
+              type: integer
+            configs:
+              title: Configs
+              description: A topic configuration override for the topic
+              type: object
+              x-ui-yaml-editor: true
+              x-ui-placeholder: "Enter the configs key/value pair. Eg. segment.ms:
+                20000"
+          required:
           - topic_name
           - replication_factor
           - partitions
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
+  $schema: 
+    https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
   kind: kafka_topic
   flavor: default
   version: '0.1'
