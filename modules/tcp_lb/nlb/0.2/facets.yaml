@@ -15,11 +15,10 @@ spec:
     mode:
       type: string
       title: Mode
-      description: Type loadbalancing is for a single instance loadbalancing for backend
-        applications and per_instance is for targeting a specific backend application
+      description: Type loadbalancing is for a single instance loadbalancing for backend applications and per_instance is for targeting a specific backend application
       enum:
-      - "loadbalancing"
-      - "per_instance"
+        - "loadbalancing"
+        - "per_instance"
     instances:
       type: integer
       description: Number of instances that you want to create per_instance loadbalancers
@@ -29,21 +28,20 @@ spec:
       title: Ports
       description: All the ports that you need to expose on the loadbalancer
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
-          type: object
-          title: Port Name
-          description: Define port allocation to facilitate communication with service
-          properties:
-            port:
-              type: integer
-              title: Port
-              description: Port number where the service needs to be accessible via
-                the loadbalancer its the same port that will be exposed via the loadbalancer
-              x-ui-unique: true
-            protocol:
-              title: Protocol
-              description: the protocol of the port
-              enum:
+        type: object
+        title: Port Name
+        description: Define port allocation to facilitate communication with service
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        properties:
+          port:
+            type: integer
+            title: Port
+            description: Port number where the service needs to be accessible via the loadbalancer its the same port that will be exposed via the loadbalancer
+            x-ui-unique: true
+          protocol:
+            title: Protocol
+            description: the protocol of the port
+            enum:
               - "tcp"
               - "udp"
     private:
@@ -53,8 +51,7 @@ spec:
     selector:
       type: object
       title: Selector
-      description: Map of all the kubernetes selectors that are required to map the
-        loadbalancer service to applications in the backend.
+      description: Map of all the kubernetes selectors that are required to map the loadbalancer service to applications in the backend.
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter Selectors in YAML format
 sample:

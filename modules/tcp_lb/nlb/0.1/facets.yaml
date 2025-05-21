@@ -25,23 +25,19 @@ spec:
     type: object
     title: Ports
     description: All the ports that you need to expose on the loadbalancer
-    patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
-            type: object
-            title: Port Name
-            description: Define port allocation to facilitate communication with service
-            properties:
-              port:
-                type: integer
-                title: Port
-                description: Port number where the service needs to be accessible via the loadbalancer its the same port that will be exposed via the loadbalancer
-                x-ui-unique: true
-              protocol:
-                title: Protocol
-                description: the protocol of the port
-                enum:
-                  - "tcp"
-                  - "udp"
+    keyPattern: "^[a-zA-Z0-9_.-]*$"
+    properties:
+      port:
+        type: integer
+        title: Port
+        description: Port number where the service needs to be accessible via the loadbalancer its the same port that will be exposed via the loadbalancer
+        x-ui-unique: true
+      protocol:
+        title: Protocol
+        description: the protocol of the port
+        enum:
+          - "tcp"
+          - "udp"
   private:
     type: boolean
     description: Make this load balancer private

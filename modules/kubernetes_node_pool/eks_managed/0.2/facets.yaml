@@ -3,7 +3,7 @@ flavor: eks_managed
 version: "0.2"
 description: Adds kubernetes_node_pool - eks_managed flavor
 clouds:
-- aws
+  - aws
 spec:
   title: Kubernetes Node Pool
   description: Specification of the kubernetes node pool for eks managed flavor
@@ -38,39 +38,35 @@ spec:
       maximum: 1000
     azs:
       title: Avalability Zones
-      description: Comma-separated list of availability zones where worker nodes should
-        be deployed
+      description: Comma-separated list of availability zones where worker nodes should be deployed
       type: string
     taints:
       title: Taints
-      description: Map of Kubernetes taints which should be applied to nodes in the
-        node pool
+      description: Map of Kubernetes taints which should be applied to nodes in the node pool
       type: object
       patternProperties:
-        "^[a-z][a-z0-9-_]*$":
-          type: object
-          title: Taint Object
-          properties:
-            key:
-              title: Taint Key
-              description: Taint Key
-              type: string
-              x-ui-placeholder: CriticalAddonsOnly
-            value:
-              title: Taint Value
-              description: Taint Value
-              type: string
-              x-ui-placeholder: "true"
-            effect:
-              title: Taint Effect
-              description: Taint Effect
-              type: string
-              x-ui-placeholder: NoSchedule
+        type: object
+        title: Taint Object
+        keyPattern: "^[a-z][a-z0-9-_]*$"
+        properties:
+          key:
+            title: Taint Key
+            description: Taint Key
+            type: string
+            x-ui-placeholder: CriticalAddonsOnly
+          value:
+            title: Taint Value
+            description: Taint Value
+            type: string
+            x-ui-placeholder: "true"
+          effect:
+            title: Taint Effect
+            description: Taint Effect
+            type: string
+            x-ui-placeholder: NoSchedule
     labels:
       title: Labels
-      description: "Map of labels to be added to nodes in node pool. Enter key-value
-        pair for labels in YAML format. Eg. key: value (provide a space after ':'
-        as expected in the YAML format)"
+      description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
       x-ui-placeholder: "Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
@@ -79,12 +75,11 @@ spec:
       description: Lifecycle plan for worker node
       type: string
       enum:
-      - ON_DEMAND
-      - SPOT
+        - ON_DEMAND
+        - SPOT
     ami_id:
       title: AMI ID
-      description: AMI ID of the AMI image to be used in for the kubernetes node.
-        This should be self owned ami.
+      description: AMI ID of the AMI image to be used in for the kubernetes node. This should be self owned ami.
       type: string
     ami_name_filter:
       title: AMI Name Filter
@@ -92,19 +87,17 @@ spec:
       type: string
     ami_owner_id:
       title: AMI Owner ID
-      description: AMI owner id of the AMI image to be used for the kubernetes node
-        while using a name filter.
+      description: AMI owner id of the AMI image to be used for the kubernetes node while using a name filter.
       type: string
   required:
-  - instance_type
-  - min_node_count
-  - max_node_count
-  - disk_size
-  - taints
-  - labels
+    - instance_type
+    - min_node_count
+    - max_node_count
+    - disk_size
+    - taints
+    - labels
 sample:
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   kind: kubernetes_node_pool
   flavor: eks_managed
   version: "0.2"

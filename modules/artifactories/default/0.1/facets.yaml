@@ -32,25 +32,24 @@ spec:
         field: spec.include_all
         values: [false]
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
-          title: Artifactories Object Block
-          description: The Name of the Container Registry for creating a secret.
-          type: object
-          properties:
-            name:
-              title: Name
-              type: string
-              description: "Container Registry Name"
-              x-ui-api-source:
-                endpoint: "/cc-ui/v1/artifactories"
-                method: GET
-                params:
-                  includeContent: false
-                labelKey: name
-                valueKey: name
+        keyPattern: "^[a-zA-Z0-9_.-]*$"
+        title: Artifactories Object Block
+        description: The Name of the Container Registry for creating a secret.
+        type: object
+        properties:
+          name:
+            title: Name
+            type: string
+            description: "Container Registry Name"
+            x-ui-api-source:
+              endpoint: "/cc-ui/v1/artifactories"
+              method: GET
+              params:
+                includeContent: false
+              labelKey: name
+              valueKey: name
 sample:
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/artifactories/artifactories.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/artifactories/artifactories.schema.json
   version: '0.1'
   flavor: default
   kind: artifactories

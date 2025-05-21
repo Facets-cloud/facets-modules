@@ -3,7 +3,7 @@ flavor: default
 version: "0.1"
 description: Adds aws_eventbridge - default flavor
 clouds:
-- aws
+  - aws
 spec:
   title: AWS EventBridge
   description: Specification of the AWS EventBridge
@@ -11,55 +11,51 @@ spec:
   properties:
     rules:
       title: Rules
-      description: Map of rules which specify what EventBridge does with the events
-        delivered to each Event Bus.
+      description: Map of rules which specify what EventBridge does with the events delivered to each Event Bus.
       type: object
       patternProperties:
-        "^[a-zA-Z][a-zA-Z0-9._-]*[a-zA-Z0-9]$":
-          title: Rule Object
-          description: Name of the rule object
-          type: object
-          properties:
-            is_enabled:
-              type: boolean
-              title: Is Enabled
-              default: true
-              description: Specifies whether the rule is enabled
-            schedule_expression:
-              type: string
-              title: Schedule Expression
-              description: The scheduling expression for the rule. <b>This field is
-                required if event_pattern is not provided.</b>
-              pattern: "^(rate|cron)\\([0-9a-zA-Z*\\-\\/\\?,\\s]+\\)$"
-              x-ui-placeholder: e.g. rate(5 minutes) or cron(0 20 * * ? *)
-              x-ui-error-message: "Schedule Expression should be in the format rate(5
-                minutes) or cron(0 20 * * ? *)"
-            event_pattern:
-              type: object
-              title: Event Pattern
-              description: The event pattern to match. <b>This field is required if
-                schedule_expression is not provided.</b>
-              x-ui-placeholder: 'e.g. { "source": ["aws.ec2"] }'
-              x-ui-yaml-editor: true
-            tags:
-              type: object
-              title: Tags
-              description: The tags to assign to the rule
-              x-ui-yaml-editor: true
-              x-ui-placeholder: "Enter the value of the tags. Eg. key1: value1"
-            description:
-              type: string
-              title: Description
-              description: The description of the rule
-              pattern: "^.{0,256}$"
-            targets:
-              type: array
-              title: Targets
-              description: The targets to invoke when the rule is triggered
+        keyPattern: "^[a-zA-Z][a-zA-Z0-9._-]*[a-zA-Z0-9]$"
+        title: Rule Object
+        description: Name of the rule object
+        type: object
+        properties:
+          is_enabled:
+            type: boolean
+            title: Is Enabled
+            default: true
+            description: Specifies whether the rule is enabled
+          schedule_expression:
+            type: string
+            title: Schedule Expression
+            description: The scheduling expression for the rule. <b>This field is required if event_pattern is not provided.</b>
+            pattern: "^(rate|cron)\\([0-9a-zA-Z*\\-\\/\\?,\\s]+\\)$"
+            x-ui-placeholder: e.g. rate(5 minutes) or cron(0 20 * * ? *)
+            x-ui-error-message: "Schedule Expression should be in the format rate(5 minutes) or cron(0 20 * * ? *)"
+          event_pattern:
+            type: object
+            title: Event Pattern
+            description: The event pattern to match. <b>This field is required if schedule_expression is not provided.</b>
+            x-ui-placeholder: 'e.g. { "source": ["aws.ec2"] }'
+            x-ui-yaml-editor: true
+          tags:
+            type: object
+            title: Tags
+            description: The tags to assign to the rule
+            x-ui-yaml-editor: true
+            x-ui-placeholder: "Enter the value of the tags. Eg. key1: value1"
+          description:
+            type: string
+            title: Description
+            description: The description of the rule
+            pattern: "^.{0,256}$"
+          targets:
+            type: array
+            title: Targets
+            description: The targets to invoke when the rule is triggered
       required:
-      - is_enabled
-      - description
-      - targets
+        - is_enabled
+        - description
+        - targets
     event_bus_name:
       type: string
       title: Event Bus Name
@@ -67,8 +63,7 @@ spec:
       default: default
       pattern: "^[a-zA-Z0-9._-]{1,256}$"
       x-ui-placeholder: e.g. default
-      x-ui-error-message: "Event Bus Name should be between 1 and 256 characters long
-        and can contain only alphanumeric characters, hyphens, underscores, and periods."
+      x-ui-error-message: "Event Bus Name should be between 1 and 256 characters long and can contain only alphanumeric characters, hyphens, underscores, and periods."
     tags:
       type: object
       title: Tags

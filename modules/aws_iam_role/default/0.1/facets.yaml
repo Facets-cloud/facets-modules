@@ -3,7 +3,7 @@ flavor: default
 version: '0.1'
 description: Adds AWS IAM Role
 clouds:
-- aws
+  - aws
 spec:
   title: AWS IAM Role
   description: Specification of the aws iam role resource intent
@@ -11,73 +11,64 @@ spec:
   properties:
     irsa:
       type: object
-      description: IRSA block which required to attach EKS OIDC to service accounts
-        for allowing applications to get cloud credentials
+      description: IRSA block which required to attach EKS OIDC to service accounts for allowing applications to get cloud credentials
       properties:
         service_accounts:
           type: object
           title: Service Accounts
           description: the map of all service accounts that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
-              type: object
-              title: Service Account Name
-              description: An arbitrary name given to the service account which is
-                not used anywhere
-              properties:
-                name:
-                  type: string
-                  description: The name of the service account that you want to attach
-                    the role to with the trust relationship
-                  pattern: '^(?!-)[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*(?<!-)$'
-                  x-ui-error-message: "Service account names must contain only letters,
-                    numbers, underscores and hyphens, cannot contain consecutive hyphens,
-                    and must not include spaces or special characters "
+            type: object
+            title: Service Account Name
+            keyPattern: '^[a-zA-Z0-9_.-]*$'
+            description: An arbitrary name given to the service account which is not used anywhere
+            properties:
+              name:
+                type: string
+                description: The name of the service account that you want to attach the role to with the trust relationship
+                pattern: '^(?!-)[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*(?<!-)$'
+                x-ui-error-message: "Service account names must contain only letters, numbers, underscores and hyphens, cannot contain consecutive hyphens, and must not include spaces or special characters "
         oidc_providers:
           type: object
           title: OIDC Providers
           description: the map of all OIDC arns that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
               type: object
               title: OIDC Provider ARN
-              description: An arbitrary name given to the OIDC provider which is not
-                used anywhere
+              keyPattern: '^[a-zA-Z0-9_.-]*$'
+              description: An arbitrary name given to the OIDC provider which is not used anywhere
               properties:
                 arn:
                   type: string
-                  description: The arn of the OIDC that you want to attach the role
-                    to with the trust relationship
+                  description: The arn of the OIDC that you want to attach the role to with the trust relationship
                   pattern: '^arn:aws:iam::[0-9]{12}:oidc-provider\/[a-zA-Z0-9._\-\/]+$'
-                  x-ui-error-message: "Invalid OIDC ARN format. Ensure it follows
-                    the pattern <arn:aws:iam::<account-id>:oidc-provider/<provider-path>"
+                  x-ui-error-message: "Invalid OIDC ARN format. Ensure it follows the pattern <arn:aws:iam::<account-id>:oidc-provider/<provider-path>"
       required:
-      - service_accounts
+        - service_accounts
     policies:
       type: object
       title: Policies
       description: the map of all policies arns that you want to attach to the role
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
-          type: object
-          title: Policy ARN
-          description: An arbitrary name given to the policies which is not used anywhere
-          properties:
-            arn:
-              type: string
-              description: The arn of the policy that you want to attach the role
-              pattern: '^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$'
-              x-ui-error-message: "Invalid ARN format. Ensure it follows the pattern
-                <arn:partition:service:region:account-id:resource>"
+        type: object
+        title: Policy ARN
+        keyPattern: '^[a-zA-Z0-9_.-]*$'
+        description: An arbitrary name given to the policies which is not used anywhere
+        properties:
+          arn:
+            type: string
+            description: The arn of the policy that you want to attach the role
+            pattern: '^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$'
+            x-ui-error-message: "Invalid ARN format. Ensure it follows the pattern <arn:partition:service:region:account-id:resource>"
     required:
-    - policies
+      - policies
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
   version: '0.1'
   disabled: true
   flavor: default
-  metadata: {}
+  metadata: { }
   kind: aws_iam_role
   spec:
     irsa:
