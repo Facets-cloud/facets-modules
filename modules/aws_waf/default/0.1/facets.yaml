@@ -14,43 +14,43 @@ spec:
       title: Scope
       description: Scope of the WAF
       enum:
-        - REGIONAL
-        - CLOUDFRONT
+      - REGIONAL
+      - CLOUDFRONT
     rule_groups:
       type: object
       title: Rule Groups
       description: Rule groups configuration for WAF
       patternProperties:
-        type: object
-        title: Rule Group
-        description: Rule group configuration
-        keyPattern: '^[a-zA-Z0-9_.-]*$'
-        properties:
-          arn:
-            type: string
-            title: ARN
-            description: ARN of the rule group
-            x-ui-placeholder: "Enter the ARN of the rule group"
-          priority:
-            type: integer
-            title: Priority
-            description: Priority of the rule group
-            x-ui-placeholder: "Enter the priority of the rule group"
+        '^[a-zA-Z0-9_.-]*$':
+          type: object
+          title: Rule Group
+          description: Rule group configuration
+          properties:
+            arn:
+              type: string
+              title: ARN
+              description: ARN of the rule group
+              x-ui-placeholder: "Enter the ARN of the rule group"
+            priority:
+              type: integer
+              title: Priority
+              description: Priority of the rule group
+              x-ui-placeholder: "Enter the priority of the rule group"
     resource_arns:
       type: object
       title: Resource ARNs
       description: Resource ARNs configuration for WAF
       patternProperties:
-        type: object
-        title: Resource
-        description: Resource configuration
-        keyPattern: '^[a-zA-Z0-9_.-]*$'
-        properties:
-          arn:
-            type: string
-            title: ARN
-            description: ARN of the resource
-            x-ui-placeholder: "Enter the ARN of the resource"
+        '^[a-zA-Z0-9_.-]*$':
+          type: object
+          title: Resource
+          description: Resource configuration
+          properties:
+            arn:
+              type: string
+              title: ARN
+              description: ARN of the resource
+              x-ui-placeholder: "Enter the ARN of the resource"
     default_action:
       type: object
       title: Default Action
