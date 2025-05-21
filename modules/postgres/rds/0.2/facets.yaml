@@ -3,7 +3,7 @@ flavor: rds
 version: "0.2"
 description: Adds postgres module of flavor aws_ecs_rds
 clouds:
-- aws
+  - aws
 inputs:
   network_details:
     type: "@outputs/aws_vpc"
@@ -21,11 +21,11 @@ spec:
       minLength: 1
       x-ui-placeholder: "Ex. 14"
       enum:
-      - "16"
-      - "15"
-      - "14"
-      - "13"
-      - "12"
+        - "16"
+        - "15"
+        - "14"
+        - "13"
+        - "12"
     size:
       type: object
       title: Size
@@ -41,47 +41,47 @@ spec:
               title: Instance Type
               description: Type of Instance for Writer
               enum:
-              - db.t4g.medium
-              - db.t3.medium
-              - db.t3.small
-              - db.t3.micro
-              - db.t3.large
-              - db.t3.xlarge
-              - db.t3.2xlarge
-              - db.t2.micro
-              - db.t2.small
-              - db.t2.medium
-              - db.t2.large
-              - db.r5.large
-              - db.r5.xlarge
-              - db.r5.2xlarge
-              - db.r5.4xlarge
-              - db.r5.8xlarge
-              - db.r5.12xlarge
-              - db.r6g.large
-              - db.r6g.xlarge
-              - db.r6g.2xlarge
-              - db.r6g.4xlarge
-              - db.r6g.8xlarge
-              - db.r6g.12xlarge
-              - db.r7g.large
-              - db.r7g.xlarge
-              - db.r7g.2xlarge
-              - db.r7g.4xlarge
-              - db.r7g.8xlarge
-              - db.r7g.12xlarge
-              - db.r6i.large
-              - db.r6i.xlarge
-              - db.r6i.2xlarge
-              - db.r6i.4xlarge
-              - db.r6i.8xlarge
-              - db.r6i.12xlarge
-              - db.r6i.16xlarge
-              - db.r6i.24xlarge
-              - db.r6i.32xlarge
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+                - db.r5.large
+                - db.r5.xlarge
+                - db.r5.2xlarge
+                - db.r5.4xlarge
+                - db.r5.8xlarge
+                - db.r5.12xlarge
+                - db.r6g.large
+                - db.r6g.xlarge
+                - db.r6g.2xlarge
+                - db.r6g.4xlarge
+                - db.r6g.8xlarge
+                - db.r6g.12xlarge
+                - db.r7g.large
+                - db.r7g.xlarge
+                - db.r7g.2xlarge
+                - db.r7g.4xlarge
+                - db.r7g.8xlarge
+                - db.r7g.12xlarge
+                - db.r6i.large
+                - db.r6i.xlarge
+                - db.r6i.2xlarge
+                - db.r6i.4xlarge
+                - db.r6i.8xlarge
+                - db.r6i.12xlarge
+                - db.r6i.16xlarge
+                - db.r6i.24xlarge
+                - db.r6i.32xlarge
               x-ui-placeholder: "Select writer instance type"
           required:
-          - instance
+            - instance
         reader:
           type: object
           title: Reader
@@ -92,44 +92,44 @@ spec:
               title: Instance Type
               description: Type of Instance for Reader
               enum:
-              - db.t4g.medium
-              - db.t3.medium
-              - db.t3.small
-              - db.t3.micro
-              - db.t3.large
-              - db.t3.xlarge
-              - db.t3.2xlarge
-              - db.t2.micro
-              - db.t2.small
-              - db.t2.medium
-              - db.t2.large
-              - db.r5.large
-              - db.r5.xlarge
-              - db.r5.2xlarge
-              - db.r5.4xlarge
-              - db.r5.8xlarge
-              - db.r5.12xlarge
-              - db.r6g.large
-              - db.r6g.xlarge
-              - db.r6g.2xlarge
-              - db.r6g.4xlarge
-              - db.r6g.8xlarge
-              - db.r6g.12xlarge
-              - db.r7g.large
-              - db.r7g.xlarge
-              - db.r7g.2xlarge
-              - db.r7g.4xlarge
-              - db.r7g.8xlarge
-              - db.r7g.12xlarge
-              - db.r6i.large
-              - db.r6i.xlarge
-              - db.r6i.2xlarge
-              - db.r6i.4xlarge
-              - db.r6i.8xlarge
-              - db.r6i.12xlarge
-              - db.r6i.16xlarge
-              - db.r6i.24xlarge
-              - db.r6i.32xlarge
+                - db.t4g.medium
+                - db.t3.medium
+                - db.t3.small
+                - db.t3.micro
+                - db.t3.large
+                - db.t3.xlarge
+                - db.t3.2xlarge
+                - db.t2.micro
+                - db.t2.small
+                - db.t2.medium
+                - db.t2.large
+                - db.r5.large
+                - db.r5.xlarge
+                - db.r5.2xlarge
+                - db.r5.4xlarge
+                - db.r5.8xlarge
+                - db.r5.12xlarge
+                - db.r6g.large
+                - db.r6g.xlarge
+                - db.r6g.2xlarge
+                - db.r6g.4xlarge
+                - db.r6g.8xlarge
+                - db.r6g.12xlarge
+                - db.r7g.large
+                - db.r7g.xlarge
+                - db.r7g.2xlarge
+                - db.r7g.4xlarge
+                - db.r7g.8xlarge
+                - db.r7g.12xlarge
+                - db.r6i.large
+                - db.r6i.xlarge
+                - db.r6i.2xlarge
+                - db.r6i.4xlarge
+                - db.r6i.8xlarge
+                - db.r6i.12xlarge
+                - db.r6i.16xlarge
+                - db.r6i.24xlarge
+                - db.r6i.32xlarge
               x-ui-placeholder: "Select reader instance type"
             instance_count:
               type: integer
@@ -138,49 +138,45 @@ spec:
               x-ui-placeholder: "Enter reader instance count"
               minimum: 0
           required:
-          - instance
+            - instance
     db_names:
       type: array
       title: Database Names
       description: List of database names
       x-ui-placeholder: "e.g., 'my_database'"
-      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,
-        [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
-      x-ui-error-message: "Database names must start with an alphanumeric character
-        and should be separated by commas"
+      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
+      x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
     db_schemas:
       type: object
       title: Additional Database Schemas
       description: Map of additonal schemas to be created.
       patternProperties:
-        "^[a-zA-Z0-9-_]+$":
-          title: Database Schemas
-          description: Database schema row item which contains schema name and database
-            name in which schema will be created.
-          properties:
-            db:
-              title: Database Name
-              type: string
-              description: Name of the database under which schema will be created.
-              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-              x-ui-error-message: Database name must start with an alphabet or underscore
-                and should contain only alphanumeric characters and underscores
-            schema:
-              title: Database Schema
-              type: string
-              description: Name of the schema which needs to be created.
-              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-          required:
+        keyPattern: "^[a-zA-Z0-9-_]+$"
+        title: Database Schemas
+        description: Database schema row item which contains schema name and database name in which schema will be created.
+        properties:
+          db:
+            title: Database Name
+            type: string
+            description: Name of the database under which schema will be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+            x-ui-error-message: Database name must start with an alphabet or underscore and should contain only alphanumeric characters and underscores
+          schema:
+            title: Database Schema
+            type: string
+            description: Name of the schema which needs to be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        required:
           - db
           - schema
   required:
-  - size
-  - postgres_version
+    - size
+    - postgres_version
   x-ui-order:
-  - postgres_version
-  - size
-  - db_names
-  - db_schemas
+    - postgres_version
+    - size
+    - db_names
+    - db_schemas
 advanced:
   type: object
   title: RDS Advanced Properties
@@ -205,35 +201,35 @@ advanced:
                   type: object
                   title: Reader Parameters
                   patternProperties:
-                    "[a-zA-Z]+[a-zA-Z0-9\\.\\_]*":
-                      type: object
-                      title: Parameter Name
-                      properties:
-                        value:
-                          type: string
-                        apply_method:
-                          type: string
-                          enum:
+                    type: object
+                    title: Parameter Name
+                    keyPattern: "[a-zA-Z]+[a-zA-Z0-9\\.\\_]*"
+                    properties:
+                      value:
+                        type: string
+                      apply_method:
+                        type: string
+                        enum:
                           - "immediate"
                           - "pending-reboot"
-                      required:
+                    required:
                       - value
                 writer:
                   type: object
                   title: Writer Parameters
                   patternProperties:
-                    "[a-zA-Z]+[a-zA-Z0-9\\.\\_]*":
-                      type: object
-                      title: Parameter Name
-                      properties:
-                        value:
-                          type: string
-                        apply_method:
-                          type: string
-                          enum:
+                    type: object
+                    title: Parameter Name
+                    keyPattern: "[a-zA-Z]+[a-zA-Z0-9\\.\\_]*"
+                    properties:
+                      value:
+                        type: string
+                      apply_method:
+                        type: string
+                        enum:
                           - "immediate"
                           - "pending-reboot"
-                      required:
+                    required:
                       - value
 sample:
   kind: postgres

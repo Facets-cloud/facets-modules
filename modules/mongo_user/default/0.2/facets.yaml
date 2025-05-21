@@ -15,16 +15,14 @@ inputs:
     optional: false
     type: "@output/kubernetes"
     displayName: Kubernetes Cluster
-    description: Details of Kubernetes where the CRD for managing mongo user will
-      be created
+    description: Details of Kubernetes where the CRD for managing mongo user will be created
     default:
       resource_type: kubernetes_cluster
       resource_name: default
   mongodb_auth_operator_details:
     type: "@output/mongodb_auth_operator"
     displayName: MongoDB Auth Operator
-    description: The details of MongoDB Auth Operator which is responsible to create
-      mongo users
+    description: The details of MongoDB Auth Operator which is responsible to create mongo users
     optional: false
   mongo_details:
     type: "@output/mongo"
@@ -45,30 +43,30 @@ spec:
       title: Permissions
       description: The permissions for the user
       patternProperties:
-        "^[0-9]+[m]?$":
-          type: string
-          title: Permission Name
-          description: The permission Configurations for a specific user
-          properties:
-            permission:
-              type: string
-              title: Permission
-              description: The permission for the user
-              x-ui-placeholder: "Enter comma separated permissions"
-            database:
-              type: string
-              title: Database
-              description: The database name for which the permission should be given
-              x-ui-placeholder: "Enter the database name"
-            collection:
-              type: string
-              title: Collection
-              description: The collection name of the database
-              x-ui-placeholder: "Enter the collection name"
-            cluster:
-              type: boolean
-              title: Cluster
-              description: Determines if permission should be at cluster level
+        type: string
+        title: Permission Name
+        description: The permission Configurations for a specific user
+        keyPattern: "^[0-9]+[m]?$"
+        properties:
+          permission:
+            type: string
+            title: Permission
+            description: The permission for the user
+            x-ui-placeholder: "Enter comma separated permissions"
+          database:
+            type: string
+            title: Database
+            description: The database name for which the permission should be given
+            x-ui-placeholder: "Enter the database name"
+          collection:
+            type: string
+            title: Collection
+            description: The collection name of the database
+            x-ui-placeholder: "Enter the collection name"
+          cluster:
+            type: boolean
+            title: Cluster
+            description: Determines if permission should be at cluster level
     mongo_user:
       type: object
       title: Mongo User
@@ -109,8 +107,7 @@ spec:
               title: Roles to Role
               description: The roles to role for the user
 sample:
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
   kind: mongo_user
   flavor: default
   version: '0.2'

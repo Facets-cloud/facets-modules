@@ -3,7 +3,7 @@ flavor: cloudsql
 version: "0.2"
 description: Adds Postgres module of flavor cloudsql
 clouds:
-- gcp
+  - gcp
 spec:
   title: CloudSQL
   type: object
@@ -13,9 +13,9 @@ spec:
       title: Postgres Version
       description: Specifies the Postgres version to use.
       enum:
-      - "12.11"
-      - "13.3"
-      - "14.0"
+        - "12.11"
+        - "13.3"
+        - "14.0"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
@@ -34,27 +34,27 @@ spec:
               minLength: 1
               x-ui-placeholder: "e.g., 'db-f1-micro'"
               enum:
-              - db-f1-micro
-              - db-g1-small
-              - db-n1-standard-1
-              - db-n1-standard-2
-              - db-n1-standard-4
-              - db-n1-standard-8
-              - db-n1-standard-16
-              - db-n1-standard-32
-              - db-n1-highmem-2
-              - db-n1-highmem-4
-              - db-n1-highmem-8
-              - db-n1-highmem-16
-              - db-n1-highmem-32
-              - db-m2-ultramem-208
-              - db-m2-ultramem-416
-              - db-custom-1-3840
-              - db-custom-2-7680
-              - db-custom-4-15360
-              - db-custom-8-30720
-              - db-custom-16-61440
-              - db-custom-32-122880
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-m2-ultramem-208
+                - db-m2-ultramem-416
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
               x-ui-error-message: "Please select a valid instance type."
             volume:
               type: integer
@@ -62,14 +62,13 @@ spec:
               description: The size of the volume in GB.
               minimum: 10
               x-ui-placeholder: "e.g., 10"
-              x-ui-error-message: "Please specify the volume size as a number in GB.
-                The minimum is 10GB."
+              x-ui-error-message: "Please specify the volume size as a number in GB. The minimum is 10GB."
           required:
-          - instance
-          - volume
+            - instance
+            - volume
           x-ui-order:
-          - instance
-          - volume
+            - instance
+            - volume
         reader:
           type: object
           title: Reader
@@ -82,27 +81,27 @@ spec:
               minLength: 1
               x-ui-placeholder: "e.g., 'db-g1-small'"
               enum:
-              - db-f1-micro
-              - db-g1-small
-              - db-n1-standard-1
-              - db-n1-standard-2
-              - db-n1-standard-4
-              - db-n1-standard-8
-              - db-n1-standard-16
-              - db-n1-standard-32
-              - db-n1-highmem-2
-              - db-n1-highmem-4
-              - db-n1-highmem-8
-              - db-n1-highmem-16
-              - db-n1-highmem-32
-              - db-m2-ultramem-208
-              - db-m2-ultramem-416
-              - db-custom-1-3840
-              - db-custom-2-7680
-              - db-custom-4-15360
-              - db-custom-8-30720
-              - db-custom-16-61440
-              - db-custom-32-122880
+                - db-f1-micro
+                - db-g1-small
+                - db-n1-standard-1
+                - db-n1-standard-2
+                - db-n1-standard-4
+                - db-n1-standard-8
+                - db-n1-standard-16
+                - db-n1-standard-32
+                - db-n1-highmem-2
+                - db-n1-highmem-4
+                - db-n1-highmem-8
+                - db-n1-highmem-16
+                - db-n1-highmem-32
+                - db-m2-ultramem-208
+                - db-m2-ultramem-416
+                - db-custom-1-3840
+                - db-custom-2-7680
+                - db-custom-4-15360
+                - db-custom-8-30720
+                - db-custom-16-61440
+                - db-custom-32-122880
               x-ui-error-message: "Please select a valid instance type."
             volume:
               type: integer
@@ -110,8 +109,7 @@ spec:
               description: The size of the volume in GB.
               minimum: 10
               x-ui-placeholder: "e.g., 10"
-              x-ui-error-message: "Please specify the volume size as a number in GB.
-                The minimum is 10GB."
+              x-ui-error-message: "Please specify the volume size as a number in GB. The minimum is 10GB."
             instance_count:
               type: integer
               title: Instance Count
@@ -121,59 +119,55 @@ spec:
               x-ui-placeholder: "e.g., 2"
               x-ui-error-message: "Instance count must be between 0 and 16."
           required:
-          - instance
-          - volume
-          - instance_count
+            - instance
+            - volume
+            - instance_count
           x-ui-order:
-          - instance
-          - volume
-          - instance_count
+            - instance
+            - volume
+            - instance_count
       required:
-      - writer
+        - writer
       x-ui-order:
-      - writer
-      - reader
+        - writer
+        - reader
     db_names:
       type: array
       title: Additional Database Names
       description: List of additional databases to be created
-      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,
-        [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
-      x-ui-error-message: "Database names must start with an alphanumeric character
-        and should be separated by commas"
+      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
+      x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
     db_schemas:
       type: object
       title: Additional Database Schemas
       description: Map of additonal schemas to be created.
       patternProperties:
-        "^[a-zA-Z0-9-_]+$":
-          title: Database Schemas
-          description: Database schema row item which contains schema name and database
-            name in which schema will be created.
-          properties:
-            db:
-              title: Database Name
-              type: string
-              description: Name of the database under which schema will be created.
-              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-              x-ui-error-message: Database name must start with an alphabet or underscore
-                and should contain only alphanumeric characters and underscores
-            schema:
-              title: Database Schema
-              type: string
-              description: Name of the schema which needs to be created.
-              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-          required:
+        keyPattern: "^[a-zA-Z0-9-_]+$"
+        title: Database Schemas
+        description: Database schema row item which contains schema name and database name in which schema will be created.
+        properties:
+          db:
+            title: Database Name
+            type: string
+            description: Name of the database under which schema will be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+            x-ui-error-message: Database name must start with an alphabet or underscore and should contain only alphanumeric characters and underscores
+          schema:
+            title: Database Schema
+            type: string
+            description: Name of the schema which needs to be created.
+            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        required:
           - db
           - schema
   required:
-  - size
-  - postgres_version
+    - size
+    - postgres_version
   x-ui-order:
-  - postgres_version
-  - size
-  - db_names
-  - db_schemas
+    - postgres_version
+    - size
+    - db_names
+    - db_schemas
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
