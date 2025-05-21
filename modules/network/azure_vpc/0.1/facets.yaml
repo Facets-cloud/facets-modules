@@ -3,10 +3,10 @@ flavor: azure_vpc
 version: "0.1"
 description: Adds network - azure vpc flavor
 clouds:
-- azure
+  - azure
 outputs:
-  default:
-    type: "@outputs/azure_vpc"
+  - name: default
+    type: "@output/azure_vpc"
 spec:
   title: network
   description: Specification of the network for azure vpc flavor
