@@ -3,10 +3,10 @@ flavor: aws_vpc
 version: "0.1"
 description: Adds network - aws vpc flavor
 clouds:
-  - aws
+- aws
 outputs:
-  - name: default
-    type: "@output/aws_vpc"
+- name: default
+  type: "@output/aws_vpc"
 spec:
   title: network
   description: Specification of the network for aws vpc flavor
@@ -16,10 +16,8 @@ spec:
       title: Choose VPC Type
       description: Choose the type of vpc to create
       type: radio
-      enum: [
-        { label: Create New VPC , value:  create_new_vpc },
-        { label: Use Existing VPC, value: use_existing_vpc }
-      ]
+      enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
+            VPC, value: use_existing_vpc}]
       default: create_new_vpc
       x-ui-immutable: true
       x-ui-overrides-only: true
@@ -31,12 +29,16 @@ spec:
       x-ui-immutable: true
       x-ui-overrides-only: true
       x-ui-fetch-az: true
+      items:
+        type: string
     vpc_cidr:
       title: VPC CIDR
       description: CIDR block for the vpc
       x-ui-placeholder: e.g. 10.45.0.0/16
-      pattern: ^(10.(\d{1,3}.){2}\d{1,3}/(2[0-8]|[89]|1[0-9])|172.(1[6-9]|2[0-9]|3[01]).(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9])|192.168.(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$
-      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation
+      pattern: 
+        ^(10.(\d{1,3}.){2}\d{1,3}/(2[0-8]|[89]|1[0-9])|172.(1[6-9]|2[0-9]|3[01]).(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9])|192.168.(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: The provided CIDR block is invalid. Please ensure it is
+        a valid private IP range in CIDR notation
       type: string
       x-ui-immutable: true
       x-ui-overrides-only: true

@@ -104,6 +104,8 @@ spec:
               type: array
               x-ui-placeholder: e.g. m4.xlarge t3.2xlarge
               x-ui-overrides-only: true
+              items:
+                type: string
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes

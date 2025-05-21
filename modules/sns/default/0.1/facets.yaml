@@ -65,6 +65,9 @@ spec:
               type: array
               title: Events
               description: A list of all S3 events you want to subscribe to
+              items:
+                type: string
+              x-ui-override-disable: true
             filter_prefix:
               type: string
               title: Filter Prefix

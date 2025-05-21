@@ -127,6 +127,7 @@ spec:
                   items:
                     type: string
                   minItems: 1
+                  x-ui-override-disable: true
         connection_details:
           title: Connection Details
           description: Connection details for the postgres master user

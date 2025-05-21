@@ -91,6 +91,9 @@ spec:
                       title: Cookies
                       description: Contains a list of cookie names
                       x-ui-placeholder: "Enter the cookie name"
+                      items:
+                        type: string
+                      x-ui-override-disable: true
                 headers_config:
                   type: object
                   title: Headers Config
@@ -108,6 +111,9 @@ spec:
                     headers:
                       type: array
                       title: Headers
+                      items:
+                        type: string
+                      x-ui-override-disable: true
                     description: List of HTTP header names
                     x-ui-placeholder: "Enter the header name"
                 query_strings_config:
@@ -132,6 +138,9 @@ spec:
                       title: Query Strings
                       description: Contains a list of query string names
                       x-ui-placeholder: "Enter the header name"
+                      items:
+                        type: string
+                      x-ui-override-disable: true
                 enable_accept_encoding_brotli:
                   type: boolean
                   title: Enable Brotli
@@ -164,12 +173,18 @@ spec:
           description: Controls which HTTP methods CloudFront processes and forwards
             to your Amazon S3 bucket or your custom origin
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
+          items:
+            type: string
+          x-ui-override-disable: true
         cached_methods:
           type: array
           title: Cached Methods
           description: Controls whether CloudFront caches the response to requests
             using the specified HTTP methods
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
+          items:
+            type: string
+          x-ui-override-disable: true
         viewer_protocol_policy:
           type: string
           title: Viewer Protocol Policy
@@ -221,12 +236,18 @@ spec:
               description: Controls which HTTP methods CloudFront processes and forwards
                 to your Amazon S3 bucket or your custom origin
               x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
+              items:
+                type: string
+              x-ui-override-disable: true
             cached_methods:
               type: array
               title: Cached Methods
               description: Controls whether CloudFront caches the response to requests
                 using the specified HTTP methods
               x-ui-placeholder: Enter cached methods eg. GET, HEADS
+              items:
+                type: string
+              x-ui-override-disable: true
             compress:
               type: boolean
               title: Compress

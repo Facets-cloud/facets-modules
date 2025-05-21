@@ -191,6 +191,7 @@ spec:
           items:
             type: string
           x-ui-command: true
+          x-ui-override-disable: true
         args:
           type: array
           title: Arguments
@@ -198,6 +199,7 @@ spec:
           items:
             type: string
           x-ui-command: true
+          x-ui-override-disable: true
         health_checks:
           type: object
           title: Health Checks
@@ -289,6 +291,9 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["ExecCheck"]
               description: Commands for readiness check
+              items:
+                type: string
+              x-ui-override-disable: true
             liveness_check_type:
               type: string
               title: Liveness Check Type
@@ -372,6 +377,9 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: ["ExecCheck"]
               description: Commands for liveness
+              items:
+                type: string
+              x-ui-override-disable: true
           required:
           - readiness_port
           - readiness_url
@@ -897,6 +905,7 @@ spec:
                   items:
                     type: string
                   x-ui-command: true
+                  x-ui-override-disable: true
                 args:
                   type: array
                   title: Arguments
@@ -904,6 +913,7 @@ spec:
                   items:
                     type: string
                   x-ui-command: true
+                  x-ui-override-disable: true
                 size:
                   type: object
                   title: Size
@@ -1164,6 +1174,7 @@ spec:
                   items:
                     type: string
                   x-ui-command: true
+                  x-ui-override-disable: true
                 args:
                   type: array
                   title: Arguments
@@ -1171,6 +1182,7 @@ spec:
                   items:
                     type: string
                   x-ui-command: true
+                  x-ui-override-disable: true
                 size:
                   type: object
                   title: Size
@@ -1459,6 +1471,9 @@ spec:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
                         values: ["ExecCheck"]
                       description: Commands for readiness check
+                      items:
+                        type: string
+                      x-ui-override-disable: true
                     liveness_check_type:
                       type: string
                       title: Liveness Check Type
@@ -1530,6 +1545,9 @@ spec:
                         field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
                         values: ["ExecCheck"]
                       description: Commands for liveness
+                      items:
+                        type: string
+                      x-ui-override-disable: true
                     port:
                       type: string
                       title: Health Check Port
