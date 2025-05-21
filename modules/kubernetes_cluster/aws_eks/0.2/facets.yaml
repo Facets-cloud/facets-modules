@@ -5,6 +5,9 @@ version: "0.2"
 description: Adds kubernetes cluster - eks flavor
 clouds:
   - aws
+inputs:
+  network_details:
+    type: "@outputs/aws_vpc"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for aws eks flavor
