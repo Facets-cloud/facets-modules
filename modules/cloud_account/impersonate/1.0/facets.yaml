@@ -15,7 +15,7 @@ spec:
       x-ui-placeholder: terraform@<project-id>.iam.gserviceaccount.com
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{4,28}[a-zA-Z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
       x-ui-error: Invalid service account format. Please enter a valid service account
-        email.
+      x-ui-overrides-only: true
   required:
   - service_account
 outputs:
