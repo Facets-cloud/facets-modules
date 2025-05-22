@@ -4,10 +4,10 @@ alias-flavors: ["default"]
 version: "0.1"
 description: Adds network - gcp vpc flavor
 clouds:
-  - gcp
+- gcp
 outputs:
-  - name: default
-    type: "@output/gcp_vpc"
+  default:
+    type: "@outputs/gcp_vpc"
 spec:
   title: network
   description: Specification of the network for gcp vpc flavor
