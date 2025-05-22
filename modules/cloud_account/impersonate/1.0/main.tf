@@ -21,7 +21,8 @@
 #######################################################################
 
 locals {
-  spec = var.instance.spec
+  spec = lookup(var.instance, "spec", {})
+  service_account = lookup(local.spec, "service_account", null)
 }
 
 provider "google" {
@@ -34,7 +35,7 @@ provider "google" {
 
 data "google_service_account_access_token" "default" {
   provider               = google.impersonation
-  target_service_account = local.spec.service_account
+  target_service_account = local.service_account
   scopes                 = ["userinfo-email", "cloud-platform"]
   lifetime               = "1800s"
 }
