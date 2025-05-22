@@ -1,0 +1,75 @@
+intent: rabbitmq
+flavor: external
+version: 0.1
+clouds:
+  - aws
+  - gcp
+  - azure
+  - kubernetes
+spec:
+  type: object
+  properties:
+    cluster:
+      title: Cluster Details
+      type: object
+      properties:
+        endpoint:
+          title: Endpoint
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+          x-ui-mask: true
+        port:
+          title: Port
+          type: string
+      required: ["endpoint", "username", "password", "port"]
+    tcp:
+      title: TCP Details
+      type: object
+      properties:
+        endpoint:
+          title: Endpoint
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+          x-ui-mask: true
+        port:
+          title: Port
+          type: string
+      required: ["endpoint", "username", "password", "port"]
+    http:
+      title: HTTP Details
+      type: object
+      properties:
+        endpoint:
+          title: Endpoint
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+          x-ui-mask: true
+        port:
+          title: Port
+          type: string
+      required: ["endpoint", "username", "password", "port"]
+
+outputs:
+  default:
+    type: "@outputs/rabbitmq"
+
+sample:
+  kind: "rabbitmq"
+  flavor: "external"
+  version: "0.1"
+  spec: {}
