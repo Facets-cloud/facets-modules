@@ -4,6 +4,10 @@ version: "0.1"
 description: Adds MYSQL module of flavor rds
 clouds:
   - aws
+imports:
+  - name: "mysql_master_instance"
+    resource_address: "module.rds-mysql-master.module.db_instance.aws_db_instance.this[0]"
+    required: true
 spec:
   title: RDS
   type: object
