@@ -46,6 +46,29 @@ spec:
           - topic_name
           - replication_factor
           - partitions
+inputs:
+  crossplane_details:
+    type: "@output/crossplane"
+    displayName: Crossplane
+    description: Details of crossplane which will be responsible to create mysql users
+    optional: false
+  kafka_details:
+    type: "@outputs/kafka"
+    optional: false
+    displayName: Kafka
+    description: Kafka instance to create the topic in
+  kubernetes_details:
+    displayName: Kubernetes Cluster
+    description: Kubernetes Cluster where crossplane is installed
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
   kind: kafka_topic
