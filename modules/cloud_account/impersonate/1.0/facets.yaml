@@ -27,19 +27,16 @@ outputs:
         version: 6.23.0
         attributes:
           access_token: attributes.access_token
-          request_timeout: 60s
       google:
         source: hashicorp/google
         version: 6.23.0
         attributes:
           access_token: attributes.access_token
-          request_timeout: 60s
       google5:
         source: hashicorp/google5
         version: 5.32.0
         attributes:
           access_token: attributes.access_token
-          request_timeout: 60s
 sample:
   kind: cloud_account
   flavor: impersonate
