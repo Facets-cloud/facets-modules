@@ -26,7 +26,8 @@ spec:
             value:
               title: Kubernetes secret Data Object Value
               description: Value of the kubernetes secret object
-              type: textarea
+              type: string
+              x-ui-textarea: true
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
