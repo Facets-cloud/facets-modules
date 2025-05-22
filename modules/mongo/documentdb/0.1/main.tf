@@ -10,7 +10,7 @@ locals {
     for def in local.peering_definitions :
     jsondecode(file("../../../../stacks/${var.cluster.stackName}/additional_peering/instances/${def}"))["cidr"]
   ]
-  cluster_family      = substr(local.version, 0, 3)
+  cluster_family = substr(local.version, 0, 3)
 }
 
 module "name" {
@@ -53,7 +53,7 @@ module "docdb" {
   enabled                         = lookup(local.advanced, "enabled", null)
   enabled_cloudwatch_logs_exports = lookup(local.advanced, "enabled_cloudwatch_logs_exports", [])
   engine                          = "docdb"
-  engine_version                  = "${local.version}"
+  engine_version                  = local.version
   environment                     = lookup(local.advanced, "environment", null)
   external_security_group_id_list = lookup(local.advanced, "external_security_group_id_list", [])
   id_length_limit                 = lookup(local.advanced, "id_length_limit", null)
