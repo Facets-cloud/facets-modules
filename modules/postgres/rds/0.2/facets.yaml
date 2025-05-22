@@ -148,6 +148,9 @@ spec:
         [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
       x-ui-error-message: "Database names must start with an alphanumeric character
         and should be separated by commas"
+      items:
+        type: string
+      x-ui-override-disable: true
     db_schemas:
       type: object
       title: Additional Database Schemas

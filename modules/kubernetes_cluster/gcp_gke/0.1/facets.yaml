@@ -39,6 +39,7 @@ spec:
               maxItmes: 7
               x-ui-error-message: Select the days in the week for maintenance to happen
               x-ui-placeholder: e.g. 'Monday, Tuesday'
+              x-ui-override-disable: true
             duration:
               title: Maintenance Duration
               description: Duration of maintenance in hours
@@ -212,6 +213,8 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
+              items:
+                type: string
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
