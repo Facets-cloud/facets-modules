@@ -7,9 +7,9 @@ clouds:
 - azure
 - gcp
 - kubernetes
-artifact_inputs: 
-  primary: 
-    attribute_path: "spec.release.image" 
+artifact_inputs:
+  primary:
+    attribute_path: "spec.release.image"
     artifact_type: "docker_image"
 metadata:
   title: Metadata of service
@@ -17,7 +17,7 @@ metadata:
   properties:
     namespace:
       type: string
-      title: Namespace 
+      title: Namespace
       description: Namespace in which job should be deployed
       default: default
 spec:
@@ -33,7 +33,8 @@ spec:
     job:
       type: object
       title: Job
-      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
+      description: Manage execution of a one-off task or batch process, ensuring it
+        completes successfully
       x-ui-override-disable: true
       x-ui-toggle: true
       properties:
@@ -41,12 +42,15 @@ spec:
           type: string
           default: 5
           minimum: 1
-          x-ui-placeholder: "Enter the minimum retry count for your job (default is 5)"
-          description: Number of time you want to retry the job before calling it a failure
+          x-ui-placeholder: "Enter the minimum retry count for your job (default is
+            5)"
+          description: Number of time you want to retry the job before calling it
+            a failure
           pattern: '^(100|[1-9][0-9]?)$'
-          x-ui-error-message: "The retry count must be a positive integer between 1 and 100."
+          x-ui-error-message: "The retry count must be a positive integer between
+            1 and 100."
       required:
-        - retry
+      - retry
     runtime:
       type: object
       title: Runtime
@@ -59,23 +63,26 @@ spec:
           items:
             type: string
           x-ui-command: true
+          x-ui-override-disable: true
         args:
           type: array
           title: Arguments
           description: Arguments to pass to the command
           pattern: '^[a-zA-Z0-9-_ ]+$'
-          x-ui-error-message: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
+          x-ui-error-message: "Each argument can only contain alphanumeric characters,
+            dashes, underscores, and spaces."
           items:
             type: string
           x-ui-command: true
+          x-ui-override-disable: true
       x-ui-order:
-        - args
-        - command
+      - args
+      - command
   required:
-    - job
+  - job
   x-ui-order:
-    - job
-    - runtime
+  - job
+  - runtime
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
