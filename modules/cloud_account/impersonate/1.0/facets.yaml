@@ -1,0 +1,49 @@
+intent: cloud_account
+flavor: impersonate
+version: '1.0'
+clouds:
+- gcp
+description: Cloud account modules which has impersonation support
+spec:
+  title: Cloud account modules which has impersonation support
+  description: Cloud account modules which has impersonation support
+  type: object
+  properties:
+    service_account:
+      type: string
+      description: The service account to impersonate
+      x-ui-placeholder: terraform@<project-id>.iam.gserviceaccount.com
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{4,28}[a-zA-Z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
+      x-ui-error: Invalid service account format. Please enter a valid service account
+        email.
+  required:
+  - service_account
+outputs:
+  default:
+    type: '@outputs/cloud_account'
+    providers:
+      google-beta:
+        source: hashicorp/google-beta
+        version: 6.23.0
+        attributes:
+          access_token: attributes.access_token
+          request_timeout: 60s
+      google:
+        source: hashicorp/google
+        version: 6.23.0
+        attributes:
+          access_token: attributes.access_token
+          request_timeout: 60s
+      google5:
+        source: hashicorp/google5
+        version: 5.32.0
+        attributes:
+          access_token: attributes.access_token
+          request_timeout: 60s
+sample:
+  kind: cloud_account
+  flavor: impersonate
+  version: '1.0'
+  disabled: true
+  spec:
+    service_account: terraform@<project-id>.iam.gserviceaccount.com
