@@ -114,8 +114,8 @@ spec:
                       items:
                         type: string
                       x-ui-override-disable: true
-                    description: List of HTTP header names
-                    x-ui-placeholder: "Enter the header name"
+                      description: List of HTTP header names
+                      x-ui-placeholder: "Enter the header name"
                 query_strings_config:
                   type: object
                   title: Query Strings Config

@@ -5,8 +5,8 @@ description: Adds network - aws vpc flavor
 clouds:
 - aws
 outputs:
-- name: default
-  type: "@output/aws_vpc"
+  default:
+    type: "@outputs/aws_vpc"
 spec:
   title: network
   description: Specification of the network for aws vpc flavor
