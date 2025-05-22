@@ -16,7 +16,7 @@ spec:
       type: string
       x-ui-typeable: true
       x-ui-api-source:
-        endpoint: "/cc-ui/v1/accounts/"
+        endpoint: /cc-ui/v1/accounts/
         method: GET
         labelKey: name
         valueKey: name
