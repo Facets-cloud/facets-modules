@@ -3,6 +3,7 @@ alias-flavors: ["default"]
 flavor: azure
 lifecycle: ENVIRONMENT
 version: "0.1"
+description: "cloud_account - azure"
 depends_on: []
 input_type: instance
 composition: {}

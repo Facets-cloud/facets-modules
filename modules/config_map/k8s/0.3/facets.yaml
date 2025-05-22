@@ -1,6 +1,7 @@
 intent: config_map
 flavor: k8s
 version: '0.3'
+description: "config_map - k8s"
 clouds:
 - aws
 - azure

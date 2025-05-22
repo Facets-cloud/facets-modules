@@ -1,6 +1,7 @@
 intent: ecs_service
 flavor: default
 version: '0.2'
+description: "ecs_service - default"
 clouds:
 - aws
 artifact_inputs:
