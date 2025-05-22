@@ -16,8 +16,8 @@ spec:
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{4,28}[a-zA-Z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
       x-ui-error: Invalid service account format. Please enter a valid service account
         email.
-  required:
-  - service_account
+    required:
+    - service_account
 outputs:
   default:
     type: '@outputs/cloud_account'
