@@ -34,6 +34,14 @@ outputs:
         attributes:
           access_token: attributes.access_token
           request_timeout: 60s
+      google-impersonate:
+        source: hashicorp/google
+        version: 6.23.0
+        attributes:
+          alias: impersonation
+          scopes:
+            - https://www.googleapis.com/auth/cloud-platform
+            - https://www.googleapis.com/auth/userinfo.email
       google5:
         source: hashicorp/google5
         version: 5.32.0
