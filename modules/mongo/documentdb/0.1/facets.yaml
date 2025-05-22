@@ -4,7 +4,14 @@ version: '0.1'
 description: Adds mongo - documentdb flavor
 clouds:
 - aws
-- aws
+spec: {}
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
 sample:
   kind: mongo
   flavor: documentdb
@@ -15,7 +22,7 @@ sample:
   depends_on: []
   metadata: {}
   spec:
-    mongodb_version: '5.0'
+    documentdb_version: '5.0'
     size:
       instance_count: 0
       instance: db.r4.large
