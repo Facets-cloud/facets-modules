@@ -24,6 +24,7 @@ spec:
         - field: accountType
           value: CLOUD
         - field: provider
+          type: dynamic
           value: spec.cloud_provider
         params:
           includeContent: false
