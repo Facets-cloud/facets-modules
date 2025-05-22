@@ -184,7 +184,7 @@ module "rds-mysql-replica" {
 
 
 module "mysql-root-password" {
-  source        = "github.com/Facets-cloud/facets-utility-modules//generate_resource_details"
+  source        = "./generate_resource_details"
   name          = "Basic Authentication Password for Mysql RDS"
   value         = module.mysql-password.result
   resource_type = "Databases"
