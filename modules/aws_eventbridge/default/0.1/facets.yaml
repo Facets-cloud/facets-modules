@@ -56,6 +56,9 @@ spec:
               type: array
               title: Targets
               description: The targets to invoke when the rule is triggered
+              items:
+                type: string
+              x-ui-override-disable: true
       required:
       - is_enabled
       - description
