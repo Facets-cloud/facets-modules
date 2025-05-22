@@ -11,6 +11,7 @@ spec:
   properties:
     cluster:
       title: Cluster Details
+      x-ui-overrides-only: true
       type: object
       properties:
         endpoint:
@@ -29,6 +30,7 @@ spec:
       required: ["endpoint", "username", "password", "port"]
     tcp:
       title: TCP Details
+      x-ui-overrides-only: true
       type: object
       properties:
         endpoint:
@@ -47,6 +49,7 @@ spec:
       required: ["endpoint", "username", "password", "port"]
     http:
       title: HTTP Details
+      x-ui-overrides-only: true
       type: object
       properties:
         endpoint:
