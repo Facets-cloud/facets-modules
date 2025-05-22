@@ -74,13 +74,13 @@ locals {
 
   registry_name    = lookup(local.release, "registry_name", "")
   artifactory_list = jsondecode(file("../deploymentcontext.json"))["artifactoryDetails"]
-  repository_credentials = {
+  repository_credentials = local.registry_name != "" ? {
     for artifactory in local.artifactory_list :
     artifactory["name"] => {
       username = artifactory.username
       password = artifactory.password
     } if lookup(artifactory, "artifactoryType", "ECR") != "ECR" && (local.registry_name == artifactory["name"])
-  }[local.registry_name]
+  }[local.registry_name] : {}
 }
 
 module "name" {
