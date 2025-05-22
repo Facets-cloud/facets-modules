@@ -1,6 +1,6 @@
 intent: postgres
 flavor: external
-version: 0.1
+version: '0.1'
 clouds:
   - aws
   - gcp
