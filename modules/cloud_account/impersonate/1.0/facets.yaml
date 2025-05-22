@@ -16,8 +16,8 @@ spec:
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{4,28}[a-zA-Z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\.iam\.gserviceaccount\.com$
       x-ui-error: Invalid service account format. Please enter a valid service account
         email.
-    required:
-    - service_account
+  required:
+  - service_account
 outputs:
   default:
     type: '@outputs/cloud_account'
@@ -40,8 +40,8 @@ outputs:
         attributes:
           alias: impersonation
           scopes:
-            - https://www.googleapis.com/auth/cloud-platform
-            - https://www.googleapis.com/auth/userinfo.email
+          - https://www.googleapis.com/auth/cloud-platform
+          - https://www.googleapis.com/auth/userinfo.email
       google5:
         source: hashicorp/google5
         version: 5.32.0
