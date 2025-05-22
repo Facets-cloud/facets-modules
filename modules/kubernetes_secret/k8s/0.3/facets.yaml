@@ -1,6 +1,7 @@
 intent: kubernetes_secret
 flavor: k8s
 version: '0.3'
+description: "kubernetes_secret - k8s"
 clouds:
 - aws
 - azure
