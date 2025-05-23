@@ -251,7 +251,7 @@ locals {
     for k, v in local.ingressObjectsFiltered :
     k => {
       namespace     = lookup(v, "namespace", var.environment.namespace)
-      service_name  = "ext-svc-${k}"
+      service_name  = "ext-${v.service_name}-${lookup(v, "namespace", var.environment.namespace)}"
       external_name = "${v.service_name}.${lookup(v, "namespace", var.environment.namespace)}.svc.cluster.local"
       port_name     = lookup(v, "port_name", null)
       port          = lookup(v, "port", null)
@@ -482,6 +482,7 @@ locals {
         name      = "${lower(var.instance_name)}-${key}-default"
         namespace = var.environment.namespace
         annotations = merge(
+          lookup(lookup(value, "custom_tls", {}), "enabled", false) ? {} : local.cert_manager_common_annotations,
           local.annotations,
           lookup(value, "annotations", {}),
           lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
@@ -572,7 +573,7 @@ locals {
               pathType = "Prefix"
               backend = {
                 service = {
-                  name = lookup(lookup(value, "header_based_routing", {}), "default_backend", "")
+                  name = lookup(local.default_backend_service_mapping, key, lookup(lookup(value, "header_based_routing", {}), "default_backend", ""))
                   port = {
                     name = lookup(value, "port_name", null)
                     number = lookup(value, "port_name", null) != null ? null : (
@@ -586,7 +587,7 @@ locals {
         }]
         tls = [{
           hosts      = local.disable_endpoint_validation ? tolist([lookup(value, "domain", null), "*.${lookup(value, "domain", null)}"]) : tolist([value.host])
-          secretName = local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
+          secretName = lookup(lookup(value, "custom_tls", {}), "enabled", false) ? "${value.domain_key}-custom-tls" : local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
         }]
       }
     }
@@ -727,7 +728,7 @@ locals {
               pathType = "Prefix"
               backend = {
                 service = {
-                  name = contains(keys(local.external_services), key) ? "ext-svc-${key}" : value.service_name
+                  name = contains(keys(local.external_services), key) ? "ext-${value.service_name}-${lookup(value, "namespace", var.environment.namespace)}" : value.service_name
                   port = {
                     name = lookup(value, "port_name", null)
                     number = lookup(value, "port_name", null) != null ? null : (
@@ -819,6 +820,68 @@ resource "kubernetes_service_v1" "external_name" {
     name      = each.value.service_name
     namespace = var.environment.namespace
   }
+  spec {
+    type          = "ExternalName"
+    external_name = each.value.external_name
+    port {
+      name        = each.value.port_name
+      port        = each.value.port != null ? tonumber(each.value.port) : null
+      target_port = each.value.port != null ? tonumber(each.value.port) : null
+    }
+  }
+}
+
+locals {
+  # First, create a list of all default backends with their details
+  default_backend_list = [
+    for key, value in local.header_based_routing_with_default_backend : {
+      key          = key
+      backend_key  = "${lookup(lookup(value, "header_based_routing", {}), "default_backend", "")}-${lookup(lookup(value, "header_based_routing", {}), "default_backend_namespace", var.environment.namespace)}"
+      service_name = lookup(lookup(value, "header_based_routing", {}), "default_backend", "")
+      namespace    = lookup(lookup(value, "header_based_routing", {}), "default_backend_namespace", var.environment.namespace)
+      port_name    = lookup(value, "port_name", null)
+      port         = lookup(value, "port", null)
+      domain_key   = lookup(value, "domain_key", "")
+    }
+    if lookup(lookup(value, "header_based_routing", {}), "default_backend_namespace", var.environment.namespace) != var.environment.namespace
+  ]
+
+  # Group by backend_key to identify unique backends
+  grouped_backends = {
+    for backend in local.default_backend_list : backend.backend_key => backend...
+  }
+
+  # Create a map of unique default backend services
+  unique_default_backends = {
+    for backend_key, backends in local.grouped_backends : backend_key => {
+      namespace = backends[0].namespace
+      # Create a more meaningful name using the service name and namespace
+      service_name  = "ext-${backends[0].service_name}-${backends[0].namespace}"
+      external_name = "${backends[0].service_name}.${backends[0].namespace}.svc.cluster.local"
+      port_name     = backends[0].port_name
+      port          = backends[0].port
+      # Store all the original keys that use this backend
+      original_keys = [for b in backends : b.key]
+    }
+  }
+
+  # Create a mapping from original keys to the unique service names
+  default_backend_service_mapping = {
+    for backend in local.default_backend_list :
+    backend.key => lookup(local.unique_default_backends, backend.backend_key, null) != null ?
+    local.unique_default_backends[backend.backend_key].service_name :
+    backend.service_name
+  }
+}
+
+resource "kubernetes_service_v1" "external_name_default_backend" {
+  for_each = local.unique_default_backends
+
+  metadata {
+    name      = each.value.service_name
+    namespace = var.environment.namespace
+  }
+
   spec {
     type          = "ExternalName"
     external_name = each.value.external_name

@@ -34,7 +34,6 @@ spec:
       title: Domains
       description: Map of domain key to rules
       type: object
-      # x-ui-overrides-only: true
       patternProperties:
         ^[a-zA-Z0-9_.-]*$:
           title: Domain Object
@@ -277,6 +276,24 @@ spec:
                     - field: resourceType
                       value: service
                   x-ui-typeable: true
+                default_backend_namespace:
+                  type: string
+                  title: Default Service Namespace
+                  description: Kubernetes default service namespace
+                  x-ui-api-source:
+                    endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                    method: GET
+                    params:
+                      includeContent: false
+                    labelKey: resourceName
+                    valueKey: resourceName
+                    valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                    filterConditions:
+                    - field: resourceType
+                      value: service
+                  x-ui-typeable: true
+                  x-ui-placeholder: Seelect the Default Service to set the namespace
+                    to route to if the header value doesn't match any conditions
               required:
               - header_name
               - header_value
