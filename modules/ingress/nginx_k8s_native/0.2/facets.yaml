@@ -34,7 +34,7 @@ spec:
       title: Domains
       description: Map of domain key to rules
       type: object
-      x-ui-overrides-only: true
+      # x-ui-overrides-only: true
       patternProperties:
         ^[a-zA-Z0-9_.-]*$:
           title: Domain Object
@@ -55,6 +55,39 @@ spec:
               type: string
               title: Alias
               description: Alias for the domain
+            custom_tls:
+              type: object
+              title: Custom TLS Configuration
+              description: Provide custom SSL certificate and private key for this
+                domain
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Custom TLS
+                  description: Enable custom TLS certificate instead of cert-manager
+                    managed certificates
+                  default: false
+                certificate:
+                  type: string
+                  title: TLS Certificate
+                  description: Base64 encoded TLS certificate (PEM format)
+                  x-ui-secret-ref: true
+                  x-ui-visible-if:
+                    field: spec.domains.{{this}}.custom_tls.enabled
+                    values:
+                    - true
+                private_key:
+                  type: string
+                  title: TLS Private Key
+                  description: Base64 encoded TLS private key (PEM format)
+                  x-ui-secret-ref: true
+                  x-ui-visible-if:
+                    field: spec.domains.{{this}}.custom_tls.enabled
+                    values:
+                    - true
+              required:
+              - enabled
           required:
           - domain
           - alias
@@ -134,6 +167,23 @@ spec:
                 - field: resourceType
                   value: service
               x-ui-typeable: true
+            namespace:
+              type: string
+              title: Service Namespace
+              description: Kubernetes service namespace
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                filterConditions:
+                - field: resourceType
+                  value: service
+              x-ui-typeable: true
+              x-ui-placeholder: Seelect the Service to set the namespace
             port:
               type: string
               title: Port
@@ -590,7 +640,7 @@ spec:
   - rules
   - pdb
   - custom_error_pages
-  - force_ssl_redirection"
+  - force_ssl_redirection
 sample:
   kind: ingress
   flavor: nginx_k8s_native
