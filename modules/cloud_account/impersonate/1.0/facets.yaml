@@ -10,11 +10,13 @@ spec:
   type: object
   properties:
     project:
+      title: Project
       type: string
       description: The project in context to create google cloud resources
       x-ui-placeholder: <project-id>
       x-ui-overrides-only: true
     service_account:
+      title: Service Account
       type: string
       description: The service account to impersonate
       x-ui-placeholder: terraform@<project-id>.iam.gserviceaccount.com
@@ -33,19 +35,19 @@ outputs:
         version: 6.23.0
         attributes:
           project: attributes.project
-          access_token: attributes.access_token
+          impersonate_service_account: attributes.service_account
       google:
         source: hashicorp/google
         version: 6.23.0
         attributes:
           project: attributes.project
-          access_token: attributes.access_token
+          impersonate_service_account: attributes.service_account
       google5:
         source: hashicorp/google5
         version: 5.32.0
         attributes:
           project: attributes.project
-          access_token: attributes.access_token
+          impersonate_service_account: attributes.service_account
 sample:
   kind: cloud_account
   flavor: impersonate
