@@ -3,10 +3,10 @@ flavor: k8s
 version: "0.2"
 description: Adds kubernetes objects inside the cluster via yaml manifests
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: K8s resource
   description: Specification of the K8s resource intent
@@ -15,7 +15,9 @@ spec:
     resource:
       type: object
       title: Resource
-      description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource. To add more manifests, use the Additional Resources section below.
+      description: This should contain the kubernetes YAML manifest. You can only
+        pass one manifest per resource. To add more manifests, use the Additional
+        Resources section below.
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter kubernetes manifest in YAML format
     additional_resources:
@@ -24,21 +26,22 @@ spec:
       description: Additional resources that can be configured for k8s
       x-ui-title-replace: manifest
       patternProperties:
-        type: object
-        title: Additional resource name
-        description: Define the k8s resource
-        keyPattern: "^[0-9]+[m]?$"
-        x-ui-allow-blueprint-merge: true
-        properties:
-          configuration:
-            type: object
-            title: Resource
-            x-ui-ignore-parentkey: true
-            description: This should contain the kubernetes YAML manifest. You can only pass one manifest per resource.
-            x-ui-yaml-editor: true
-            x-ui-placeholder: Enter kubernetes manifest in YAML format
+        "^[0-9]+[m]?$":
+          type: object
+          title: Additional resource name
+          description: Define the k8s resource
+          x-ui-allow-blueprint-merge: true
+          properties:
+            configuration:
+              type: object
+              title: Resource
+              x-ui-ignore-parentkey: true
+              description: This should contain the kubernetes YAML manifest. You can
+                only pass one manifest per resource.
+              x-ui-yaml-editor: true
+              x-ui-placeholder: Enter kubernetes manifest in YAML format
   required:
-    - resource
+  - resource
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
@@ -62,6 +65,6 @@ sample:
           app: facetsapi
         type: ClusterIP
         ports:
-          - port: 80
-            name: http
-            targetPort: 80
+        - port: 80
+          name: http
+          targetPort: 80

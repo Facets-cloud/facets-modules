@@ -1,6 +1,6 @@
 intent: redis
 flavor: azure_cache
-version: 0.1
+version: '0.1'
 description: Adds Redis module of flavor azure_cache
 clouds:
   - azure

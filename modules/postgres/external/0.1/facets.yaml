@@ -1,11 +1,12 @@
 intent: postgres
 flavor: external
-version: 0.1
+version: '0.1'
+description: "postgres - external"
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
+- aws
+- gcp
+- azure
+- kubernetes
 
 spec:
   type: object
@@ -48,7 +49,6 @@ spec:
           title: Port
           type: string
       required: ["port", "host", "username", "password"]
-
 outputs:
   default:
     type: "@outputs/postgres"

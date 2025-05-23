@@ -1,11 +1,12 @@
 intent: config_map
 flavor: k8s
 version: '0.3'
+description: "config_map - k8s"
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   type: object
   properties:
@@ -14,19 +15,20 @@ spec:
       type: object
       description: Data objects containing key, value pair
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_.-]*$"
-        title: Data Object Block
-        description: something
-        type: object
-        properties:
-          key:
-            title: ConfigMap Data Key Name
-            description: Key name of the configmap object
-            type: string
-          value:
-            title: ConfigMap Data Object Value
-            description: Value of the configmap object
-            type: textarea
+        "^[a-zA-Z0-9_.-]*$":
+          title: Data Object Block
+          description: something
+          type: object
+          properties:
+            key:
+              title: ConfigMap Data Key Name
+              description: Key name of the configmap object
+              type: string
+            value:
+              title: ConfigMap Data Object Value
+              description: Value of the configmap object
+              type: string
+              x-ui-textarea: true
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
