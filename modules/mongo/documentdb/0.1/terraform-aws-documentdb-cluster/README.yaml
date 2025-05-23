@@ -1,0 +1,119 @@
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: terraform-aws-documentdb-cluster
+# Tags of this project
+tags:
+  - aws
+  - terraform
+  - terraform-modules
+  - databases
+  - documentdb
+  - mongodb
+  - cluster
+# Categories of this project
+categories:
+  - terraform-modules/databases
+# Logo for this project
+#logo: docs/logo.png
+
+# License of this project
+license: "APACHE2"
+# Canonical GitHub repo
+github_repo: cloudposse/terraform-aws-documentdb-cluster
+# Badges to display
+badges:
+  - name: Latest Release
+    image: https://img.shields.io/github/release/cloudposse/terraform-aws-documentdb-cluster.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-documentdb-cluster/releases/latest
+  - name: Last Updated
+    image: https://img.shields.io/github/last-commit/cloudposse/terraform-aws-documentdb-cluster.svg?style=for-the-badge
+    url: https://github.com/cloudposse/terraform-aws-documentdb-cluster/commits
+  - name: Slack Community
+    image: https://slack.cloudposse.com/for-the-badge.svg
+    url: https://slack.cloudposse.com
+
+# List any related terraform modules that this module may be used with or that this module depends on.
+related:
+  - name: "terraform-aws-rds"
+    description: "Terraform module to provision AWS RDS instances for MySQL or Postgres"
+    url: "https://github.com/cloudposse/terraform-aws-rds"
+  - name: "terraform-aws-rds-cluster"
+    description: "Terraform module to provision an RDS Aurora cluster for MySQL or Postgres"
+    url: "https://github.com/cloudposse/terraform-aws-rds-cluster"
+  - name: "terraform-aws-rds-cloudwatch-sns-alarms"
+    description: "Terraform module that configures important RDS alerts using CloudWatch and sends them to an SNS topic"
+    url: "https://github.com/cloudposse/terraform-aws-rds-cloudwatch-sns-alarms"
+# Short description of this project
+description: |-
+  Terraform module to provision an [`Amazon DocumentDB`](https://aws.amazon.com/documentdb/) cluster.
+# How to use this project
+usage: |2-
+
+  For a complete example, see [examples/complete](examples/complete).
+
+  For automated tests of the complete example using [bats](https://github.com/bats-core/bats-core) and [Terratest](https://github.com/gruntwork-io/terratest) (which tests and deploys the example on AWS), see [test](test).
+
+  ```hcl
+  module "documentdb_cluster" {
+    source = "cloudposse/documentdb-cluster/aws"
+    # Cloud Posse recommends pinning every module to a specific version
+    # version = "x.x.x"
+    namespace               = "eg"
+    stage                   = "testing"
+    name                    = "docdb"
+    cluster_size            = 3
+    master_username         = "admin1"
+    master_password         = "Test123456789"
+    instance_class          = "db.r4.large"
+    vpc_id                  = "vpc-xxxxxxxx"
+    subnet_ids              = ["subnet-xxxxxxxx", "subnet-yyyyyyyy"]
+    allowed_security_groups = ["sg-xxxxxxxx"]
+    zone_id                 = "Zxxxxxxxx"
+  }
+  ```
+references:
+  - name: Creating an Amazon DocumentDB Cluster
+    description: official AWS documentation on how to create a DocumentDB cluster
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/db-cluster-create.html
+  - name: Amazon DocumentDB Instance Class Specifications
+    description: provides details of the Amazon DocumentDB instance classes
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/db-instance-classes.html#db-instance-class-specs
+  - name: Creating an Amazon DocumentDB Cluster Parameter Group
+    description: official AWS documentation on how to create an Amazon DocumentDB Cluster Parameter Group
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/db-cluster-parameter-group-create.html
+  - name: Amazon DocumentDB Limits
+    description: describes the resource limits and naming constraints for Amazon DocumentDB
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/limits.html
+  - name: Understanding Amazon DocumentDB Amazon Resource Names (ARNs)
+    description: describes ARN formats for DocumentDB resources
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/documentdb-arns.html
+  - name: Amazon DocumentDB Parameters
+    description: lists all the parameters that are specific to a DocumentDB cluster
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/db-cluster-parameters.html
+  - name: Tagging Amazon DocumentDB Resources
+    description: describes how to use tags to add metadata to DocumentDB resources
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/tagging.html
+  - name: Amazon DocumentDB FAQs
+    description: DocumentDB frequently asked questions
+    url: https://aws.amazon.com/documentdb/faqs/
+  - name: Troubleshooting Amazon DocumentDB
+    description: provides information about how to troubleshoot problems that you might encounter when using Amazon DocumentDB
+    url: https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.html
+# Example usage
+#examples: |-
+#  Example goes here...
+
+# How to get started quickly
+#quickstart: |-
+#  Here's how to get started...
+
+# Other files to include in this README from the project folder
+include:
+  - "docs/targets.md"
+  - "docs/terraform.md"
+# Contributors to this project
+contributors: []
