@@ -1,5 +1,5 @@
 intent: mongo
-flavor: documentdb-test
+flavor: documentdb
 version: '0.1'
 description: Adds mongo - documentdb flavor
 clouds:
@@ -40,15 +40,13 @@ spec:
           type: string
           title: Instance Class
           description: Instance class for DocumentDB cluster nodes.
+          pattern: "^db\\.[a-z0-9]+\\.[a-z]+$"
+          x-ui-typeable: true
           enum:
             - db.t3.medium
+            - db.t3.large
+            - db.t3.xlarge
             - db.t4g.medium
-            - db.r4.large
-            - db.r4.xlarge
-            - db.r4.2xlarge
-            - db.r4.4xlarge
-            - db.r4.8xlarge
-            - db.r4.16xlarge
             - db.r5.large
             - db.r5.xlarge
             - db.r5.2xlarge
@@ -83,7 +81,7 @@ spec:
           default: db.t3.medium
           x-ui-placeholder: "e.g., 'db.t3.medium'"
           x-ui-error-message: "Please select a valid instance class."
-      
+        
       required:
         - instance_count
         - instance
@@ -106,7 +104,7 @@ inputs:
 
 sample:
   kind: mongo
-  flavor: documentdb-test
+  flavor: documentdb
   version: '0.1'
   lifecycle: ENVIRONMENT
   disabled: true
