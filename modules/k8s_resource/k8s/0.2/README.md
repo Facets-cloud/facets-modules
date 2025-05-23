@@ -17,9 +17,9 @@ This module allows you to define and apply one or more Kubernetes manifests in a
 
 The following parameters are supported under the `spec` block:
 
-### Required
+**Required**
 
-- **`resource`** (`object`) –  
+- **`resource`** –  
   The main Kubernetes manifest to be deployed, written in **YAML** format.  
   > You may only define **one manifest** in this field. To define multiple, use `additional_resources`.
 
@@ -27,7 +27,7 @@ The following parameters are supported under the `spec` block:
 
 ### Optional
 
-- **`additional_resources`** (`map(object)`) –  
+- **`additional_resources`** –  
   A collection of additional Kubernetes manifests. Each key in this map must follow a numeric pattern (e.g., `"01"`, `"02"`), and each value must contain a `configuration` block with a valid Kubernetes manifest.
 
 ## Usage

@@ -10,40 +10,40 @@ This module supports **AWS** only.
 
 The following parameters can be configured under the `spec` block:
 
-### ✅ `event_bus_name` *(`string`)* 
+**`event_bus_name`**: 
 The name of the event bus where the rules should be created.  
 Must be alphanumeric and may contain hyphens (`-`), underscores (`_`), and periods (`.`).  
 Maximum length: **256 characters**
 
-### ✅ `tags` *(`object`)*
+**`tags`**
 Key-value tags to apply at the **event bus level**.
 
 
-### ✅ `rules` *(`map`)*
+**`rules`**
 A set of named EventBridge rules to create. Each rule key (e.g., `triggerLambdaOnS3Upload`) maps to its configuration object.
 
-#### Required Attributes (per rule)
+**Required Attributes (per rule)**
 
-- **`is_enabled`** (`boolean`)  
+- **`is_enabled`**:  
   Whether the rule is active or disabled.
 
-- **`description`** (`string`)  
+- **`description`**:  
   Description of the rule (max 256 characters).
 
-- **`targets`** (`array`)  
+- **`targets`**:  
   A list of targets to invoke when the rule matches. Example targets can be Lambda functions, SQS queues, SNS topics, Step Functions, etc.
 
-#### Optional Attributes (per rule)
+**Optional Attributes (per rule)**
 
-- **`schedule_expression`** (`string`)  
+- **`schedule_expression`**:  
   Schedule-based trigger for the rule (e.g., `rate(5 minutes)`, `cron(0 20 * * ? *)`).  
   Required if `event_pattern` is not provided.
 
-- **`event_pattern`** (`object`)  
+- **`event_pattern`**:  
   A pattern for matching specific events (e.g., `{"source": ["aws.ec2"]}`).  
   Required if `schedule_expression` is not provided.
 
-- **`tags`** (`object`)  
+- **`tags`**:  
   Key-value tags for the individual rule.
 
 ## Usage

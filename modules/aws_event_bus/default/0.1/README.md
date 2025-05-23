@@ -12,14 +12,14 @@ This module is supported only on **AWS**.
 
 The following parameter can be configured under the `spec` block:
 
-### ✅ `metadata`
+**`metadata`**
 
-- `metadata`: *(optional)*  
+- `metadata`: 
   Contains resource-level metadata such as a user-defined name or description.
 
-### ✅ `spec`
+**`spec`**
 
-- `name`: *(string, required)*  
+- **`name`**:
   The name of the custom AWS EventBridge event bus to be created.
 
   - Must be **unique** within the AWS account and region.

@@ -17,28 +17,28 @@ This is especially useful in enterprise environments where workloads are spread 
 
 The module requires the following inputs:
 
-### ✅ `kubernetes_details` *(required)*  
+**`kubernetes_details`** 
 Reference to the Kubernetes cluster where the image pull secret injector should be deployed.
 
-### ✅ `artifactories` *(required)*  
+**`artifactories`** 
 Reference to one or more configured container registries. These artifactories are used to retrieve image pull secrets that the injector will distribute across namespaces.
 
-## Spec Configuration
+**`Spec`**
 
 The main configuration is defined under the `spec` block.
 
-### ✅ `size` *(optional)*  
+**`size`**: 
 Defines resource constraints for the image pull secret injector deployment.
 
-- `cpu_limit` (`string`)  
+- `cpu_limit`: 
   The CPU limit for the injector container.  
   _Example_: `"200m"`, `"1"`
 
-- `memory_limit` (`string`)  
+- `memory_limit`: 
   The memory limit for the injector container.  
   _Example_: `"256Mi"`, `"1Gi"`
 
-### ✅ `values` *(optional)*  
+`values`:
 YAML-formatted override values passed directly to the Helm chart for advanced customization.
 
 **Example:**

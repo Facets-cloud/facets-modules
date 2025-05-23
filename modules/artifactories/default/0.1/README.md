@@ -15,28 +15,24 @@ The secrets are generated automatically and injected into the associated Kuberne
 
 This module requires an input reference to the target Kubernetes cluster.
 
-- `kubernetes_details` (required):  
+- **`kubernetes_details`**:  
   A reference to the Kubernetes cluster where registry secrets should be created. This input is automatically populated with the default Kubernetes cluster unless overridden.
-
----
 
 ## Configurability
 
-### ✅ metadata
-
-- `metadata`: *(optional)*  
+- `metadata`: 
   Metadata block for resource description or naming overrides. Can be left empty.
 
 ---
 
-### ✅ spec
+**`spec`**
 
 Defines whether to include all registries or specify selected registries.
 
-- `include_all`: *(boolean)*  
+- **`include_all`**:  
   If set to `true`, all container registries mapped to the project will be included, and the `artifactories` field should be omitted.
 
-- `artifactories`: *(object, optional)*  
+- **`artifactories`**: 
   A map of container registry identifiers to their names. This should be used only if `include_all` is `false`. Each entry must include a `name` property that matches a registry defined in the control plane.
 
 ## Usage

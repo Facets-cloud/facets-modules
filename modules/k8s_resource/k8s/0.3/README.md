@@ -15,13 +15,13 @@ It is especially useful when you want to deploy native Kubernetes objects such a
 
 The module accepts the following parameters under the `spec` block:
 
-### Required
+**Required**
 
-- **`resource`** (`object`) –  A single Kubernetes manifest. This represents the main resource to be deployed in the cluster. You can only provide **one manifest** here. Use `additional_resources` to deploy more.
+- **`resource`** –  A single Kubernetes manifest. This represents the main resource to be deployed in the cluster. You can only provide **one manifest** here. Use `additional_resources` to deploy more.
 
 ### Optional
 
-- **`additional_resources`** (`map(object)`) –  
+- **`additional_resources`** –  
   A collection of additional Kubernetes resources that you want to deploy alongside the main `resource`. Each key should be a unique name or identifier, and the corresponding value should contain a Kubernetes manifest. These are useful for attaching related configurations like ConfigMaps, Roles, etc.
 
 ## Usage

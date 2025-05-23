@@ -10,41 +10,40 @@ The module is specifically designed for use in **AWS EKS environments** and supp
 
 You can configure the following attributes under the `spec` block:
 
-- **`private`** (`boolean`, required)  
+- **`private`**:  
   Whether the ALB should be internal (`true`) or internet-facing (`false`).
 
-- **`basic_auth`** (`boolean`, optional)  
+- **`basic_auth`**: 
   Enable or disable basic authentication for the ingress.
 
-- **`grpc`** (`boolean`, optional)  
+- **`grpc`**:  
   Enable or disable GRPC protocol support.
 
-- **`force_ssl_redirection`** (`boolean`, required)  
+- **`force_ssl_redirection`**:  
   If `true`, all HTTP requests are redirected to HTTPS.
 
-### ✅ `domains` (optional)
-
+**`domains`**:
 A map of domain configurations, used to map multiple domains or subdomains:
 
 Each domain entry supports:
-- **`domain`** (`string`) – Fully qualified domain name (e.g., `example.com`).
-- **`alias`** (`string`) – Optional alias for the domain.
+- **`domain`** – Fully qualified domain name (e.g., `example.com`).
+- **`alias`** – Optional alias for the domain.
 
-### ✅ `rules` (required)
+**`rules`**
 
-- **`service_name`** (string, required) – Name of the Kubernetes Service.
+- **`service_name`** – Name of the Kubernetes Service.
 
-- **`path`** (string, required) – URL path to expose (e.g., /, /api, etc.).
+- **`path`** – URL path to expose (e.g., /, /api, etc.).
 
-- **`port`** (string, required) – Port exposed by the service.
+- **`port`** – Port exposed by the service.
 
-- **`domain_prefix`** (string, optional) – Subdomain prefix (e.g., grafana1).
+- **`domain_prefix`** – Subdomain prefix (e.g., grafana1).
 
-- **`annotations`** (object, optional) – Custom annotations for this rule.
+- **`annotations`** – Custom annotations for this rule.
 
-- **`disable_auth`** (boolean, optional) – Disable basic auth for this rule (even if basic_auth is globally enabled).
+- **`disable_auth`** – Disable basic auth for this rule (even if basic_auth is globally enabled).
 
-- **`grpc`** (boolean, optional) – Override GRPC setting for this rule.
+- **`grpc`** – Override GRPC setting for this rule.
 
 ## Usage
 

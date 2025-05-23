@@ -10,24 +10,20 @@ Use this module to expose backend services through a fully managed API Gateway w
 
 The configuration has three core components: `metadata`, `spec`, and optional `advanced.aws_api_gateway`.
 
-### ✅ metadata
+**`metadata`**
 
 The `metadata` section provides general information about the resource.
 
-- `description`: *(string, required)*  
+- **`description`**:  
   A human-readable summary describing the purpose of the API Gateway.
-
-### ✅ spec
 
 The `spec` section defines the core behavior of the API Gateway.
 
-- `protocol`: *(string, required)*  
+- **`protocol`**:  
   Specifies the type of API. Supported values: `HTTP`, `WEBSOCKET`.
 
-- `integrations`: *(map, required)*  
+- **`integrations`**: 
   A map where each key represents an HTTP method and path (e.g., `GET /users`), and the value provides integration details such as the Lambda ARN and type of integration.  
-
-### ✅ advanced
 
 The **`advanced`** section allows additional customization of the API Gateway.
 

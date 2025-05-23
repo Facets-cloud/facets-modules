@@ -8,59 +8,57 @@ This flavor is tailored for environments using **NGINX Ingress Controller** and 
 
 ## Configurability
 
-### ✅ metadata
+**`metadata`**
 
-- `name` *(string, optional)*  
+- **`name`**: 
   A human-readable name for the ingress resource.
 
-- `annotations` *(object, optional)*  
+- **`annotations`**: 
   Custom annotations applied to the generated Kubernetes `Ingress` resource. These may control behavior such as timeouts, CORS, proxy buffering, etc.
 
-### ✅ spec
+**`spec`**
 
 This is the core section where routing rules and ingress behavior are defined.
 
-##  ✅ Global Settings
-
-- `private` *(boolean)*  
+- **`private`**: 
   Whether the ingress should be created as an internal (private) load balancer. Defaults to `false`.
 
 - `basic_auth` *(boolean)*  
   Whether to enable basic authentication at the ingress level. Defaults to `false`.
 
-- `grpc` *(boolean)*  
+- **`grpc`**: 
   Enable gRPC support for services exposed via this ingress.
 
-- `domains` *(object, optional)*  
+- **`domains`**:  
   Used to customize domain-based routing for individual rules. Typically inferred from platform-level domain logic.
 
-- `force_ssl_redirection` *(boolean)*  
+- **`force_ssl_redirection`**: 
   Whether to enforce HTTPS by redirecting all HTTP requests to HTTPS. Defaults to `true`.
 
 ---
 
-####  ✅ `rules` *(map of route definitions)*
+**`rules`**
 
 A mapping of friendly rule names to routing definitions. Each rule defines how an incoming request should be forwarded to a service.
 
 Each rule supports the following fields:
 
-- `service_name` *(string, required)*  
+- **`service_name`**: 
   Name of the Kubernetes service to expose.
 
-- `port` *(number, required)*  
+- **`port`**: 
   Port on which the service is listening.
 
-- `path` *(string, required)*  
+- **`path`**: 
   URL path to match for routing. Example: `/`, `/app`, etc.
 
-- `domain_prefix` *(string, optional)*  
+- **`domain_prefix`**:  
   Prefix to append to the base domain. For example, a prefix `grafana1` may create a domain like `grafana1.example.com`.
 
-- `annotations` *(object, optional)*  
+- **`annotations`**  
   Rule-level annotations that override or extend global ingress settings.
 
-- `disable_auth` *(boolean, optional)*  
+- **`disable_auth`**  
   Whether to disable authentication for this specific rule. Useful for public services.
 
 ---

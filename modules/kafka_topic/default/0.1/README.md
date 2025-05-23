@@ -14,22 +14,20 @@ The module supports batch topic creation using a structured map and is useful fo
 
 The following parameters are supported under the `spec` block:
 
-### ✅ spec
-
-#### `topics` *(map of objects, required)*  
+**`topics`**  
 A map where each key represents a unique topic identifier, and the value is a topic configuration object.
 Each topic object supports the following fields:
 
-  - **`topic_name`** (`string`) – _(Required)_  
+  - **`topic_name`** 
     The name of the Kafka topic. Must match pattern: `^[a-zA-Z0-9_.-]*$`.
 
-  - **`replication_factor`** (`number`) – _(Required)_  
+  - **`replication_factor`**  
     Number of topic replicas across brokers for redundancy.
  
-   - **`partitions`** (`number`) – _(Required)_  
+   - **`partitions`**  
     Number of partitions for the topic. Determines parallelism and scalability.
 
-   - **`configs`** (`object`) – _(Optional)_  
+   - **`configs`**  
     A key-value map of topic-level configuration overrides.
     - `retention.ms`: Message retention period in milliseconds.
     - `segment.ms`: Segment file flush interval.

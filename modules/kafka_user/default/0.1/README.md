@@ -10,8 +10,6 @@ It is typically used in conjunction with Kafka modules such as MSK or Kubernetes
 
 The Kafka User module supports a minimal configuration interface for now. It is designed to be extended in the future to support specific features such as SASL users, ACL bindings, etc.
 
-### ✅ spec
-
 - *(Currently Empty)*  
   The `spec` field is reserved for future extensions where Kafka user configuration (e.g., username, credentials, ACLs) will be defined.
 

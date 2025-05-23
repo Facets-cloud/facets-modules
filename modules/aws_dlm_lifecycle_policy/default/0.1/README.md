@@ -13,16 +13,14 @@ The configuration consists of two main parts: `schedules` and `target_tags`.
 
 ---
 
-### ✅ `schedules`
+**`schedules`**
 
 This defines the policies for how and when snapshots should be taken. You can define multiple named schedules.
 
-#### Properties:
-
-- **`copy_tags`** (`boolean`)  
+- **`copy_tags`**: 
   Whether to copy tags from the source volume to the snapshot.
 
-- **`create_rule`** (`object`)  
+- **`create_rule`**:  
   Defines when to create the snapshot.
 
   You must provide **either**:
@@ -46,23 +44,23 @@ This defines the policies for how and when snapshots should be taken. You can de
       cron_expression: "cron(15 10 ? * 6L *)"
     ```
 
-- **`retain_rule`** (`object`)  
+- **`retain_rule`**:  
   Defines how many snapshots to retain:
   ```yaml
   retain_rule:
     count: 14
 
-- **`cross_region_copy_rules`** (`object`)
+- **`cross_region_copy_rules`**:
   Allows replicating snapshots to another region:
 
-- **`tags_to_add`** (`object`)
+- **`tags_to_add`**:
 Tags to be added to the created snapshots:
 ```yaml
     tags_to_add:
         ManagedBy: Terraform
 ```
 
-- **`target_tags`** This defines the tag filters used to select EBS volumes for snapshot lifecycle automation:
+- **`target_tags`**: This defines the tag filters used to select EBS volumes for snapshot lifecycle automation:
 
 ## Usage
 

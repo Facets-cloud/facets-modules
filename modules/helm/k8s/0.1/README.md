@@ -10,41 +10,41 @@ This module supports **AWS**, **Azure**, **GCP**, and **self-managed Kubernetes*
 
 ## Configurability
 
-### ✅ metadata
+**`metadata`**
 
-- `metadata`: *(optional)*  
+- `metadata`:  
   Optional metadata for the Helm release (e.g., name or description).
 
-### ✅ spec
+**`spec`**
 
-#### `helm`: *(object, required)*  
+**`helm`**: 
 Defines the chart source and deployment settings.
 
-- `chart`: *(string, required)*  
+- **`chart`**: 
   The name of the Helm chart.  
   _Example_: `nginx`, `datadog`
 
-- `repository`: *(string, optional)*  
+- **`repository`**:  
   URL to the Helm chart repository.  
   _Example_: `https://helm.nginx.com/stable`
 
-- `version`: *(string, optional)*  
+- **`version`**:  
   The specific chart version to install.  
   _Example_: `1.2.3`
 
-- `namespace`: *(string, optional)*  
+- **`namespace`**:  
   Kubernetes namespace in which to install the chart. Defaults to `default` if not provided.
 
-- `wait`: *(boolean, optional)*  
+- **`wait`**:  
   Whether to wait until all resources are ready before completing the install or upgrade.
 
-- `repository_username`: *(string, optional)*  
+- **`repository_username`**:  
   Username for authenticating to a private Helm repository.
 
-- `repository_password`: *(string, optional, sensitive)*  
+- **`repository_password`**: 
   Password for authenticating to a private Helm repository.
 
-#### `values`: *(object, optional)*  
+**`values`**:  
 Custom configuration values to override the default `values.yaml` of the Helm chart.  
 This should be a YAML-compatible object.  
 _Example_:

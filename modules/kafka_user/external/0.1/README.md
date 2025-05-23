@@ -8,13 +8,13 @@ It does **not** create users within Kafka itself but allows users to declare and
 
 ## Configurability
 
-The following fields are available under the `spec` block:
+The following input parameters are supported under the `spec` block:
 
-### ✅ `username` *(string, required)*  
+**`username`** 
 The username that will be used to authenticate with the Kafka broker.  
 This is typically configured when the broker requires SASL authentication.
 
-### ✅ `password` *(string, required)*  
+**`password`** 
 The corresponding password for the Kafka user.  
 Sensitive and should be stored using the platform's secrets manager or secret reference mechanism.
 

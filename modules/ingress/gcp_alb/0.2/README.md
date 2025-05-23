@@ -12,49 +12,47 @@ This module uses the native GCP ingress controller to automatically provision Go
 
 You can configure the following parameters under the `spec` block:
 
-### ✅ Global Settings
-
-- **`private`** (`boolean`, required) –  
+- **`private`**: 
   Whether the load balancer is internal (`true`) or internet-facing (`false`).
 
-- **`basic_auth`** (`boolean`, optional) –  
+- **`basic_auth`**: 
   Enable or disable basic authentication globally for all routes.
 
-- **`grpc`** (`boolean`, optional) –  
+- **`grpc`**: 
   Enable or disable GRPC protocol support for all rules.
 
-- **`force_ssl_redirection`** (`boolean`, required) –  
+- **`force_ssl_redirection`**:
   Redirect all HTTP traffic to HTTPS.
 
 ---
 
-### ✅ Domains (Optional)
+**`Domains`** (Optional)
 
 Define domain mappings for your ingress.
 
 Each entry supports:
 
-- **`domain`** (`string`, required) – Fully qualified domain name (e.g., `app.example.com`).
-- **`alias`** (`string`, required) – Internal alias or friendly name.
+- **`domain`**: Fully qualified domain name (e.g., `app.example.com`).
+- **`alias`**: Internal alias or friendly name.
 
-## ✅ Rules (Required)
+**`Rules`** (Required)
 Each rule defines how traffic is routed to a Kubernetes service. The key in the map serves as the rule identifier.
 
 Supported fields:
 
-- **`service_name`** (string, required) – Name of the Kubernetes service to expose.
+- **`service_name`**: Name of the Kubernetes service to expose.
 
-- **`path`** (string, required) – Path under which the service will be available (e.g., /, /api).
+- **`path`**: Path under which the service will be available (e.g., /, /api).
 
-- **`port`** (string, required) – Target port on the service.
+- **`port`**: Target port on the service.
 
-- **`domain_prefix`** (string, optional) – Subdomain prefix to be prepended to the domain (e.g., grafana1).
+- **`domain_prefix`**: Subdomain prefix to be prepended to the domain (e.g., grafana1).
 
-- **`annotations`** (map, optional) – Additional annotations for the rule.
+- **`annotations`**: Additional annotations for the rule.
 
-- **`disable_auth`** (boolean, optional) – Disable authentication for this rule, even if enabled globally.
+- **`disable_auth`**: Disable authentication for this rule, even if enabled globally.
 
-- **`grpc`** (boolean, optional) – Enable GRPC support specifically for this rule.
+- **`grpc`**: Enable GRPC support specifically for this rule.
 
 ## Usage
 This module provisions:

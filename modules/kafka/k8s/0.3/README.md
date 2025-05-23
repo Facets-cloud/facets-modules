@@ -12,27 +12,27 @@ The configuration is divided into two main sections: **controller** and **broker
 
 ---
 
-### ✅ metadata
+**`metadata`**
 
-- `namespace`: *(string, optional, default: `default`)*  
+- `namespace`:
   The namespace in which Kafka should be deployed.
 
 ---
 
-### ✅ spec
+**`spec`**
 
-#### `authenticated`: *(boolean, required)*  
+- **`authenticated`**:  
 Enable or disable password-based authentication for the Kafka cluster.
 
-#### `kafka_version`: *(string, required)*  
+- **`kafka_version`**: 
 Version of Kafka to deploy. Only supported value: `3.8.0`
 
-#### `mode`: *(string, required)*  
+- **`mode`**:  
 Defines the Kafka deployment mode. Only supported value: `kraft`
 
 ---
 
-### ✅ controller
+**controller**
 
 Configuration for the **Kafka controller** nodes.
 
@@ -53,7 +53,7 @@ Configuration for the **Kafka controller** nodes.
 
 ---
 
-### ✅ broker
+**`broker`**
 
 Configuration for the **Kafka broker** nodes.
 

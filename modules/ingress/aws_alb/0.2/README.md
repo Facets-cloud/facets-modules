@@ -12,48 +12,47 @@ You can configure the following fields under the `spec` block of this module:
 
 ### Global Settings
 
-- **`private`** (`boolean`, required)  
+- **`private`**:  
   Whether the ALB should be private (internal) or public (internet-facing).
 
-- **`basic_auth`** (`boolean`, optional)  
+- **`basic_auth`**:  
   Enable or disable basic authentication for all rules.
 
-- **`grpc`** (`boolean`, optional)  
+- **`grpc`**: 
   Enable or disable GRPC support globally.
 
-- **`force_ssl_redirection`** (`boolean`, required)  
+- **`force_ssl_redirection`**:  
   Force HTTP requests to redirect to HTTPS.
 
-### ✅ Domains (Optional)
-
+**`Domains`** (Optional)
 Used to map one or more domains to their respective aliases.
 
 Each entry includes:
 
-- **`domain`** (`string`, required)  
+- **`domain`**  
   Fully qualified domain name (e.g., `example.com`, `app.example.co.uk`).
 
-- **`alias`** (`string`, required)  
+- **`alias`**  
   A label or alias to refer to this domain internally.
 
-## ✅ Rules (Required)
+**`Rules`** (Required)
 Each rule defines how traffic is routed to a specific Kubernetes service.
 
 Fields per rule:
 
-- **`service_name`** (string, required) – Name of the Kubernetes service to expose.
+- **`service_name`**: Name of the Kubernetes service to expose.
 
-- **`path`** (string, required) – URL path to expose (e.g., /, /api).
+- **`path`**: URL path to expose (e.g., /, /api).
 
--  **`port`** (string, required) – Service port to route to.
+-  **`port`**: Service port to route to.
 
-- **`domain_prefix`** (string, optional) – Prefix to be used for subdomain-based routing (e.g., grafana1).
+- **`domain_prefix`**: Prefix to be used for subdomain-based routing (e.g., grafana1).
 
-- **`annotations`** (map, optional) – Additional annotations applied at the rule level.
+- **`annotations`**: Additional annotations applied at the rule level.
 
-- **`disable_auth`** (boolean, optional) – Disable basic auth for this rule even if globally enabled.
+- **`disable_auth`**: Disable basic auth for this rule even if globally enabled.
 
-- **`grpc`** (boolean, optional) – Enable GRPC protocol support for this specific rule.
+- **`grpc`**: Enable GRPC protocol support for this specific rule.
 
 ## Usage
 

@@ -10,35 +10,32 @@ This module is ideal for users who want to deploy and manage Kafka clusters nati
 
 The Kafka Kubernetes module requires configuration under the `spec` block, which defines how the Kafka and Zookeeper pods should be deployed and managed.
 
-### ✅ metadata
 
-- `metadata`: *(optional)*  
+- **`metadata`**:  
   Metadata block for resource naming and tracking. Can be left empty.
 
 ---
 
-### ✅ spec
-
-#### `authenticated` *(boolean, required)*  
+**`authenticated`**:  
 Enables password protection for the Kafka cluster.  
 Set to `true` to require authentication, or `false` for unauthenticated access.
 
-#### `kafka_version` *(string, required)*  
+**`kafka_version`**: 
 The version of Kafka to deploy. Supported values:
 - `1.1.1`
 - `2.8.0`
 - `2.8.1`
 - `3.3.2`
 
-#### `persistence_enabled` *(boolean, required)*  
+**`persistence_enabled`**:  
 Enable or disable persistent volume claims (PVCs) for Kafka and Zookeeper pods.
 
-#### `size` *(object, required)*  
+**`size`**: 
 Specifies sizing and scaling parameters for Kafka and Zookeeper clusters.
 
 ---
 
-### Size → `zookeeper` (object, required)
+**`Size`** → **`zookeeper`**
 
 Zookeeper configuration used by the Kafka cluster.
 
@@ -49,7 +46,7 @@ Zookeeper configuration used by the Kafka cluster.
 
 ---
 
-### Size → `kafka` (object, required)
+**`Size`** → **`kafka`**
 
 Kafka broker configuration.
 

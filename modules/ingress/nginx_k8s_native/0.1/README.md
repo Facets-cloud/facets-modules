@@ -12,47 +12,42 @@ This flavor is designed for clusters using a **vanilla NGINX ingress controller*
 
 You can configure the following parameters under the `spec` block:
 
-### Global Settings
-
-- **`private`** (`boolean`, required):  
+- **`private`**:  
   Set whether the ingress should be internal (private) or exposed to the internet.
 
-- **`basic_auth`** (`boolean`, optional):  
+- **`basic_auth`**:  
   Enable or disable basic authentication globally.
 
-- **`grpc`** (`boolean`, optional):  
+- **`grpc`**:  
   Enable or disable GRPC protocol support globally.
 
-- **`force_ssl_redirection`** (`boolean`, required):  
+- **`force_ssl_redirection`**:  
   Redirect all HTTP traffic to HTTPS.
 
 ---
 
-### Domains (Optional)
-
+**`Domains`** (Optional)
 Define custom domain mappings for the ingress.
-
 Each domain entry includes:
 
-- **`domain`** (`string`, required): Fully qualified domain name (e.g., `app.example.com`)
-- **`alias`** (`string`, required): Internal alias to reference the domain
+- **`domain`**: Fully qualified domain name (e.g., `app.example.com`)
+- **`alias`**: Internal alias to reference the domain
 
-✅ **Rules** *(Required)*
+**`Rules`**
 Ingress rules define how the traffic is routed to Kubernetes services.
-
 Each rule includes:
 
-- **`service_name`** (string, required): Name of the Kubernetes service to expose.
+- **`service_name`**: Name of the Kubernetes service to expose.
 
-- **`port`** (string, required): Port of the service to forward traffic to.
+- **`port`**: Port of the service to forward traffic to.
 
-- **`path`** (string, required): URL path (e.g., /, /api).
+- **`path`**: URL path (e.g., /, /api).
 
-- **`domain_prefix`** (string, optional): Subdomain prefix to route traffic to (e.g., grafana1).
+- **`domain_prefix`**: Subdomain prefix to route traffic to (e.g., grafana1).
 
-- **`annotations`** (object, optional): Key-value pairs of ingress annotations to customize behavior.
+- **`annotations`**: Key-value pairs of ingress annotations to customize behavior.
 
-- **`grpc`** (boolean, optional): Enable GRPC for this rule (can override global setting).
+- **`grpc`**: Enable GRPC for this rule (can override global setting).
 
 ## Usage
 This module provisions:

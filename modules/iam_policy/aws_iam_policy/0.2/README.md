@@ -12,19 +12,14 @@ This module is cloud-specific and supports only **AWS**.
 
 The following parameters can be configured under the `spec` block:
 
-### ✅ metadata
+**`spec`**
 
-- `metadata`: *(optional)*  
-  Optional metadata block for tagging or naming the resource. Can be left empty.
-
-### ✅ spec
-
-#### `name`: *(string, required)*  
+**`name`**: 
 The name of the IAM policy to be created.  
 - Must be unique within the AWS account.  
 - Example: `s3-read-policy`, `eks-full-access`.
 
-#### `policy`: *(object, required)*  
+**`policy`**:  
 The policy document in **YAML format**, which defines allowed or denied AWS actions.  
 This follows the standard AWS IAM policy structure but is expressed in YAML for clarity.
 

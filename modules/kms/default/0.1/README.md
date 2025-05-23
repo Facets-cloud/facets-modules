@@ -8,36 +8,36 @@ This Terraform module provisions an [AWS Key Management Service (KMS)](https://d
 
 The following input parameters are supported under the `spec` block:
 
-- **`create_external`** (`boolean`) – Whether to create an external key.
-- **`bypass_policy_lockout_safety_check`** (`boolean`) – Bypass AWS safety checks for key policy.
-- **`customer_master_key_spec`** (`string`) – CMK spec (e.g., `SYMMETRIC_DEFAULT`, `RSA_2048`).
-- **`custom_key_store_id`** (`string`) – ID of the custom key store (CloudHSM).
-- **`deletion_window_in_days`** (`integer`) – Days before key deletion (min: 7, max: 30).
-- **`description`** (`string`) – Text description of the key.
-- **`enable_key_rotation`** (`boolean`) – Enable auto-rotation (only for symmetric keys).
-- **`is_enabled`** (`boolean`) – Whether the key is enabled on creation.
-- **`key_material_base64`** (`string`) – Base64 key material (used with import).
-- **`key_usage`** (`string`) – Use type (`ENCRYPT_DECRYPT`, `SIGN_VERIFY`, etc.).
-- **`multi_region`** (`boolean`) – Enable multi-region key support.
-- **`policy`** (`object`) – Custom key policy JSON.
-- **`valid_to`** (`string`, RFC3339) – Expiration time for the key.
-- **`enable_default_policy`** (`boolean`) – Attach default AWS KMS policy.
-- **`key_owners`, `key_administrators`, `key_users`** (`list(string)`) – IAM principals.
-- **`key_service_users`, `key_service_roles_for_autoscaling`** (`list(string)`) – Service-linked roles.
-- **`key_symmetric_encryption_users`, `key_hmac_users`** (`list(string)`) – Symmetric & HMAC users.
-- **`key_asymmetric_public_encryption_users`, `key_asymmetric_sign_verify_users`** (`list(string)`) – Asymmetric key users.
-- **`key_statements`** (`object`) – Additional IAM policy statements.
-- **`source_policy_documents`, `override_policy_documents`** (`list(object)`) – Policy layering control.
-- **`enable_route53_dnssec`** (`boolean`) – Enable Route53 DNSSEC integration.
-- **`route53_dnssec_sources`** (`list(string)`) – Sources for DNSSEC trust.
-- **`rotation_period_in_days`** (`integer`) – Custom rotation interval (1–365 days).
-- **`create_replica`** (`boolean`) – Create cross-region replica.
-- **`primary_key_arn`, `primary_external_key_arn`** (`string`) – Source key ARN for replica.
-- **`create_replica_external`** (`boolean`) – Create external replica.
-- **`aliases`** (`list(string)`) – Key aliases like `alias/my-key`.
-- **`computed_aliases`** (`object`) – Dynamically generated aliases.
-- **`aliases_use_name_prefix`** (`boolean`) – Prefix aliases with context.
-- **`grants`** (`object`) – Key grants in JSON.
+- **`create_external`** – Whether to create an external key.
+- **`bypass_policy_lockout_safety_check`** – Bypass AWS safety checks for key policy.
+- **`customer_master_key_spec`** – CMK spec (e.g., `SYMMETRIC_DEFAULT`, `RSA_2048`).
+- **`custom_key_store_id`** – ID of the custom key store (CloudHSM).
+- **`deletion_window_in_days`** – Days before key deletion (min: 7, max: 30).
+- **`description`** – Text description of the key.
+- **`enable_key_rotation`** – Enable auto-rotation (only for symmetric keys).
+- **`is_enabled`** – Whether the key is enabled on creation.
+- **`key_material_base64`** – Base64 key material (used with import).
+- **`key_usage`** – Use type (`ENCRYPT_DECRYPT`, `SIGN_VERIFY`, etc.).
+- **`multi_region`** – Enable multi-region key support.
+- **`policy`** – Custom key policy JSON.
+- **`valid_to`** – Expiration time for the key.
+- **`enable_default_policy`** – Attach default AWS KMS policy.
+- **`key_owners`, `key_administrators`, `key_users`** – IAM principals.
+- **`key_service_users`, `key_service_roles_for_autoscaling`** – Service-linked roles.
+- **`key_symmetric_encryption_users`, `key_hmac_users`** – Symmetric & HMAC users.
+- **`key_asymmetric_public_encryption_users`, `key_asymmetric_sign_verify_users`** – Asymmetric key users.
+- **`key_statements`** – Additional IAM policy statements.
+- **`source_policy_documents`, `override_policy_documents`** – Policy layering control.
+- **`enable_route53_dnssec`** – Enable Route53 DNSSEC integration.
+- **`route53_dnssec_sources`** – Sources for DNSSEC trust.
+- **`rotation_period_in_days`** – Custom rotation interval (1–365 days).
+- **`create_replica`** – Create cross-region replica.
+- **`primary_key_arn`, `primary_external_key_arn`** – Source key ARN for replica.
+- **`create_replica_external`** – Create external replica.
+- **`aliases`** – Key aliases like `alias/my-key`.
+- **`computed_aliases`** – Dynamically generated aliases.
+- **`aliases_use_name_prefix`** – Prefix aliases with context.
+- **`grants`** – Key grants in JSON.
 
 ## Usage
 

@@ -9,45 +9,43 @@ Each rule defines an expression, severity level, message, summary, and resource 
 
 The configuration is specified under the `spec` field and supports defining one or more alert rules.
 
-### ✅ metadata
-
-- `metadata`: *(optional)*  
+- **`metadata`**: 
   Contains resource-level metadata such as a user-defined name or description.
 
-### ✅ spec
+**`spec`**
 
-- `rules`: *(object, required)*  
+- **`rules`**:
   A map of alerting rule definitions. Each key is a unique name for the rule (e.g., `KubernetesPodCrashLooping1`, `StatefulSetNonReadyPods1`). The value is an object defining the rule’s Prometheus expression, summary, message, labels, and annotations.
 
-#### Rule Properties
+**`Rule Properties`**
 
 Each rule supports the following fields:
 
-- `expr`: *(string, required)*  
+- **`expr`**:  
   The Prometheus expression that defines the alert condition.
 
-- `for`: *(string, required)*  
+- **`for`**:  
   The duration for which the condition must persist before firing the alert. Example: `5m`, `15m`.
 
-- `summary`: *(string, required)*  
+- **`summary`**:  
   A short summary of the alert.
 
-- `message`: *(string, required)*  
+- **`message`**:  
   The detailed message for the alert. Supports Go templating for dynamic content (e.g., `{{ $labels.instance }}`).
 
-- `severity`: *(string, required)*  
+- **`severity`**:  
   The severity level of the alert. Common values: `critical`, `warning`, `info`.
 
-- `resource_name`: *(string, required)*  
+- **`resource_name`**:  
   The resource name associated with the alert. Example: `{{ $labels.pod }}`.
 
-- `resource_type`: *(string, required)*  
+- **`resource_type`**:  
   The type of resource being alerted on. Example: `pod`, `statefulset`.
 
-- `labels`: *(object, required)*  
+- **`labels`**:  
   A map of key-value pairs used for grouping and routing alerts (e.g., `team: stack_owner`).
 
-- `annotations`: *(object, required)*  
+- **`annotations`**:  
   A map of key-value pairs containing additional metadata or documentation for the alert.
 
 ## Usage

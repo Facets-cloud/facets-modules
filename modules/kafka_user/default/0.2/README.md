@@ -6,11 +6,9 @@ This Terraform module provisions a **Kafka user** in a specified Kafka cluster. 
 
 ## Configurability
 
-The module expects the following configuration:
+The following input parameters are supported under the `spec` block:
 
-### ✅ spec
-
-- **`kafka_details`** *(object, required)*  
+- **`kafka_details`**  
   A reference to the Kafka cluster where the user should be created.  
   This is typically provided as a dependency output from a Kafka provisioning module.
 

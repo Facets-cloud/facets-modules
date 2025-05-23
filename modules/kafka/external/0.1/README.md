@@ -12,28 +12,23 @@ This module requires the external Kafka connection details to be provided throug
 
 ---
 
-### ✅ metadata
-
-- `metadata`: *(optional)*  
+- **`metadata`** 
   Metadata related to the resource, such as a custom name. Can be left empty if default naming is sufficient.
 
 ---
-
-### ✅ spec
-
 The `spec` block contains the required fields to connect to an external Kafka instance.
 
-- `endpoint`: *(string, required)*  
+- **`endpoint`**: 
   The Kafka broker endpoint in the format `host:port`.  
   Example: `kafka.example.com:9092`
 
-- `username`: *(string, optional)*  
+- **`username`**: 
   Username used to authenticate with the Kafka cluster.
 
-- `password`: *(string, optional)*  
+- **`password`**: 
   Password used with the provided username for authentication.
 
-- `connection_string`: *(string, required)*  
+- **`connection_string`**:  
   The full Kafka connection string including protocol, credentials, and brokers.  
   Example: `kafka://user:pass@broker1:9092,broker2:9092`
 
