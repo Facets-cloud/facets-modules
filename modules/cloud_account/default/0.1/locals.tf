@@ -1,5 +1,5 @@
 locals {
-  deploymentcontext = jsondecode(file("../deploymentcontext.json"))
-  cluster           = lookup(local.deploymentcontext, "cluster", {})
-  cloud             = lower(lookup(local.cluster, "cloud", null))
+  spec           = lookup(var.instance, "spec", {})
+  cloud_account  = lookup(local.spec, "cloud_account", null)
+  cloud_provider = lookup(local.spec, "cloud_provider", null)
 }
