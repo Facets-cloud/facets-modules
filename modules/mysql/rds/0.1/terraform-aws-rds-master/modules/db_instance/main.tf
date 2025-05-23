@@ -129,7 +129,7 @@ resource "aws_db_instance" "this" {
   }
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = ["iops"]
+    ignore_changes  = ["iops","identifier"]
   }
 
 }

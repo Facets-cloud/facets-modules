@@ -4,6 +4,16 @@ version: '0.1'
 description: Adds MYSQL module of flavor rds
 clouds:
 - aws
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/mysql'
 imports:
 - name: mysql_master_instance
   resource_address: module.rds-mysql-master.module.db_instance.aws_db_instance.this[0]
