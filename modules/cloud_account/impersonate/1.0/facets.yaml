@@ -9,6 +9,11 @@ spec:
   description: Cloud account modules which has impersonation support
   type: object
   properties:
+    project:
+      type: string
+      description: The project in context to create google cloud resources
+      x-ui-placeholder: <project-id>
+      x-ui-overrides-only: true
     service_account:
       type: string
       description: The service account to impersonate
@@ -18,6 +23,7 @@ spec:
       x-ui-overrides-only: true
   required:
   - service_account
+  - project
 outputs:
   default:
     type: '@outputs/cloud_account'
@@ -26,16 +32,19 @@ outputs:
         source: hashicorp/google-beta
         version: 6.23.0
         attributes:
+          project: attributes.project
           access_token: attributes.access_token
       google:
         source: hashicorp/google
         version: 6.23.0
         attributes:
+          project: attributes.project
           access_token: attributes.access_token
       google5:
         source: hashicorp/google5
         version: 5.32.0
         attributes:
+          project: attributes.project
           access_token: attributes.access_token
 sample:
   kind: cloud_account
@@ -43,4 +52,5 @@ sample:
   version: '1.0'
   disabled: true
   spec:
+    project: <project-id>
     service_account: terraform@<project-id>.iam.gserviceaccount.com
