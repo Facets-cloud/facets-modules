@@ -258,6 +258,11 @@ locals {
     }
     if lookup(v, "namespace", var.environment.namespace) != var.environment.namespace
   }
+  custom_tls_domains = {
+    for domain_name, domain in var.instance.spec.domains :
+    domain_name => domain
+    if lookup(domain.custom_tls, "enabled", false) == true
+  }
 }
 
 # ingress helm chart nginx
@@ -596,7 +601,7 @@ locals {
         name      = "${lower(var.instance_name)}-${key}"
         namespace = var.environment.namespace
         annotations = merge(
-          local.cert_manager_common_annotations,
+          lookup(lookup(value, "custom_tls", {}), "enabled", false) ? {} : local.cert_manager_common_annotations,
           local.nginx_annotations,
           lookup(value, "annotations", {}),
           lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? (lookup(value, "disable_auth", false) ? {} : local.additional_ingress_annotations_with_auth) : {},
@@ -736,7 +741,7 @@ locals {
         }]
         tls = [{
           hosts      = local.disable_endpoint_validation ? tolist([lookup(value, "domain", null), "*.${lookup(value, "domain", null)}"]) : tolist([value.host])
-          secretName = local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
+          secretName = lookup(lookup(value, "custom_tls", {}), "enabled", false) ? "${value.domain_key}-custom-tls" : local.disable_endpoint_validation ? lookup(value, "certificate_reference", null) == "" ? null : lookup(value, "certificate_reference", null) : lookup(value, "domain_prefix", null) == null || lookup(value, "domain_prefix", null) == "" ? lower("${var.instance_name}-${value.domain_key}") : lower("${var.instance_name}-${value.domain_key}-${value.domain_prefix}")
         }]
       }
     }
@@ -792,7 +797,21 @@ module "custom_error_pages_configmap" {
   }
 }
 
+resource "kubernetes_secret" "custom_tls" {
+  for_each = local.custom_tls_domains
 
+  metadata {
+    name      = "${each.key}-custom-tls"
+    namespace = var.environment.namespace
+  }
+
+  data = {
+    "tls.crt" = each.value.custom_tls.certificate
+    "tls.key" = each.value.custom_tls.private_key
+  }
+
+  type = "kubernetes.io/tls"
+}
 
 resource "kubernetes_service_v1" "external_name" {
   for_each = local.external_services
