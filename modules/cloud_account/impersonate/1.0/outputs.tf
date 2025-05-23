@@ -1,7 +1,7 @@
 locals {
   output_interfaces = {}
   output_attributes = {
-    project      = lookup(local.spec, "project", null)
-    access_token = data.google_service_account_access_token.default.access_token
+    project         = lookup(local.spec, "project", null)
+    service_account = lookup(local.spec, "service_account", null)
   }
 }

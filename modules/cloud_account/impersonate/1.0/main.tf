@@ -25,17 +25,17 @@ locals {
   service_account = lookup(local.spec, "service_account", null)
 }
 
-provider "google" {
-  alias = "impersonation"
-  scopes = [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email",
-  ]
-}
+# provider "google" {
+#   alias = "impersonation"
+#   scopes = [
+#     "https://www.googleapis.com/auth/cloud-platform",
+#     "https://www.googleapis.com/auth/userinfo.email",
+#   ]
+# }
 
-data "google_service_account_access_token" "default" {
-  provider               = google.impersonation
-  target_service_account = local.service_account
-  scopes                 = ["userinfo-email", "cloud-platform"]
-  lifetime               = "1800s"
-}
+# data "google_service_account_access_token" "default" {
+#   provider               = google.impersonation
+#   target_service_account = local.service_account
+#   scopes                 = ["userinfo-email", "cloud-platform"]
+#   lifetime               = "1800s"
+# }
