@@ -3,7 +3,7 @@ flavor: aurora
 version: "0.1"
 description: Adds Postgres module of flavor aurora
 clouds:
-  - aws
+- aws
 spec:
   title: Aurora
   type: object
@@ -13,11 +13,11 @@ spec:
       title: Postgres Version
       description: Specifies the Postgres version to use.
       enum:
-        - "12.11"
-        - "13.3"
-        - "14.0"
-        - "15.2"
-        - "16.1"
+      - "12.11"
+      - "13.3"
+      - "14.0"
+      - "15.2"
+      - "16.1"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
@@ -34,56 +34,56 @@ spec:
               title: Instance Type
               description: The instance type of the node.
               enum:
-                - db.t3.micro
-                - db.t3.small
-                - db.t3.medium
-                - db.t3.large
-                - db.t4g.micro
-                - db.t4g.small
-                - db.t4g.medium
-                - db.t4g.large
-                - db.m5.large
-                - db.m5.xlarge
-                - db.m5.2xlarge
-                - db.m5.4xlarge
-                - db.m5.8xlarge
-                - db.m5.12xlarge
-                - db.m6g.micro
-                - db.m6g.small
-                - db.m6g.medium
-                - db.m6g.large
-                - db.m6g.xlarge
-                - db.m6g.2xlarge
-                - db.m6g.4xlarge
-                - db.m6g.8xlarge
-                - db.m6g.12xlarge
-                - db.r5.large
-                - db.r5.xlarge
-                - db.r5.2xlarge
-                - db.r5.4xlarge
-                - db.r5.8xlarge
-                - db.r5.12xlarge
-                - db.r6g.large
-                - db.r6g.xlarge
-                - db.r6g.2xlarge
-                - db.r6g.4xlarge
-                - db.r6g.8xlarge
-                - db.r6g.12xlarge
-                - db.r7g.large
-                - db.r7g.xlarge
-                - db.r7g.2xlarge
-                - db.r7g.4xlarge
-                - db.r7g.8xlarge
-                - db.r7g.12xlarge
-                - db.r6i.large
-                - db.r6i.xlarge
-                - db.r6i.2xlarge
-                - db.r6i.4xlarge
-                - db.r6i.8xlarge
-                - db.r6i.12xlarge
-                - db.r6i.16xlarge
-                - db.r6i.24xlarge
-                - db.r6i.32xlarge
+              - db.t3.micro
+              - db.t3.small
+              - db.t3.medium
+              - db.t3.large
+              - db.t4g.micro
+              - db.t4g.small
+              - db.t4g.medium
+              - db.t4g.large
+              - db.m5.large
+              - db.m5.xlarge
+              - db.m5.2xlarge
+              - db.m5.4xlarge
+              - db.m5.8xlarge
+              - db.m5.12xlarge
+              - db.m6g.micro
+              - db.m6g.small
+              - db.m6g.medium
+              - db.m6g.large
+              - db.m6g.xlarge
+              - db.m6g.2xlarge
+              - db.m6g.4xlarge
+              - db.m6g.8xlarge
+              - db.m6g.12xlarge
+              - db.r5.large
+              - db.r5.xlarge
+              - db.r5.2xlarge
+              - db.r5.4xlarge
+              - db.r5.8xlarge
+              - db.r5.12xlarge
+              - db.r6g.large
+              - db.r6g.xlarge
+              - db.r6g.2xlarge
+              - db.r6g.4xlarge
+              - db.r6g.8xlarge
+              - db.r6g.12xlarge
+              - db.r7g.large
+              - db.r7g.xlarge
+              - db.r7g.2xlarge
+              - db.r7g.4xlarge
+              - db.r7g.8xlarge
+              - db.r7g.12xlarge
+              - db.r6i.large
+              - db.r6i.xlarge
+              - db.r6i.2xlarge
+              - db.r6i.4xlarge
+              - db.r6i.8xlarge
+              - db.r6i.12xlarge
+              - db.r6i.16xlarge
+              - db.r6i.24xlarge
+              - db.r6i.32xlarge
               x-ui-error-message: "Please select a valid instance type."
             instance_count:
               type: integer
@@ -93,11 +93,11 @@ spec:
               maximum: 16
               x-ui-error-message: "Instance count must be between 1 and 16."
           required:
-            - instance
-            - instance_count
+          - instance
+          - instance_count
           x-ui-order:
-            - instance
-            - instance_count
+          - instance
+          - instance_count
         reader:
           type: object
           title: Reader
@@ -108,56 +108,56 @@ spec:
               title: Instance Type
               description: The instance type of the node.
               enum:
-                - db.t3.micro
-                - db.t3.small
-                - db.t3.medium
-                - db.t3.large
-                - db.t4g.micro
-                - db.t4g.small
-                - db.t4g.medium
-                - db.t4g.large
-                - db.m5.large
-                - db.m5.xlarge
-                - db.m5.2xlarge
-                - db.m5.4xlarge
-                - db.m5.8xlarge
-                - db.m5.12xlarge
-                - db.m6g.micro
-                - db.m6g.small
-                - db.m6g.medium
-                - db.m6g.large
-                - db.m6g.xlarge
-                - db.m6g.2xlarge
-                - db.m6g.4xlarge
-                - db.m6g.8xlarge
-                - db.m6g.12xlarge
-                - db.r5.large
-                - db.r5.xlarge
-                - db.r5.2xlarge
-                - db.r5.4xlarge
-                - db.r5.8xlarge
-                - db.r5.12xlarge
-                - db.r6g.large
-                - db.r6g.xlarge
-                - db.r6g.2xlarge
-                - db.r6g.4xlarge
-                - db.r6g.8xlarge
-                - db.r6g.12xlarge
-                - db.r7g.large
-                - db.r7g.xlarge
-                - db.r7g.2xlarge
-                - db.r7g.4xlarge
-                - db.r7g.8xlarge
-                - db.r7g.12xlarge
-                - db.r6i.large
-                - db.r6i.xlarge
-                - db.r6i.2xlarge
-                - db.r6i.4xlarge
-                - db.r6i.8xlarge
-                - db.r6i.12xlarge
-                - db.r6i.16xlarge
-                - db.r6i.24xlarge
-                - db.r6i.32xlarge
+              - db.t3.micro
+              - db.t3.small
+              - db.t3.medium
+              - db.t3.large
+              - db.t4g.micro
+              - db.t4g.small
+              - db.t4g.medium
+              - db.t4g.large
+              - db.m5.large
+              - db.m5.xlarge
+              - db.m5.2xlarge
+              - db.m5.4xlarge
+              - db.m5.8xlarge
+              - db.m5.12xlarge
+              - db.m6g.micro
+              - db.m6g.small
+              - db.m6g.medium
+              - db.m6g.large
+              - db.m6g.xlarge
+              - db.m6g.2xlarge
+              - db.m6g.4xlarge
+              - db.m6g.8xlarge
+              - db.m6g.12xlarge
+              - db.r5.large
+              - db.r5.xlarge
+              - db.r5.2xlarge
+              - db.r5.4xlarge
+              - db.r5.8xlarge
+              - db.r5.12xlarge
+              - db.r6g.large
+              - db.r6g.xlarge
+              - db.r6g.2xlarge
+              - db.r6g.4xlarge
+              - db.r6g.8xlarge
+              - db.r6g.12xlarge
+              - db.r7g.large
+              - db.r7g.xlarge
+              - db.r7g.2xlarge
+              - db.r7g.4xlarge
+              - db.r7g.8xlarge
+              - db.r7g.12xlarge
+              - db.r6i.large
+              - db.r6i.xlarge
+              - db.r6i.2xlarge
+              - db.r6i.4xlarge
+              - db.r6i.8xlarge
+              - db.r6i.12xlarge
+              - db.r6i.16xlarge
+              - db.r6i.24xlarge
+              - db.r6i.32xlarge
               x-ui-error-message: "Please select a valid instance type."
             instance_count:
               type: integer
@@ -167,57 +167,66 @@ spec:
               maximum: 16
               x-ui-error-message: "Instance count must be between 0 and 16."
           required:
-            - instance
-            - instance_count
+          - instance
+          - instance_count
           x-ui-order:
-            - instance
-            - instance_count
+          - instance
+          - instance_count
       required:
-        - writer
+      - writer
       x-ui-order:
-        - writer
-        - reader
+      - writer
+      - reader
     db_names:
       type: array
       title: Additional Database Names
       description: List of additional databases to be created
-      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
-      x-ui-error-message: "Database names must start with an alphanumeric character and should be separated by commas"
+      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,
+        [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
+      x-ui-error-message: "Database names must start with an alphanumeric character
+        and should be separated by commas"
+      items:
+        type: string
+      x-ui-override-disable: true
     db_schemas:
       type: object
       title: Additional Database Schemas
       description: Map of additonal schemas to be created.
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9-_]+$"
-        title: Database Schemas
-        description: Database schema row item which contains schema name and database name in which schema will be created.
-        properties:
-          db:
-            title: Database Name
-            type: string
-            description: Name of the database under which schema will be created.
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-            x-ui-error-message: Database name must start with an alphabet or underscore and should contain only alphanumeric characters and underscores
-          schema:
-            title: Database Schema
-            type: string
-            description: Name of the schema which needs to be created.
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-        required:
+        "^[a-zA-Z0-9-_]+$":
+          title: Database Schemas
+          description: Database schema row item which contains schema name and database
+            name in which schema will be created.
+          properties:
+            db:
+              title: Database Name
+              type: string
+              description: Name of the database under which schema will be created.
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+              x-ui-error-message: Database name must start with an alphabet or underscore
+                and should contain only alphanumeric characters and underscores
+            schema:
+              title: Database Schema
+              type: string
+              description: Name of the schema which needs to be created.
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          required:
           - db
           - schema
+          type: object
     apply_immediately:
       type: boolean
       title: Apply Immediately
-      description: This specifies whether any modifications are applied immediately, or during the next maintenance window. Default is false
+      description: This specifies whether any modifications are applied immediately,
+        or during the next maintenance window. Default is false
   required:
-    - size
-    - postgres_version
+  - size
+  - postgres_version
   x-ui-order:
-    - postgres_version
-    - size
-    - db_names
-    - db_schemas
+  - postgres_version
+  - size
+  - db_names
+  - db_schemas
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json

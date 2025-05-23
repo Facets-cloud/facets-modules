@@ -3,7 +3,7 @@ flavor: default
 version: '0.1'
 description: Adds AWS KMS
 clouds:
-  - aws
+- aws
 spec:
   title: KMS Configuration
   type: object
@@ -72,38 +72,65 @@ spec:
       type: array
       title: Key Owners
       description: List of key owners
+      items:
+        type: string
+      x-ui-override-disable: true
     key_administrators:
       type: array
       title: Key Administrators
       description: List of key administrators
+      items:
+        type: string
+      x-ui-override-disable: true
     key_users:
       type: array
       title: Key Users
       description: List of key users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_service_users:
       type: array
       title: Key Service Users
       description: List of key service users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_service_roles_for_autoscaling:
       type: array
       title: Key Service Roles for Autoscaling
       description: List of key service roles for autoscaling
+      items:
+        type: string
+      x-ui-override-disable: true
     key_symmetric_encryption_users:
       type: array
       title: Key Symmetric Encryption Users
       description: List of key symmetric encryption users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_hmac_users:
       type: array
       title: Key HMAC Users
       description: List of key HMAC users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_asymmetric_public_encryption_users:
       type: array
       title: Key Asymmetric Public Encryption Users
       description: List of key asymmetric public encryption users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_asymmetric_sign_verify_users:
       type: array
       title: Key Asymmetric Sign Verify Users
       description: List of key asymmetric sign verify users
+      items:
+        type: string
+      x-ui-override-disable: true
     key_statements:
       type: object
       title: Key Statements
@@ -113,10 +140,16 @@ spec:
       type: array
       title: Source Policy Documents
       description: List of source policy documents
+      items:
+        type: string
+      x-ui-override-disable: true
     override_policy_documents:
       type: array
       title: Override Policy Documents
       description: List of override policy documents
+      items:
+        type: string
+      x-ui-override-disable: true
     enable_route53_dnssec:
       type: boolean
       title: Enable Route53 DNSSEC
@@ -125,6 +158,9 @@ spec:
       type: array
       title: Route53 DNSSEC Sources
       description: List of Route53 DNSSEC sources
+      items:
+        type: string
+      x-ui-override-disable: true
     rotation_period_in_days:
       type: integer
       title: Rotation Period in Days
@@ -151,6 +187,9 @@ spec:
       type: array
       title: Key Aliases
       description: List of aliases for the key
+      items:
+        type: string
+      x-ui-override-disable: true
     computed_aliases:
       type: object
       title: Computed Aliases
@@ -166,26 +205,26 @@ spec:
       description: Object of key grants
       x-ui-yaml-editor: true
   x-ui-order:
-    - customer_master_key_spec
-    - custom_key_store_id
-    - description
-    - key_material_base64
-    - key_usage
-    - valid_to
-    - primary_key_arn
-    - primary_external_key_arn
-    - create_external
-    - bypass_policy_lockout_safety_check
-    - deletion_window_in_days
-    - enable_key_rotation
-    - is_enabled
-    - multi_region
-    - enable_default_policy
-    - enable_route53_dnssec
-    - create_replica
-    - create_replica_external
-    - aliases_use_name_prefix
-    - rotation_period_in_days
+  - customer_master_key_spec
+  - custom_key_store_id
+  - description
+  - key_material_base64
+  - key_usage
+  - valid_to
+  - primary_key_arn
+  - primary_external_key_arn
+  - create_external
+  - bypass_policy_lockout_safety_check
+  - deletion_window_in_days
+  - enable_key_rotation
+  - is_enabled
+  - multi_region
+  - enable_default_policy
+  - enable_route53_dnssec
+  - create_replica
+  - create_replica_external
+  - aliases_use_name_prefix
+  - rotation_period_in_days
 sample:
   version: '0.1'
   disabled: true

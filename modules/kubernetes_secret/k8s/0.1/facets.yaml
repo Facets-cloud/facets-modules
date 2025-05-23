@@ -1,18 +1,20 @@
 intent: kubernetes_secret
 flavor: k8s
 version: '0.1'
+description: "kubernetes_secret - k8s"
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   type: object
   properties:
     data:
       title: Data
       type: object
-      description: "Enter a valid key-value pair for secret in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      description: "Enter a valid key-value pair for secret in YAML format. Eg. key:
+        value (provide a space after ':' as expected in the YAML format)"
       x-ui-yaml-editor: true
       x-ui-placeholder: "Enter the value of the secret. Eg. key: secret_value"
 sample:
@@ -24,4 +26,4 @@ sample:
   version: '0.1'
   metadata: {}
   spec:
-    data: 
+    data:

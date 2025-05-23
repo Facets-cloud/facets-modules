@@ -1,10 +1,13 @@
 intent: kubernetes_cluster
 flavor: gcp_gke
-alias-flavors: [ "default" ]
+alias-flavors: ["default"]
 version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:
-  - gcp
+- gcp
+inputs:
+  network_details:
+    type: "@outputs/gcp_vpc"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for gcp gke flavor
@@ -36,6 +39,7 @@ spec:
               maxItmes: 7
               x-ui-error-message: Select the days in the week for maintenance to happen
               x-ui-placeholder: e.g. 'Monday, Tuesday'
+              x-ui-override-disable: true
             duration:
               title: Maintenance Duration
               description: Duration of maintenance in hours
@@ -120,8 +124,8 @@ spec:
               description: Select lifecycle plan for worker nodes
               type: string
               enum:
-                - ON_DEMAND
-                - SPOT
+              - ON_DEMAND
+              - SPOT
               default: SPOT
               x-ui-overrides-only: true
               x-ui-visible-if:
@@ -140,7 +144,8 @@ spec:
                 values: [true]
             enable_multi_az:
               title: Enable Multi Availability Zones
-              description: Set this to true to enable default nodepool in multi availability zones
+              description: Set this to true to enable default nodepool in multi availability
+                zones
               type: boolean
               default: false
               x-ui-overrides-only: true
@@ -163,25 +168,30 @@ spec:
               properties:
                 roles:
                   title: IAM Roles
-                  description: Iam roles to be assigned to facets default nodepool service account
+                  description: Iam roles to be assigned to facets default nodepool
+                    service account
                   type: object
                   patternProperties:
-                    title: Key Name For Role
-                    description: Key name for role
-                    type: object
-                    keyPattern: "^[a-zA-Z][a-zA-Z0-9_.-]*$"
-                    properties:
-                      role:
-                        title: Role
-                        description: Role to be added to the acets default nodepool service account
-                        type: string
-                        x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
-                    x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
+                    "^[a-zA-Z][a-zA-Z0-9_.-]*$":
+                      title: Key Name For Role
+                      description: Key name for role
+                      type: object
+                      properties:
+                        role:
+                          title: Role
+                          description: Role to be added to the acets default nodepool
+                            service account
+                          type: string
+                          x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+                      x-ui-error-message: Key name should start with an alphabet and
+                        should contain alpha numeric characters with allowed special
+                        characters like underscore, period and hypen
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
-                values: [true]  
-          required: [ "instance_types" ]  
-          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_multi_az", "enable_secure_boot", "iam"]
+                values: [true]
+          required: ["instance_types"]
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume",
+            "max_nodes", "enable_multi_az", "enable_secure_boot", "iam"]
         facets_dedicated:
           title: Facets Dedicated Nodepool Spec
           description: Specifications for facets dedicated nodepool
@@ -203,6 +213,8 @@ spec:
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
+              items:
+                type: string
             root_disk_volume:
               title: Root Disk Volume
               description: Disk Size in GiB for worker nodes
@@ -220,8 +232,8 @@ spec:
               description: Select lifecycle plan for worker nodes
               type: string
               enum:
-                - ON_DEMAND
-                - SPOT
+              - ON_DEMAND
+              - SPOT
               default: SPOT
               x-ui-overrides-only: true
               x-ui-visible-if:
@@ -254,25 +266,30 @@ spec:
               properties:
                 roles:
                   title: IAM Roles
-                  description: Iam roles to be assigned to facets dedicated nodepool service account
+                  description: Iam roles to be assigned to facets dedicated nodepool
+                    service account
                   type: object
                   patternProperties:
-                    title: Key Name For Role
-                    description: Key name for role
-                    type: object
-                    keyPattern: "^[a-zA-Z][a-zA-Z0-9_.-]*$"
-                    properties:
-                      role:
-                        title: Role
-                        description: Role to be added to the facets dedicated nodepool service account
-                        type: string
-                        x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
-                    x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
+                    "^[a-zA-Z][a-zA-Z0-9_.-]*$":
+                      title: Key Name For Role
+                      description: Key name for role
+                      type: object
+                      properties:
+                        role:
+                          title: Role
+                          description: Role to be added to the facets dedicated nodepool
+                            service account
+                          type: string
+                          x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+                      x-ui-error-message: Key name should start with an alphabet and
+                        should contain alpha numeric characters with allowed special
+                        characters like underscore, period and hypen
               x-ui-visible-if:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
-          required: [ "instance_types" ]
-          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume", "max_nodes", "enable_secure_boot", "iam"]
+          required: ["instance_types"]
+          x-ui-order: ["enable", "instance_types", "node_lifecycle_type", "root_disk_volume",
+            "max_nodes", "enable_secure_boot", "iam"]
   x-ui-order: ["nodepools", "cluster", "maintenance_windows", "auto_upgrade"]
 sample:
   kind: kubernetes_cluster

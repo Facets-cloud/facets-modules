@@ -3,7 +3,7 @@ flavor: gke_node_pool
 version: "0.1"
 description: Adds kubernetes_node_pool - gke_node_pool flavor
 clouds:
-  - gcp
+- gcp
 spec:
   title: Kubernetes Node Pool
   description: Specification of the kubernetes node pool for gke_node_pool flavor
@@ -38,13 +38,19 @@ spec:
       maximum: 1000
     taints:
       title: Taints
-      description: "Array of Kubernetes taints which should be applied to nodes in the node pool. Enter array of object in YAML format. Eg. \n- key: special \nvalue: \"true\"\neffect: PreferNoSchedule.\nSet this to [] if no taints are required."
+      description: "Array of Kubernetes taints which should be applied to nodes in
+        the node pool. Enter array of object in YAML format. Eg. \n- key: special
+        \nvalue: \"true\"\neffect: PreferNoSchedule.\nSet this to [] if no taints
+        are required."
       type: object
       x-ui-yaml-editor: true
-      x-ui-placeholder: "Eg. \n- key: CriticalAddonsOnly \nvalue: \"true\"\neffect: NoSchedule"
+      x-ui-placeholder: "Eg. \n- key: CriticalAddonsOnly \nvalue: \"true\"\neffect:
+        NoSchedule"
     labels:
       title: Labels
-      description: "Map of labels to be added to nodes in node pool. Enter key-value pair for labels in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
+      description: "Map of labels to be added to nodes in node pool. Enter key-value
+        pair for labels in YAML format. Eg. key: value (provide a space after ':'
+        as expected in the YAML format)"
       x-ui-placeholder: "Eg. key1: value1"
       type: object
       x-ui-yaml-editor: true
@@ -58,27 +64,30 @@ spec:
           description: Iam roles to be assigned to nodepool service account
           type: object
           patternProperties:
-            title: Key Name For Role
-            description: Key name for role
-            type: object
-            keyPattern: "^[a-zA-Z][a-zA-Z0-9_.-]*$"
-            properties:
-              role:
-                title: Role
-                description: Role to be added to the nodepool service account
-                type: string
-                x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
-            x-ui-error-message: Key name should start with an alphabet and should contain alpha numeric characters with allowed special characters like underscore, period and hypen
+            "^[a-zA-Z][a-zA-Z0-9_.-]*$":
+              title: Key Name For Role
+              description: Key name for role
+              type: object
+              properties:
+                role:
+                  title: Role
+                  description: Role to be added to the nodepool service account
+                  type: string
+                  x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+              x-ui-error-message: Key name should start with an alphabet and should
+                contain alpha numeric characters with allowed special characters like
+                underscore, period and hypen
   required:
-    - instance_type
-    - min_node_count
-    - max_node_count
-    - disk_size
-    - taints
-    - labels
+  - instance_type
+  - min_node_count
+  - max_node_count
+  - disk_size
+  - taints
+  - labels
 sample:
   flavor: gke_node_pool
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
+  $schema: 
+    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   version: "0.1"
   kind: kubernetes_node_pool
   metadata: {}
@@ -88,11 +97,5 @@ sample:
     min_node_count: 1
     max_node_count: 50
     disk_size: 100
-    taints: [
-      {
-        "effect": "NoSchedule",
-        "key": "CriticalAddonsOnly",
-        "value": "true"
-      }
-    ]
+    taints: [{"effect": "NoSchedule", "key": "CriticalAddonsOnly", "value": "true"}]
     labels: {}

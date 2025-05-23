@@ -14,7 +14,8 @@ inputs:
   kubernetes_details:
     type: "@output/kubernetes"
     displayName: Kubernetes Cluster
-    description: Details of Kubernetes where the CRD for managing postgresql user will be created
+    description: Details of Kubernetes where the CRD for managing postgresql user
+      will be created
     optional: false
     default:
       resource_type: kubernetes_cluster
@@ -22,7 +23,8 @@ inputs:
   database_operator_details:
     type: "@output/database_operator"
     displayName: Database Operator
-    description: Details of database operator which will be responsible to create postgres users
+    description: Details of database operator which will be responsible to create
+      postgres users
     optional: false
   postgres_details:
     type: "@output/postgres"
@@ -43,39 +45,40 @@ spec:
       description: Map of permissions that will be provided to the postgres user
       type: object
       patternProperties:
-        keyPattern: "^[a-zA-Z0-9_-]+$"
-        type: object
-        title: Permission
-        description: Permission Object
-        properties:
-          permission:
-            type: string
-            title: Permission
-            description: Permission for the postgres user
-            enum:
-            - RO
-            - RWO
-            - ADMIN
-          database:
-            type: string
-            title: Database
-            description: Database name where this permission should be given
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-          schema:
-            type: string
-            title: Schema
-            description: Schema in the database where this permission should be given
-            pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-          table:
-            type: string
-            title: Table
-            description: Table in the database where this permission should be given
-            patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
-        required:
-        - permission
-        - database
-        - schema
-        - table
+        "^[a-zA-Z0-9_-]+$":
+          type: object
+          title: Permission
+          description: Permission Object
+          properties:
+            permission:
+              type: string
+              title: Permission
+              description: Permission for the postgres user
+              enum:
+              - RO
+              - RWO
+              - ADMIN
+            database:
+              type: string
+              title: Database
+              description: Database name where this permission should be given
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+            schema:
+              type: string
+              title: Schema
+              description: Schema in the database where this permission should be
+                given
+              pattern: "^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+            table:
+              type: string
+              title: Table
+              description: Table in the database where this permission should be given
+              pattern: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+          required:
+          - permission
+          - database
+          - schema
+          - table
   required:
   - permissions
 sample:
