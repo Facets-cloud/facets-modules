@@ -1,14 +1,11 @@
-# Log Collector – Loki Standalone Kubernetes Flavor (v0.1)
+# Log Collector – Loki Standalone S3 Flavor (v0.1)
 
 ## Overview
 
-The `log_collector - loki_standalone_k8s` flavor (v0.1) enables the collection and management of logs using Loki in a standalone setup within Kubernetes environments. This module provides structured log collection, storage, and querying capabilities.
+The `log_collector - loki_standalone_s3` flavor (v0.1) enables the collection and management of logs using Loki in a standalone setup with AWS S3 storage. This module provides structured log collection, storage, and querying capabilities.
 
 Supported platforms:
-- AWS  
-- Azure  
-- GCP  
-- Kubernetes
+- AWS
 
 ## Configurability
 
@@ -16,10 +13,7 @@ Supported platforms:
 
 #### `kubernetes_details`
 
-- **Type**: `@output/kubernetes`
-- **Display Name**: Kubernetes Cluster
-- **Description**: The details of the Kubernetes cluster where the Loki standalone will be installed
-- **Optional**: `false`
+- **Type**: `@outputs/kubernetes`
 - **Default**:
   - `resource_type`: `kubernetes_cluster`
   - `resource_name`: `default`
@@ -36,7 +30,7 @@ Type of the Loki Configuration.
 
 #### `properties` (`object`)
 
-Configuration properties for Loki, Minio, and Promtail.
+Configuration properties for Loki, AWS S3, and Promtail.
 
 ##### `loki` (object)
 
@@ -77,35 +71,47 @@ Provides configuration options for Loki.
     - **Description**: Overrides for Loki configuration
     - **UI YAML Editor**: `true`
 
-##### `minio` (object)
+##### `aws_s3` (object)
 
-Provides configuration options for Minio.
+Provides configuration options for AWS S3.
 
-- **replicas** (`integer`): Number of Minio replicas.
-  - **Title**: Replicas
-  - **Description**: Number of Minio replicas
-  - **Minimum**: 1
-  - **UI Placeholder**: "Enter replicas (e.g., 2)"
-  - **UI Error Message**: "Replicas must be between 1 and 10."
-- **volume** (`string`): Storage volume for Minio.
-  - **Title**: Volume
-  - **Description**: Storage volume for Minio
-  - **Pattern**: "^[0-9]+(\\.[0-9]+)?Gi$"
-  - **UI Placeholder**: "e.g., '10Gi' or '20Gi'"
-  - **UI Error Message**: "Volume must be in the format 'XGi' (e.g., '10Gi')."
-- **auth** (object): Authentication configuration for Minio.
-  - **rootUser** (`string`): Username for Minio root access.
-    - **Title**: Root User
-    - **Description**: Username for Minio root access
-    - **UI Placeholder**: "Enter root user (e.g., 'facets-user')"
-  - **rootPassword** (`string`): Password for Minio root access.
-    - **Title**: Root Password
-    - **Description**: Password for Minio root access
-    - **UI Placeholder**: "Enter root password"
-- **values** (`object`): Overrides for Minio configuration.
-  - **Title**: Custom Values
-  - **Description**: Overrides for Minio configuration
-  - **UI YAML Editor**: `true`
+- **bucket_names** (object): S3 bucket names for Loki storage.
+  - **Title**: Bucket Names
+  - **Description**: S3 bucket name for Loki storage
+  - **Required**: ["chunks", "ruler"]
+  - **Properties**:
+    - **chunks** (`string`): S3 bucket name for Loki chunks storage.
+      - **Title**: Chunks Bucket
+      - **Description**: S3 bucket name for Loki chunks storage
+      - **UI Placeholder**: "Enter chunks bucket name (e.g., 'chunk-bucket-loki-nlqkbnwmkq')"
+      - **UI Error Message**: "Bucket name must contain only lowercase letters, numbers, and hyphens."
+      - **UI API Source**:
+        - **Endpoint**: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+        - **Method**: GET
+        - **Params**:
+          - `includeContent`: false
+        - **Label Key**: resourceName
+        - **Value Key**: resourceName
+        - **Value Template**: "${s3.{{value}}.out.attributes.bucket_name}"
+        - **Filter Conditions**:
+          - **Field**: resourceType
+          - **Value**: s3
+    - **ruler** (`string`): S3 bucket name for Loki ruler storage.
+      - **Title**: Ruler Bucket
+      - **Description**: S3 bucket name for Loki ruler storage
+      - **UI Placeholder**: "Enter ruler bucket name (e.g., 'ruler-bucket-loki-nlqkbnwmkq')"
+      - **UI Error Message**: "Bucket name must contain only lowercase letters, numbers, and hyphens."
+      - **UI API Source**:
+        - **Endpoint**: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+        - **Method**: GET
+        - **Params**:
+          - `includeContent`: false
+        - **Label Key**: resourceName
+        - **Value Key**: resourceName
+        - **Value Template**: "${s3.{{value}}.out.attributes.bucket_name}"
+        - **Filter Conditions**:
+          - **Field**: resourceType
+          - **Value**: s3
 
 ##### `promtail` (object)
 
@@ -115,7 +121,6 @@ Provides configuration options for Promtail.
   - **Title**: Timeout
   - **Description**: "Timeout for deployment (default: 600)"
   - **Minimum**: 300
-  - **Maximum**: 1800
   - **UI Placeholder**: "Enter timeout in seconds."
   - **UI Error Message**: "Timeout must be between 300s (5m) and 1800s (30m)."
 - **wait** (`boolean`): Wait for deployment completion.
@@ -126,7 +131,7 @@ Provides configuration options for Promtail.
   - **Description**: "Recreate pods during updates."
 - **version** (`string`): Version for Promtail Helm chart.
   - **Title**: Version
-  - **Description**: "Promtail chart version (default: 6.7.4)"
+  - **Description**: "Promtail chart version"
   - **UI Placeholder**: "Select a version"
 - **values** (`object`): Overrides for Promtail configuration.
   - **Title**: Custom Values
@@ -137,7 +142,7 @@ Provides configuration options for Promtail.
 
 ## Usage
 
-Use this module to collect and manage logs using Loki in a standalone setup within Kubernetes environments. It is especially useful for:
+Use this module to collect and manage logs using Loki in a standalone setup with AWS S3 storage. It is especially useful for:
 
 - Structured log collection
 - Log storage and querying
