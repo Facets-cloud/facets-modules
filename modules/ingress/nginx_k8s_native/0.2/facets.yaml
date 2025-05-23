@@ -70,7 +70,7 @@ spec:
                 certificate:
                   type: string
                   title: TLS Certificate
-                  description: Base64 encoded TLS certificate (PEM format)
+                  description: TLS certificate (PEM format)
                   x-ui-secret-ref: true
                   x-ui-visible-if:
                     field: spec.domains.{{this}}.custom_tls.enabled
@@ -79,7 +79,7 @@ spec:
                 private_key:
                   type: string
                   title: TLS Private Key
-                  description: Base64 encoded TLS private key (PEM format)
+                  description: TLS private key (PEM format)
                   x-ui-secret-ref: true
                   x-ui-visible-if:
                     field: spec.domains.{{this}}.custom_tls.enabled
