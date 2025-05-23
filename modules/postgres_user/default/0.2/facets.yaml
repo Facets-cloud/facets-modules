@@ -73,7 +73,7 @@ spec:
               type: string
               title: Table
               description: Table in the database where this permission should be given
-              patten: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+              pattern: "\\*|^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
           required:
           - permission
           - database
