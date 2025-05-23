@@ -1,10 +1,101 @@
 intent: mongo
-flavor: documentdb
+flavor: documentdb-test
 version: '0.1'
 description: Adds mongo - documentdb flavor
 clouds:
 - aws
-spec: {}
+spec:
+  title: DocumentDB Configuration
+  type: object
+  properties:
+    documentdb_version:
+      type: string
+      title: DocumentDB Version
+      description: Specifies the DocumentDB engine version to use.
+      pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+      x-ui-placeholder: "e.g., '5.0', '6.0', or '5.0.3'"
+      x-ui-error-message: "Please enter a valid version format (e.g., '5.0' or '5.0.3')."
+      x-ui-suggestions:
+        - "5.0"
+        - "6.0"
+        - "7.0"
+        - "8.0"
+    
+    size:
+      type: object
+      title: Cluster Size
+      description: Configuration for DocumentDB cluster sizing.
+      properties:
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: Number of instances in the DocumentDB cluster.
+          minimum: 0
+          maximum: 16
+          default: 0
+          x-ui-placeholder: "e.g., 1 or 3"
+          x-ui-error-message: "Instance count must be between 0 and 16."
+        
+        instance:
+          type: string
+          title: Instance Class
+          description: Instance class for DocumentDB cluster nodes.
+          enum:
+            - db.t3.medium
+            - db.t4g.medium
+            - db.r4.large
+            - db.r4.xlarge
+            - db.r4.2xlarge
+            - db.r4.4xlarge
+            - db.r4.8xlarge
+            - db.r4.16xlarge
+            - db.r5.large
+            - db.r5.xlarge
+            - db.r5.2xlarge
+            - db.r5.4xlarge
+            - db.r5.8xlarge
+            - db.r5.12xlarge
+            - db.r5.16xlarge
+            - db.r5.24xlarge
+            - db.r6g.large
+            - db.r6g.xlarge
+            - db.r6g.2xlarge
+            - db.r6g.4xlarge
+            - db.r6g.8xlarge
+            - db.r6g.12xlarge
+            - db.r6g.16xlarge
+            - db.r6i.large
+            - db.r6i.xlarge
+            - db.r6i.2xlarge
+            - db.r6i.4xlarge
+            - db.r6i.8xlarge
+            - db.r6i.12xlarge
+            - db.r6i.16xlarge
+            - db.r6i.24xlarge
+            - db.r6i.32xlarge
+            - db.r7g.large
+            - db.r7g.xlarge
+            - db.r7g.2xlarge
+            - db.r7g.4xlarge
+            - db.r7g.8xlarge
+            - db.r7g.12xlarge
+            - db.r7g.16xlarge
+          default: db.t3.medium
+          x-ui-placeholder: "e.g., 'db.t3.medium'"
+          x-ui-error-message: "Please select a valid instance class."
+      
+      required:
+        - instance_count
+        - instance
+  
+  required:
+    - documentdb_version
+    - size
+  
+  x-ui-order:
+    - documentdb_version
+    - size
+
 inputs:
   network_details:
     optional: false
@@ -12,9 +103,10 @@ inputs:
     default:
       resource_type: network
       resource_name: default
+
 sample:
   kind: mongo
-  flavor: documentdb
+  flavor: documentdb-test
   version: '0.1'
   lifecycle: ENVIRONMENT
   disabled: true
@@ -25,4 +117,4 @@ sample:
     documentdb_version: '5.0'
     size:
       instance_count: 0
-      instance: db.r4.large
+      instance: db.t3.medium
