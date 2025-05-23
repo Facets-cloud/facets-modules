@@ -21,7 +21,7 @@
 #######################################################################
 
 locals {
-  spec = lookup(var.instance, "spec", {})
+  spec            = lookup(var.instance, "spec", {})
   service_account = lookup(local.spec, "service_account", null)
 }
 
