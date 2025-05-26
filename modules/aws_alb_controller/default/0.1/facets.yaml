@@ -1,0 +1,46 @@
+intent: aws_alb_controller
+flavor: default
+version: '0.1'
+description: Deploys AWS Load Balancer Controller for managing Application Load Balancers
+  in EKS
+clouds:
+- aws
+inputs:
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: true
+    default:
+      resource_type: configuration
+      resource_name: prometheus
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+spec:
+  title: Spec
+  description: Specification of the AWS Load Balancer Controller Helm chart values
+  type: object
+  x-ui-yaml-editor: true
+  x-ui-placeholder: Enter values in YAML format
+sample:
+  kind: aws_alb_controller
+  flavor: default
+  disabled: true
+  metadata: {}
+  version: '0.1'
+  spec: {}
+iac:
+  validated_files:
+  - variables.tf

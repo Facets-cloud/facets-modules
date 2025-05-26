@@ -8,6 +8,7 @@ spec:
   title: AWS EFS
   type: object
   description: Specification of the AWS EFS resource intent
+  
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_efs/aws_efs.schema.json
   version: '0.1'

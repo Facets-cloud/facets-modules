@@ -1,5 +1,5 @@
 intent: ingress
-flavor: nginx_k8s_native
+flavor: nginx_k8s_native-pa-test
 version: '0.1'
 description: Adds Ingress module
 clouds:
@@ -7,6 +7,20 @@ clouds:
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+outputs:
+  default:
+    type: '@outputs/ingress'
 spec:
   title: Nginx Ingress Controller
   type: object
@@ -29,7 +43,7 @@ spec:
       type: object
       x-ui-overrides-only: true
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           title: Domain Object
           description: Name of the domain object
           properties:
@@ -37,17 +51,19 @@ spec:
               type: string
               title: Domain
               description: Host name of the domain
-              pattern: '^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$'
+              pattern: ^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$
               x-ui-unique: true
-              x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com,
-                my-domain.co.uk"
-              x-ui-error-message: "Value doesn't match the format. Eg: example.com,
-                my-domain.co.uk"
+              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com,
+                my-domain.co.uk'
+              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com,
+                my-domain.co.uk'
             alias:
               type: string
               title: Alias
               description: Alias for the domain
-          required: ["domain", "alias"]
+          required:
+          - domain
+          - alias
           type: object
     rules:
       title: Ingress Rules
@@ -55,7 +71,7 @@ spec:
       x-ui-override-disable: true
       type: object
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           title: Ingress Object
           description: Name of the ingress object
           properties:
@@ -64,13 +80,13 @@ spec:
               title: Service Name
               description: Kubernetes service name
               x-ui-api-source:
-                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                 method: GET
                 params:
                   includeContent: false
                 labelKey: resourceName
                 valueKey: resourceName
-                valueTemplate: "${service.{{value}}.out.attributes.service_name}"
+                valueTemplate: ${service.{{value}}.out.attributes.service_name}
                 filterConditions:
                 - field: resourceType
                   value: service
@@ -80,41 +96,42 @@ spec:
               title: Port
               description: Service port number
               x-ui-api-source:
-                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview"
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview
                 dynamicProperties:
                   serviceName:
                     key: service_name
                     lookup: regex
-                    x-ui-lookup-regex: '\${[^.]+\.([^.]+).*'
+                    x-ui-lookup-regex: \${[^.]+\.([^.]+).*
                 method: GET
                 labelKey: port
                 valueKey: port
                 path: ports
-              x-ui-disable-tooltip: "No Ports Found or Service not selected"
+              x-ui-disable-tooltip: No Ports Found or Service not selected
               x-ui-typeable: true
             path:
               type: string
               title: Path
               description: Path of the application
-              pattern: '^(/[^/]+)*(/)?$'
-              x-ui-placeholder: "Enter path to which your application will be accessible"
-              x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
-              default: '/'
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter path to which your application will be accessible
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /<path>
+                etc'
+              default: /
             domain_prefix:
               type: string
               title: Domain Prefix
               description: Subdomain prefix
-              pattern: '^(?!-)[a-z0-9-]{1,18}(?<!-)$'
-              x-ui-placeholder: "Enter the subdomain you want to expose your application"
-              x-ui-error-message: "Value doesn't match pattern, max characters of
-                20, only hyphen special characters is accepted with numbers and alphabets
-                and should not start or end with hyphen"
+              pattern: ^(?!-)[a-z0-9-]{1,18}(?<!-)$
+              x-ui-placeholder: Enter the subdomain you want to expose your application
+              x-ui-error-message: Value doesn't match pattern, max characters of 20,
+                only hyphen special characters is accepted with numbers and alphabets
+                and should not start or end with hyphen
             annotations:
               type: object
               title: Annotations (Optional)
               description: Add key-value pairs for configuring ingress annotations.
                 Annotations allow you to customize the behavior of your ingress
-              x-ui-error-message: "This is not a valid yaml"
+              x-ui-error-message: This is not a valid yaml
               default: {}
               x-ui-yaml-editor: true
             grpc:
@@ -123,20 +140,32 @@ spec:
               description: Enable/disable GRPC protocol
               x-ui-visible-if:
                 field: spec.grpc
-                values: [false]
-          required: ["service_name", "path", "port"]
+                values:
+                - false
+          required:
+          - service_name
+          - path
+          - port
           type: object
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
-  required: ["private", "rules", "force_ssl_redirection"]
-  x-ui-order: ["basic_auth", "grpc", "private", "domains", "rules", "force_ssl_redirection"]
+  required:
+  - private
+  - rules
+  - force_ssl_redirection
+  x-ui-order:
+  - basic_auth
+  - grpc
+  - private
+  - domains
+  - rules
+  - force_ssl_redirection
 sample:
   kind: ingress
-  flavor: nginx_k8s_native
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
+  flavor: nginx_k8s_native-pa-test
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
   disabled: true
   version: '0.1'
   metadata:
@@ -148,3 +177,6 @@ sample:
     domains: {}
     rules: {}
     force_ssl_redirection: true
+iac:
+  validated_files:
+  - variables.tf

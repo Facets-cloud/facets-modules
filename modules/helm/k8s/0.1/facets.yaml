@@ -10,7 +10,7 @@ clouds:
 inputs:
   prometheus_details:
     type: '@outputs/prometheus'
-    optional: false
+    optional: true
     default:
       resource_type: configuration
       resource_name: prometheus
