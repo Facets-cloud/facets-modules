@@ -1,9 +1,23 @@
 intent: mysql
 flavor: rds
-version: "0.1"
+version: '0.1'
 description: Adds MYSQL module of flavor rds
 clouds:
-  - aws
+- aws
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/mysql'
+imports:
+- name: mysql_master_instance
+  resource_address: module.rds-mysql-master.module.db_instance.aws_db_instance.this[0]
+  required: true
 spec:
   title: RDS
   type: object
@@ -13,10 +27,10 @@ spec:
       title: MySQL Version
       description: Version of MySQL
       minLength: 1
-      x-ui-placeholder: "Ex. 8.0"
+      x-ui-placeholder: Ex. 8.0
       enum:
-        - "8.0"
-        - "5.7"
+      - '8.0'
+      - '5.7'
     size:
       type: object
       title: Size
@@ -32,20 +46,20 @@ spec:
               title: Instance Type
               description: Type of Instance for Reader
               enum:
-                - db.t4g.medium
-                - db.t3.medium
-                - db.t3.small
-                - db.t3.micro
-                - db.t3.large
-                - db.t3.xlarge
-                - db.t3.2xlarge
-                - db.t2.micro
-                - db.t2.small
-                - db.t2.medium
-                - db.t2.large
-              x-ui-placeholder: "Select writer instance type"
+              - db.t4g.medium
+              - db.t3.medium
+              - db.t3.small
+              - db.t3.micro
+              - db.t3.large
+              - db.t3.xlarge
+              - db.t3.2xlarge
+              - db.t2.micro
+              - db.t2.small
+              - db.t2.medium
+              - db.t2.large
+              x-ui-placeholder: Select writer instance type
           required:
-            - instance
+          - instance
         reader:
           type: object
           title: Reader
@@ -56,49 +70,50 @@ spec:
               title: Instance Type
               description: Type of Instance for Reader
               enum:
-                - db.t4g.medium
-                - db.t3.medium
-                - db.t3.small
-                - db.t3.micro
-                - db.t3.large
-                - db.t3.xlarge
-                - db.t3.2xlarge
-                - db.t2.micro
-                - db.t2.small
-                - db.t2.medium
-                - db.t2.large
-              x-ui-placeholder: "Select reader instance type"
+              - db.t4g.medium
+              - db.t3.medium
+              - db.t3.small
+              - db.t3.micro
+              - db.t3.large
+              - db.t3.xlarge
+              - db.t3.2xlarge
+              - db.t2.micro
+              - db.t2.small
+              - db.t2.medium
+              - db.t2.large
+              x-ui-placeholder: Select reader instance type
             instance_count:
               type: integer
               title: Instance Count
               description: Number of Reader Instances
-              x-ui-placeholder: "Enter reader instance count"
-              x-ui-error-message: "Instance count must be a non-negative integer"
+              x-ui-placeholder: Enter reader instance count
+              x-ui-error-message: Instance count must be a non-negative integer
               minimum: 0
               maximum: 20
           required:
-            - instance
+          - instance
     apply_immediately:
       type: boolean
       title: Apply Immediately
-      description: This specifies whether any modifications are applied immediately, or during the next maintenance window. Default is false
+      description: This specifies whether any modifications are applied immediately,
+        or during the next maintenance window. Default is false
   required:
-    - size
-    - mysql_version
+  - size
+  - mysql_version
   x-ui-order:
-    - mysql_version
-    - size
+  - mysql_version
+  - size
 sample:
-  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json"
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json
   kind: mysql
   flavor: rds
-  version: "0.1"
+  version: '0.1'
   disabled: true
   metadata:
     tags:
       managed-by: facets
   spec:
-    mysql_version: "8.0"
+    mysql_version: '8.0'
     apply_immediately: false
     size:
       writer:
@@ -106,3 +121,6 @@ sample:
       reader:
         instance: db.t4g.medium
         instance_count: 0
+iac:
+  validated_files:
+  - variables.tf
