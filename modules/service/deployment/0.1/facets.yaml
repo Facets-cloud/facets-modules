@@ -327,9 +327,9 @@ spec:
               title: Readiness Exec Command
               pattern: '^([^,]+)(,\s*[^,]+)*$'
               x-ui-placeholder: "Enter readiness exec for the Pod, commands are separated
-                by commas"
+                by space"
               x-ui-error-message: "Value doesn't match pattern, commands needs to
-                be comma separated"
+                be space separated"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["ExecCheck"]
@@ -421,13 +421,107 @@ spec:
               title: Liveness Exec Command
               pattern: '^([^,]+)(,\s*[^,]+)*$'
               x-ui-placeholder: "Enter readiness exec for the Pod, commands are separated
-                by commas"
+                by space"
               x-ui-error-message: "Value doesn't match pattern, commands needs to
-                be comma separated"
+                be space separated"
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: ["ExecCheck"]
               description: Commands for liveness
+              items:
+                type: string
+              x-ui-override-disable: true
+            startup_check_type:
+              type: string
+              title: Startup Check Type
+              default: None
+              x-ui-no-sort: true
+              enum:
+              - None
+              - PortCheck
+              - HttpCheck
+              - ExecCheck
+            startup_start_up_time:
+              type: integer
+              title: Startup Start-Up Time
+              default: 10
+              minimum: 0
+              maximum: 10000
+              x-ui-placeholder: "Enter startup start up time for the Pod"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 0-10000"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+              description: Wait time for startup check (in sec)
+            startup_timeout:
+              type: integer
+              title: Startup Timeout
+              default: 10
+              minimum: 0
+              maximum: 10000
+              x-ui-placeholder: "Enter startup timeout for the Pod"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 0-10000"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+              description: Max time for startup (in sec)
+            startup_period:
+              type: integer
+              title: Startup Check Interval
+              default: 10
+              minimum: 0
+              maximum: 10000
+              x-ui-placeholder: "Enter startup period for the Pod"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 0-10000"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+              description: Repeated interval for health-check (in sec)
+            startup_port:
+              type: string
+              title: Startup Port
+              x-ui-placeholder: "Enter startup port for the Pod"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 0-65535"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["PortCheck", "HttpCheck"]
+              description: Port for Health Checks
+              x-ui-dynamic-enum: spec.runtime.ports.*.port
+              x-ui-disable-tooltip: "No Ports Added"
+            startup_url:
+              type: string
+              title: Startup URL
+              pattern: "^(/[^/]+)*(/)?$"
+              x-ui-placeholder: "Enter startup url for the Pod"
+              x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["HttpCheck"]
+              description: URL for startup
+            startup_headers:
+              type: object
+              title: Startup Headers
+              description: Headers to be sent with startup check request
+              x-ui-yaml-editor: true
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["HttpCheck"]  
+            startup_exec_command:
+              type: array
+              title: Startup Exec Command
+              pattern: '^([^,]+)(,\s*[^,]+)*$'
+              x-ui-placeholder: "Enter startup exec for the Pod, commands are separated
+                by space"
+              x-ui-error-message: "Value doesn't match pattern, commands needs to
+                be space separated"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values: ["ExecCheck"]
+              description: Commands for startup check
               items:
                 type: string
               x-ui-override-disable: true
@@ -438,6 +532,9 @@ spec:
           - liveness_port
           - liveness_url
           - liveness_exec_command
+          - startup_port
+          - startup_url
+          - startup_exec_command
         autoscaling:
           type: object
           title: Autoscaling
@@ -1603,6 +1700,80 @@ spec:
                         field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
                         values: ["ExecCheck"]
                       description: Commands for liveness
+                      items:
+                        type: string
+                      x-ui-override-disable: true
+                    startup_check_type:
+                      type: string
+                      title: Startup Check Type
+                      default: None
+                      x-ui-no-sort: true
+                      enum:
+                      - None
+                      - PortCheck
+                      - HttpCheck
+                      - ExecCheck
+                    startup_start_up_time:
+                      type: integer
+                      title: Startup Start-Up Time
+                      default: 10
+                      minimum: 0
+                      maximum: 10000
+                      x-ui-placeholder: "Enter startup start up time for the Pod"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 0-10000"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                      description: Wait time for startup check (in sec)
+                    startup_timeout:
+                      type: integer
+                      title: Startup Timeout
+                      default: 10
+                      minimum: 0
+                      maximum: 10000
+                      x-ui-placeholder: "Enter startup timeout for the Pod"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 0-10000"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                      description: Max time for startup (in sec)
+                    startup_period:
+                      type: integer
+                      title: Startup Check Interval
+                      default: 10
+                      minimum: 0
+                      maximum: 10000
+                      x-ui-placeholder: "Enter startup period for the Pod"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 0-10000"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                      description: Repeated interval for health-check (in sec)
+                    startup_url:
+                      type: string
+                      title: Startup URL
+                      pattern: "^(/[^/]+)*(/)?$"
+                      x-ui-placeholder: "Enter startup url for the Pod"
+                      x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values: ["HttpCheck"]
+                      description: URL for startup
+                    startup_exec_command:
+                      type: array
+                      title: Startup Exec Command
+                      pattern: '^([^,]+)(,\s*[^,]+)*$'
+                      x-ui-placeholder: "Enter startup exec for the Pod, commands
+                        are separated by space"
+                      x-ui-error-message: "Value doesn't match pattern, commands needs
+                        to be space separated"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values: ["ExecCheck"]
+                      description: Commands for startup check
                       items:
                         type: string
                       x-ui-override-disable: true
