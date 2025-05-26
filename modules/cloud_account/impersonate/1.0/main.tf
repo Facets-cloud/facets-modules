@@ -27,9 +27,17 @@ locals {
   region          = lookup(local.spec, "region", "us-central1")
 }
 
-data "google_client_openid_userinfo" "me" {}
+provider "google" {
+  alias   = "controlplane"
+  project = local.project
+  region  = local.region
+}
 
-resource "google_service_account_iam_member" "non-authoritative" {
+data "google_client_openid_userinfo" "me" {
+  provider = google.controlplane
+}
+
+resource "google_service_account_iam_member" "cp-release-permissions" {
   service_account_id = local.service_account
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
