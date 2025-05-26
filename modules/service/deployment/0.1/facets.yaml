@@ -314,6 +314,14 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["HttpCheck"]
               description: URL for readiness
+            readiness_headers:
+              type: object
+              title: Readiness Headers
+              description: Headers to be sent with readiness check request
+              x-ui-yaml-editor: true
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values: ["HttpCheck"]  
             readiness_exec_command:
               type: array
               title: Readiness Exec Command
@@ -400,6 +408,14 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: ["HttpCheck"]
               description: URL for liveness
+            liveness_headers:
+              type: object
+              title: Liveness Headers
+              description: Headers to be sent with liveness check request
+              x-ui-yaml-editor: true
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.liveness_check_type"
+                values: ["HttpCheck"]
             liveness_exec_command:
               type: array
               title: Liveness Exec Command
@@ -486,6 +502,14 @@ spec:
                 field: spec.runtime.health_checks.startup_check_type
                 values: ["HttpCheck"]
               description: URL for startup
+            startup_headers:
+              type: object
+              title: Startup Headers
+              description: Headers to be sent with startup check request
+              x-ui-yaml-editor: true
+              x-ui-visible-if:
+                field: "spec.runtime.health_checks.startup_check_type"
+                values: ["HttpCheck"]
             startup_exec_command:
               type: array
               title: Startup Exec Command
