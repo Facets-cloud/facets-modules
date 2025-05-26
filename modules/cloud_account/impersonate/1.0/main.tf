@@ -23,19 +23,14 @@
 locals {
   spec            = lookup(var.instance, "spec", {})
   service_account = lookup(local.spec, "service_account", null)
+  project         = lookup(local.spec, "project", null)
+  region          = lookup(local.spec, "region", "us-central1")
 }
 
-# provider "google" {
-#   alias = "impersonation"
-#   scopes = [
-#     "https://www.googleapis.com/auth/cloud-platform",
-#     "https://www.googleapis.com/auth/userinfo.email",
-#   ]
-# }
+data "google_client_openid_userinfo" "me" {}
 
-# data "google_service_account_access_token" "default" {
-#   provider               = google.impersonation
-#   target_service_account = local.service_account
-#   scopes                 = ["userinfo-email", "cloud-platform"]
-#   lifetime               = "1800s"
-# }
+resource "google_service_account_iam_member" "non-authoritative" {
+  service_account_id = local.service_account
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
+}
