@@ -4,7 +4,7 @@
 
 This module manages network configurations for Azure Virtual Networks (VNet), providing options to create a new VNet or use an existing one. It supports configuring availability zones and CIDR blocks within Azure cloud environments.
 
-## Confi
+## Configurability
 
 - **choose_vpc_type** (radio)  
   Select whether to create a new VNet or use an existing VNet.  
