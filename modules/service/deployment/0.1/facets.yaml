@@ -315,21 +315,9 @@ spec:
                 values: ["HttpCheck"]
               description: URL for readiness
             readiness_headers:
-              type: array
+              type: object
               title: Readiness Headers
               description: Headers to be sent with readiness check request
-              items:
-                type: object
-                required:
-                  - name
-                  - value
-                properties:
-                  name:
-                    type: string
-                    title: Header Name
-                  value:
-                    type: string
-                    title: Header Value
               x-ui-yaml-editor: true
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
