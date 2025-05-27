@@ -1,12 +1,23 @@
 intent: kubernetes_secret
-flavor: k8s
+flavor: k8s-pa-test
 version: '0.3'
-description: "kubernetes_secret - k8s"
+description: kubernetes_secret - k8s
 clouds:
 - aws
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   type: object
   properties:
@@ -15,7 +26,7 @@ spec:
       type: object
       description: Data objects containing key, value pair
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           title: Data Object Block
           description: something
           type: object
@@ -30,12 +41,14 @@ spec:
               type: string
               x-ui-textarea: true
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
   kind: kubernetes_secret
   disabled: true
-  flavor: k8s
+  flavor: k8s-pa-test
   version: '0.3'
   metadata: {}
   spec:
     data: {}
+iac:
+  validated_files:
+  - variables.tf
