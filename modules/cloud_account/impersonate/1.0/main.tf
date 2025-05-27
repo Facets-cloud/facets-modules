@@ -26,32 +26,3 @@ locals {
   project         = lookup(local.spec, "project", null)
   region          = lookup(local.spec, "region", "us-central1")
 }
-
-provider "google" {
-  alias   = "controlplane"
-  project = local.project
-  region  = local.region
-}
-
-provider "google" {
-  alias       = "impersonate"
-  project     = local.project
-  region      = local.region
-  credentials = file("/gcp-credentials.json")
-}
-
-data "google_service_account" "user_service_account" {
-  provider   = google.impersonate
-  account_id = local.service_account
-}
-
-data "google_client_openid_userinfo" "me" {
-  provider = google.controlplane
-}
-
-resource "google_service_account_iam_member" "cp-release-permissions" {
-  provider           = google.impersonate
-  service_account_id = data.google_service_account.user_service_account.name
-  role               = "roles/iam.serviceAccountTokenCreator"
-  member             = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
-}
