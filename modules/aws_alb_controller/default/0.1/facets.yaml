@@ -32,8 +32,13 @@ spec:
   title: Spec
   description: Specification of the AWS Load Balancer Controller Helm chart values
   type: object
-  x-ui-yaml-editor: true
-  x-ui-placeholder: Enter values in YAML format
+  properties:
+    aws_alb_controller:
+      title: AWS ALB Controller
+      description: Specification of the AWS Load Balancer Controller Helm chart values
+      type: object
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter values in YAML format
 sample:
   kind: aws_alb_controller
   flavor: default
