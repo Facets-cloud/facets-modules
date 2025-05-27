@@ -13,6 +13,6 @@ variable "inputs" {
 }
 
 variable "environment" {
-  type = any
+  type    = any
   default = {}
 }

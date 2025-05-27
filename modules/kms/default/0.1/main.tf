@@ -4,7 +4,7 @@ data "aws_region" "current" {}
 
 
 module "kms" {
-  source                                 = "http://github.com/Facets-cloud/facets-utility-modules//name"
+  source                                 = "./terraform-aws-kms-master"
   tags                                   = local.tags
   create_external                        = lookup(local.spec, "create_external", false)
   bypass_policy_lockout_safety_check     = lookup(local.spec, "bypass_policy_lockout_safety_check", null)
