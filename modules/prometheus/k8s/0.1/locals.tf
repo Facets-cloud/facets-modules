@@ -1,6 +1,5 @@
 locals {
-  spec     = lookup(var.instance, "spec", {})
-  metadata = lookup(var.instance, "metadata", {})
+  spec = lookup(var.instance, "spec", {})
 
   prometheusOperatorSpec = lookup(local.spec, "operator", {
     "enabled" = true
@@ -53,7 +52,7 @@ locals {
   })
 
   grafanaSpec = lookup(local.spec, "grafana", {
-    "enabled" = true
+    "enabled" = false
     "size" = {
       "resources" = {
         "requests" = {
@@ -69,7 +68,7 @@ locals {
   })
 
   kubeStateMetricsSpec = lookup(local.spec, "kube-state-metrics", {
-    "enabled" = true
+    "enabled" = false
     "size" = {
       "resources" = {
         "requests" = {
@@ -97,7 +96,7 @@ locals {
     for label in values(lookup(local.spec, "node_selector", {})) :
     label.key => label.value
   }
-  namespace = lookup(local.metadata, "namespace", var.environment.namespace)
+  namespace = lookup(local.spec, "namespace", var.environment.namespace)
 
   # Default values for the helm chart
   default_values = {
@@ -106,7 +105,7 @@ locals {
     crds = {
       enabled = lookup(local.spec, "enable_crds", true)
       upgradeJob = {
-        enabled = true
+        enabled = lookup(local.spec, "upgrade_job", true)
       }
     }
     defaultRules = {
@@ -213,8 +212,8 @@ locals {
             memory = lookup(local.alertmanagerSpec.size.resources.requests, "memory", "2Gi")
           }
           limits = {
-            cpu    = lookup(local.alertmanagerSpec.size.resources.limits, "cpu", "1000m")
-            memory = lookup(local.alertmanagerSpec.size.resources.limits, "memory", "2Gi")
+            cpu    = lookup(local.alertmanagerSpec.size.resources.limits, "cpu", lookup(local.alertmanagerSpec.size.resources.requests, "cpu", "1000m"))
+            memory = lookup(local.alertmanagerSpec.size.resources.limits, "memory", lookup(local.alertmanagerSpec.size.resources.requests, "memory", "2Gi"))
           }
         }
         nodeSelector = local.nodeSelector
@@ -254,7 +253,7 @@ locals {
       }
     }
     grafana = {
-      enabled = lookup(local.grafanaSpec, "enabled", true)
+      enabled = lookup(local.grafanaSpec, "enabled", false)
       image = {
         tag = "9.2.15"
       }
@@ -305,6 +304,20 @@ locals {
         nodeSelector = local.nodeSelector
         tolerations  = local.tolerations
       }
+      additionalDataSources = concat([
+        {
+          name      = "Prometheus"
+          type      = "prometheus"
+          uid       = "prometheus"
+          url       = "http://${module.name.name}-prometheus.${local.namespace}.svc.cluster.local:9090"
+          access    = "proxy"
+          isDefault = true
+          jsonData = {
+            timeInterval = "30s"
+            timeout      = 600
+          }
+        }
+      ], lookup(local.grafanaSpec, "additionalDataSources", []))
       # priorityClassName = "facets-critical"
     }
     "kube-state-metrics" = {
@@ -318,7 +331,8 @@ locals {
         "statefulsets", "storageclasses", "validatingwebhookconfigurations", "volumeattachments"
       ], lookup(local.kubeStateMetricsSpec, "collectors", [])))
       extraArgs = [
-        "--metric-labels-allowlist=pods=[*],nodes=[*],ingresses=[*]"
+        "--metric-labels-allowlist=pods=[*],nodes=[*],ingresses=[*]",
+        "--resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments"
       ]
       # priorityClassName = "facets-critical"
       nodeSelector = local.nodeSelector

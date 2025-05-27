@@ -1,7 +1,7 @@
 # Create PVC for Prometheus
 module "prometheus-pvc" {
   source          = "github.com/Facets-cloud/facets-utility-modules//pvc"
-  name            = "${module.name.name}-db-0"
+  name            = "pvc-prometheus-${module.name.name}-0"
   namespace       = local.namespace
   access_modes    = ["ReadWriteOnce"]
   volume_size     = lookup(local.prometheusSpec.size, "volume", "100Gi")
@@ -14,7 +14,7 @@ module "prometheus-pvc" {
 # Create PVC for Alertmanager
 module "alertmanager-pvc" {
   source          = "github.com/Facets-cloud/facets-utility-modules//pvc"
-  name            = "${module.name.name}-alertmanager-db-0"
+  name            = "pvc-alertmanager-${module.name.name}-0"
   namespace       = local.namespace
   access_modes    = ["ReadWriteOnce"]
   volume_size     = lookup(local.alertmanagerSpec.size, "volume", "10Gi")
