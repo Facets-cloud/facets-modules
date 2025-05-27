@@ -27,8 +27,14 @@ locals {
   region          = lookup(local.spec, "region", "us-central1")
 }
 
+provider "google" {
+  alias   = "controlplane"
+  project = local.project
+  region  = local.region
+}
+
 data "google_service_account" "user_service_account" {
-  provider = google.controlplane
+  provider   = google.controlplane
   account_id = local.service_account
 }
 
