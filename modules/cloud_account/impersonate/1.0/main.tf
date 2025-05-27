@@ -34,7 +34,6 @@ provider "google" {
 }
 
 data "google_service_account" "user_service_account" {
-  provider   = google.controlplane
   account_id = local.service_account
 }
 
@@ -43,7 +42,6 @@ data "google_client_openid_userinfo" "me" {
 }
 
 resource "google_service_account_iam_member" "cp-release-permissions" {
-  provider           = google.controlplane
   service_account_id = data.google_service_account.user_service_account.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
