@@ -20,5 +20,5 @@ sample:
   metadata: {}
   flavor: default
   spec:
-    name: "sample-event-bus"
+    name: sample-event-bus
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_event_bus/aws_event_bus.schema.json
