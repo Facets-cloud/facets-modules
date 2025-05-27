@@ -41,12 +41,12 @@ resource "helm_release" "prometheus-operator" {
             storageSpec = {
               volumeClaimTemplate = {
                 metadata = {
-                  name = "${module.name.name}-db-0"
+                  name = "pvc"
                 }
                 spec = {
                   # Use existing PVC
                   # volumeName  = module.prometheus-pvc.pvc_name
-                  volumeName  = "${module.name.name}-db-0"
+                  volumeName  = "pvc"
                   accessModes = ["ReadWriteOnce"]
                   resources = {
                     requests = {
@@ -63,12 +63,12 @@ resource "helm_release" "prometheus-operator" {
             storage = {
               volumeClaimTemplate = {
                 metadata = {
-                  name = "${module.name.name}-alertmanager-db-0"
+                  name = "pvc"
                 }
                 spec = {
                   # Use existing PVC
                   # volumeName  = module.alertmanager-pvc.pvc_name
-                  volumeName  = "${module.name.name}-alertmanager-db-0"
+                  volumeName  = "pvc"
                   accessModes = ["ReadWriteOnce"]
                   resources = {
                     requests = {
@@ -79,7 +79,10 @@ resource "helm_release" "prometheus-operator" {
               }
             }
           }
-        }
+        },
+        kube-state-metrics = {
+          enabled = true
+        },
       },
       # Add service account config for IRSA if enabled
       local.service_account_config,
@@ -113,7 +116,7 @@ resource "helm_release" "prometheus-pushgateway" {
       }
       serviceMonitor = {
         enabled   = true
-        namespace = "default"
+        namespace = local.namespace
       }
       priorityClassName = "facets-critical"
       nodeSelector      = local.nodeSelector
