@@ -1,4 +1,4 @@
-# AWS IAM Role – Default Flavor (v0.1)
+# AWS IAM Role Module
 
 ## Overview
 
