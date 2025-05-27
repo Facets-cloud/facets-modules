@@ -31,6 +31,7 @@ data "google_service_account" "user_service_account" {
   provider = google.controlplane
   account_id = local.service_account
 }
+
 data "google_client_openid_userinfo" "me" {
   provider = google.controlplane
 }

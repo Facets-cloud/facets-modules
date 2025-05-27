@@ -73,7 +73,7 @@ spec:
   - region
 outputs:
   default:
-    type: '@outputs/gcp_cloud_account'
+    type: '@outputs/cloud_account'
     providers:
       google-beta:
         source: hashicorp/google-beta
