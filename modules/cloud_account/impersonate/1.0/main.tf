@@ -27,18 +27,17 @@ locals {
   region          = lookup(local.spec, "region", "us-central1")
 }
 
-provider "google" {
-  alias   = "controlplane"
-  project = local.project
-  region  = local.region
+data "google_service_account" "user_service_account" {
+  provider = google.controlplane
+  account_id = local.service_account
 }
-
 data "google_client_openid_userinfo" "me" {
   provider = google.controlplane
 }
 
 resource "google_service_account_iam_member" "cp-release-permissions" {
-  service_account_id = local.service_account
+  provider           = google.controlplane
+  service_account_id = data.google_service_account.user_service_account.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${data.google_client_openid_userinfo.me.email}"
 }
