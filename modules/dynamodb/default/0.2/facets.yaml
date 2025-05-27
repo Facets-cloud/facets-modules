@@ -4,7 +4,39 @@ version: '0.2'
 description: Adds dynamodb - default flavor
 clouds:
 - aws
-- aws
+spec:
+  type: object
+  properties:
+    hash_key:
+      type: string
+      title: Hash Key (Partition Key)
+      description: The attribute name to use as the hash (partition) key for the table
+      default: id
+    range_key:
+      type: string
+      title: Range Key (Sort Key)
+      description: Optional attribute name to use as the range (sort) key for the
+        table
+    billing_mode:
+      type: string
+      title: Billing Mode
+      description: Controls how you are charged for read and write throughput
+      enum:
+      - PAY_PER_REQUEST
+      - PROVISIONED
+      default: PAY_PER_REQUEST
+    point_in_time_recovery_enabled:
+      type: boolean
+      title: Point-in-Time Recovery
+      description: Enable point-in-time recovery for continuous backups
+      default: false
+    server_side_encryption_enabled:
+      type: boolean
+      title: Server-Side Encryption
+      description: Enable server-side encryption for data at rest
+      default: false
+  required:
+  - hash_key
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/dynamodb/dynamodb.schema.json
   kind: dynamodb
@@ -13,8 +45,7 @@ sample:
   disabled: true
   metadata: {}
   spec:
-    attributes:
-      key1:
-        name: LockID
-        type: S
     hash_key: LockID
+iac:
+  validated_files:
+  - variables.tf
