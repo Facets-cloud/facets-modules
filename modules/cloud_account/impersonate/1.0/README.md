@@ -28,6 +28,7 @@ module "gcp_impersonation" {
   spec = {
     service_account = "terraform@your-project-id.iam.gserviceaccount.com"
     project         = "your-project-id"
+    region          = "us-central1"
   }
 }
 ```
@@ -38,6 +39,7 @@ module "gcp_impersonation" {
 |-----------|-------------|----------|--------|
 | `service_account` | The email address of the service account to impersonate | Yes | Must match the pattern of a valid GCP service account email |
 | `project` | The GCP project ID | Yes | Must match the pattern of a valid GCP project ID |
+| `region` | The GCP region | No | Must match the pattern of a valid GCP region |
 
 ## Outputs
 
@@ -47,6 +49,7 @@ The module outputs access tokens that can be used with Google Cloud providers:
 |--------|-------------|
 | `project` | The GCP project ID |
 | `service_account` | The email address of the impersonated service account |
+| `region` | The GCP region |
 
 ## Provider Configuration
 
