@@ -104,8 +104,8 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = local.s3_name
 
   topic {
-    topic_arn = module.sns.topic_arn
-    events    = local.s3_events
+    topic_arn     = module.sns.topic_arn
+    events        = local.s3_events
     filter_prefix = local.s3_filter_prefix
     filter_suffix = local.s3_filter_suffix
   }

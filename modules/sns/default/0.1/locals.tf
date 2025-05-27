@@ -38,6 +38,6 @@ locals {
   s3_name           = lookup(local.s3_triggers, "name", null)
   s3_arn            = lookup(local.s3_triggers, "arn", null)
   s3_events         = lookup(local.s3_triggers, "events", [])
-  s3_filter_prefix = lookup(local.s3_triggers, "filter_prefix", null)
-  s3_filter_suffix = lookup(local.s3_triggers, "filter_suffix", null)
+  s3_filter_prefix  = lookup(local.s3_triggers, "filter_prefix", null)
+  s3_filter_suffix  = lookup(local.s3_triggers, "filter_suffix", null)
 }
