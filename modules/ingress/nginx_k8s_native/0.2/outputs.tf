@@ -2,9 +2,24 @@ locals {
   username        = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? "${var.instance_name}user" : ""
   password        = lookup(var.instance.spec, "basicAuth", lookup(var.instance.spec, "basic_auth", false)) ? random_string.basic-auth-pass[0].result : ""
   is_auth_enabled = length(local.username) > 0 && length(local.password) > 0 ? true : false
-  output_attributes = {
-    base_domain = local.base_domain
-  }
+  output_attributes = merge(
+    {
+      # Always include base_domain for backward compatibility, but it might not be used
+      base_domain = local.base_domain
+      # Load balancer DNS information
+      loadbalancer_dns = try(data.kubernetes_service.nginx-ingress-ctlr.status.0.load_balancer.0.ingress.0.hostname,
+                            data.kubernetes_service.nginx-ingress-ctlr.status.0.load_balancer.0.ingress.0.ip,
+                            null)
+      loadbalancer_hostname = try(data.kubernetes_service.nginx-ingress-ctlr.status.0.load_balancer.0.ingress.0.hostname, null)
+      loadbalancer_ip = try(data.kubernetes_service.nginx-ingress-ctlr.status.0.load_balancer.0.ingress.0.ip, null)
+    },
+    # Only include base_domain_enabled if base domain is not disabled
+    !lookup(var.instance.spec, "disable_base_domain", false) ? {
+      base_domain_enabled = true
+    } : {
+      base_domain_enabled = false
+    }
+  )
   output_interfaces = {
     for rule_key, rule in local.ingressObjectsFiltered : rule_key => {
       connection_string = local.is_auth_enabled ? "https://${local.username}:${local.password}@${lookup(rule, "domain_prefix", null) == null || lookup(rule, "domain_prefix", null) == "" ? "${rule.domain}" : "${lookup(rule, "domain_prefix", null)}.${rule.domain}"}" : "https://${lookup(rule, "domain_prefix", null) == null || lookup(rule, "domain_prefix", null) == "" ? "${rule.domain}" : "${lookup(rule, "domain_prefix", null)}.${rule.domain}"}"
@@ -19,9 +34,11 @@ locals {
 
 
 output "domains" {
-  value = concat([
-    local.base_domain
-  ], [for d in lookup(var.instance.spec, "domains", []) : d.domain])
+  value = concat(
+    # Only include base domain if not disabled
+    !lookup(var.instance.spec, "disable_base_domain", false) ? [local.base_domain] : [],
+    [for d in lookup(var.instance.spec, "domains", []) : d.domain]
+  )
 }
 
 output "nginx_k8s" {
@@ -32,11 +49,11 @@ output "nginx_k8s" {
 }
 
 output "domain" {
-  value = local.base_domain
+  value = !lookup(var.instance.spec, "disable_base_domain", false) ? local.base_domain : null
 }
 
 output "secure_endpoint" {
-  value = "https://${local.base_domain}"
+  value = !lookup(var.instance.spec, "disable_base_domain", false) ? "https://${local.base_domain}" : null
 }
 
 output "ingress_annotations" {
@@ -44,7 +61,7 @@ output "ingress_annotations" {
 }
 
 output "subdomain" {
-  value = {
+  value = !lookup(var.instance.spec, "disable_base_domain", false) ? {
     (var.instance_name) = merge(
       {
         for s in try(var.instance.spec.subdomains, []) :
@@ -55,7 +72,7 @@ output "subdomain" {
         "${s}.secure_endpoint" => "https://${s}.${local.base_domain}"
       }
     )
-  }
+  } : {}
 }
 
 output "ingress_class" {
