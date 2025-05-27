@@ -22,8 +22,8 @@ locals {
   base_domain                = lower("${local.check_domain_prefix}.${var.cc_metadata.tenant_base_domain}") # domains are to be always lowercase
   base_subdomain             = "*.${local.base_domain}"
   dns_validation_secret_name = lower("nginx-ingress-cert-${var.instance_name}")
-  # Append base domain to the list of domains from json file
-  add_base_domain = {
+  # Conditionally append base domain to the list of domains from json file
+  add_base_domain = lookup(var.instance.spec, "disable_base_domain", false) ? {} : {
     "facets" = {
       "domain"                = "${local.base_domain}"
       "alias"                 = "base"
@@ -434,7 +434,7 @@ data "kubernetes_service" "nginx-ingress-ctlr" {
 }
 
 resource "aws_route53_record" "cluster-base-domain" {
-  count = local.tenant_provider == "aws" ? 1 : 0
+  count = local.tenant_provider == "aws" && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
   depends_on = [
     helm_release.nginx_ingress_ctlr
   ]
@@ -452,7 +452,7 @@ resource "aws_route53_record" "cluster-base-domain" {
   }
 }
 resource "aws_route53_record" "cluster-base-domain-wildcard" {
-  count = local.tenant_provider == "aws" ? 1 : 0
+  count = local.tenant_provider == "aws" && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
   depends_on = [
     helm_release.nginx_ingress_ctlr
   ]
@@ -902,19 +902,31 @@ output "legacy_resource_details" {
       resource_name = var.instance_name
       key           = var.instance_name
     }] : [],
-    [{
+    # Only include base domain if not disabled
+    !lookup(var.instance.spec, "disable_base_domain", false) ? [{
       name          = "Base Domain"
       value         = local.base_domain
       resource_type = "ingress"
       resource_name = var.instance_name
       key           = var.instance_name
       }
-      ], [for k, v in var.instance.spec.rules : {
-        name          = "ingress domain"
-        value         = lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? "${local.base_domain}" : "${lookup(v, "domain_prefix", null)}.${local.base_domain}"
-        resource_type = "ingress_rules_infra"
-        resource_name = k
-        key           = k
+      ] : [],
+    [for k, v in var.instance.spec.rules : {
+      name          = "ingress domain"
+      # Use rule's domain if base domain is disabled, otherwise use base domain logic
+      value         = lookup(v, "disable", false) == false ? (
+        !lookup(var.instance.spec, "disable_base_domain", false) ? (
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? "${local.base_domain}" : "${lookup(v, "domain_prefix", null)}.${local.base_domain}"
+        ) : (
+          # When base domain is disabled, we need to use the domain from the rule's domain configuration
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
+          lookup(lookup(local.domains, lookup(v, "domain_key", ""), {}), "domain", "no-domain-configured") :
+          "${lookup(v, "domain_prefix", null)}.${lookup(lookup(local.domains, lookup(v, "domain_key", ""), {}), "domain", "no-domain-configured")}"
+        )
+      ) : ""
+      resource_type = "ingress_rules_infra"
+      resource_name = k
+      key           = k
     } if lookup(v, "disable", false) == false]
   )
 }

@@ -30,6 +30,11 @@ spec:
       type: boolean
       title: Private
       description: Set load balancer as private
+    disable_base_domain:
+      type: boolean
+      title: Disable Base Domain
+      description: Disable automatic creation of base domain for this ingress
+      default: false
     domains:
       title: Domains
       description: Map of domain key to rules
@@ -652,6 +657,7 @@ spec:
   - basic_auth
   - grpc
   - private
+  - disable_base_domain
   - domains
   - more_set_headers
   - rules
@@ -670,6 +676,7 @@ sample:
     private: false
     basic_auth: false
     grpc: false
+    disable_base_domain: false
     domains: {}
     rules: {}
     force_ssl_redirection: true
