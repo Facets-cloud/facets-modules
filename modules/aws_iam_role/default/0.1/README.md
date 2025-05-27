@@ -4,7 +4,7 @@
 
 The `aws_iam_role - default` flavor (v0.1) enables the creation and management of AWS IAM roles. This module provides configuration options for defining the characteristics and behavior of the IAM roles.
 
-Supported platforms:
+Supported clouds:
 - AWS
 
 ## Configurability
