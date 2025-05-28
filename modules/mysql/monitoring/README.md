@@ -1,45 +1,41 @@
-# MySQL Monitoring Kubernetes Flavor Documentation
+# MySQL Monitoring Module (K8s Flavor)
 
 ## Overview
 
-The `mysql_monitoring - k8s` flavor adds monitoring capabilities to MySQL deployments running on Kubernetes clusters. It supports alerting on key MySQL operational metrics such as availability, connection saturation, and restarts. This flavor is compatible with AWS, Azure, GCP, and generic Kubernetes environments.
+The `mysql_monitoring - k8s` flavor (v0.1) enables comprehensive monitoring and alerting capabilities for MySQL instances running in Kubernetes environments. This module provides predefined alert rules for common MySQL health and performance conditions, helping ensure database reliability and operational visibility.
+
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### Alerts Configuration
+- **MySQL Down Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert (format: duration like '1m5s')
+  - **Severity**: Alert severity level (critical, warning)
 
-Define alert rules with customizable severity, intervals, and thresholds:
+- **MySQL Too Many Connections Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
+  - **Threshold**: Percentage of maximum connections (0-100%) at which alert triggers
 
-- **MySQL Down**
-  - **Disabled**: Toggle alert on/off
-  - **Interval**: Duration before triggering alert (e.g., `1m5s`)
-  - **Severity**: `critical` or `warning`
-
-- **MySQL Too Many Connections**
-  - **Disabled**: Toggle alert on/off
-  - **Interval**: Duration before triggering alert (e.g., `1m5s`)
-  - **Severity**: `critical` or `warning`
-  - **Threshold**: Percentage of max MySQL connections to trigger alert (0–100)
-
-- **MySQL Restarted**
-  - **Disabled**: Toggle alert on/off
-  - **Interval**: Duration before triggering alert (e.g., `1m5s`)
-  - **Severity**: `critical` or `warning`
-
-### Cloud Providers
-
-Compatible with:
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes (Generic)**
+- **MySQL Restarted Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
 
 ## Usage
 
-To effectively monitor your MySQL Kubernetes deployment, configure alerting rules tailored to your operational needs. Enable or disable specific alerts based on the criticality of the condition for your environment.
+Use this module to implement comprehensive monitoring and alerting for MySQL deployments in Kubernetes. It is especially useful for:
 
-- Set appropriate intervals to balance timely detection with alert noise.
-- Choose severity levels to categorize alerts for escalation or automated remediation workflows.
-- Use thresholds for connection limits to catch saturation early before it impacts application performance.
-
-This monitoring flavor integrates seamlessly with Kubernetes-native alerting and monitoring tools, allowing you to incorporate these alerts into your existing observability stack. By leveraging these alert configurations, you can proactively maintain MySQL availability, performance, and reliability within your cloud or on-prem Kubernetes clusters.
+- Monitoring MySQL availability and detecting service outages or downtime
+- Tracking connection usage and preventing connection pool exhaustion
+- Detecting unexpected MySQL restarts and service interruptions
+- Implementing proactive database health monitoring and incident response
+- Supporting production MySQL deployments with automated alerting capabilities
+- Enabling operational visibility into MySQL performance and stability
+- Supporting database reliability engineering practices with customizable alert thresholds
