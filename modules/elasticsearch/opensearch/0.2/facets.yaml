@@ -214,7 +214,7 @@ spec:
                 values: ["basic_auth"]
             autogenerate_master_password:
               type: boolean
-              title: Autogenerate Master Password
+              title: Autogenerate Master Password  
               description: Automatically generate and use a password for the Master User
               x-ui-visible-if:
                 field: spec.advanced_security_options.auth_type
@@ -554,6 +554,6 @@ sample:
     size:
       instance: c6g.large.search
       instance_count: 2
-      volume: 100
+      volume: "100"  # Fixed: Changed from integer 100 to string "100"
   version: "0.2"
   disabled: true
