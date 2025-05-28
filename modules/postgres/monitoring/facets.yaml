@@ -15,6 +15,22 @@ spec:
   title: Postgres Monitoring
   type: object
   properties:
+    exporter:
+      type: object
+      title: Exporter
+      description: Exporter configuration
+      properties:
+        disabled:
+          type: boolean
+          title: Disabled
+          description: Disable or Enable Exporter
+        include_databases:
+          type: array
+          title: Include Databases
+          description: List of databases to include in monitoring
+          x-ui-override-disable: true
+          items:
+            type: string
     alerts:
       type: object
       title: Alerts
@@ -33,7 +49,7 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              pattern: '^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$'
               x-ui-placeholder: "eg. 1m5s"
               x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
@@ -53,7 +69,7 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              pattern: '^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$'
               x-ui-placeholder: "eg. 1m5s"
               x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
@@ -77,7 +93,7 @@ spec:
               type: string
               title: Interval
               description: The duration an alert condition must persist before the alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              pattern: '^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$'
               x-ui-placeholder: "eg. 1m5s"
               x-ui-error-message: The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
             severity:
@@ -109,7 +125,7 @@ sample:
         disabled: false
         interval: 5m
         severity: critical
-        threshold: 90
+        threshold: "90"
       postgresql_too_many_connections:
         disabled: false
         interval: 5m
