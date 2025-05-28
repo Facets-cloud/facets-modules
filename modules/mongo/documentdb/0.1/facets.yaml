@@ -5,12 +5,6 @@ description: Adds mongo - documentdb flavor
 clouds:
 - aws
 - AWS
-intent: documentdb
-flavor: aws
-version: '0.1'
-description: Adds Amazon DocumentDB cluster - AWS flavor
-clouds:
-- aws
 spec:
   title: DocumentDB Configuration
   type: object
