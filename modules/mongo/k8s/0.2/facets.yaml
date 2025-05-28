@@ -1,12 +1,21 @@
 intent: mongo
 flavor: k8s
-version: '0.2'
+version: "0.2"
 description: Adds mongo - k8s flavor
 clouds:
-- gcp
-- kubernetes
-- azure
-- aws
+  - gcp
+  - kubernetes
+  - azure
+  - aws
+metadata:
+  title: Metadata of MongoDB
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace
+      description: Namespace in which MongoDB should be deployed
+      default: default
 spec:
   title: K8s
   type: object
@@ -111,16 +120,18 @@ spec:
     - size
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo/mongo.schema.json
-  version: '0.2'
+  version: "0.2"
   flavor: k8s
   kind: mongo
   disabled: true
   metadata: {}
   spec:
     authenticated: true
-    mongodb_version: 6.0.2
+    mongodb_version: "6.0.13"
     size:
-      cpu: 2001m
-      memory: 900MiB
-      volume: 8G
+      cpu: "2"
+      memory: "900Mi"
+      cpu_limit: "2"
+      memory_limit: "1Gi"
+      volume: "8Gi"
       instance_count: 3
