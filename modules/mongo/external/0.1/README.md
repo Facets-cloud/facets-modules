@@ -1,46 +1,29 @@
-# MongoDB External Flavor Documentation (v0.1)
+# MongoDB Module (External Flavor)
 
 ## Overview
 
-The `mongo - external` flavor (v0.1) is designed for integrating with an **externally managed MongoDB instance**, rather than provisioning a new cluster. This allows connection to MongoDB databases hosted outside the platform—such as self-managed clusters or third-party hosted MongoDB services.
+The `mongo - external` flavor (v0.1) enables the integration with existing external MongoDB instances across multiple cloud and Kubernetes environments. This module provides a way to connect to and manage external MongoDB databases that are hosted outside of your current infrastructure setup.
 
-This flavor is compatible with deployments across **AWS**, **Azure**, **GCP**, and **Kubernetes** environments.
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### Specification
-
-- **connection_string** (`string`, required):  
-  The full MongoDB URI including protocol (e.g., `mongodb://username:password@host:port/db`).  
-  This is the primary connection method.
-
-- **endpoint** (`string`, required):  
-  The MongoDB endpoint (hostname or IP address) for monitoring or compatibility use.
-
-- **username** (`string`, optional):  
-  Username for authenticating with the MongoDB instance.
-
-- **password** (`string`, optional):  
-  Password for authenticating with the MongoDB instance.
-
-> ✅ Use either the individual `username`, `password`, and `endpoint` fields for granular control, or rely entirely on `connection_string`.
+- **Endpoint**: MongoDB endpoint URL used to connect to the external MongoDB instance (required)
+- **Username**: MongoDB username for authentication with the external instance
+- **Password**: MongoDB password for authentication with the external instance  
+- **Connection String**: Complete MongoDB connection string with protocol for connecting to the external instance (required)
 
 ## Usage
 
-Use this flavor when:
+Use this module to integrate with external MongoDB databases that are managed outside your current infrastructure. It is especially useful for:
 
-- Connecting to a **pre-existing MongoDB** instance managed outside the system.
-- Integrating with **MongoDB-as-a-Service** solutions like MongoDB Atlas or other cloud vendors.
-- Avoiding the overhead of managing infrastructure for MongoDB deployments.
-
-Ensure that:
-
-- The connection string provided has correct network and authentication details.
-- The external database is accessible from the deployment environment.
-
-## Cloud Providers
-
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes**
+- Connecting to existing MongoDB instances hosted on external cloud providers
+- Integrating with legacy MongoDB deployments during migration phases
+- Accessing shared MongoDB services across different environments or teams
+- Supporting hybrid cloud architectures with external database dependencies
+- Enabling applications to connect to MongoDB instances managed by third-party providers
+- Facilitating database connections in multi-tenant or multi-environment setups
