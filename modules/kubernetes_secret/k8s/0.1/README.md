@@ -1,43 +1,24 @@
-# Kubernetes Secret – K8s Flavor (v0.1)
+# Kubernetes Secret Module (K8s Flavor)
 
 ## Overview
 
-The `kubernetes_secret - k8s` flavor (v0.1) enables the creation and management of Kubernetes secrets across various cloud environments. This module provides a way to securely store and manage sensitive information such as passwords, tokens, and keys.
+The `kubernetes_secret - k8s` flavor (v0.1) enables the creation and management of Kubernetes secrets across multiple cloud environments. This module provides a standardized way to define and deploy sensitive data such as passwords, OAuth tokens, SSH keys, and other confidential information within Kubernetes clusters.
 
-Supported platforms:
-- AWS  
-- Azure  
-- GCP  
+Supported clouds:
+- AWS
+- Azure
+- GCP
 - Kubernetes
 
 ## Configurability
 
-### Spec
-
-#### `type` (`string`)
-
-Type of the Kubernetes Secret Configuration.
-
-#### `properties` (`object`)
-
-Configuration properties for the Kubernetes secret.
-
-##### `data` (object)
-
-Provides key-value pairs for the secret.
-
-- **Title**: Data
-- **Type**: `object`
-- **Description**: "Enter a valid key-value pair for secret in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
-- **UI YAML Editor**: `true`
-- **UI Placeholder**: "Enter the value of the secret. Eg. key: secret_value"
-
----
+- **Data**: Key-value pairs for secret data in YAML format. Enter valid key-value pairs where each key represents the secret name and the corresponding value contains the sensitive data. Use proper YAML formatting with spaces after colons (e.g., `key: secret_value`).
 
 ## Usage
 
-Use this module to create and manage Kubernetes secrets across various cloud environments. It is especially useful for:
+Use this module to create and manage Kubernetes secrets for storing sensitive information securely within your Kubernetes clusters. It is especially useful for:
 
-- Securely storing sensitive information
-- Managing passwords, tokens, and keys
-- Enhancing security and compliance
+- Storing and managing sensitive configuration data like API keys, passwords, and certificates
+- Providing secure access to confidential information for applications running in Kubernetes
+- Maintaining consistent secret management practices across multi-cloud Kubernetes deployments
+- Enabling secure configuration injection into pods and containers
