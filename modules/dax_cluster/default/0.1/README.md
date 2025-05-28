@@ -1,22 +1,20 @@
-# DAX Cluster Module
+# DAX Cluster - Default Flavor
 
-This module creates an Amazon DynamoDB Accelerator (DAX) cluster on AWS, including the necessary IAM roles, security groups, parameter groups, and subnet groups. It is designed to be used within the Facets framework, providing a powerful and efficient caching solution for DynamoDB.
+## Overview
 
-## Functionality
-
-- Creates a DAX cluster with specified configurations.
-- Configures IAM roles and policy attachments.
-- Sets up DAX parameter groups.
-- Defines security groups and subnet groups.
+The `dax_cluster` intent with the `default` flavor provisions an Amazon DynamoDB Accelerator (DAX) cluster. DAX is a fully managed, in-memory cache for DynamoDB that delivers fast read performance for applications. This flavor supports specifying cluster size, replication, and associated IAM policies, making it suitable for enhancing performance in read-heavy workloads.
 
 ## Configurability
 
-- **Node Type**: Specify the node type for DAX cluster.
-- **Replication Factor**: Define the replication factor for the cluster.
-- **Cluster Endpoint Encryption**: Specify the encryption type for cluster endpoint.
-- **Availability Zones**: Set the availability zones for the cluster.
-- **Description**: Provide a description for the DAX cluster.
-- **Notification Topic ARN**: Set the notification topic ARN.
-- **Maintenance Window**: Define the maintenance window for the cluster.
-- **Security Groups**: Configure security groups for the cluster.
-- **Server-Side Encryption**: Enable or disable server-side encryption for the cluster.
+- **size.instance** (`string`):  
+  Defines the instance type to be used for each node in the DAX cluster (e.g., `dax.r4.large`).
+
+- **replication_factor** (`integer`):  
+  Specifies the number of nodes in the cluster (must be between 1 and 11).
+
+- **iam_policies** (`string`):  
+  ARN of the IAM policy to be associated with the DAX cluster for access permissions.
+
+## Usage
+
+Use this flavor to deploy a scalable and high-performance DAX cluster integrated with DynamoDB on AWS. It simplifies configuration through declarative inputs and supports automatic association with VPCs. Define the instance size and replication factor to suit performance and availability needs, while IAM policies ensure secure access control.
