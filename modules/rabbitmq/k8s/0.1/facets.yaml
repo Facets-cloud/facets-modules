@@ -8,13 +8,13 @@ clouds:
   - gcp
   - kubernetes
 metadata:
-  title: Metadata of Mongo
+  title: Metadata of RabbitMQ
   type: object
   properties:
     namespace:
       type: string
       title: Namespace
-      description: Namespace in which Mongo should be deployed
+      description: Namespace in which RabbitMQ should be deployed
       default: default
 spec:
   title: K8s rabbitmq
@@ -50,13 +50,13 @@ spec:
           title: Memory
           description: Amount of required memory
           minLength: 1
-          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          pattern: "^[0-9]+(\\\\.[0-9]+)?[EiKMGTP]i?$"
           x-ui-compare:
             field: spec.size.memory_limit
             comparator: "<="
             x-ui-error-message: "Memory cannot be more than memory limit"
           x-ui-placeholder: "Enter memory (Ex. 2Gi)"
-          x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+(\\\\.[0-9]+)?[EiKMGTP]i?' pattern"
         cpu_limit:
           type: string
           title: CPU Limit
@@ -74,20 +74,20 @@ spec:
           title: Memory Limit
           description: Memory limit for the instance
           minLength: 1
-          pattern: "^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?$"
+          pattern: "^[0-9]+(\\\\.[0-9]+)?[EiKMGTP]i?$"
           x-ui-compare:
             field: spec.size.memory
             comparator: ">="
             x-ui-error-message: "Memory limit cannot be less than memory"
           x-ui-placeholder: "Enter memory limit"
-          x-ui-error-message: "Value doesn't match '^[0-9]+(\\.[0-9]+)?[EiKMGTP]i?' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+(\\\\.[0-9]+)?[EiKMGTP]i?' pattern"
         volume:
           type: string
           title: Volume
           description: Size of the volume
           pattern: "^[0-9]+[G]i?$"
           x-ui-placeholder: "Enter volume size"
-          x-ui-error-message: "Value doesn't match '^[0-9]+[EiKMGTP]i?$' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
         instance_count:
           type: integer
           title: Instance Count
@@ -115,8 +115,8 @@ sample:
   spec:
     rabbitmq_version: "3.10.19"
     size:
-      cpu: 2
-      memory: 2Gi
-      volume: 8Gi
+      cpu: "2"
+      memory: "2Gi"
+      volume: "8Gi"
       instance_count: 1
   disabled: true
