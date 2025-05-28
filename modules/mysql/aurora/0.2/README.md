@@ -1,44 +1,32 @@
-# MySQL Aurora Flavor Documentation
+# MySQL Module (Aurora Flavor)
 
 ## Overview
 
-The `mysql - aurora` flavor defines a managed MySQL database configuration built on Amazon Aurora, leveraging AWS's cloud-native capabilities for high availability and scalability. This flavor is versioned `0.2` and integrates with the Facets infrastructure, intended for environments where a robust, configurable, and cloud-managed MySQL database is needed.
+The `mysql - aurora` flavor (v0.2) enables the creation and management of MySQL databases using Amazon Aurora, AWS's cloud-native relational database service. This module provides a fully managed MySQL solution with high performance, availability, and scalability, featuring comprehensive instance type selection and maintenance configuration options.
+
+Supported clouds:
+- AWS
 
 ## Configurability
 
-This flavor offers the following configurable parameters:
-
-- **MySQL Version**:  
-  Set to `8.0.mysql_aurora.3.05.2`, aligning with a specific Aurora MySQL engine version for compatibility and performance tuning.
-
-- **Apply Immediately**:  
-  This boolean option specifies whether modifications to the database should take effect immediately or during the next maintenance window. Default is `false`.
-
+- **MySQL Version**: Amazon Aurora MySQL version to deploy (e.g., '8.0')
 - **Size Configuration**:
-  - **Writer Node**:
-    - Instance type: `db.t4g.medium`
-    - Instance count: `1`
-  - **Reader Node**:
-    - Instance type: `db.t4g.medium`
-    - Instance count: `0`
-
-- **Metadata**:
-  - Tags and ownership can be specified under the `metadata` section.
-  - The system is managed via the `facets` platform, ensuring consistency and governance.
-
-- **Cloud Provider**:  
-  AWS is the supported cloud provider, indicated by the `clouds` section.
-
-- **Schema Reference**:  
-  Based on the schema located at:  
-  `https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json`
+  - **Writer Configuration**:
+    - **Instance**: Aurora instance type for writer nodes (comprehensive selection including db.t3, db.t4g, db.m5, db.m6g, and db.r5/r6g series)
+    - **Instance Count**: Number of writer instances (1-20, minimum 1 required)
+  - **Reader Configuration**:
+    - **Instance**: Aurora instance type for reader nodes (same instance type options as writer)
+    - **Instance Count**: Number of read replica instances (0-20, allowing zero for writer-only configurations)
+- **Apply Immediately**: Boolean flag to specify whether modifications are applied immediately or during the next maintenance window (default: false)
 
 ## Usage
 
-This flavor is suitable for deployments requiring:
+Use this module to deploy and manage MySQL databases using Amazon Aurora with flexible instance configuration and maintenance control. It is especially useful for:
 
-- High availability and failover support via Aurora’s distributed storage
-- Performance benefits of Aurora with MySQL compatibility
-- Lightweight and cost-effective instances using T4g-based resources
-- Flexibility to apply changes during or outside maintenance windows
-- Integration with infrastructure-as-code tools and cloud-native management (e.g., via Facets)
+- Implementing high-availability MySQL databases with automatic failover capabilities
+- Supporting read-heavy workloads with configurable read replicas (0-20 instances)
+- Providing enterprise-grade MySQL performance with Aurora's storage engine optimizations
+- Enabling flexible instance sizing with comprehensive AWS instance type support
+- Managing database maintenance windows and immediate configuration changes
+- Supporting mission-critical applications requiring high durability and availability
+- Scaling database performance with writer and reader node configurations
