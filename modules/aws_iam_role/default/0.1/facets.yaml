@@ -19,7 +19,7 @@ spec:
           title: Service Accounts
           description: the map of all service accounts that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
+            '^[a-zA-Z0-9_\\.\\-]*$':
               type: object
               title: Service Account Name
               description: An arbitrary name given to the service account which is
@@ -33,12 +33,14 @@ spec:
                   x-ui-error-message: "Service account names must contain only letters,
                     numbers, underscores and hyphens, cannot contain consecutive hyphens,
                     and must not include spaces or special characters "
+              required:
+                - name
         oidc_providers:
           type: object
           title: OIDC Providers
           description: the map of all OIDC arns that you want to attach IRSA
           patternProperties:
-            '^[a-zA-Z0-9_.-]*$':
+            '^[a-zA-Z0-9_\\.\\-]*$':
               type: object
               title: OIDC Provider ARN
               description: An arbitrary name given to the OIDC provider which is not
@@ -48,9 +50,11 @@ spec:
                   type: string
                   description: The arn of the OIDC that you want to attach the role
                     to with the trust relationship
-                  pattern: '^arn:aws:iam::[0-9]{12}:oidc-provider\/[a-zA-Z0-9._\-\/]+$'
+                  pattern: '^arn:aws:iam::[0-9]{12}:oidc-provider\/[a-zA-Z0-9._\\-\/]+$'
                   x-ui-error-message: "Invalid OIDC ARN format. Ensure it follows
                     the pattern <arn:aws:iam::<account-id>:oidc-provider/<provider-path>"
+              required:
+                - arn
       required:
       - service_accounts
     policies:
@@ -58,7 +62,7 @@ spec:
       title: Policies
       description: the map of all policies arns that you want to attach to the role
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
+        '^[a-zA-Z0-9_\\.\\-]*$':
           type: object
           title: Policy ARN
           description: An arbitrary name given to the policies which is not used anywhere
@@ -69,8 +73,10 @@ spec:
               pattern: '^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$'
               x-ui-error-message: "Invalid ARN format. Ensure it follows the pattern
                 <arn:partition:service:region:account-id:resource>"
+          required:
+            - arn
   required:
-    - policies
+  - policies
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
@@ -82,11 +88,11 @@ sample:
   spec:
     irsa:
       service_accounts:
-        arbitrary_name:
-          name: ''
+        my_service_account:
+          name: 'my-service-account'
       oidc_providers:
-        arbitrary_name:
-          arn: ''
+        my_oidc_provider:
+          arn: 'arn:aws:iam::123456789012:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/EXAMPLE'
     policies:
       external_policy:
-        arn: ''
+        arn: 'arn:aws:iam::123456789012:policy/MyCustomPolicy'
