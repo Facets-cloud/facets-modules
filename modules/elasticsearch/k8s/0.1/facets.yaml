@@ -102,16 +102,16 @@ spec:
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   version: "0.1"
-  flavor: k8s
-  kind: elasticsearch
+  flavor: "k8s"
+  kind: "elasticsearch"
   metadata: {}
   spec:
     elasticsearch_version: "8.14.1"
     size:
-      cpu: 2
-      memory: 2Gi
-      cpu_limit: 2
-      memory_limit: 2Gi
-      volume: 8Gi
+      cpu: "2"
+      memory: "2Gi"
+      cpu_limit: "2"
+      memory_limit: "2Gi"
+      volume: "8Gi"
       instance_count: 1
   disabled: true
