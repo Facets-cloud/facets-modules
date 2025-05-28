@@ -8,6 +8,9 @@ clouds:
 inputs:
   network_details:
     type: "@outputs/azure_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for azure aks flavor

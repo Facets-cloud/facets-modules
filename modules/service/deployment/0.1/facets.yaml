@@ -1600,7 +1600,6 @@ spec:
                         field: "spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type"
                         values: ["PortCheck", "HttpCheck"]
                       description: Port for Health Checks
-                      x-ui-dynamic-enum: spec.sidecars.{{this}}.runtime.ports.*.port
                       x-ui-disable-tooltip: "No Ports Added"
                       x-ui-typeable: true
                   required:
