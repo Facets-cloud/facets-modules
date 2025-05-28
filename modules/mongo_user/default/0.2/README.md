@@ -1,53 +1,46 @@
-# MongoDB User Flavor Documentation (v0.2)
+# MongoDB User Module (Default Flavor)
 
 ## Overview
 
-The `mongo_user - default` flavor (v0.2) provides a way to declaratively define MongoDB users in environments backed by a MongoDB Auth Operator. It builds on the earlier version by introducing structured input dependencies, and is designed to work in Kubernetes-based infrastructures orchestrated through cloud-native tooling.
+The `mongo_user - default` flavor (v0.2) enables the creation and management of MongoDB users through Kubernetes Custom Resource Definitions (CRDs) using the MongoDB Auth Operator. This module provides comprehensive user management capabilities with fine-grained permission control and role-based access for MongoDB databases in Kubernetes environments.
 
-This module allows for user creation with database-specific permissions, cluster-level roles, and custom authentication mechanisms.
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### Inputs
+- **Input Dependencies**:
+  - **Kubernetes Details**: Kubernetes cluster where the CRD for managing MongoDB users will be created
+  - **MongoDB Auth Operator Details**: MongoDB Auth Operator responsible for creating MongoDB users
+  - **Mongo Details**: MongoDB instance where the user needs to be created
 
-- **kubernetes_details**: Specifies the Kubernetes cluster where the MongoDB CRDs will be managed.
-- **mongodb_auth_operator_details**: Reference to the MongoDB Auth Operator instance managing user lifecycle.
-- **mongo_details**: Reference to the actual MongoDB instance where users will be provisioned.
+- **Database**: Target database name for user operations
 
-### Specification
+- **Permissions**: Collection of permission configurations with the following properties:
+  - **Permission**: Comma-separated MongoDB permissions (e.g., createCollection, listCollections, find, update, insert)
+  - **Database**: Database name for which permissions should be granted
+  - **Collection**: Collection name within the database (optional for database-level permissions)
+  - **Cluster**: Boolean flag indicating cluster-level permissions
 
-- **database**: Name of the default MongoDB database associated with the user.
-
-- **permissions**: A map of permission blocks that define granular access for the user.
-  - Each permission block includes:
-    - `permission`: Comma-separated list of actions (e.g., `find,insert`).
-    - `database`: Target database.
-    - `collection`: Optional target collection.
-    - `cluster`: Boolean flag for cluster-level permissions.
-
-- **mongo_user**: Encapsulates full user identity and access roles.
-  - `user`:
-    - `username`: Name of the MongoDB user.
-    - `password`: Password for authentication.
-    - `customData`: Optional metadata (e.g., employee ID, team info).
-    - `mechanisms`: Authentication mechanism (e.g., `SCRAM-SHA-256`).
-    - `dbRoles`: Object defining DB-specific role mappings.
-    - `rolesToRole`: Composite role grouping or hierarchy label.
+- **Mongo User Configuration**:
+  - **Username**: Username for the MongoDB user
+  - **Password**: Password for the MongoDB user
+  - **Custom Data**: Additional user metadata in YAML format
+  - **Mechanisms**: Authentication mechanisms for the user
+  - **DB Roles**: Database roles assigned to the user in YAML format
+  - **Roles to Role**: Role-to-role mappings for the user
 
 ## Usage
 
-This flavor is suitable for dynamic and automated MongoDB user management within Kubernetes environments. It integrates seamlessly with the MongoDB Auth Operator to:
+Use this module to create and manage MongoDB users through Kubernetes operators with comprehensive access control. It is especially useful for:
 
-- Provision secure users with precise access levels.
-- Enforce RBAC and custom authentication constraints.
-- Assign dynamic roles and collections without manual intervention.
-- Easily integrate with DevSecOps pipelines through CRD automation.
-
-Use this when building secure, tenant-aware MongoDB deployments that require declarative access control and minimal human management effort.
-
-## Cloud Providers
-
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes (Generic)**
+- Creating MongoDB users via Kubernetes CRDs with operator-based management
+- Implementing fine-grained permission control at database and collection levels
+- Managing user authentication and authorization through MongoDB Auth Operator
+- Supporting role-based access control (RBAC) for MongoDB databases
+- Integrating MongoDB user management with Kubernetes-native workflows
+- Providing declarative user management for cloud-native MongoDB deployments
+- Enabling automated user provisioning and lifecycle management in Kubernetes environments
