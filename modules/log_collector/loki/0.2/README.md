@@ -1,42 +1,28 @@
-# Log Collector – Loki Flavor (v0.2)
+# Log Collector Module (Loki Flavor)
 
 ## Overview
 
-The `log_collector - loki` flavor (v0.2) enables the collection and management of logs using Loki within various cloud environments. This module provides structured log collection, storage, and querying capabilities.
+The `log_collector - loki` flavor (v0.2) enables the deployment and management of log collection infrastructure using Loki in Kubernetes and cloud environments. This module provides a comprehensive logging solution that collects, processes, stores, and queries logs from various sources within your infrastructure.
 
-Supported platforms:
-- AWS  
-- Azure  
-- GCP  
+Supported clouds:
+- AWS
+- Azure
+- GCP
 - Kubernetes
 
 ## Configurability
 
-### Spec
-
-#### `retentation_days` (`integer`)
-
-Defines the number of days logs are retained.
-
-- **Title**: Retention Days
-- **Description**: Retention days after which the logs should be deleted
-- **Pattern**: `^[0-9]+$`
-- **UI Placeholder**: "Enter the number of days for log retention"
-- **UI Error Message**: "Only numeric values are allowed."
-
-#### `storage_size` (`string`)
-
-Specifies the size of the storage allocated for logs.
-
-- **Title**: Storage Size
-- **Description**: Storage size for MinIO where the logs are stored
-
----
+- **Retention Days**: Number of days to retain logs before deletion. Only numeric values are allowed (e.g., 7 days)
+- **Storage Size**: Storage size for MinIO where the logs are stored (e.g., "5Gi")
+- **Advanced Configuration**: Additional Loki-specific configuration options for fine-tuning the log collection system
 
 ## Usage
 
-Use this module to collect and manage logs using Loki in various cloud environments. It is especially useful for:
+Use this module to implement centralized logging using Loki for your infrastructure. It is especially useful for:
 
-- Structured log collection
-- Log storage and querying
-- Enhancing observability and monitoring
+- Collecting and aggregating logs from distributed applications and services
+- Providing scalable log storage with configurable retention policies
+- Enabling efficient log querying and analysis across multi-cloud environments
+- Supporting observability and monitoring workflows
+- Maintaining compliance with log retention requirements
+- Integrating with existing Kubernetes and cloud-native logging pipelines
