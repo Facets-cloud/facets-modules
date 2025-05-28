@@ -1,16 +1,22 @@
 inputs:
   kubernetes_details:
     optional: false
-    type: "@output/kubernetes"
+    type: '@output/kubernetes'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 outputs:
   default:
-    type: "@outputs/prometheus"
+    type: '@outputs/prometheus'
 intent: prometheus
-version: "0.1"
+version: '0.1'
 flavor: k8s
+description: Prometheus monitoring stack for Kubernetes with Grafana, Alertmanager,
+  and kube-state-metrics
 clouds:
   - aws
   - azure
@@ -18,27 +24,35 @@ clouds:
   - kubernetes
 spec:
   title: Prometheus Stack
+  description: Specification of the Prometheus stack
   type: object
   properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Kubernetes namespace for the Prometheus stack
-      default: "default"
-      pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
-      x-ui-placeholder: "e.g., monitoring, prometheus, default"
+    metadata:
+      type: object
+      title: Metadata
+      description: Metadata for the Prometheus stack
+      properties:
+        namespace:
+          type: string
+          title: Namespace
+          description: Kubernetes namespace for the Prometheus stack
+          default: default
+          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+          x-ui-placeholder: e.g., monitoring, prometheus, default
     values:
       type: object
       title: Custom Values
-      description: Additional values to pass to the Prometheus helm chart in YAML format
-      default: "{}"
+      description: Additional values to pass to the Prometheus helm chart in YAML
+        format
+      default: '{}'
       x-ui-yaml-editor: true
+      x-ui-placeholder: Enter values in YAML format
     node_selector:
       type: object
       title: Node Selector
       description: Node selector configuration for Prometheus components
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           type: object
           title: Node Selector Label
           description: Node selector label configuration
@@ -54,23 +68,21 @@ spec:
           required:
             - key
             - value
-
     tolerations:
       type: object
       title: Tolerations
       description: Pod tolerations for Prometheus components in YAML format
-      default: "[]"
+      default: '[]'
       x-ui-yaml-editor: true
-
     enable_crds:
       type: boolean
       title: Install CRDs
       description: Enable/disable CRD installation
       default: true
-
     operator:
       type: object
       title: Prometheus Operator
+      description: Configuration for the Prometheus operator component
       properties:
         enabled:
           type: boolean
@@ -80,43 +92,59 @@ spec:
         size:
           x-ui-visible-if:
             field: spec.operator.enabled
-            values: [ true ]
+            values:
+              - true
           type: object
           title: Operator Size
+          description: Resource sizing configuration for the Prometheus operator
           properties:
             resources:
               type: object
+              title: Resources
+              description: CPU and memory resource specifications for the operator
               properties:
                 requests:
                   type: object
+                  title: Resource Requests
+                  description: Minimum resource requirements for the operator
                   properties:
                     cpu:
                       type: string
                       title: CPU Request
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Minimum CPU resources required for the operator
+                        (e.g., 200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Request
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
+                      description: Minimum memory resources required for the operator
+                        (e.g., 512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
                 limits:
                   type: object
+                  title: Resource Limits
+                  description: Maximum resource limits for the operator
                   properties:
                     cpu:
                       type: string
                       title: CPU Limit
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Maximum CPU resources allowed for the operator
+                        (e.g., 200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Limit
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
-
+                      description: Maximum memory resources allowed for the operator
+                        (e.g., 512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
     prometheus:
       type: object
       title: Prometheus Server
+      description: Configuration for the Prometheus server component
       properties:
         enabled:
           type: boolean
@@ -127,57 +155,78 @@ spec:
           type: string
           title: Data Retention
           description: Time duration Prometheus shall retain data for
-          default: "100d"
-          pattern: "^[0-9]+(d|h|m)$"
+          default: 100d
+          pattern: ^[0-9]+(d|h|m)$
           x-ui-visible-if:
             field: spec.prometheus.enabled
-            values: [ true ]
-          x-ui-placeholder: "e.g., 100d, 24h, 1440m"
+            values:
+              - true
+          x-ui-placeholder: e.g., 100d, 24h, 1440m
         size:
           type: object
           title: Server Size
+          description: Resource sizing and storage configuration for the Prometheus
+            server
           x-ui-visible-if:
             field: spec.prometheus.enabled
-            values: [ true ]
+            values:
+              - true
           properties:
             volume:
               type: string
               title: Volume Size
-              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
-              default: "100Gi"
+              description: Persistent storage size for Prometheus data (e.g., 100Gi
+                for 100 gigabytes)
+              pattern: ^[0-9]+(\.[0-9]+)?[G]i?$
+              default: 100Gi
             resources:
               type: object
+              title: Resources
+              description: CPU and memory resource specifications for the Prometheus
+                server
               properties:
                 requests:
                   type: object
+                  title: Resource Requests
+                  description: Minimum resource requirements for the Prometheus server
                   properties:
                     cpu:
                       type: string
                       title: CPU Request
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "1000m"
+                      description: Minimum CPU resources required for the Prometheus
+                        server (e.g., 1000m for 1 CPU core)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 1000m
                     memory:
                       type: string
                       title: Memory Request
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "4Gi"
+                      description: Minimum memory resources required for the Prometheus
+                        server (e.g., 4Gi for 4 gigabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 4Gi
                 limits:
                   type: object
+                  title: Resource Limits
+                  description: Maximum resource limits for the Prometheus server
                   properties:
                     cpu:
                       type: string
                       title: CPU Limit
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "1000m"
+                      description: Maximum CPU resources allowed for the Prometheus
+                        server (e.g., 1000m for 1 CPU core)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 1000m
                     memory:
                       type: string
                       title: Memory Limit
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "4Gi"
-
+                      description: Maximum memory resources allowed for the Prometheus
+                        server (e.g., 4Gi for 4 gigabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 4Gi
     grafana:
       type: object
       title: Grafana
+      description: Configuration for the Grafana dashboard and visualization component
       properties:
         enabled:
           type: boolean
@@ -187,43 +236,60 @@ spec:
         size:
           type: object
           title: Grafana Size
+          description: Resource sizing configuration for Grafana
           x-ui-visible-if:
             field: spec.grafana.enabled
-            values: [ true ]
+            values:
+              - true
           properties:
             resources:
               type: object
+              title: Resources
+              description: CPU and memory resource specifications for Grafana
               properties:
                 requests:
                   type: object
+                  title: Resource Requests
+                  description: Minimum resource requirements for Grafana
                   properties:
                     cpu:
                       type: string
                       title: CPU Request
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Minimum CPU resources required for Grafana (e.g.,
+                        200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Request
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
+                      description: Minimum memory resources required for Grafana (e.g.,
+                        512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
                 limits:
                   type: object
+                  title: Resource Limits
+                  description: Maximum resource limits for Grafana
                   properties:
                     cpu:
                       type: string
                       title: CPU Limit
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Maximum CPU resources allowed for Grafana (e.g.,
+                        200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Limit
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
-
+                      description: Maximum memory resources allowed for Grafana (e.g.,
+                        512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
     alertmanager:
       type: object
       title: Alertmanager
+      description: Configuration for the Alertmanager component that handles alerts
+        from Prometheus
       properties:
         enabled:
           type: boolean
@@ -233,47 +299,67 @@ spec:
         size:
           type: object
           title: Alertmanager Size
+          description: Resource sizing and storage configuration for Alertmanager
           x-ui-visible-if:
             field: spec.alertmanager.enabled
-            values: [ true ]
+            values:
+              - true
           properties:
             volume:
               type: string
-              pattern: "^[0-9]+(\\.[0-9]+)?[G]i?$"
-              default: "10Gi"
+              title: Volume Size
+              description: Persistent storage size for Alertmanager data (e.g., 10Gi
+                for 10 gigabytes)
+              pattern: ^[0-9]+(\.[0-9]+)?[G]i?$
+              default: 10Gi
             resources:
               type: object
+              title: Resources
+              description: CPU and memory resource specifications for Alertmanager
               properties:
                 requests:
                   type: object
+                  title: Resource Requests
+                  description: Minimum resource requirements for Alertmanager
                   properties:
                     cpu:
                       type: string
                       title: CPU Request
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "1000m"
+                      description: Minimum CPU resources required for Alertmanager
+                        (e.g., 1000m for 1 CPU core)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 1000m
                     memory:
                       type: string
                       title: Memory Request
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "2Gi"
+                      description: Minimum memory resources required for Alertmanager
+                        (e.g., 2Gi for 2 gigabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 2Gi
                 limits:
                   type: object
+                  title: Resource Limits
+                  description: Maximum resource limits for Alertmanager
                   properties:
                     cpu:
                       type: string
                       title: CPU Limit
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "1000m"
+                      description: Maximum CPU resources allowed for Alertmanager
+                        (e.g., 1000m for 1 CPU core)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 1000m
                     memory:
                       type: string
                       title: Memory Limit
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "2Gi"
-
+                      description: Maximum memory resources allowed for Alertmanager
+                        (e.g., 2Gi for 2 gigabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 2Gi
     kube-state-metrics:
       type: object
       title: Kube State Metrics
+      description: Configuration for the kube-state-metrics component that exposes
+        Kubernetes object metrics
       properties:
         enabled:
           type: boolean
@@ -283,49 +369,68 @@ spec:
         collectors:
           type: array
           title: Collector
-          description: list of collectors
-          x-ui-placeholder: "pass collectors"
+          description: List of collectors to enable for kube-state-metrics (e.g.,
+            pods, services, deployments)
+          x-ui-placeholder: pass collectors
           x-ui-visible-if:
             field: spec.kube-state-metrics.enabled
-            values: [ true ]
+            values:
+              - true
+          x-ui-override-disable: true
         size:
           type: object
           title: KSM Size
+          description: Resource sizing configuration for kube-state-metrics
           x-ui-visible-if:
             field: spec.kube-state-metrics.enabled
-            values: [ true ]
+            values:
+              - true
           properties:
             resources:
               type: object
+              title: Resources
+              description: CPU and memory resource specifications for kube-state-metrics
               properties:
                 requests:
                   type: object
+                  title: Resource Requests
+                  description: Minimum resource requirements for kube-state-metrics
                   properties:
                     cpu:
                       type: string
                       title: CPU Request
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Minimum CPU resources required for kube-state-metrics
+                        (e.g., 200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Request
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
+                      description: Minimum memory resources required for kube-state-metrics
+                        (e.g., 512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
                 limits:
                   type: object
+                  title: Resource Limits
+                  description: Maximum resource limits for kube-state-metrics
                   properties:
                     cpu:
                       type: string
                       title: CPU Limit
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      default: "200m"
+                      description: Maximum CPU resources allowed for kube-state-metrics
+                        (e.g., 200m for 0.2 CPU cores)
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      default: 200m
                     memory:
                       type: string
                       title: Memory Limit
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      default: "512Mi"
+                      description: Maximum memory resources allowed for kube-state-metrics
+                        (e.g., 512Mi for 512 megabytes)
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      default: 512Mi
   x-ui-order:
-    - namespace
+    - metadata
     - operator
     - enable_crds
     - prometheus
@@ -335,14 +440,13 @@ spec:
     - node_selector
     - tolerations
     - values
-
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/prometheus/prometheus.schema.json
   flavor: k8s
   metadata:
-    namespace:
+    namespace: default
   kind: prometheus
-  version: "0.1"
+  version: '0.1'
   disabled: true
   spec:
     enable_crds: true
@@ -354,52 +458,55 @@ sample:
       size:
         resources:
           requests:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
           limits:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
     prometheus:
       enabled: true
-      retention: "100d"
+      retention: 100d
       size:
-        volume: "100Gi"
+        volume: 100Gi
         resources:
           requests:
-            cpu: "1000m"
-            memory: "4Gi"
+            cpu: 1000m
+            memory: 4Gi
           limits:
-            cpu: "1000m"
-            memory: "4Gi"
+            cpu: 1000m
+            memory: 4Gi
     grafana:
       enabled: true
       size:
         resources:
           requests:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
           limits:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
     alertmanager:
       enabled: true
       size:
-        volume: "10Gi"
+        volume: 10Gi
         resources:
           requests:
-            cpu: "1000m"
-            memory: "2Gi"
+            cpu: 1000m
+            memory: 2Gi
           limits:
-            cpu: "1000m"
-            memory: "2Gi"
+            cpu: 1000m
+            memory: 2Gi
     kube-state-metrics:
       enabled: true
       collectors: []
       size:
         resources:
           requests:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
           limits:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: 200m
+            memory: 512Mi
+iac:
+  validated_files:
+    - variables.tf
