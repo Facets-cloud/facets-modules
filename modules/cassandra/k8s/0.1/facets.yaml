@@ -25,6 +25,7 @@ spec:
       title: Cassandra Version
       description: Version of Cassandra DB
       minLength: 1
+      x-ui-typeable: true
       enum:
         - "5.0.2"
         - "4.1.7"
