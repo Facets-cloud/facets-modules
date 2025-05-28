@@ -5,51 +5,14 @@ description: Adds aws_event_bus - default flavor
 clouds:
 - aws
 spec:
-  title: AWS Event Bus Configuration
+  title: AWS Event Bus
   type: object
   description: Specification of the AWS Event Bus resource intent
   properties:
     name:
       type: string
-      title: Event Bus Name
-      description: Name of the AWS Event Bus (leave empty for auto-generated name)
-      maxLength: 256
-      pattern: ^[a-zA-Z0-9._-]+$
-    event_source_name:
-      type: string
-      title: Event Source Name
-      description: Partner event source to associate with this bus (optional)
-    enable_encryption:
-      type: boolean
-      title: Enable Encryption
-      description: Enable server-side encryption for events
-      default: true
-    kms_key_id:
-      type: string
-      title: KMS Key ID
-      description: Custom KMS key for encryption (leave empty for AWS managed key)
-      x-ui-visible-if:
-        field: spec.enable_encryption
-        values:
-        - true
-    cross_account_access:
-      type: object
-      title: Cross-Account Access
-      description: Allow other AWS accounts to access this event bus
-      properties:
-        enabled:
-          type: boolean
-          title: Enable Cross-Account Access
-          description: Allow access from other AWS accounts
-          default: false
-        account_ids:
-          type: string
-          title: Allowed Account IDs
-          description: Comma-separated AWS account IDs (e.g., 123456789012,987654321098)
-          x-ui-visible-if:
-            field: spec.cross_account_access.enabled
-            values:
-            - true
+      title: Name
+      description: Name of the AWS Event Bus
 sample:
   kind: aws_event_bus
   disabled: true
