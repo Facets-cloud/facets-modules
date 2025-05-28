@@ -1,50 +1,42 @@
-# Kubernetes Cluster – Azure AKS Flavor (v0.1)
+# Kubernetes Cluster Module (Azure AKS Flavor)
 
 ## Overview
 
-The `kubernetes_cluster - azure_aks` flavor (v0.1) provides a standardized interface for provisioning and managing a **Kubernetes cluster on Microsoft Azure (AKS)**. It supports key configurations such as node pools, lifecycle types, maintenance windows, and disk types, making it easy to deploy scalable and resilient clusters in Azure.
+The `kubernetes_cluster - azure_aks` flavor (v0.1) enables the creation and management of Kubernetes clusters using Azure AKS. This module provides configuration options for defining the characteristics and behavior of AKS clusters.
 
-Supported platform:
+Supported clouds:
 - Azure
-
-> ⚙️ Suitable for environments that require managed Kubernetes infrastructure with nodepool flexibility and scheduled maintenance capabilities.
-
----
 
 ## Configurability
 
-### `spec` (object)
+- **Maintenance Windows**: Details for maintenance window for the Kubernetes cluster.
+  - **Default**: Default maintenance window details.
+    - **Start Hour**: Start hour for maintenance window.
+    - **Days of Week**: Day of the week for which the maintenance should be allowed.
+    - **Duration**: Duration of maintenance in hours.
 
-#### `maintenance_windows` (object)
+- **Auto Upgrade**: Boolean to enable auto upgrade of Kubernetes cluster.
 
-- **`default`**  
-  - `start_hour` (`number`, 0–23)  
-  - `days_of_week` (`array of string`, min: 1, max: 1)  
-  - `duration` (`number`, 1–24)
-
-#### `auto_upgrade` (`boolean`)  
-Enable or disable automatic Kubernetes upgrades.
-
-#### `nodepools` (object)
-
-- **`default`**  
-  - `enable` (`boolean`)  
-  - `instance_types` (`array of string`, **required**)  
-  - `root_disk_volume` (`number`, default: `100`, range: 30–500)  
-  - `node_lifecycle_type` (`string`, default: `SPOT`, enum: `ON_DEMAND`, `SPOT`)  
-  - `max_nodes` (`number`, default: `200`, range: 1–200)  
-  - `azure_disk_type` (`string`, default: `Managed`, enum: `Managed`, `Ephemeral`)
-
-- **`facets_dedicated`**  
-  - `enable` (`boolean`)  
-  - `instance_type` (`string`, default: `standard_D4as_v5`, **required**)  
-  - `root_disk_volume` (`number`, default: `100`, range: 30–500)  
-  - `node_lifecycle_type` (`string`, default: `SPOT`, enum: `ON_DEMAND`, `SPOT`)  
-  - `max_nodes` (`number`, default: `8`, range: 1–200)  
-  - `azure_disk_type` (`string`, default: `Managed`, enum: `Managed`, `Ephemeral`)
-
----
+- **Nodepool Spec**: Specifications of nodepools to be created.
+  - **Default Nodepool Spec**: Specification of default nodepools.
+    - **Enable**: Set this to true to enable default nodepool.
+    - **Instance Types**: List of instance types for worker nodes.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **Azure Disk Type**: The type of the disk which should be used by the default node pool of the Kubernetes Cluster.
+  - **Facets Dedicated Nodepool Spec**: Specifications of facets dedicated nodepools.
+    - **Enable**: Set this to true to enable facets dedicated nodepools.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **Instance Type**: Space-separated list of instance types for worker nodes.
+    - **Azure Disk Type**: The type of the disk which should be used by the default node pool of the Kubernetes Cluster.
 
 ## Usage
 
-To use this flavor, define a resource of kind `kubernetes_cluster` with flavor `azure_aks` and version `0.1`. You can configure cluster maintenance windows to define allowed upgrade times, toggle automatic upgrades, and provision nodepools for general and dedicated workloads. Each nodepool allows detailed settings such as disk size, instance types, lifecycle plans (spot or on-demand), and maximum node limits. This flavor is well-suited for managing AKS clusters declaratively in Azure-based environments.
+Use this module to create and manage Kubernetes clusters using Azure AKS. It is especially useful for:
+
+- Defining the characteristics and behavior of AKS clusters
+- Managing the deployment and execution environment of Kubernetes clusters
+- Enhancing the functionality and integration of Azure-hosted applications
