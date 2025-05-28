@@ -1,43 +1,32 @@
-# MySQL CloudSQL Flavor Documentation
+# MySQL Module (CloudSQL Flavor)
 
 ## Overview
 
-The `mysql - cloudsql` flavor defines a managed MySQL database configuration using Google Cloud SQL on GCP. This flavor is versioned `0.1` and integrates with the Facets infrastructure, providing a flexible and scalable MySQL environment managed via Google Cloud's SQL offering.
+The `mysql - cloudsql` flavor (v0.1) enables the creation and management of MySQL databases using Google Cloud SQL, Google Cloud Platform's fully managed relational database service. This module provides a scalable MySQL solution with high availability, automatic backups, and seamless integration with GCP services.
+
+Supported clouds:
+- GCP
 
 ## Configurability
 
-This flavor offers the following configurable parameters:
-
-- **MySQL Version**:  
-  Selectable versions include `8.0`, `5.7`, and `5.6`, allowing compatibility with various application requirements.  
-  Current configuration: `8.0`
-
+- **MySQL Version**: Google Cloud SQL MySQL version to deploy (supported versions: 8.0, 5.7, 5.6)
 - **Size Configuration**:
-  - **Writer Node**:
-    - Instance type: `db-f1-micro`
-    - Volume: `10G`
-  - **Reader Node**:
-    - Instance type: `db-f1-micro`
-    - Volume: `10G`
-    - Instance count: `0`
-
-- **Metadata**:
-  - Tags and ownership can be specified under the `metadata` section.
-  - The system is managed via the `facets` platform, ensuring consistency and governance.
-
-- **Cloud Provider**:  
-  GCP is the supported cloud provider, indicated by the `clouds` section.
-
-- **Schema Reference**:  
-  Based on the schema located at:  
-  `https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json`
+  - **Writer Configuration**:
+    - **Instance**: Cloud SQL instance type for writer nodes (comprehensive selection including db-f1-micro, db-g1-small, db-n1-standard, db-n1-highmem, db-n1-highcpu, and db-custom series)
+    - **Volume**: Storage volume size for writer nodes (format: integer with G suffix, e.g., '10G')
+  - **Reader Configuration**:
+    - **Instance**: Cloud SQL instance type for reader nodes (same instance type options as writer)
+    - **Volume**: Storage volume size for reader nodes (format: integer with G suffix)
+    - **Instance Count**: Number of read replica instances (0-20, allowing zero for writer-only configurations)
 
 ## Usage
 
-This flavor is suitable for deployments requiring:
+Use this module to deploy and manage MySQL databases using Google Cloud SQL with flexible instance and storage configuration. It is especially useful for:
 
-- Managed MySQL databases in GCP with high availability
-- Compatibility with multiple MySQL engine versions
-- Lightweight and cost-effective instances using predefined or custom machine types
-- Flexible volume sizing for both reader and writer nodes
-- Integration with infrastructure-as-code tools and cloud-native management (e.g., via Facets)
+- Implementing managed MySQL databases with automatic maintenance and updates
+- Supporting read-heavy workloads with configurable read replicas (0-20 instances)
+- Providing enterprise-grade MySQL performance with Google Cloud infrastructure
+- Enabling flexible instance sizing with comprehensive GCP instance type support
+- Leveraging automatic backups, point-in-time recovery, and high availability features
+- Integrating with Google Cloud services and IAM for comprehensive cloud-native architectures
+- Scaling database performance and storage independently for optimal cost-efficiency
