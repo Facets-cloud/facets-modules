@@ -3,7 +3,7 @@ flavor: default
 version: '0.1'
 description: "ecs_service - default"
 clouds:
-- aws
+  - aws
 artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
@@ -36,65 +36,25 @@ spec:
             "^[0-9]+[m]?$":
               type: object
               title: Port Name
-              description: Define port allocation to facilitate communication with
-                service
+              description: Define port allocation to facilitate communication with service
               properties:
                 port:
                   type: string
                   title: Port
                   description: Port on which application is running
                   pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                  x-ui-placeholder: "Enter the port number to expose for your application
-                    container"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number
-                    ranging from 1-65535"
-                service_port:
-                  type: string
-                  title: Service Port
-                  description: Port from which application service can be exposed
-                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                  x-ui-placeholder: "Enter the port number to expose for your application
-                    service"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number
-                    ranging from 1-65535"
+                  x-ui-placeholder: "Enter the port number to expose for your application container"
+                  x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
                 protocol:
                   type: string
                   title: Protocol
                   description: TCP or UDP
                   enum:
-                  - tcp
-                  - udp
+                    - tcp
+                    - udp
               required:
-              - protocol
-              - port
-        size:
-          type: object
-          properties:
-            cpu:
-              type: integer
-            memory:
-              type: integer
-        command:
-          type: string
-        args:
-          type: object
-          title: Arguments
-          x-ui-override-disable: true
-          description: Command-line arguments for the container
-          patternProperties:
-            "^[a-zA-Z0-9_\\-]+$":
-              type: object
-              title: Argument Name
-              description: Define command-line arguments for the container
-              properties:
-                argument:
-                  type: string
-                  title: Argument
-                  description: Command-line argument value
-              required:
-              - argument
-        readonly_root_filesystem:
-          type: boolean
+                - protocol
+                - port
     release:
       type: object
       properties:
@@ -115,12 +75,12 @@ spec:
               title: Value
               description: Environment variable value
           required:
-          - value
+            - value
       x-ui-yaml-editor: true
   required:
-  - runtime
-  - release
-  - env
+    - runtime
+    - release
+    - env
 sample:
   kind: "ecs_service"
   flavor: "default"
@@ -130,16 +90,9 @@ sample:
       ports:
         http:
           port: "80"
-          service_port: "80"
           protocol: "tcp"
-      size:
-        cpu: 512
-        memory: 1
-      readonly_root_filesystem: true
     release:
       image: "nginx:latest"
     env:
       APP_ENV:
         value: "production"
-      LOG_LEVEL:
-        value: "info"

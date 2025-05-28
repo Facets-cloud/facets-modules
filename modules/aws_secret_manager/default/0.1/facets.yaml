@@ -4,15 +4,6 @@ version: "0.1"
 description: Adds secret manager for aws - default flavor
 clouds:
   - aws
-metadata:
-  title: Metadata of AWS Secret Manager
-  type: object
-  properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Namespace in which AWS Secret Manager should be deployed
-      default: default
 spec:
   title: AWS Secret Manager
   description: Specification of the aws secret manager resource intent

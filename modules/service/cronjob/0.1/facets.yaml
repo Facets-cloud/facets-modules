@@ -11,25 +11,10 @@ artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
     artifact_type: "docker_image"
-metadata:
-  title: Metadata of service
-  type: object
-  properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Namespace in which cronjob should be deployed
-      default: default
 spec:
   title: Cronjob flavor of service
   type: object
   properties:
-    type:
-      type: string
-      title: Service Type
-      description: Type - Cronjob
-      x-ui-override-disable: true
-      default: cronjob
     cronjob:
       type: object
       title: Cronjob
@@ -75,39 +60,9 @@ spec:
           x-ui-error-message: "The retry count must be a positive integer between 1 and 100."
       required:
         - retry
-    runtime:
-      type: object
-      title: Runtime
-      description: Customize service runtime settings like command, arguments.
-      properties:
-        command:
-          type: array
-          title: Command
-          description: Command to run in the container
-          items:
-            type: string
-          x-ui-command: true
-          x-ui-override-disable: true
-        args:
-          type: array
-          title: Arguments
-          description: Arguments to pass to the command
-          pattern: '^[a-zA-Z0-9-_ ]+$'
-          x-ui-error-message: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
-          items:
-            type: string
-          x-ui-command: true
-          x-ui-override-disable: true
-      x-ui-order:
-        - args
-        - command
   required:
     - job
     - cronjob
-  x-ui-order:
-    - cronjob
-    - job
-    - runtime
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json"
   metadata:
@@ -117,13 +72,9 @@ sample:
   kind: service
   version: "0.1"
   spec:
-    type: cronjob
     cronjob:
       schedule: "0 2 * * *"
       suspend: false
       concurrency_policy: "Allow"
     job:
       retry: "5"
-    runtime:
-      command: []
-      args: []

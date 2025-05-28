@@ -4,15 +4,6 @@ version: "0.1"
 description: Adds aws_eventbridge - default flavor
 clouds:
   - aws
-metadata:
-  title: Metadata of AWS EventBridge
-  type: object
-  properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Namespace in which AWS EventBridge should be deployed
-      default: default
 spec:
   title: AWS EventBridge
   description: Specification of the AWS EventBridge

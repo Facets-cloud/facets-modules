@@ -8,15 +8,6 @@ artifact_inputs:
   primary:
     attribute_path: "spec.release.s3_path"
     artifact_type: "freestyle"
-metadata:
-  title: Metadata of AWS Lambda
-  type: object
-  properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Namespace in which AWS Lambda should be deployed
-      default: default
 spec:
   title: AWS Lambda
   type: object

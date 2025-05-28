@@ -7,15 +7,6 @@ clouds:
   - azure
   - gcp
   - kubernetes
-metadata:
-  title: Metadata of Helm
-  type: object
-  properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Namespace in which Helm chart should be deployed
-      default: default
 spec:
   title: Helm
   description: Specification of the Helm chart intent
