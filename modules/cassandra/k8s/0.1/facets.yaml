@@ -114,10 +114,10 @@ sample:
   version: "0.1"
   metadata: {}
   spec:
-    cassandra_version: 5.0.2
+    cassandra_version: "5.0.2"
     size:
       cpu: "2"
-      memory: 2Gi
-      volume: 5Gi
-      replica_count: 1
+      memory: "2Gi"
+      volume: "5Gi"
+      instance_count: 1
   disabled: true
