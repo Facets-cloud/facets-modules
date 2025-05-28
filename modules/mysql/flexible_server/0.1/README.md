@@ -1,40 +1,30 @@
-# MySQL Flexible Server Flavor Documentation
+# MySQL Module (Flexible Server Flavor)
 
 ## Overview
 
-The `mysql - flexible_server` flavor defines a managed MySQL database configuration using Azure Database for MySQL Flexible Server. This flavor is versioned `0.1` and integrates with the Facets infrastructure, offering a customizable and cost-efficient MySQL environment within Azure's cloud ecosystem.
+The `mysql - flexible_server` flavor (v0.1) enables the creation and management of MySQL databases using Azure Database for MySQL Flexible Server. This module provides a fully managed MySQL solution optimized for Azure cloud environments, offering high performance, scalability, and enterprise-grade security with flexible configuration options.
+
+Supported clouds:
+- Azure
 
 ## Configurability
 
-This flavor offers the following configurable parameters:
-
-- **MySQL Version**:  
-  Supported versions include `5.7` and `8.0.21`, ensuring compatibility with a wide range of applications.  
-  Current configuration: `8.0.21`
-
+- **MySQL Version**: Azure MySQL Flexible Server version to deploy (supported versions: 5.7, 8.0.21)
 - **Size Configuration**:
-  - **Writer Node**:
-    - Instance type: `GP_Standard_D2ds_v4`
-  - **Reader Node**:
-    - Instance type: `GP_Standard_D2ds_v4`
-    - Instance count: `0`
-
-- **Metadata**:
-  - Tags and ownership can be specified under the `metadata` section.
-  - The system is managed via the `facets` platform, ensuring consistency and governance.
-
-- **Cloud Provider**:  
-  Azure is the supported cloud provider, indicated by the `clouds` section.
-
-- **Schema Reference**:  
-  Based on the schema located at:  
-  `https://facets-cloud.github.io/facets-schemas/schemas/mysql/mysql.schema.json`
+  - **Writer Configuration**:
+    - **Instance**: Azure instance type for writer nodes (comprehensive selection including GP_Standard_D series, GP_Standard_E series, and Standard_B series)
+  - **Reader Configuration**:
+    - **Instance**: Azure instance type for reader nodes (same instance type options as writer)
+    - **Instance Count**: Number of read replica instances (0-20, allowing zero for writer-only configurations)
 
 ## Usage
 
-This flavor is suitable for deployments requiring:
+Use this module to deploy and manage MySQL databases using Azure Database for MySQL Flexible Server with comprehensive instance type selection. It is especially useful for:
 
-- Fully managed MySQL in Azure with high availability options
-- Flexible instance configurations to suit various performance requirements
-- Scalability via multiple reader instances
-- Seamless integration into infrastructure-as-code workflows and Azure-native services
+- Implementing managed MySQL databases with Azure's enterprise-grade security and compliance
+- Supporting read-heavy workloads with configurable read replicas (0-20 instances)
+- Providing high-performance MySQL solutions with Azure's optimized infrastructure
+- Enabling flexible instance sizing with General Purpose (GP_Standard_D/E) and Burstable (Standard_B) series
+- Leveraging automatic backups, point-in-time recovery, and high availability features
+- Integrating with Azure services and Active Directory for comprehensive cloud-native architectures
+- Scaling database performance with independent writer and reader configurations
