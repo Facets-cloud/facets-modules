@@ -6,7 +6,7 @@ clouds:
   - aws
 spec:
   type: object
-  title: AWS DynamoDB Table Specification
+  title: AWS DynamoDB 
   description: Specification of the AWS DynamoDB table resource intent
   required:
     - hash_key
