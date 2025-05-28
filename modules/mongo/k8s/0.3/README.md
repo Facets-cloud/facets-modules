@@ -1,10 +1,10 @@
-# MongoDB Kubernetes Flavor Documentation (v0.3)
+# MongoDB Module (K8s Flavor)
 
 ## Overview
 
-The `mongo - k8s` flavor (v0.3) enables the deployment of MongoDB instances within Kubernetes environments. This version builds on v0.2 by introducing a new `metadata` section that allows specification of the target **namespace** for MongoDB deployment. It remains suitable for teams deploying MongoDB within self-managed or cloud-managed Kubernetes clusters.
+The `mongo - k8s` flavor (v0.3) enables the deployment and management of MongoDB databases directly within Kubernetes clusters. This module provides a containerized MongoDB solution with comprehensive resource management, authentication options, namespace configuration, and support for multiple MongoDB versions.
 
-Supported platforms:
+Supported clouds:
 - AWS
 - Azure
 - GCP
@@ -12,60 +12,26 @@ Supported platforms:
 
 ## Configurability
 
-### Metadata
-
-- **namespace** (`string`, optional, default: `"default"`)  
-  Kubernetes namespace where MongoDB should be deployed.
-
----
-
-### Spec
-
-#### Required Fields
-
-- **authenticated** (`boolean`)  
-  Whether to enable authentication (username/password) for MongoDB.
-
-- **mongodb_version** (`string`)  
-  Version of MongoDB to deploy. Supported versions:
-  - `4.4.15`
-  - `5.0.24`
-  - `6.0.13`
-  - `7.0.11`
-  - `7.0.14`
-  - `8.0.1`
-
-- **size** (`object`)  
-  MongoDB cluster sizing and resource requests.
-
-##### Nested in `size`:
-
-- **instance_count** (`integer`, 1–10)  
-  Number of MongoDB instances.
-
-- **cpu** (`string`)  
-  CPU request. Accepts values like:
-  - `"500m"`, `"1000m"` (millicores)
-  - `"1"`, `"2"` (cores)
-
-- **cpu_limit** (`string`)  
-  Maximum CPU allocation per instance (must be ≥ `cpu`).
-
-- **memory** (`string`)  
-  Memory request. Examples:
-  - `"800Mi"`, `"1.5Gi"`
-
-- **memory_limit** (`string`)  
-  Maximum memory allocation (must be ≥ `memory`).
-
-- **volume** (`string`)  
-  Volume size, e.g., `"10Gi"`, `"50Gi"`.
+- **Metadata Configuration**:
+  - **Namespace**: Kubernetes namespace where MongoDB should be deployed (default: default)
+- **Authenticated**: Enable password protection for the MongoDB instance
+- **MongoDB Version**: Specify the MongoDB version to deploy (supported versions: 4.4.15, 5.0.24, 6.0.13, 7.0.11, 7.0.14, 8.0.1)
+- **Size Configuration**:
+  - **Instance Count**: Number of MongoDB instances to create (1-10)
+  - **CPU Request**: CPU cores required (format: number 1-32 or 1m-32000m)
+  - **Memory Request**: Memory required (format: 1Gi-64Gi or 1Mi-64000Mi)
+  - **CPU Limit**: Maximum CPU utilization limit (must be >= CPU request)
+  - **Memory Limit**: Maximum memory utilization limit (must be >= memory request)
+  - **Volume**: Storage volume size (format: integer with Gi suffix, e.g., '10Gi')
 
 ## Usage
 
-Use the v0.3 flavor when:
+Use this module to deploy MongoDB databases within Kubernetes environments with fine-grained resource control and namespace management. It is especially useful for:
 
-- You want to control **namespace targeting** for MongoDB deployments in Kubernetes.
-- You need precise control over CPU/memory **requests and limits**.
-- You're operating in **multi-cloud or hybrid** Kubernetes clusters.
-- You require a self-managed MongoDB cluster with full configurability.
+- Running MongoDB workloads directly in Kubernetes clusters with namespace isolation
+- Implementing containerized database solutions with comprehensive resource management
+- Supporting development and testing environments with configurable MongoDB versions
+- Providing scalable MongoDB deployments with multiple instance support
+- Enabling authentication-protected database instances
+- Managing database resource allocation with CPU and memory limits and requests
+- Supporting cloud-native applications requiring embedded MongoDB instances across multiple namespaces
