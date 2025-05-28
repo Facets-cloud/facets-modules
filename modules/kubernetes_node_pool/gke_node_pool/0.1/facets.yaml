@@ -64,7 +64,7 @@ spec:
           description: Iam roles to be assigned to nodepool service account
           type: object
           patternProperties:
-            "^[a-zA-Z][a-zA-Z0-9_.-]*$":
+            "^[a-zA-Z][a-zA-Z0-9_\\.\\-]*$":
               title: Key Name For Role
               description: Key name for role
               type: object
@@ -74,6 +74,8 @@ spec:
                   description: Role to be added to the nodepool service account
                   type: string
                   x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+              required:
+                - role
               x-ui-error-message: Key name should start with an alphabet and should
                 contain alpha numeric characters with allowed special characters like
                 underscore, period and hypen
