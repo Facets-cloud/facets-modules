@@ -1,71 +1,65 @@
-# Kubernetes Cluster – AWS EKS Flavor (v0.2)
+# Kubernetes Cluster Module (AWS EKS Flavor)
 
 ## Overview
 
-The `kubernetes_cluster - aws_eks` flavor (v0.2) provides a declarative interface to define and manage an **Amazon EKS (Elastic Kubernetes Service)** cluster using standard configuration schemas.
+The `kubernetes_cluster - aws_eks` flavor (v0.2) enables the creation and management of Kubernetes clusters using Amazon EKS. This module provides configuration options for defining the characteristics and behavior of EKS clusters.
 
-This module enables defining core cluster settings, node pools (default, spot, and fallback), logging, KMS integration, and addon management—all tailored for AWS environments.
-
-Supported platform:
+Supported clouds:
 - AWS
-
-> 🛠️ Designed for use in fully-managed infrastructure setups where cluster lifecycle and node pool scaling are declaratively managed.
-
----
 
 ## Configurability
 
-### `spec` (object)
+- **Cluster Spec**: Specifications of the cluster to be created.
+  - **CloudWatch Log Retention Days**: Retention period in days for CloudWatch Logs generated for this EKS cluster.
+  - **Public CIDR Whitelist**: Comma-separated list of CIDR blocks which can access the Amazon EKS public API server endpoint.
+  - **KMS Keys**: Specification of AWS KMS.
+    - **Deletion Window**: Waiting period in days after which KMS keys are deleted.
+    - **Enable Rotation**: Specifies whether key rotation is enabled.
+    - **Rotation Period**: Specifies rotation period for KMS in days.
+  - **Default Reclaim Policy**: The reclaim policy for the default storage class in a Kubernetes cluster.
 
-#### `cluster` (object)
+- **Nodepool Spec**: Specifications of nodepools to be created.
+  - **Default Nodepool Spec**: Specification of default nodepools.
+    - **Instance Types**: Space-separated list of instance types for worker nodes.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **AMI ID**: AMI ID of the AMI image to be used for the Kubernetes node.
+    - **AMI Name Filter**: AMI name filter for AMI image to be used for the Kubernetes node.
+    - **AMI Owner ID**: AMI owner ID of the AMI image to be used for the Kubernetes node while using a name filter.
+  - **Facets Dedicated Nodepool Spec**: Specifications of facets dedicated nodepools.
+    - **Enable**: Set this to true to enable facets dedicated nodepools.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **Instance Type**: Instance type of facets dedicated node pool.
+    - **AMI ID**: AMI ID of the AMI image to be used for the Kubernetes node.
+    - **AMI Name Filter**: AMI name filter for AMI image to be used for the Kubernetes node.
+    - **AMI Owner ID**: AMI owner ID of the AMI image to be used for the Kubernetes node while using a name filter.
+  - **Ondemand Fallback Nodepool Spec**: Specifications of ondemand fallback nodepool.
+    - **Enable**: Boolean to enable ondemand fallback nodepool.
+    - **Instance Type**: Size of the node for ondemand fallback worker node.
+    - **Max Nodes**: Maximum number of nodes in nodepool.
+    - **AMI ID**: AMI ID of the AMI image to be used for the Kubernetes node.
+    - **AMI Name Filter**: AMI name filter for AMI image to be used for the Kubernetes node.
+    - **AMI Owner ID**: AMI owner ID of the AMI image to be used for the Kubernetes node while using a name filter.
 
-- **`cloudwatch_log_retention_days`** (`number`, default: `365`)  
-  Days to retain CloudWatch logs.
+- **Kubernetes Cluster Tags**: Enter key-value pair for tags, to be added to the cluster, in YAML format.
 
-- **`public_cidr_whitelist`** (`string`, default: `0.0.0.0/0`)  
-  Comma-separated CIDR blocks allowed to access the EKS public API server.
-
-- **`kms_keys`** (`object`)  
-  - `deletion_window_in_days` (`number`, default: `7`)  
-  - `enable_rotation` (`boolean`, default: `false`)  
-  - `rotation_period_in_days` (`number`, default: `90`)
-
-- **`default_reclaim_policy`** (`string`, default: `Delete`)  
-  Enum: `Delete`, `Retain`
-
-#### `nodepools` (object)
-
-- **`default`**  
-  - `instance_types` (`array`, **required**)  
-  - `root_disk_volume` (`number`, default: `100`)  
-  - `node_lifecycle_type` (`string`, default: `SPOT`)  
-  - `max_nodes` (`number`, default: `200`)  
-  - Optional AMI filters and IDs
-
-- **`facets_dedicated`**  
-  - `enable` (`boolean`)  
-  - Requires: `instance_type`, with optional overrides (e.g., AMI ID, disk size)
-
-- **`ondemand_fallback`**  
-  - `enable` (`boolean`)  
-  - Requires: `instance_type`, `max_nodes`
-
-#### `tags` (object)  
-YAML key-value pairs added as tags to the EKS cluster.
-
-#### `addons` (object of named blocks)
-
-Each addon block supports:
-- `enable` (`boolean`)  
-- `configuration_values` (`string`)  
-- `resolve_conflicts` (`boolean`)  
-- `addon_version` (`string`)  
-- `tags` (YAML `object`)  
-- `preserve` (`boolean`)  
-- `service_account_role_arn` (`string`)
-
----
+- **Addons**: Specifications of addons to be installed.
+  - **Addon Name**: Configuration for each addon.
+    - **Enable**: Set this to true to enable the addon.
+    - **Configuration Values**: Configuration values for the addon.
+    - **Resolve Conflicts**: Set this to true to resolve conflicts.
+    - **Addon Version**: Version of the addon.
+    - **Addon Tags**: Enter key-value pair for tags, to be added to the addon, in YAML format.
+    - **Preserve**: Set this to true to preserve the addon.
+    - **Service Account Role ARN**: Service account for the addon.
 
 ## Usage
 
-To use this flavor, define a resource of kind `kubernetes_cluster` with flavor `aws_eks` and version `0.2`. You can configure cluster-level settings like CloudWatch log retention, CIDR access control, KMS key policies, and node pool types (on-demand, spot, or dedicated). Nodepools require specifying instance types and optionally allow tuning disk size, max nodes, and AMI details. You can also enable addons with custom configuration and tagging. This module is suitable for automated deployments in AWS environments using managed Kubernetes infrastructure.
+Use this module to create and manage Kubernetes clusters using Amazon EKS. It is especially useful for:
+
+- Defining the characteristics and behavior of EKS clusters
+- Managing the deployment and execution environment of Kubernetes clusters
+- Enhancing the functionality and integration of AWS-hosted applications
