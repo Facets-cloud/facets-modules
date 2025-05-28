@@ -3,9 +3,13 @@ flavor: default
 version: '0.2'
 description: Adds dynamodb - default flavor
 clouds:
-- aws
+  - aws
 spec:
   type: object
+  title: AWS DynamoDB Table Specification
+  description: Specification of the AWS DynamoDB table resource intent
+  required:
+    - hash_key
   properties:
     hash_key:
       type: string
@@ -15,15 +19,14 @@ spec:
     range_key:
       type: string
       title: Range Key (Sort Key)
-      description: Optional attribute name to use as the range (sort) key for the
-        table
+      description: Optional attribute name to use as the range (sort) key for the table
     billing_mode:
       type: string
       title: Billing Mode
       description: Controls how you are charged for read and write throughput
       enum:
-      - PAY_PER_REQUEST
-      - PROVISIONED
+        - PAY_PER_REQUEST
+        - PROVISIONED
       default: PAY_PER_REQUEST
     point_in_time_recovery_enabled:
       type: boolean
@@ -35,17 +38,28 @@ spec:
       title: Server-Side Encryption
       description: Enable server-side encryption for data at rest
       default: false
-  required:
-  - hash_key
+    tags:
+      type: object
+      description: Tags to apply to the DynamoDB table
+      additionalProperties:
+        type: string
+
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/dynamodb/dynamodb.schema.json
   kind: dynamodb
   flavor: default
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/dynamodb/dynamodb.schema.json
+  disabled: false
   version: '0.2'
-  disabled: true
-  metadata: {}
+  metadata:
+    tags:
+      Environment: dev
+      Project: example
   spec:
     hash_key: LockID
-iac:
-  validated_files:
-  - variables.tf
+    range_key: Timestamp
+    billing_mode: PAY_PER_REQUEST
+    point_in_time_recovery_enabled: true
+    server_side_encryption_enabled: true
+    tags:
+      Name: example-dynamodb-table
+      Team: ops
