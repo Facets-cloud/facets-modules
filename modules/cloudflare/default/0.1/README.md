@@ -6,10 +6,11 @@ The Cloudflare module provisions and manages Cloudflare configurations across mu
 
 ## Configurability
 
-- **Domain**: Specify the domain name to be managed by Cloudflare. This forms the core configuration for routing and protection.  
-- **Multi-cloud support**: Compatible with AWS, GCP, Azure, and Kubernetes environments, allowing flexible integration regardless of infrastructure provider.  
-- **Lifecycle management**: Designed for environment-level lifecycle control with support for enabling or disabling the module declaratively.  
-- **Extensible flavor**: The default flavor provides a streamlined setup, easily extendable for custom Cloudflare features and policies.
+- **Domain**: Specify the domain name to be managed by Cloudflare (`spec.domain`).
+- **Origin domain input**: Reference an origin domain from another resource using the `inputs.origin_domain` field.
+- **Cloudflare credentials input**: Provide Cloudflare account credentials via the `inputs.cloudflare_credentials` field.
+- **Managed rules**: Attach built-in Cloudflare managed rulesets (e.g., `cloudflare_free_managed_ruleset`, `cloudflare_cache_everything`) using `advanced.cloudflare.managed_rules`.
+- **Custom rulesets**: Define advanced custom rulesets for transformations, rate limiting, and firewall actions under `advanced.cloudflare.ruleset`.
 
 ## Usage
 
