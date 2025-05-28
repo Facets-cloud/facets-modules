@@ -15,6 +15,14 @@ spec:
       minLength: 1
       x-ui-placeholder: "Ex. 8.0"
       x-ui-typeable: true
+      enum:
+        - "5.7.mysql_aurora.2.12.0"
+        - "8.0.mysql_aurora.3.02.0"
+        - "8.0.mysql_aurora.3.03.0"
+        - "8.0.mysql_aurora.3.04.0"
+        - "8.0.mysql_aurora.3.05.2"
+        - "8.0.mysql_aurora.3.06.0"
+        - "8.0.mysql_aurora.3.07.1"
     size:
       type: object
       title: Size
