@@ -1,12 +1,12 @@
 intent: service
 flavor: cronjob
-version: '0.1'
+version: "0.1"
 description: Adds service module
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
@@ -49,37 +49,32 @@ spec:
         concurrency_policy:
           title: Concurrent Policy
           type: string
-          description: Specifies how to treat concurrent executions of a job created
-            by this cron job
+          description: Specifies how to treat concurrent executions of a job created by this cron job
           enum:
-          - Allow
-          - Forbid
-          - Replace
+            - Allow
+            - Forbid
+            - Replace
       required:
-      - schedule
-      - suspend
-      - concurrency_policy
+        - schedule
+        - suspend
+        - concurrency_policy
     job:
       type: object
       title: Job
-      description: Manage execution of a one-off task or batch process, ensuring it
-        completes successfully
+      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
       x-ui-override-disable: true
       x-ui-toggle: true
       properties:
         retry:
           type: string
-          default: 5
+          default: "5"
           minimum: 1
-          x-ui-placeholder: "Enter the minimum retry count for your job (default is
-            5)"
-          description: Number of time you want to retry the job before calling it
-            a failure
+          x-ui-placeholder: "Enter the minimum retry count for your job (default is 5)"
+          description: Number of time you want to retry the job before calling it a failure
           pattern: '^(100|[1-9][0-9]?)$'
-          x-ui-error-message: "The retry count must be a positive integer between
-            1 and 100."
+          x-ui-error-message: "The retry count must be a positive integer between 1 and 100."
       required:
-      - retry
+        - retry
     runtime:
       type: object
       title: Runtime
@@ -98,32 +93,37 @@ spec:
           title: Arguments
           description: Arguments to pass to the command
           pattern: '^[a-zA-Z0-9-_ ]+$'
-          x-ui-error-message: "Each argument can only contain alphanumeric characters,
-            dashes, underscores, and spaces."
+          x-ui-error-message: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
           items:
             type: string
           x-ui-command: true
           x-ui-override-disable: true
       x-ui-order:
-      - args
-      - command
+        - args
+        - command
   required:
-  - job
-  - cronjob
+    - job
+    - cronjob
   x-ui-order:
-  - cronjob
-  - job
-  - runtime
+    - cronjob
+    - job
+    - runtime
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json"
   metadata:
     name: cronjob-service
   disabled: true
   flavor: cronjob
   kind: service
-  version: '0.1'
+  version: "0.1"
   spec:
     type: cronjob
-    cronjob: {}
-    job: {}
+    cronjob:
+      schedule: "0 2 * * *"
+      suspend: false
+      concurrency_policy: "Allow"
+    job:
+      retry: "5"
+    runtime:
+      command: []
+      args: []
