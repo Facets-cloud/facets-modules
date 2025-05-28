@@ -1,43 +1,24 @@
-# Log Collector – Loki GCP GCS Flavor (v0.2)
+# Log Collector Module (Loki GCP GCS Flavor)
 
 ## Overview
 
-The `log_collector - loki_gcp_gcs` flavor (v0.2) enables the collection and management of logs using Loki with Google Cloud Storage (GCS) within various cloud environments. This module provides structured log collection, storage, and querying capabilities.
+The `log_collector - loki_gcp_gcs` flavor (v0.2) enables the deployment and management of log collection infrastructure using Loki with Google Cloud Storage (GCS) as the storage backend. This module provides a cloud-native logging solution specifically optimized for GCP environments, leveraging GCS for scalable and cost-effective log storage.
 
-Supported platforms:
-- GCP  
+Supported clouds:
+- GCP
 - Kubernetes
 
 ## Configurability
 
-### Spec
-
-#### `title` (`string`)
-
-Title of the Log Collector Spec.
-
-#### `type` (`string`)
-
-Type of the Log Collector Spec.
-
-#### `description` (`string`)
-
-Description of the Log Collector Spec.
-
----
-
-### Advanced Configuration
-
-#### `loki_gcs` (object)
-
-Provides configuration options for Loki with Google Cloud Storage (GCS).
-
----
+- **Advanced Configuration**: GCP GCS-specific Loki configuration for seamless integration with Google Cloud Storage services
 
 ## Usage
 
-Use this module to collect and manage logs using Loki with Google Cloud Storage (GCS) in various cloud environments. It is especially useful for:
+Use this module to implement centralized logging using Loki with Google Cloud Storage backend. It is especially useful for:
 
-- Structured log collection
-- Log storage and querying
-- Enhancing observability and monitoring
+- Collecting and aggregating logs from GCP-hosted applications and services
+- Leveraging Google Cloud Storage for cost-effective, scalable log storage
+- Implementing log retention policies with GCS lifecycle management
+- Supporting observability and monitoring workflows in GCP and Kubernetes environments
+- Integrating with existing Google Cloud logging and monitoring infrastructure
+- Providing durable and highly available log storage using Google Cloud Storage
