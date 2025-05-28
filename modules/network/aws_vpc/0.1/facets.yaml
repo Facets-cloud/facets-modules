@@ -16,9 +16,13 @@ spec:
     choose_vpc_type:
       title: Choose VPC Type
       description: Choose the type of vpc to create
-      type: radio
-      enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
-            VPC, value: use_existing_vpc}]
+      type: string
+      enum: 
+        - create_new_vpc
+        - use_existing_vpc
+      x-ui-enum-labels:
+        - Create New VPC
+        - Use Existing VPC
       default: create_new_vpc
       x-ui-immutable: true
       x-ui-overrides-only: true
@@ -29,6 +33,7 @@ spec:
       x-ui-placeholder: e.g. us-east-1a us-east-1b
       x-ui-immutable: true
       x-ui-overrides-only: true
+      x-ui-override-disable: true
       x-ui-fetch-az: true
       items:
         type: string
@@ -36,8 +41,7 @@ spec:
       title: VPC CIDR
       description: CIDR block for the vpc
       x-ui-placeholder: e.g. 10.45.0.0/16
-      pattern: 
-        ^(10.(\d{1,3}.){2}\d{1,3}/(2[0-8]|[89]|1[0-9])|172.(1[6-9]|2[0-9]|3[01]).(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9])|192.168.(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$
+      pattern: '^(10\\.(\\d{1,3}\\.){2}\\d{1,3}\\/(2[0-8]|[89]|1[0-9])|172\\.(1[6-9]|2[0-9]|3[01])\\.(\\d{1,3}\\.){1}\\d{1,3}\\/(2[0-8]|[12][0-9])|192\\.168\\.(\\d{1,3}\\.){1}\\d{1,3}\\/(2[0-8]|[12][0-9]|1[6-9]))$'
       x-ui-error-message: The provided CIDR block is invalid. Please ensure it is
         a valid private IP range in CIDR notation
       type: string
@@ -58,7 +62,6 @@ spec:
         values: ["use_existing_vpc"]
       x-ui-immutable: true
       x-ui-overrides-only: true
-  required: [azs, vpc_cidr, existing_vpc_id]
   x-ui-order: [choose_vpc_type, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
@@ -68,4 +71,5 @@ sample:
   disabled: true
   depends_on: []
   metadata: {}
-  spec: {}
+  spec:
+    azs: ["us-east-1a", "us-east-1b"]
