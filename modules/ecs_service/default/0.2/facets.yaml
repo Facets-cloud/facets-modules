@@ -85,7 +85,7 @@ spec:
           x-ui-override-disable: true
           description: Command-line arguments for the container
           patternProperties:
-            "^[a-zA-Z0-9_-]+$":
+            "^[a-zA-Z0-9_\\-]+$":
               type: object
               title: Argument Name
               description: Define command-line arguments for the container
@@ -125,10 +125,17 @@ spec:
       description: Map of environment variables passed to the container.
       type: object
       patternProperties:
-        "^[a-zA-Z][a-zA-Z0-9_-.]*$":
+        "^[a-zA-Z][a-zA-Z0-9_\\-\\.]*$":
+          type: object
           title: Environment Variable
           description: Environment Variable
-          type: string
+          properties:
+            value:
+              type: string
+              title: Value
+              description: Environment variable value
+          required:
+            - value
       x-ui-yaml-editor: true
     cloud_permissions:
       type: object
@@ -148,7 +155,7 @@ spec:
               description: Define IAM policies to manage permissions, control-access
                 and secure resources
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                "^[a-zA-Z0-9_\\.\\-]*$":
                   title: policy_name
                   properties:
                     arn:
@@ -182,6 +189,10 @@ sample:
         cpu: 512
         memory: 1
       readonly_root_filesystem: true
+    release:
+      image: "nginx:latest"
     env:
-      APP_ENV: "production"
-      LOG_LEVEL: "info"
+      APP_ENV:
+        value: "production"
+      LOG_LEVEL:
+        value: "info"
