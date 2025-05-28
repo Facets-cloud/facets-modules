@@ -69,7 +69,7 @@ spec:
               pattern: '^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$'
               x-ui-error-message: "Invalid ARN format. Ensure it follows the pattern
                 <arn:partition:service:region:account-id:resource>"
-    required:
+  required:
     - policies
 sample:
   $schema: >-
