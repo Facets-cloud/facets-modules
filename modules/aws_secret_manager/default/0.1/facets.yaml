@@ -1,9 +1,18 @@
 intent: aws_secret_manager
 flavor: default
-version: '0.1'
+version: "0.1"
 description: Adds secret manager for aws - default flavor
 clouds:
-- aws
+  - aws
+metadata:
+  title: Metadata of AWS Secret Manager
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace
+      description: Namespace in which AWS Secret Manager should be deployed
+      default: default
 spec:
   title: AWS Secret Manager
   description: Specification of the aws secret manager resource intent
@@ -27,22 +36,15 @@ spec:
       x-ui-yaml-editor: true
       x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
 sample:
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/aws_secret_manager/aws_secret_manager.schema.json"
   kind: aws_secret_manager
   flavor: default
-  version: '0.1'
-  lifecycle: ENVIRONMENT
+  version: "0.1"
   disabled: false
-  provided: false
-  depends_on: []
   metadata:
-    name: ''
+    name: "my-secret"
   spec:
     override_default_name: false
-    override_name: ""
     secrets:
-      key1: value1
-      key2: value2
-  advanced:
-    secret_manager: {}
-  out: {}
-
+      key1: "value1"
+      key2: "value2"
