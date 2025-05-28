@@ -910,14 +910,14 @@ output "legacy_resource_details" {
       resource_name = var.instance_name
       key           = var.instance_name
       }
-      ] : [],
+    ] : [],
     [for k, v in var.instance.spec.rules : {
-      name          = "ingress domain"
+      name = "ingress domain"
       # Use rule's domain if base domain is disabled, otherwise use base domain logic
-      value         = lookup(v, "disable", false) == false ? (
+      value = lookup(v, "disable", false) == false ? (
         !lookup(var.instance.spec, "disable_base_domain", false) ? (
           lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? "${local.base_domain}" : "${lookup(v, "domain_prefix", null)}.${local.base_domain}"
-        ) : (
+          ) : (
           # When base domain is disabled, we need to use the domain from the rule's domain configuration
           lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
           lookup(lookup(local.domains, lookup(v, "domain_key", ""), {}), "domain", "no-domain-configured") :
