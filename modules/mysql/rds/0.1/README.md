@@ -1,42 +1,31 @@
-# MySQL RDS Flavor Documentation
+# MySQL Module (RDS Flavor)
 
 ## Overview
 
-The `mysql - rds` flavor enables deployment and management of MySQL using AWS RDS (Relational Database Service). It supports choosing MySQL versions and configuring instance types for writer and reader nodes, optimized for AWS infrastructure. This flavor focuses exclusively on the AWS cloud environment.
+The `mysql - rds` flavor (v0.1) enables the creation and management of MySQL databases using Amazon RDS (Relational Database Service). This module provides a fully managed MySQL solution with automatic backups, patching, monitoring, and scaling capabilities, optimized for AWS cloud environments with enterprise-grade reliability.
+
+Supported clouds:
+- AWS
 
 ## Configurability
 
-### MySQL Version
-
-Supported MySQL versions:
-- `8.0`
-- `5.7`
-
-### Size Configuration
-
-#### Writer Node Configuration
-Select an AWS RDS instance type for the writer node:
-- Examples: `db.t4g.medium`, `db.t3.medium`, `db.t3.small`, `db.t3.micro`, `db.t3.large`, etc.
-
-#### Reader Node Configuration
-Configure reader nodes with:
-- Instance type (same options as writer)
-- Instance count (number of reader replicas, 0 to 20)
-
-### Apply Immediately
-
-Boolean flag to specify whether configuration changes should apply immediately or during the next maintenance window. Default is `false`.
+- **MySQL Version**: Amazon RDS MySQL version to deploy (supported versions: 8.0, 5.7)
+- **Size Configuration**:
+  - **Writer Configuration**:
+    - **Instance**: RDS instance type for writer nodes (selection includes db.t4g, db.t3, and db.t2 series)
+  - **Reader Configuration**:
+    - **Instance**: RDS instance type for reader nodes (same instance type options as writer)
+    - **Instance Count**: Number of read replica instances (0-20, allowing zero for writer-only configurations)
+- **Apply Immediately**: Boolean flag to specify whether modifications are applied immediately or during the next maintenance window (default: false)
 
 ## Usage
 
-This flavor is designed for users who want to run MySQL on AWS managed infrastructure via RDS, leveraging the scalability, reliability, and managed service features of AWS.
+Use this module to deploy and manage MySQL databases using Amazon RDS with comprehensive instance configuration and maintenance control. It is especially useful for:
 
-- Choose your MySQL version according to application compatibility and feature needs.
-- Select instance types that balance cost and performance requirements for writer and reader nodes.
-- Set the number of read replicas to optimize read scaling and availability.
-
-This flavor is ideal for teams who want to focus on application development while offloading operational complexity of MySQL maintenance, backups, and patching to AWS RDS.
-
-## Cloud Providers
-
-- **AWS**
+- Implementing fully managed MySQL databases with automatic maintenance and updates
+- Supporting read-heavy workloads with configurable read replicas (0-20 instances)
+- Providing enterprise-grade MySQL performance with AWS optimized infrastructure
+- Enabling flexible instance sizing with T-series instance types for various workload requirements
+- Managing database maintenance windows and immediate configuration changes
+- Leveraging automatic backups, point-in-time recovery, and monitoring capabilities
+- Supporting production applications requiring high availability and durability
