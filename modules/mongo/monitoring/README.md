@@ -1,85 +1,53 @@
-# MongoDB Monitoring – Kubernetes Flavor (v0.1)
+# MongoDB Monitoring Module (K8s Flavor)
 
 ## Overview
 
-The `mongo_monitoring - k8s` flavor (v0.1) enables real-time monitoring and alerting for MongoDB clusters deployed in Kubernetes environments. It integrates seamlessly with the `mongo` module to provide health checks, performance thresholds, and fault detection.
+The `mongo_monitoring - k8s` flavor (v0.1) enables comprehensive monitoring and alerting capabilities for MongoDB instances running in Kubernetes environments. This module provides predefined alert rules for common MongoDB health and performance conditions, helping ensure database reliability and performance.
 
-Supported platforms:
-- AWS  
-- Azure  
-- GCP  
+Supported clouds:
+- AWS
+- Azure
+- GCP
 - Kubernetes
-
-> ⚠️ This module requires a reference to an existing `@output/mongo` deployment.
 
 ## Configurability
 
-### Spec
+- **MongoDB Down Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert (format: duration like '1m5s')
+  - **Severity**: Alert severity level (critical, warning)
 
-#### `alerts` (object)
+- **MongoDB Too Many Connections Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
+  - **Threshold**: Percentage of maximum connections (0-100%) at which alert triggers
 
-Defines alert rules for key MongoDB operational metrics. Each alert can be customized with:
+- **MongoDB Virtual Memory Usage Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
+  - **Threshold**: Maximum memory percentage (0-100%) for each MongoDB instance
 
-- `disabled` (`boolean`)  
-  Enables/disables the alert.
-  
-- `interval` (`string`)  
-  Duration format to evaluate the alert condition (e.g., `5m`, `2h`, `30s`).  
-  Must match: `^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$`
+- **MongoDB Replication Lag Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
+  - **Threshold**: Replication lag threshold in seconds (minimum 0.1)
 
-- `severity` (`string`)  
-  Priority of the alert:  
-  - `critical`
-  - `warning`
-
-Additional properties vary per alert type:
-
----
-
-### Supported Alerts
-
-#### `mongodb_down`
-
-- **Description**: Triggers if MongoDB becomes unreachable.
-- **Customizable**: `disabled`, `interval`, `severity`
-
----
-
-#### `mongodb_too_many_connections`
-
-- **Description**: Alerts when MongoDB nears/exceeds its connection limit.
-- **Additional field**:
-  - `threshold` (`integer`, 0–100): Connection usage percentage.
-
----
-
-#### `mongodb_virtual_memory_usage`
-
-- **Description**: Triggers if memory usage exceeds acceptable limits.
-- **Additional field**:
-  - `threshold` (`integer`, 0–100): Memory usage percentage.
-
----
-
-#### `mongodb_replication_lag`
-
-- **Description**: Raises alert if replication lag grows beyond tolerance.
-- **Additional field**:
-  - `threshold` (`float`, minimum: 0.1): Lag duration in seconds.
-
----
-
-#### `mongodb_replica_member_unhealthy`
-
-- **Description**: Detects if a replica set member becomes unhealthy.
-- **Customizable**: `disabled`, `interval`, `severity`
-
----
+- **MongoDB Replica Member Unhealthy Alert**:
+  - **Disabled**: Toggle to enable/disable the alert
+  - **Interval**: Time duration before triggering the alert
+  - **Severity**: Alert severity level (critical, warning)
 
 ## Usage
 
-Use this module to ensure observability and early fault detection in MongoDB deployments on Kubernetes. It is especially useful for:
+Use this module to implement comprehensive monitoring and alerting for MongoDB deployments in Kubernetes. It is especially useful for:
 
-- Production-grade replica sets
-- High availability systems
-- Environments with strict SLAs
+- Monitoring MongoDB availability and detecting service outages
+- Tracking connection usage and preventing connection pool exhaustion
+- Monitoring memory consumption and resource utilization
+- Detecting replication lag issues in MongoDB replica sets
+- Identifying unhealthy replica set members and cluster issues
+- Implementing proactive database health monitoring and incident response
+- Supporting production MongoDB deployments with automated alerting capabilities
