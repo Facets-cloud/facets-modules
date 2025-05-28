@@ -30,7 +30,7 @@ spec:
       title: Forwarding Rules
       description: Map of rules for forwarding traffic
       patternProperties:
-        "^[a-zA-Z0-9_-]+$":
+        "^[a-zA-Z0-9_\\-]+$":
           properties:
             ecs_service_arn:
               type: string
@@ -120,15 +120,20 @@ spec:
               type: string
               title: OIDC Authentication
               description: Name of the OIDC authentication to use
-              x-ui-dynamic-enum: spec.oidc_authentications.*.name
+              x-ui-dynamic-enum:
+                sourceField: spec.oidc_authentications.*.name
           type: object
+          required:
+            - ecs_service_arn
+            - port
+            - priority
     oidc_authentications:
       x-ui-toggle: true
       type: object
       title: OIDC Authentications
       description: Map of OIDC authentication configurations
       patternProperties:
-        "^[a-zA-Z0-9_-]+$":
+        "^[a-zA-Z0-9_\\-]+$":
           properties:
             name:
               type: string
@@ -183,7 +188,7 @@ spec:
               title: Authentication Request Extra Params
               description: Additional query parameters for the authentication request
               patternProperties:
-                "^[a-zA-Z0-9_-]+$":
+                "^[a-zA-Z0-9_\\-]+$":
                   properties:
                     key:
                       type: string
@@ -194,7 +199,18 @@ spec:
                       title: Value
                       description: The value of the query parameter
                   type: object
+                  required:
+                    - key
+                    - value
           type: object
+          required:
+            - name
+            - authorization_endpoint
+            - client_id
+            - client_secret
+            - issuer
+            - token_endpoint
+            - user_info_endpoint
     additional_domains:
       x-ui-overrides-only: true
       x-ui-toggle: true
@@ -202,7 +218,7 @@ spec:
       title: Additional Domains
       description: Map of additional domains and their certificate ARNs
       patternProperties:
-        "^[a-zA-Z0-9_-]+$":
+        "^[a-zA-Z0-9_\\-]+$":
           properties:
             domain:
               type: string
@@ -213,6 +229,9 @@ spec:
               title: Certificate ARN
               description: ARN of the certificate for the domain
           type: object
+          required:
+            - domain
+            - certificate_arn
   required:
   - public
   - rules
@@ -235,7 +254,12 @@ sample:
     public: true
     rules:
       rule1:
+<<<<<<< HEAD
         ecs_service_arn: ${ecs_service.myservice.out.attributes.ecs_service_arn}
         port: '80'
+=======
+        ecs_service_arn: "${ecs_service.myservice.out.attributes.ecs_service_arn}"
+        port: 80
+>>>>>>> 66a61bcc (Update facets.yaml)
         priority: 1
         path: "/"
