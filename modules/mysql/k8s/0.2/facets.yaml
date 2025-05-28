@@ -1,6 +1,6 @@
 intent: mysql
 flavor: k8s
-version: "0.1"
+version: "0.2"
 description: Adds MYSQL module of flavor kubernetes
 clouds:
   - aws
