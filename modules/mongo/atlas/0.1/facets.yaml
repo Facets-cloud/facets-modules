@@ -3,16 +3,7 @@ flavor: atlas
 version: '0.1'
 description: Adds mongo - atlas flavor
 clouds:
-- aws
-- gcp
 - azure
-- kubernetes
-intent: mongo
-flavor: atlas
-version: '0.1'
-description: Adds MongoDB Atlas cluster - Atlas flavor
-clouds:
-- atlas
 spec:
   title: MongoDB Atlas Configuration
   type: object
