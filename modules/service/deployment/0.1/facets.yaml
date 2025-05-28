@@ -1,6 +1,5 @@
 intent: service
-flavor: deployment
-alias-flavors: ["k8s"]
+flavor: job
 version: "0.1"
 description: Adds service module
 clouds:
@@ -19,7 +18,7 @@ metadata:
     namespace:
       type: string
       title: Namespace
-      description: Namespace in which deployment should be deployed
+      description: Namespace in which job should be deployed
       default: default
 spec:
   title: K8s flavor of service
@@ -28,25 +27,30 @@ spec:
     type:
       type: string
       title: Service Type
-      description: Type - Application
-      default: application
-    restart_policy:
-      type: string
-      title: Restart Policy
-      description: Restart Policy- Always, OnFailure, Never
+      description: Type - Job
       x-ui-override-disable: true
-      enum:
-        - Always
-        - OnFailure
-        - Never
-    enable_host_anti_affinity:
-      type: boolean
-      title: Enable Host Anti-Affinity
-      description: Distribute instances across different physical hosts within cluster
+      default: job
+    job:
+      type: object
+      title: Job
+      description: Manage execution of a one-off task or batch process, ensuring it completes successfully
+      x-ui-override-disable: true
+      x-ui-toggle: true
+      properties:
+        retry:
+          type: string
+          default: "5"
+          minimum: 1
+          x-ui-placeholder: "Enter the minimum retry count for your job (default is 5)"
+          description: Number of time you want to retry the job before calling it a failure
+          pattern: '^(100|[1-9][0-9]?)$'
+          x-ui-error-message: "The retry count must be a positive integer between 1 and 100."
+      required:
+        - retry
     runtime:
       type: object
-      title: Runtime (Main Application Container)
-      description: Customize service runtime settings like ports, healthchecks etc.
+      title: Runtime
+      description: Customize service runtime settings like argument, command.
       properties:
         command:
           type: array
@@ -60,296 +64,32 @@ spec:
           type: array
           title: Arguments
           description: Arguments to pass to the command
+          pattern: '^[a-zA-Z0-9-_ ]+$'
+          x-ui-error-message: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
           items:
             type: string
           x-ui-command: true
           x-ui-override-disable: true
-        health_checks:
-          type: object
-          title: Health Checks
-          description: Ensure service remains responsive and operational. Assess its status and performance.
-          x-ui-override-disable: true
-          x-ui-toggle: true
-          properties:
-            readiness_check_type:
-              type: string
-              title: Readiness Check Type
-              default: None
-              x-ui-no-sort: true
-              enum:
-                - None
-                - PortCheck
-                - HttpCheck
-                - ExecCheck
-            readiness_port:
-              type: string
-              title: Readiness Port
-              x-ui-placeholder: "Enter readiness port for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-65535"
-              x-ui-visible-if:
-                field: spec.runtime.health_checks.readiness_check_type
-                values: ["PortCheck", "HttpCheck"]
-              description: Port for Health Checks
-              x-ui-dynamic-enum:
-                sourceField: "spec.runtime.ports.*.port"
-              x-ui-disable-tooltip: "No Ports Added"
-            liveness_check_type:
-              type: string
-              title: Liveness Check Type
-              default: None
-              x-ui-no-sort: true
-              enum:
-                - None
-                - PortCheck
-                - HttpCheck
-                - ExecCheck
-            liveness_port:
-              type: string
-              title: Liveness Port
-              x-ui-placeholder: "Enter liveness port for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are from 0-65535"
-              x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["PortCheck", "HttpCheck"]
-              description: Port for Health Checks
-              x-ui-dynamic-enum:
-                sourceField: "spec.runtime.ports.*.port"
-              x-ui-disable-tooltip: "No Ports Added"
-        autoscaling:
-          type: object
-          title: Autoscaling
-          description: Automatically adjust resources based on demand for optimal performance
-          x-ui-toggle: true
-          properties:
-            min:
-              type: integer
-              title: Min
-              default: 1
-              minimum: 1
-              maximum: 200
-              description: Min replicas
-              x-ui-placeholder: "Enter Min replicas for you application"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200"
-            max:
-              type: integer
-              title: Max
-              default: 1
-              minimum: 1
-              maximum: 200
-              description: Max replicas
-              x-ui-placeholder: "Enter Max replicas for you application"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-200 and Max should be more than Min"
-            scaling_on:
-              type: string
-              title: Scale based on
-              default: CPU
-              enum:
-                - CPU
-                - RAM
-            cpu_threshold:
-              type: string
-              title: CPU Threshold
-              description: Max CPU threshold
-              pattern: "^(100|[1-9][0-9]?)$"
-              x-ui-placeholder: "Enter cpu threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging from 1-100"
-              x-ui-visible-if:
-                field: "spec.runtime.autoscaling.scaling_on"
-                values: ["CPU"]
-        size:
-          type: object
-          title: Size
-          description: Configure container size to meet resource requirements
-          properties:
-            cpu:
-              type: string
-              title: CPU
-              description: CPU size
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-placeholder: "Enter CPU requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
-            memory:
-              type: string
-              title: Memory
-              description: Memory size
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-              x-ui-placeholder: "Enter Memory requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
-            cpu_limit:
-              type: string
-              title: CPU Limit
-              description: CPU limit size
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-placeholder: "Enter CPU limits for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
-            memory_limit:
-              type: string
-              title: Memory Limit
-              description: Memory limit size
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-              x-ui-placeholder: "Enter Memory limits for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
-          required:
-            - cpu
-            - memory
-        ports:
-          type: object
-          title: Ports
-          x-ui-override-disable: true
-          description: Port mappings
-          patternProperties:
-            "^[0-9]+[m]?$":
-              type: object
-              title: Port Name
-              description: Define port allocation to facilitate communication with service
-              properties:
-                port:
-                  type: string
-                  title: Port
-                  description: Port on which application is running
-                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                  x-ui-unique: true
-                  x-ui-placeholder: "Enter the port number to expose for your application container"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
-                service_port:
-                  type: string
-                  title: Service Port
-                  description: Port from which application service can be exposed
-                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                  x-ui-unique: true
-                  x-ui-placeholder: "Enter the port number to expose for your application service"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1-65535"
-                protocol:
-                  type: string
-                  title: Protocol
-                  description: TCP or UDP
-                  enum:
-                    - tcp
-                    - udp
-              required:
-                - protocol
-                - port
-      required:
-        - ports
-        - size
-        - health_checks
       x-ui-order:
-        - ports
-        - size
-        - health_checks
-        - autoscaling
-        - command
         - args
-    release:
-      title: Release
-      description: Manage version releases to deploy updates and maintain software integrity
-      type: object
-      properties:
-        image:
-          type: string
-          title: Image
-          description: The docker image of the application that you want to run
-          x-ui-skip: true
-          x-ui-error-message: "Value doesn't match pattern for a container image"
-        image_pull_policy:
-          type: string
-          title: Image Pull Policy
-          description: Specifies when the image should be pulled from the registry.
-          default: IfNotPresent
-          enum:
-            - IfNotPresent
-            - Always
-            - Never
-        build:
-          type: object
-          title: Build
-          description: These contains the build objects required for running the containers
-          properties:
-            artifactory:
-              type: string
-              title: Artifactory
-              description: Parent artifactory name
-            name:
-              type: string
-              title: Name
-              description: Name of the artifactory
-            pull_policy:
-              type: string
-              title: Pull Policy
-              description: ImagePullPolicy
-              enum:
-                - IfNotPresent
-                - Always
-                - Never
-          required: 
-            - artifactory
-            - name
-          x-ui-skip: true
-        strategy:
-          type: object
-          title: Strategy
-          description: The type of upgrade strategy to be followed by this service
-          properties:
-            type:
-              type: string
-              title: Type
-              description: "Your kubernetes rollout type eg: RollingUpdate or Recreate"
-              enum:
-                - RollingUpdate
-                - Recreate
-            max_available:
-              type: string
-              title: Max Available
-              description: If type RollingUpdate, this is the max number of pods that can be created from the default replicas
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the max number or percentage of pods that needs to be available during rolling restart"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 0 to 100 or 0% to 100%"
-            max_unavailable:
-              type: string
-              title: Max Unavailable
-              description: If type RollingUpdate, this is the max number of pods that can be unavailable from the default replicas
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the max number or percentage of pods that needs to be unavailable during rolling restart"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 0 to 100 or 0% to 100%"
+        - command
   required:
-    - restart_policy
-    - enable_host_anti_affinity
-    - runtime
+    - job
   x-ui-order:
-    - restart_policy
-    - enable_host_anti_affinity
+    - job
     - runtime
-    - release
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json"
-  flavor: deployment
   metadata:
-    labels:
-      deliveryType: MANUAL
-  kind: service
+    name: job-service
   disabled: true
+  flavor: job
+  kind: service
   version: "0.1"
   spec:
-    enable_host_anti_affinity: false
-    type: application
-    restart_policy: Always
-    release:
-      strategy:
-        type: RollingUpdate
+    type: job
+    job:
+      retry: "5"
     runtime:
-      args: []
       command: []
-      autoscaling:
-        scaling_on: CPU
-        min: 1
-        max: 1
-        cpu_threshold: "50"
-      ports: {}
-      size:
-        cpu: "300m"
-        memory: "1Gi"
-        cpu_limit: "1000m"
-        memory_limit: "5Gi"
-      health_checks:
-        readiness_check_type: "None"
-        liveness_check_type: "None"
+      args: []
