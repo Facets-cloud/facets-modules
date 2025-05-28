@@ -1,69 +1,35 @@
-# Loki Alerting Rules – Kubernetes Flavor (v0.1)
+# Loki Alerting Rules Module (K8s Flavor)
 
 ## Overview
 
-The `loki_alerting_rules - k8s` flavor (v0.1) enables the creation and management of Loki alerting rules within Kubernetes environments. These rules help in detecting and alerting on specific log patterns and conditions for better observability and monitoring.
+The `loki_alerting_rules - k8s` flavor (v0.1) enables the creation and management of alerting rules for Loki-based log monitoring in Kubernetes environments. This module provides the ability to define custom alert conditions based on log patterns, error rates, and other log-derived metrics to proactively monitor application and infrastructure health.
 
-Supported platforms:
-- AWS  
-- GCP  
-- Azure  
+Supported clouds:
+- AWS
+- Azure
+- GCP
 - Kubernetes
 
 ## Configurability
 
-### Spec
-
-#### `rules` (object)
-
-Defines the alerting rules for Loki. Each rule can be customized with:
-
-- `expr` (`string`)  
-  The expression used to detect log patterns.
-  
-- `message` (`string`)  
-  The message to be sent when the alert is triggered.
-  
-- `summary` (`string`)  
-  A brief summary of the alert.
-  
-- `for` (`string`)  
-  The duration for which the condition must be true before the alert is triggered.
-  
-- `labels` (`object`)  
-  Custom labels to be attached to the alert.
-  
-- `disabled` (`boolean`)  
-  Enables/disables the alert.
-  
-- `resource_name` (`string`)  
-  The name of the resource associated with the alert.
-  
-- `resource_type` (`string`)  
-  The type of resource associated with the alert.
-
----
-
-### Supported Rules
-
-#### `HighPercentageError`
-
-- **Description**: Alerts when the percentage of errors in the `foo` application in the production environment exceeds 5% over 5 minutes.
-- **Customizable**: `expr`, `message`, `summary`, `for`, `labels`, `disabled`, `resource_name`, `resource_type`
-
----
-
-#### `TestAlert`
-
-- **Description**: Alerts when the rate of `info` level logs for the `loki` application exceeds 0 per minute.
-- **Customizable**: `expr`, `message`, `summary`, `for`, `labels`, `disabled`, `resource_name`, `resource_type`
-
----
+- **Rules**: Collection of alerting rules with the following properties for each rule:
+  - **Expression (expr)**: LogQL query expression that defines the alert condition
+  - **Message**: Alert message template with support for label interpolation
+  - **Summary**: Brief summary of the alert condition
+  - **For**: Duration threshold before the alert fires
+  - **Labels**: Custom labels for alert categorization (team, severity, etc.)
+  - **Disabled**: Flag to enable/disable individual rules
+  - **Resource Name**: Template for identifying the affected resource
+  - **Resource Type**: Type of resource being monitored (e.g., app, service)
 
 ## Usage
 
-Use this module to define and manage Loki alerting rules in Kubernetes environments. It is especially useful for:
+Use this module to implement log-based alerting and monitoring for your applications and infrastructure. It is especially useful for:
 
-- Detecting log patterns
-- Triggering alerts based on log conditions
-- Enhancing observability and monitoring
+- Monitoring error rates and anomalies in application logs
+- Setting up proactive alerts based on log patterns and metrics
+- Tracking performance indicators derived from log data
+- Implementing custom alerting logic using LogQL expressions
+- Categorizing and routing alerts based on severity and team ownership
+- Supporting observability and incident response workflows
+- Maintaining application health monitoring across multi-cloud Kubernetes environments
