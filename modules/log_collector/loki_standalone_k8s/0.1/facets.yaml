@@ -175,6 +175,7 @@ sample:
         timeout: 700
         wait: true
         values: {}
+        recreate_pods: false
     minio:
       replicas: 2
       volume: 10Gi

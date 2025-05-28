@@ -107,7 +107,7 @@ spec:
       patternProperties:
         "^[a-zA-Z0-9_]+$":
           title: Role Key
-          type: string
+          type: object
           description: Role Object which contains the role to be assigned to the service
             account.
           properties:
