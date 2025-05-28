@@ -2,14 +2,23 @@ intent: service_monitoring
 flavor: k8s
 version: "0.1"
 clouds:
-- aws
-- kubernetes
-- azure
-- gcp
+  - aws
+  - kubernetes
+  - azure
+  - gcp
 description: Adds Monitoring to Service
+metadata:
+  title: Metadata of service monitoring
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace
+      description: Namespace in which service monitoring should be deployed
+      default: default
 inputs:
   service_attributes:
-    type: "@output/service"
+    type: "@outputs/service"
     adds_capability: true
 spec:
   title: Service Monitoring
@@ -20,7 +29,7 @@ spec:
       title: Metrics
       description: Service Metrics Configuration
       patternProperties:
-        "^[a-zA-Z0-9-_]*$":
+        "^[a-zA-Z0-9_-]*$":
           type: object
           title: Metrics Configuration
           description: Service Metrics Configuration
@@ -37,10 +46,9 @@ spec:
               type: string
               title: Scrape Interval
               description: Interval At Which The Metrics Should Be Scraped
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
     alerts:
       type: object
       title: Alerts
@@ -58,17 +66,14 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         pod_crashlooping_alert:
           type: object
           title: Pod Crashlooping
@@ -81,63 +86,14 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
-        invalid_image_name_alert:
-          type: object
-          title: Invalid Image Name
-          description: Invalid Image Name Alert
-          properties:
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable or Enable Alert
-            interval:
-              type: string
-              title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
-              x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
-            severity:
-              type: string
-              title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
-        pod_waiting_alert:
-          type: object
-          title: Pod Waiting
-          description: Pod Waiting Alert
-          properties:
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable or Enable Alert
-            interval:
-              type: string
-              title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
-              x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
-            severity:
-              type: string
-              title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
         cpu_throttling_alert:
           type: object
           title: CPU Throttling
@@ -150,22 +106,18 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
               type: integer
               title: Threshold
-              description: The threshold cpu throttling percentage at which the alert
-                is triggered
+              description: The threshold cpu throttling percentage at which the alert is triggered
               minimum: 0
               maximum: 100
         high_memory_utilization_alert:
@@ -180,70 +132,20 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
-              type: string
+              type: integer
               title: Threshold
-              description: The threshold memory utilization percentage at which the
-                alert is triggered
+              description: The threshold memory utilization percentage at which the alert is triggered
               minimum: 0
               maximum: 100
-        pod_not_ready_alert:
-          type: object
-          title: Pod Not Ready
-          description: Pod Not Ready Alert
-          properties:
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable or Enable Alert
-            interval:
-              type: string
-              title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
-              x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
-            severity:
-              type: string
-              title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
-        pod_evicted_alert:
-          type: object
-          title: Pod Evicted
-          description: Pod Evicted Alert
-          properties:
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable or Enable Alert
-            interval:
-              type: string
-              title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
-              x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
-            severity:
-              type: string
-              title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
         failed_http_requests_alert:
           type: object
           title: Failed HTTP Requests
@@ -256,46 +158,20 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
               type: integer
               title: Threshold
               description: The threshold percentage at which the alert is triggered
               minimum: 0
               maximum: 100
-        ingress_endpoints_alert:
-          type: object
-          title: Ingress Endpoints
-          description: Ingress Endpoints Not Active Alert
-          properties:
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable or Enable Alert
-            interval:
-              type: string
-              title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
-              x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
-            severity:
-              type: string
-              title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
         service_vpa_cpu:
           type: object
           title: Vertical Pod Autoscaler CPU
@@ -308,22 +184,18 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
               type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
-
         service_vpa_memory:
           type: object
           title: Vertical Pod Autoscaler Memory
@@ -336,22 +208,20 @@ spec:
             interval:
               type: string
               title: Interval
-              description: The duration an alert condition must persist before the
-                alert is triggered
-              pattern: ^(\d+(\.\d+)?(h|m|s|ms|us|µs|ns))+$
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
               x-ui-placeholder: "eg. 1m5s"
-              x-ui-error-message: The time duration must be in a valid format, such
-                as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s.
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
             severity:
               type: string
               title: Severity
-              description: The Severity to categorize the urgency or impact level
-                of an alert, aiding in appropriate response prioritization
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
             threshold:
               type: string
               title: Threshold
               description: The threshold percentage at which the alert is triggered
 sample:
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/service_monitoring/service_monitoring.schema.json"
   kind: service_monitoring
   flavor: k8s
   version: "0.1"
@@ -360,60 +230,40 @@ sample:
   spec:
     metrics:
       metric1:
-        path: /metrics
-        port_name: metrics
-        scrape_interval: 30s
+        path: "/metrics"
+        port_name: "metrics"
+        scrape_interval: "30s"
     alerts:
       pod_pending_alert:
         disabled: false
-        interval: 15m
-        severity: critical
+        interval: "15m"
+        severity: "critical"
       pod_crashlooping_alert:
         disabled: false
-        interval: 15m
-        severity: critical
-      invalid_image_name_alert:
-        disabled: false
-        interval: 15m
-        severity: critical
-      pod_waiting_alert:
-        disabled: false
-        interval: 15m
-        severity: critical
+        interval: "15m"
+        severity: "critical"
       cpu_throttling_alert:
         disabled: false
-        interval: 15m
-        severity: critical
+        interval: "15m"
+        severity: "critical"
         threshold: 25
       high_memory_utilization_alert:
         disabled: false
-        interval: 15m
-        severity: warning
+        interval: "15m"
+        severity: "warning"
         threshold: 95
-      pod_not_ready_alert:
-        disabled: false
-        interval: 15m
-        severity: critical
-      pod_evicted_alert:
-        disabled: false
-        interval: 0m
-        severity: critical
       failed_http_requests_alert:
         disabled: false
-        interval: 15m
-        severity: critical
+        interval: "15m"
+        severity: "critical"
         threshold: 25
-      ingress_endpoints_alert:
-        disabled: false
-        interval: 5m
-        severity: critical
       service_vpa_cpu:
         disabled: false
-        interval: 60m
-        severity: critical
-        threshold: 0.25
+        interval: "60m"
+        severity: "critical"
+        threshold: "0.25"
       service_vpa_memory:
         disabled: false
-        interval: 60m
-        severity: critical
-        threshold: 0.25
+        interval: "60m"
+        severity: "critical"
+        threshold: "0.25"
