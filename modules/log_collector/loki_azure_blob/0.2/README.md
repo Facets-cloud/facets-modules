@@ -1,43 +1,24 @@
-# Log Collector – Loki Azure Blob Flavor (v0.2)
+# Log Collector Module (Loki Azure Blob Flavor)
 
 ## Overview
 
-The `log_collector - loki_azure_blob` flavor (v0.2) enables the collection and management of logs using Loki with Azure Blob storage within various cloud environments. This module provides structured log collection, storage, and querying capabilities.
+The `log_collector - loki_azure_blob` flavor (v0.2) enables the deployment and management of log collection infrastructure using Loki with Azure Blob Storage as the storage backend. This module provides a cloud-native logging solution specifically optimized for Azure environments, leveraging Azure Blob Storage for scalable and cost-effective log storage.
 
-Supported platforms:
-- Azure  
+Supported clouds:
+- Azure
 - Kubernetes
 
 ## Configurability
 
-### Spec
-
-#### `title` (`string`)
-
-Title of the Log Collector Spec.
-
-#### `type` (`string`)
-
-Type of the Log Collector Spec.
-
-#### `description` (`string`)
-
-Description of the Log Collector Spec.
-
----
-
-### Advanced Configuration
-
-#### `loki_blob` (object)
-
-Provides configuration options for Loki with Azure Blob storage.
-
----
+- **Advanced Configuration**: Azure Blob Storage-specific Loki configuration for seamless integration with Azure storage services
 
 ## Usage
 
-Use this module to collect and manage logs using Loki with Azure Blob storage in various cloud environments. It is especially useful for:
+Use this module to implement centralized logging using Loki with Azure Blob Storage backend. It is especially useful for:
 
-- Structured log collection
-- Log storage and querying
-- Enhancing observability and monitoring
+- Collecting and aggregating logs from Azure-hosted applications and services
+- Leveraging Azure Blob Storage for cost-effective, scalable log storage
+- Implementing log retention policies with Azure storage lifecycle management
+- Supporting observability and monitoring workflows in Azure and Kubernetes environments
+- Integrating with existing Azure logging and monitoring infrastructure
+- Providing durable and highly available log storage using Azure Blob Storage
