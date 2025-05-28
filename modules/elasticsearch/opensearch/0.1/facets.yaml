@@ -4,22 +4,36 @@ version: '0.1'
 description: Adds Opensearch module of intent Elasticsearch
 clouds:
   - aws
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/aws_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: OpenSearch
   type: object
   properties:
     elasticsearch_version:
       type: string
-      title: Elasticsearch Version
-      description: Version of Elasticsearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
+      title: Opensearch Version
+      description: Version of OpenSearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
       minLength: 1
-      x-ui-placeholder: "Ex. 7.10"
+      x-ui-placeholder: "Ex. OpenSearch_2.17"
       enum:
-        - "7.10"
-        - "6.8"
-        - "5.6"
-        - "2.3"
-        - "1.5"
+        - OpenSearch_2.17
+        - OpenSearch_2.15
+        - OpenSearch_2.13
+        - OpenSearch_2.11
+        - OpenSearch_2.9
+        - OpenSearch_2.7
+        - OpenSearch_2.5
+        - OpenSearch_2.3
+        - OpenSearch_1.3
+        - OpenSearch_1.2
+        - OpenSearch_1.1
+        - OpenSearch_1.0
     size:
       type: object
       title: Size
@@ -30,11 +44,99 @@ spec:
           title: Instance Type
           description: Instance type of the node
           enum:
-            # [TRUNCATED ENUM LIST for brevity — same as original]
-            - r4.16xlarge.elasticsearch
-            - t2.micro.elasticsearch
-            - t2.small.elasticsearch
-            - t2.medium.elasticsearch
+            - or1.medium.search
+            - or1.large.search
+            - or1.xlarge.search
+            - or1.2xlarge.search
+            - or1.4xlarge.search
+            - or1.8xlarge.search
+            - or1.12xlarge.search
+            - or1.16xlarge.search
+            - im4gn.large.search
+            - im4gn.xlarge.search
+            - im4gn.2xlarge.search
+            - im4gn.4xlarge.search
+            - im4gn.8xlarge.search
+            - im4gn.16xlarge.search
+            - c5.large.search
+            - c5.xlarge.search
+            - c5.2xlarge.search
+            - c5.4xlarge.search
+            - c5.9xlarge.search
+            - c5.18xlarge.search
+            - c6g.large.search
+            - c6g.xlarge.search
+            - c6g.2xlarge.search
+            - c6g.4xlarge.search
+            - c6g.8xlarge.search
+            - c6g.12xlarge.search
+            - i3.large.search
+            - i3.xlarge.search
+            - i3.2xlarge.search
+            - i3.4xlarge.search
+            - i3.8xlarge.search
+            - i3.16xlarge.search
+            - m5.large.search
+            - m5.xlarge.search
+            - m5.2xlarge.search
+            - m5.4xlarge.search
+            - m5.12xlarge.search
+            - m6g.large.search
+            - m6g.xlarge.search
+            - m6g.2xlarge.search
+            - m6g.4xlarge.search
+            - m6g.8xlarge.search
+            - m6g.12xlarge.search
+            - r5.large.search
+            - r5.xlarge.search
+            - r5.2xlarge.search
+            - r5.4xlarge.search
+            - r5.12xlarge.search
+            - r6g.large.search
+            - r6g.xlarge.search
+            - r6g.2xlarge.search
+            - r6g.4xlarge.search
+            - r6g.8xlarge.search
+            - r6g.12xlarge.search
+            - r6gd.large.search
+            - r6gd.xlarge.search
+            - r6gd.2xlarge.search
+            - r6gd.4xlarge.search
+            - r6gd.8xlarge.search
+            - r6gd.12xlarge.search
+            - r6gd.16xlarge.search
+            - t3.small.search
+            - t3.medium.search
+            - c4.large.search
+            - c4.xlarge.search
+            - c4.2xlarge.search
+            - c4.4xlarge.search
+            - c4.8xlarge.search
+            - i2.xlarge.search
+            - i2.2xlarge.search
+            - m3.medium.search
+            - m3.large.search
+            - m3.xlarge.search
+            - m3.2xlarge.search
+            - m4.large.search
+            - m4.xlarge.search
+            - m4.2xlarge.search
+            - m4.4xlarge.search
+            - m4.10xlarge.search
+            - r3.large.search
+            - r3.xlarge.search
+            - r3.2xlarge.search
+            - r3.4xlarge.search
+            - r3.8xlarge.search
+            - r4.large.search
+            - r4.xlarge.search
+            - r4.2xlarge.search
+            - r4.4xlarge.search
+            - r4.8xlarge.search
+            - r4.16xlarge.search
+            - t2.micro.search
+            - t2.small.search
+            - t2.medium.search
           x-ui-placeholder: "Select instance type"
         instance_count:
           type: integer
@@ -46,30 +148,78 @@ spec:
         volume:
           type: string
           title: Volume
-          description: The size of the volume
-          pattern: "^[0-9]+[G]i?$"
+          description: The size of the volume (in GiB).
+          pattern: "^[0-9]+$"
           x-ui-placeholder: "Enter volume size"
-          x-ui-error-message: "Value doesn't match '^[0-9]+[G]i?$' pattern"
+          x-ui-error-message: "Value doesn't match '^[0-9]+$' pattern"
       required:
         - instance
         - instance_count
         - volume
+    private:
+      type: boolean
+      title: Private
+      description: Set OpenSearch as private
+      default: false
+    encrypt_at_rest:
+      type: object
+      title: Encrypt at Rest
+      description: Configuration settings for encrypting data at rest.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable encryption at rest.
+          default: true
+        kms_key_id:
+          type: string
+          title: KMS Key ID
+          description: KMS key ARN to use for encryption at rest. Defaults to 'aws/es'
+          x-ui-visible-if:
+            field: spec.encrypt_at_rest.enabled
+            values: [true]
+          default: null
+      default:
+        enabled: true
+        kms_key_id: null
+    node_to_node_encryption:
+      type: object
+      title: Node to Node Encryption
+      description: Configuration settings for node-to-node encryption.
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable node-to-node encryption.
+          default: true
+    domain_endpoint_options:
+      type: object
+      title: Domain Endpoint Options
+      description: Configuration settings for the domain endpoint.
+      x-ui-yaml-editor: true
+      default:
+        enforce_https: true
+        tls_security_policy: Policy-Min-TLS-1-2-2019-07
   required:
     - size
     - elasticsearch_version
   x-ui-order:
     - elasticsearch_version
     - size
+    - private
+    - encrypt_at_rest
+    - node_to_node_encryption
+    - domain_endpoint_options
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
   kind: elasticsearch
-  metadata: { }
+  metadata: {}
   spec:
-    elasticsearch_version: '7.10'
+    elasticsearch_version: OpenSearch_2.17
     size:
-      instance: r4.large.elasticsearch
+      instance: c6g.large.search
       instance_count: 2
-      volume: "100Gi"
+      volume: "100"
   version: '0.1'
   disabled: true
