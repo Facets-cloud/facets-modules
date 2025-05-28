@@ -14,6 +14,7 @@ spec:
       description: Version of Elasticsearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
       minLength: 1
       x-ui-placeholder: "Ex. 7.10"
+      x-ui-typeable: true
       enum:
         - "7.10"
         - "6.8"

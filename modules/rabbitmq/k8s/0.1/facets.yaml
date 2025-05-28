@@ -25,6 +25,7 @@ spec:
       title: RabbitMQ Version
       description: Version of RabbitMQ
       minLength: 1
+      x-ui-typeable: true
       enum:
         - "3.10.7"
         - "3.10.19"
