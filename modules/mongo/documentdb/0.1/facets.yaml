@@ -4,6 +4,7 @@ version: '0.1'
 description: Adds mongo - documentdb flavor
 clouds:
 - aws
+- AWS
 spec:
   title: DocumentDB Configuration
   type: object
