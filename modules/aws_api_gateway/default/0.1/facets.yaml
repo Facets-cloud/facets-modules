@@ -4,6 +4,56 @@ version: '0.1'
 description: Adds aws_api_gateway - default flavor
 clouds:
 - aws
+spec:
+  type: object
+  properties:
+    protocol:
+      type: string
+      title: Protocol Type
+      description: The protocol type for the API Gateway
+      enum:
+      - HTTP
+      - WEBSOCKET
+      default: HTTP
+    routes:
+      type: object
+      title: API Routes
+      description: Define the routes for your API Gateway
+      x-ui-yaml-editor: true
+      patternProperties:
+        ^(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\\s+/.*:
+          type: object
+          properties:
+            integration_type:
+              type: string
+              title: Integration Type
+              description: Type of integration for this route
+              enum:
+              - HTTP_PROXY
+              - AWS_PROXY
+              - MOCK
+              default: HTTP_PROXY
+            integration_uri:
+              type: string
+              title: Integration URI
+              description: URI of the integration endpoint
+            timeout_milliseconds:
+              type: number
+              title: Timeout (ms)
+              description: Custom timeout between 50 and 29000 milliseconds
+              minimum: 50
+              maximum: 29000
+              default: 5000
+  required:
+  - protocol
+  - routes
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_api_gateway/aws_api_gateway.schema.json
   kind: aws_api_gateway
@@ -16,3 +66,6 @@ sample:
     protocol: HTTP
     routes:
       GET /: {}
+iac:
+  validated_files:
+  - variables.tf
