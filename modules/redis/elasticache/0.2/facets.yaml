@@ -20,6 +20,7 @@ spec:
       type: string
       title: Redis Version
       description: Specifies the Redis version to use.
+      x-ui-typeable: true
       enum:
         - '5.0.6'
         - '6.x'

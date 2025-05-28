@@ -21,6 +21,7 @@ spec:
       description: Version of OpenSearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
       minLength: 1
       x-ui-placeholder: "Ex. OpenSearch_2.17"
+      x-ui-typeable: true
       enum:
         - OpenSearch_2.17
         - OpenSearch_2.15
