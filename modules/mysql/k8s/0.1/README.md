@@ -1,45 +1,41 @@
-# MySQL Kubernetes Flavor Documentation
+# MySQL Module (K8s Flavor)
 
 ## Overview
 
-The `mysql - k8s` flavor provides a Kubernetes-native deployment model for running MySQL on any CNCF-conformant Kubernetes cluster, including managed services across AWS, Azure, GCP, or on-prem Kubernetes environments. Versioned as `0.1`, this flavor allows fine-grained control over CPU, memory, and volume resources for both writer and reader nodes.
+The `mysql - k8s` flavor (v0.1) enables the deployment and management of MySQL databases directly within Kubernetes clusters. This module provides a containerized MySQL solution with comprehensive resource management, supporting both writer and reader configurations with fine-grained CPU, memory, and storage control.
+
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### MySQL Version
+- **MySQL Version**: MySQL version to deploy in Kubernetes (supported versions: 5.7.43, 8.0.34, 8.0.4)
+- **Size Configuration**:
+  - **Writer Configuration**:
+    - **CPU**: CPU cores required (format: number 1-32 or 1m-32000m)
+    - **Memory**: Memory required (format: 1Gi-64Gi or 1Mi-64000Mi)
+    - **CPU Limit**: Maximum CPU utilization limit (must be >= CPU request)
+    - **Memory Limit**: Maximum memory utilization limit (must be >= memory request)
+    - **Volume**: Storage volume size (format: integer with Gi suffix, e.g., '10Gi')
+  - **Reader Configuration**:
+    - **CPU**: CPU cores required (same format as writer)
+    - **Memory**: Memory required (same format as writer)
+    - **CPU Limit**: Maximum CPU utilization limit (must be >= CPU request)
+    - **Memory Limit**: Maximum memory utilization limit (must be >= memory request)
+    - **Volume**: Storage volume size (same format as writer)
+    - **Instance Count**: Number of read replica instances (0-100, allowing zero for writer-only configurations)
 
-Choose from supported versions:
-- `5.7.43`
-- `8.0.34`
-- `8.0.4`
+## Usage
 
-_Current selection_: `8.0.4`
+Use this module to deploy MySQL databases within Kubernetes environments with comprehensive resource management and scaling capabilities. It is especially useful for:
 
-### Size Configuration
-
-#### Writer Node Configuration
-Configure resource requests and limits for the primary database node:
-
-- **CPU**: `1`  
-- **Memory**: `1Gi`  
-- **CPU Limit**: `1`  
-- **Memory Limit**: `1Gi`  
-- **Volume**: `8G`
-
-#### Reader Node Configuration
-Supports horizontal scaling of read replicas. Includes resource limits to maintain efficiency:
-
-- **CPU**: `200m`  
-- **Memory**: `800Mi`  
-- **CPU Limit**: `200m`  
-- **Memory Limit**: `800Mi`  
-- **Volume**: `8G`  
-- **Instance Count**: `0`
-
-### Cloud Providers
-
-This flavor is compatible with the following platforms:
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes (Generic)**
+- Running MySQL workloads directly in Kubernetes clusters with container-native deployment
+- Implementing read-heavy architectures with configurable read replicas (0-100 instances)
+- Providing fine-grained resource control with CPU and memory requests and limits
+- Supporting development, testing, and production environments with flexible MySQL versions
+- Enabling horizontal scaling with multiple reader instances for improved performance
+- Managing database resource allocation with Kubernetes-native resource management
+- Supporting cloud-native applications requiring embedded MySQL instances with precise resource control
