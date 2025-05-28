@@ -1,49 +1,42 @@
-# MongoDB User Flavor Documentation
+# MongoDB User Module (Default Flavor)
 
 ## Overview
 
-The `mongo_user - default` flavor is used to create and manage MongoDB users within supported cloud or Kubernetes environments. It allows you to define database credentials, assign fine-grained permissions, and specify advanced authentication and role configurations.
+The `mongo_user - default` flavor (v0.1) enables the creation and management of MongoDB users with comprehensive permission and role configurations. This module provides fine-grained access control for MongoDB databases, allowing you to define user permissions, roles, and authentication restrictions across multiple cloud environments.
+
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### Basic Configuration
-
-- **endpoint**: MongoDB connection URI with placeholder for credentials and host information.
-- **database**: The default database where the user operates.
-- **permissions**: Defines the user's access level at database or collection level.
-  - `permission`: Comma-separated MongoDB privileges like `find`, `insert`, `update`, etc.
-  - `database`: Name of the target database.
-  - `collection`: Optional name of the target collection.
-  - `cluster`: Boolean flag indicating whether the permission includes cluster-level privileges.
-
-### Advanced Configuration (`advanced.mongo_user`)
-
-- **user**:
-  - `username` and `password`: Credentials for MongoDB authentication.
-  - `customData`: Metadata associated with the user (e.g., `employeeID`, `profile`).
-  - `mechanisms`: Authentication mechanism (e.g., `SCRAM-SHA-1`).
-  - `dbRoles`: Custom database roles assigned directly to the user.
-  - `rolesToRole`: Inherited role mappings.
-  - `authenticationRestrictions`: Optional security constraints:
-    - `clientSource`: Allowed source IPs.
-    - `serverAddress`: Allowed server IPs.
-
-- **role**:
-  - `dbRoles`: Custom roles defined for specific databases.
-  - `rolesToRole`: Inherited or composite roles assigned to the user's role.
+- **Endpoint**: MongoDB connection string with authentication details
+- **Database**: Target database for user operations
+- **Permissions**: Collection of permission sets with the following properties:
+  - **Permission**: Specific MongoDB permissions (e.g., createCollection, listCollections, find, update, insert)
+  - **Database**: Database scope for the permissions
+  - **Collection**: Collection scope for permissions (empty for database-level permissions)
+  - **Cluster**: Boolean flag indicating cluster-level permissions
+- **Advanced Configuration**:
+  - **Role Configuration**: Advanced role management including database roles and role-to-role mappings
+  - **User Configuration**: Comprehensive user settings including:
+    - **Authentication Restrictions**: IP-based access control with client source and server address restrictions
+    - **Username and Password**: User credentials
+    - **Custom Data**: Additional user metadata (e.g., employeeID, profile)
+    - **Mechanisms**: Authentication mechanisms (e.g., SCRAM-SHA-1)
+    - **Database Roles**: User-specific database role assignments
+    - **Role Mappings**: Additional role-to-role relationships
 
 ## Usage
 
-Use this flavor to define and manage MongoDB user accounts programmatically with strict control over database access, authentication mechanisms, and role bindings. It is ideal for scenarios requiring:
+Use this module to create and manage MongoDB users with sophisticated access control and security configurations. It is especially useful for:
 
-- Multi-tenant user provisioning
-- Role-based access control (RBAC)
-- Security enforcement through authentication restrictions
-- Integration with automation pipelines for consistent and secure MongoDB user management
-
-## Cloud Providers
-
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes (Generic)**
+- Creating MongoDB users with granular permission control at database and collection levels
+- Implementing role-based access control (RBAC) for MongoDB databases
+- Setting up authentication restrictions based on IP addresses and network segments
+- Managing user credentials and custom metadata for organizational tracking
+- Configuring cluster-level permissions for administrative users
+- Supporting multi-tenant applications with isolated user access patterns
+- Implementing security compliance requirements for database access control
