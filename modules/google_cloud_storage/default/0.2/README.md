@@ -1,35 +1,23 @@
-# Google Cloud Storage Bucket Module
+# Google Cloud Storage - Default Flavor
 
 ## Overview
 
-This module creates and manages a Google Cloud Storage (GCS) bucket with configurable options. It supports customization of location, storage class, versioning, lifecycle rules, and access controls. It also provides predefined IAM roles and an IAM condition for access management.
+The `google_cloud_storage` intent with the `default` flavor provisions a Google Cloud Storage (GCS) bucket with configurable features such as storage class, versioning, lifecycle policies, and access controls. It enables automated, consistent, and policy-driven bucket creation across GCP environments.
 
-## Environment as Dimension
+## Configurability
 
-The module creates a GCS bucket with a name that includes the environment's unique name to ensure uniqueness across environments. It applies environment-specific tags automatically to the bucket. The bucket location will default to the environment's region when no specific location is provided, with location overrides available on a per-environment basis.
+- **location** (`string`): Region for bucket creation (e.g., `US`, `EU`, `ASIA`).
+- **storage_class** (`string`): Storage tier (`STANDARD`, `NEARLINE`, `COLDLINE`, `ARCHIVE`).
+- **versioning_enabled** (`boolean`): Toggle for object versioning.
+- **lifecycle_rules** (`object`):
+  - `enabled`: Enable/disable lifecycle rules.
+  - `age_days`: Age (in days) for lifecycle action.
+  - `action`: Action to perform (`Delete` or `SetStorageClass`).
+  - `storage_class`: Target storage class if using `SetStorageClass`.
+- **uniform_bucket_level_access** (`boolean`): Enforces uniform access control.
+- **custom_labels** (`object`): Key-value metadata tags.
+- **requester_pays** (`boolean`): Enables Requester Pays model.
 
-## Resources Created
+## Usage
 
-- Google Cloud Storage bucket with configurable attributes:
-  - Location (defaults to environment's region if not specified, can be overridden per environment)
-  - Storage class (STANDARD, NEARLINE, COLDLINE, ARCHIVE)
-  - Object versioning
-  - Lifecycle rules for object management
-  - Uniform bucket-level access control
-  - Custom labels (fully customizable via YAML editor)
-
-## Security Considerations
-
-- Uniform bucket-level access is enabled by default to enforce consistent access control
-- The module provides predefined IAM roles for read-only (`roles/storage.objectViewer`) and read-write (`roles/storage.objectAdmin`) access
-- IAM condition title and expression using `resource.name.startsWith()` are provided to target this specific bucket in IAM policies
-- Sensitive operations like permanent deletion are protected by lifecycle preconditions
-
-## Features
-
-- Advanced name generation with built-in length limiting functionality
-  - Ensures bucket names are within the GCS 63-character length limit
-  - Falls back to truncation with random suffix for very long names
-  - Automatically handles GCS naming constraints (lowercase letters, numbers, hyphens)
-- Regional fallback ensures the bucket is always created in an appropriate location by using environment.region when no specific location is provided
-- Flexible labeling system allows users to define any custom labels they need via YAML editor
+Use this module to automate GCS bucket creation and management with built-in support for security policies, lifecycle automation, and storage tiering. It supports IAM outputs for read-only and read-write access and integrates with GCP IAM condition expressions for granular access control.
