@@ -1,50 +1,269 @@
-intent: aws_secret_manager
-flavor: default
+intent: service_monitoring
+flavor: k8s
 version: "0.1"
-description: Adds secret manager for aws - default flavor
 clouds:
   - aws
+  - kubernetes
+  - azure
+  - gcp
+description: Adds Monitoring to Service
 metadata:
-  title: Metadata of AWS Secret Manager
+  title: Metadata of service monitoring
   type: object
   properties:
     namespace:
       type: string
       title: Namespace
-      description: Namespace in which AWS Secret Manager should be deployed
+      description: Namespace in which service monitoring should be deployed
       default: default
+inputs:
+  service_attributes:
+    type: "@outputs/service"
+    adds_capability: true
 spec:
-  title: AWS Secret Manager
-  description: Specification of the aws secret manager resource intent
+  title: Service Monitoring
   type: object
   properties:
-    override_default_name:
-      type: boolean
-      title: Override Default Name
-      description: Set it to true if secret is to be created with custom name
-    override_name:
-      type: string
-      title: Override Name
-      description: Custom name for secret. Applies only if override_default_name is set to true.
-      pattern: '^[a-zA-Z0-9/_+=.@-]+$'
-      x-ui-placeholder: "Enter the custom name"
-      x-ui-error-message: "Value doesn't match the format eg. facets-secret"
-    secrets:
-      title: Secrets
+    metrics:
       type: object
-      description: "Enter a valid key-value pair for secrets in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
-      x-ui-yaml-editor: true
-      x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
+      title: Metrics
+      description: Service Metrics Configuration
+      patternProperties:
+        "^[a-zA-Z0-9_-]*$":
+          type: object
+          title: Metrics Configuration
+          description: Service Metrics Configuration
+          properties:
+            path:
+              type: string
+              title: Metrics Path
+              description: Path Which Exposes the Metric
+            port_name:
+              type: string
+              title: Metrics Port Name
+              description: Service Port Name Which Exposes the Metric
+            scrape_interval:
+              type: string
+              title: Scrape Interval
+              description: Interval At Which The Metrics Should Be Scraped
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+    alerts:
+      type: object
+      title: Alerts
+      description: Alerts configuration
+      properties:
+        pod_pending_alert:
+          type: object
+          title: Pod Pending
+          description: Pod Pending Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        pod_crashlooping_alert:
+          type: object
+          title: Pod Crashlooping
+          description: Pod Crashlooping Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+        cpu_throttling_alert:
+          type: object
+          title: CPU Throttling
+          description: CPU Throttling Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: integer
+              title: Threshold
+              description: The threshold cpu throttling percentage at which the alert is triggered
+              minimum: 0
+              maximum: 100
+        high_memory_utilization_alert:
+          type: object
+          title: High Memory Utilization
+          description: High Memory Utilization Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: integer
+              title: Threshold
+              description: The threshold memory utilization percentage at which the alert is triggered
+              minimum: 0
+              maximum: 100
+        failed_http_requests_alert:
+          type: object
+          title: Failed HTTP Requests
+          description: Failed HTTP Requests Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: integer
+              title: Threshold
+              description: The threshold percentage at which the alert is triggered
+              minimum: 0
+              maximum: 100
+        service_vpa_cpu:
+          type: object
+          title: Vertical Pod Autoscaler CPU
+          description: Vertical Pod Autoscaler CPU Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold percentage at which the alert is triggered
+        service_vpa_memory:
+          type: object
+          title: Vertical Pod Autoscaler Memory
+          description: Vertical Pod Autoscaler Memory Alert
+          properties:
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Disable or Enable Alert
+            interval:
+              type: string
+              title: Interval
+              description: The duration an alert condition must persist before the alert is triggered
+              pattern: "^(\\d+(\\.\\d+)?(h|m|s|ms|us|µs|ns))+$"
+              x-ui-placeholder: "eg. 1m5s"
+              x-ui-error-message: "The time duration must be in a valid format, such as 72h, 3.5m, 1.2s, 500ms, 2h50m, or 1m25s."
+            severity:
+              type: string
+              title: Severity
+              description: The Severity to categorize the urgency or impact level of an alert, aiding in appropriate response prioritization
+            threshold:
+              type: string
+              title: Threshold
+              description: The threshold percentage at which the alert is triggered
 sample:
-  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/aws_secret_manager/aws_secret_manager.schema.json"
-  kind: aws_secret_manager
-  flavor: default
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/service_monitoring/service_monitoring.schema.json"
+  kind: service_monitoring
+  flavor: k8s
   version: "0.1"
-  disabled: false
-  metadata:
-    name: "my-secret"
+  disabled: true
+  metadata: {}
   spec:
-    override_default_name: false
-    secrets:
-      key1: "value1"
-      key2: "value2"
+    metrics:
+      metric1:
+        path: "/metrics"
+        port_name: "metrics"
+        scrape_interval: "30s"
+    alerts:
+      pod_pending_alert:
+        disabled: false
+        interval: "15m"
+        severity: "critical"
+      pod_crashlooping_alert:
+        disabled: false
+        interval: "15m"
+        severity: "critical"
+      cpu_throttling_alert:
+        disabled: false
+        interval: "15m"
+        severity: "critical"
+        threshold: 25
+      high_memory_utilization_alert:
+        disabled: false
+        interval: "15m"
+        severity: "warning"
+        threshold: 95
+      failed_http_requests_alert:
+        disabled: false
+        interval: "15m"
+        severity: "critical"
+        threshold: 25
+      service_vpa_cpu:
+        disabled: false
+        interval: "60m"
+        severity: "critical"
+        threshold: "0.25"
+      service_vpa_memory:
+        disabled: false
+        interval: "60m"
+        severity: "critical"
+        threshold: "0.25"
