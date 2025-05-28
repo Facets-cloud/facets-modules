@@ -1,14 +1,24 @@
 intent: aws_lambda
 flavor: default
-version: '0.1'
+version: "0.1"
 description: Adds aws_lambda - default flavor
 clouds:
-- aws
+  - aws
 artifact_inputs:
   primary:
     attribute_path: "spec.release.s3_path"
     artifact_type: "freestyle"
+metadata:
+  title: Metadata of AWS Lambda
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace
+      description: Namespace in which AWS Lambda should be deployed
+      default: default
 spec:
+  title: AWS Lambda
   type: object
   properties:
     description:
@@ -25,7 +35,7 @@ spec:
       type: string
       title: Runtime
       description: Lambda Function runtime.
-      default: None
+      default: "python3.12"
       x-ui-no-sort: true
       enum:
         - "nodejs22.x"
@@ -46,11 +56,9 @@ spec:
         - "provided.al2023"
         - "provided.al2"
       example: "python3.8"
-   # TODO: Here any one of [s3_path,image,build] is mandatory. Waiting for FE changes to have either of them to passed into release object
     release:
       type: object
       title: Release
-      default: None
       description: The release object containing either s3_path, image or build (object).
       properties:
         s3_path:
@@ -64,7 +72,6 @@ spec:
       description: A map that defines environment variables for the Lambda Function.
       x-ui-yaml-editor: true
       x-ui-placeholder: "Enter the value of the env variable. Eg. key: value"
-
   required:
     - description
     - handler
@@ -76,17 +83,18 @@ spec:
     - runtime
     - env
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda/aws_lambda.schema.json"
   kind: aws_lambda
   flavor: default
   disabled: true
-  metadata:
-    description: some desc
-  version: '0.1'
+  metadata: {}
+  version: "0.1"
   spec:
+    description: "Sample Lambda function for processing data"
+    handler: "main.lambda_handler"
+    runtime: "python3.12"
     release:
-      s3_path: ''
-    description: ''
-    env: {}
-    handler: ''
-    runtime: ''
+      s3_path: "lambda-functions/my-function.zip"
+    env:
+      LOG_LEVEL: "INFO"
+      ENVIRONMENT: "production"
