@@ -1,43 +1,39 @@
-# MySQL Web UI Flavor Documentation
+# MySQL Web UI Module (K8s Flavor)
 
 ## Overview
 
-The `mysql_web - k8s` flavor provides a graphical user interface (GUI) for MySQL users to log in and manage their databases through a web-based interface. This Kubernetes-native deployment supports multiple cloud providers including AWS, Azure, GCP, and generic Kubernetes clusters.
+The `mysql_web - k8s` flavor (v0.1) provides a web-based graphical user interface for MySQL database management in Kubernetes environments. This module deploys a containerized MySQL administration tool that enables users to interact with MySQL databases through a user-friendly web interface, supporting database operations, queries, and administration tasks.
+
+Supported clouds:
+- AWS
+- Azure
+- GCP
+- Kubernetes
 
 ## Configurability
 
-### MySQL Web UI Version
+- **Input Dependencies**:
+  - **MySQL Instance**: MySQL database instance that the web UI will connect to and manage
 
-Specify the version of the MySQL Web UI to deploy, for example:
-- `5.2.1-debian-12-r35`
+- **Metadata Configuration**:
+  - **Namespace**: Kubernetes namespace where the MySQL Web UI should be deployed (default: default)
 
-### Size Configuration
+- **MySQL Web Version**: Version of the MySQL Web UI to deploy (e.g., '5.2.1-debian-12-r35')
 
-Configure resource sizing for the MySQL Web UI pods:
-
-- **CPU**: Number of CPU cores or millicores (e.g., `500m` or `1`)
-- **Memory**: Amount of memory allocated (e.g., `800Mi` or `1.5Gi`)
-- **CPU Limit**: CPU upper limit for the container
-- **Memory Limit**: Memory upper limit for the container
-
-All CPU and memory values support a range validated by specific patterns to ensure proper Kubernetes resource definitions.
-
-### Metadata
-
-- **Namespace**: Kubernetes namespace where the MySQL Web UI will be deployed (default: `default`)
+- **Size Configuration**:
+  - **CPU**: CPU cores required (format: number 1-32 or 1m-32000m)
+  - **Memory**: Memory required (format: 1Gi-64Gi or 1Mi-64000Mi)
+  - **CPU Limit**: Maximum CPU utilization limit (optional)
+  - **Memory Limit**: Maximum memory utilization limit (optional)
 
 ## Usage
 
-This flavor is ideal for teams that want an easy-to-use web-based MySQL management interface integrated directly into their Kubernetes deployments. It allows database users to interact with MySQL without needing CLI access or external tools.
+Use this module to deploy a web-based administration interface for MySQL databases in Kubernetes environments. It is especially useful for:
 
-- Specify the UI version to align with your compatibility and feature needs.
-- Tune CPU and memory allocations to balance performance and cost.
-- Deploy in any supported Kubernetes namespace for isolation and organization.
-- Supports deployment across major cloud providers, making it flexible for hybrid or multi-cloud setups.
-
-## Cloud Providers
-
-- **AWS**
-- **Azure**
-- **GCP**
-- **Kubernetes (Generic)**
+- Providing a user-friendly graphical interface for MySQL database management
+- Enabling database administrators to perform operations without command-line tools
+- Supporting database query execution and result visualization through a web browser
+- Facilitating database schema management and data manipulation tasks
+- Offering secure web-based access to MySQL databases with namespace isolation
+- Supporting development and testing workflows with easy database access
+- Enabling team collaboration on database management tasks through a shared web interface
