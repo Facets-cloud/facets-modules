@@ -1,12 +1,21 @@
 intent: helm
 flavor: k8s
-version: '0.1'
+version: "0.1"
 description: Adds Helm module
 clouds:
   - aws
   - azure
   - gcp
   - kubernetes
+metadata:
+  title: Metadata of Helm
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Namespace
+      description: Namespace in which Helm chart should be deployed
+      default: default
 spec:
   title: Helm
   description: Specification of the Helm chart intent
@@ -20,7 +29,7 @@ spec:
         chart:
           type: string
           title: Chart
-          description:  Name of the Helm chart package
+          description: Name of the Helm chart package
           x-ui-placeholder: Enter name of the helm chart
           pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*[a-zA-Z0-9]$'
           x-ui-error-message: "Invalid format. Only alphabets, numbers and hypens are allowed"
@@ -58,7 +67,8 @@ spec:
           description: Password to authenticate to private helm repository
           x-ui-placeholder: Enter repository password
           x-ui-mask-content: true
-      required: [ "chart" ]
+      required: 
+        - chart
       x-ui-order:
         - repository
         - chart
@@ -73,19 +83,26 @@ spec:
       description: The values to be passed on to the chart in the form of a YAML object
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter values in YAML format
-  required: [ "helm", "values" ]
+  required: 
+    - helm
+    - values
 sample:
-  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
+  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json"
   kind: helm
   flavor: k8s
   disabled: true
   metadata: {}
-  version: '0.1'
+  version: "0.1"
   spec:
     helm:
-      repository: >-
-        https://helm.datadoghq.com
-      chart: datadog
-      namespace: default
+      repository: "https://helm.datadoghq.com"
+      chart: "datadog"
+      version: "3.0.0"
+      namespace: "default"
       wait: false
     values:
+      datadog:
+        apiKey: "your-api-key"
+        clusterName: "my-cluster"
+        logs:
+          enabled: true
