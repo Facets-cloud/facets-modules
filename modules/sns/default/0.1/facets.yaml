@@ -86,6 +86,6 @@ sample:
   spec:
     subscriptions:
       sqs:
-        protocol: ""
+        protocol: "sqs"
         endpoint: ""
   disabled: false

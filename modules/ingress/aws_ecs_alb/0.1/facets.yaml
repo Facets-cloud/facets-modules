@@ -236,6 +236,6 @@ sample:
     rules:
       rule1:
         ecs_service_arn: ${ecs_service.myservice.out.attributes.ecs_service_arn}
-        port: 80
+        port: '80'
         priority: 1
         path: "/"
