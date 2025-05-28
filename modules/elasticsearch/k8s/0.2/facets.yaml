@@ -3,10 +3,10 @@ flavor: k8s
 version: '0.2'
 description: Adds elasticsearch - k8s flavor
 clouds:
-- gcp
-- kubernetes
-- azure
-- aws
+  - gcp
+  - kubernetes
+  - azure
+  - aws
 metadata:
   title: Metadata of Elasticsearch
   type: object
@@ -189,16 +189,20 @@ sample:
   kind: elasticsearch
   metadata: {}
   spec:
-    elasticsearch_version: 8.5.1
+    elasticsearch_version: "8.14.1"
     size:
       data:
-        cpu: 2001m
-        memory: 2Gi
-        volume: 8Gi
-        replica_count: 1
+        cpu: "2001m"
+        cpu_limit: "2001m"
+        memory: "2Gi"
+        memory_limit: "2Gi"
+        volume: "8Gi"
+        instance_count: 1
       client:
-        cpu: 2001m
-        memory: 2Gi
-        volume: 8Gi
-        replica_count: 2
+        cpu: "2001m"
+        cpu_limit: "2001m"
+        memory: "2Gi"
+        memory_limit: "2Gi"
+        volume: "8Gi"
+        instance_count: 2
   disabled: true
