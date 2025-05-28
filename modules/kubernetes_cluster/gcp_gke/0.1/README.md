@@ -1,60 +1,53 @@
-# Kubernetes Cluster – GCP GKE Flavor (v0.1)
+# Kubernetes Cluster Module (GCP GKE Flavor)
 
 ## Overview
 
-The `kubernetes_cluster - gcp_gke` flavor (v0.1) provisions a **Google Kubernetes Engine (GKE)** cluster in GCP, with support for advanced features like private nodes, node auto-provisioning, IAM roles for service accounts, and multi-availability zone deployments. This flavor is ideal for teams looking to run container workloads on Google Cloud with granular control over nodepools and cluster configuration.
+The `kubernetes_cluster - gcp_gke` flavor (v0.1) enables the creation and management of Kubernetes clusters using Google Kubernetes Engine (GKE). This module provides configuration options for defining the characteristics and behavior of GKE clusters.
 
-Supported platform:
+Supported clouds:
 - GCP
-
-> ⚙️ Optimized for environments requiring secure, scalable, and compliant Kubernetes clusters on GKE with IAM and logging configurations.
-
----
 
 ## Configurability
 
-### `spec` (object)
+- **Maintenance Windows**: Details for maintenance window for the Kubernetes cluster.
+  - **Default**: Default maintenance window details.
+    - **Start Hour**: Start hour for maintenance window.
+    - **Days of Week**: Days in the week for which the maintenance should be allowed.
+    - **Duration**: Duration of maintenance in hours.
 
-#### `maintenance_windows` (object)
+- **Auto Upgrade**: Boolean to enable auto upgrade of Kubernetes cluster.
 
-- **`default`**
-  - `start_hour` (`number`, 0–23)
-  - `days_of_week` (`array of string`, min: 1, max: 7)
-  - `duration` (`number`, 1–24)
+- **Cluster**: Specifications of the Kubernetes cluster.
+  - **Enable Private Nodes**: Set this to true to enable private nodes.
+  - **Enable Node Auto Provisioning**: Set this to true to enable node auto provisioning.
+  - **Enable Workload Logging**: Set this to true to enable workload logging.
+  - **Kubernetes Master Authorized Networks**: Authorized networks for Kubernetes master.
 
-#### `auto_upgrade` (`boolean`)  
-Enable or disable automatic Kubernetes upgrades.
-
-#### `cluster` (object)
-
-- `enable_private_nodes` (`boolean`, default: `true`)
-- `enable_node_auto_provisioning` (`boolean`, default: `false`)
-- `enable_workload_logging` (`boolean`, default: `false`)
-- `kubernetes_master_authorized_networks` (`array of string`) — CIDRs of networks allowed to access the Kubernetes master
-
-#### `nodepools` (object)
-
-- **`default`**
-  - `enable` (`boolean`, default: `true`)
-  - `instance_types` (`array of string`, **required**)
-  - `root_disk_volume` (`number`, default: `100`, range: 30–500)
-  - `node_lifecycle_type` (`string`, default: `SPOT`, enum: `ON_DEMAND`, `SPOT`)
-  - `max_nodes` (`number`, default: `200`, range: 1–200)
-  - `enable_multi_az` (`boolean`, default: `false`)
-  - `enable_secure_boot` (`boolean`, default: `false`)
-  - `iam.roles` (object of key-value pairs) — key-named roles with a `role` string (e.g., `roles/container.defaultNodeServiceAccount`)
-
-- **`facets_dedicated`**
-  - `enable` (`boolean`, default: `true`)
-  - `instance_types` (`array of string`, default: `["n2-standard-4"]`, **required**)
-  - `root_disk_volume` (`number`, default: `100`, range: 30–500)
-  - `node_lifecycle_type` (`string`, default: `SPOT`, enum: `ON_DEMAND`, `SPOT`)
-  - `max_nodes` (`number`, default: `200`, range: 1–200)
-  - `enable_secure_boot` (`boolean`, default: `false`)
-  - `iam.roles` (object of key-value pairs) — key-named roles with a `role` string
-
----
+- **Nodepool Spec**: Specifications of the nodepools for the Kubernetes cluster.
+  - **Facets Default Nodepool Spec**: Specifications for facets default nodepool.
+    - **Enable**: Set this to true to enable default nodepool.
+    - **Instance Types**: List of instance types for worker nodes.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **Enable Multi Availability Zones**: Set this to true to enable default nodepool in multi availability zones.
+    - **Enable Secure Boot**: Set this to true to enable secure boot for default nodepool.
+    - **IAM**: IAM specification for facets default nodepool.
+      - **IAM Roles**: IAM roles to be assigned to facets default nodepool service account.
+  - **Facets Dedicated Nodepool Spec**: Specifications for facets dedicated nodepool.
+    - **Enable**: Set this to true to enable facets dedicated nodepool.
+    - **Instance Types**: List of instance types for worker nodes.
+    - **Root Disk Volume**: Disk size in GiB for worker nodes.
+    - **Node Lifecycle Type**: Select lifecycle plan for worker nodes.
+    - **Max Nodes**: Maximum number of worker nodes in the node pool.
+    - **Enable Secure Boot**: Set this to true to enable secure boot for facets dedicated nodepool.
+    - **IAM**: IAM specification for facets dedicated nodepool.
+      - **IAM Roles**: IAM roles to be assigned to facets dedicated nodepool service account.
 
 ## Usage
 
-To use this flavor, define a resource of kind `kubernetes_cluster` with flavor `gcp_gke` and version `0.1`. The flavor provides options to enable private GKE nodes, configure maintenance schedules, and choose lifecycle types for worker nodes (SPOT or ON_DEMAND). IAM role mappings can be provided for both default and dedicated nodepools, and you can optionally enable secure boot or multi-AZ deployment as needed. This flavor is designed to make GKE provisioning flexible, secure, and production-ready on Google Cloud.
+Use this module to create and manage Kubernetes clusters using Google Kubernetes Engine (GKE). It is especially useful for:
+
+- Defining the characteristics and behavior of GKE clusters
+- Managing the deployment and execution environment of Kubernetes clusters
+- Enhancing the functionality and integration of GCP-hosted applications
