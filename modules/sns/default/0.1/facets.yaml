@@ -12,8 +12,7 @@ spec:
     disable_encryption:
       type: boolean
       title: Disable Server-Side Encryption
-      description: |
-        Disable Server-Side Encryption (SSE) for this SNS resource. Default
+      description: Disable Server-Side Encryption (SSE) for this SNS resource. Default
         behaviour is to Enable encryption with AWS managed SNS key.
       default: false
     subscriptions:
@@ -76,8 +75,6 @@ spec:
               type: string
               title: Filter Suffix
               description: Suffix to filter S3 objects for notifications
-
-
 sample:
   version: '0.1'
   flavor: default
