@@ -334,8 +334,6 @@ spec:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["ExecCheck"]
               description: Commands for readiness check
-              items:
-                type: string
               x-ui-override-disable: true
             liveness_check_type:
               type: string
@@ -428,8 +426,6 @@ spec:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: ["ExecCheck"]
               description: Commands for liveness
-              items:
-                type: string
               x-ui-override-disable: true
             startup_check_type:
               type: string
@@ -522,8 +518,6 @@ spec:
                 field: spec.runtime.health_checks.startup_check_type
                 values: ["ExecCheck"]
               description: Commands for startup check
-              items:
-                type: string
               x-ui-override-disable: true
           required:
           - readiness_port
@@ -1626,8 +1620,6 @@ spec:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
                         values: ["ExecCheck"]
                       description: Commands for readiness check
-                      items:
-                        type: string
                       x-ui-override-disable: true
                     liveness_check_type:
                       type: string
@@ -1700,8 +1692,6 @@ spec:
                         field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
                         values: ["ExecCheck"]
                       description: Commands for liveness
-                      items:
-                        type: string
                       x-ui-override-disable: true
                     startup_check_type:
                       type: string
@@ -1774,8 +1764,6 @@ spec:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
                         values: ["ExecCheck"]
                       description: Commands for startup check
-                      items:
-                        type: string
                       x-ui-override-disable: true
                     port:
                       type: string
