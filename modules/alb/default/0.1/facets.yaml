@@ -18,7 +18,7 @@ spec:
       type: object
       x-ui-overrides-only: false
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        "^[a-zA-Z0-9_\\.\\-]*$":
           title: Domain Object
           description: Name of the domain object
           properties:
@@ -38,9 +38,9 @@ spec:
             certificate_reference:
               type: string
               title: Certificate reference
-              Description: Certificate reference name. It's the ACM ARN certificate
+              description: Certificate reference name. It's the ACM ARN certificate
                 reference.
-              pattern: '^arn:aws:acm:\w+(?:-\w+)+:\d{12}:certificate\/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+$'
+              pattern: '^arn:aws:acm:\\w+(?:-\\w+)+:\\d{12}:certificate\\/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)+$'
               x-ui-placeholder: "IAM policy example. Eg: arn:aws:acm:us-west-2:123456789012:certificate/abcd1234-5678-90ab-cdef-EXAMPLE11111"
               x-ui-error-message: "Value doesn't match pattern, accepted value pattern
                 Eg: arn:aws:acm:us-west-2:123456789012:certificate/abcd1234-5678-90ab-cdef-EXAMPLE11111"
@@ -51,7 +51,7 @@ spec:
       description: Objects of all ingress rules
       type: object
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        "^[a-zA-Z0-9_\\.\\-]*$":
           title: Ingress Object
           description: Name of the ingress object
           properties:
@@ -89,7 +89,7 @@ spec:
                   serviceName:
                     key: service_name
                     lookup: regex
-                    x-ui-lookup-regex: '\${[^.]+\.([^.]+).*'
+                    x-ui-lookup-regex: '\\${[^.]+\\.([^.]+).*'
                 method: GET
                 labelKey: port
                 valueKey: port
@@ -123,7 +123,7 @@ spec:
 #                  value: service
 #            x-ui-typeable: true
             priority:
-              type: string
+              type: integer
               title: Priority
               description: Priority number for the rule
               minimum: 1
@@ -147,14 +147,14 @@ sample:
   disabled: true
   version: '0.1'
   spec:
-    domains:
+    domains: {}
     force_ssl_redirection: true
     private: false
     rules:
       rule1:
         domain_prefix: rule1
         path: /test
-        port: '8080'
+        port: 8080
         port_name: http-svc
         priority: 1
         service_name: cart-service
