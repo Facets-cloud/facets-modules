@@ -8,6 +8,9 @@ clouds:
 inputs:
   network_details:
     type: "@outputs/gcp_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for gcp gke flavor
