@@ -1,54 +1,26 @@
-# Loki Recording Rules – Kubernetes Flavor (v0.1)
+# Azure Functions Module
 
 ## Overview
 
-The `loki_recording_rules - k8s` flavor (v0.1) enables the creation and management of Loki recording rules within Kubernetes environments. These rules help in aggregating and summarizing log data for better observability and monitoring.
+The `azure_functions - default` flavor (v0.1) enables the creation and management of Azure Functions. This module provides configuration options for defining the characteristics and behavior of Azure Functions.
 
-Supported platforms:
-- AWS  
-- GCP  
-- Azure  
-- Kubernetes
+Supported clouds:
+- Azure
 
 ## Configurability
 
-### Spec
-
-#### `rules` (object)
-
-Defines the recording rules for Loki. Each rule can be customized with:
-
-- `expr` (`string`)  
-  The expression used to aggregate log data.
-  
-- `disabled` (`boolean`)  
-  Enables/disables the rule.
-  
-- `labels` (`object`)  
-  Custom labels to be attached to the rule.
-
----
-
-### Supported Rules
-
-#### `flog:requests:rate1m`
-
-- **Description**: Aggregates the rate of requests for the `flog` application over 1 minute.
-- **Customizable**: `expr`, `disabled`, `labels`
-
----
-
-#### `flog:requests:rate5m`
-
-- **Description**: Aggregates the rate of requests for the `flog` application over 5 minutes.
-- **Customizable**: `expr`, `disabled`, `labels`
-
----
+- **OS**: Operating system for the Azure Function (e.g., Linux).
+- **SKU**: Pricing tier for the Azure Function (e.g., P2v2).
+- **Runtime**: Runtime stack and version for the Azure Function (e.g., node 14).
+- **Deploy As**: Deployment type for the Azure Function (e.g., code).
+- **In VNet**: Whether the Azure Function is deployed in a Virtual Network.
+- **App Setting**: Application settings for the Azure Function.
+- **Release**: Path to the zip file for the Azure Function code.
 
 ## Usage
 
-Use this module to define and manage Loki recording rules in Kubernetes environments. It is especially useful for:
+Use this module to create and manage Azure Functions. It is especially useful for:
 
-- Aggregating log data
-- Summarizing log metrics
-- Enhancing observability and monitoring
+- Defining the characteristics and behavior of Azure Functions
+- Managing the deployment and execution environment of Azure Functions
+- Enhancing the functionality and integration of Azure-hosted applications
