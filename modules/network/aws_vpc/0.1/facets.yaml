@@ -15,7 +15,7 @@ spec:
     choose_vpc_type:
       title: Choose VPC Type
       description: Choose the type of vpc to create
-      type: string
+      type: radio
       enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
             VPC, value: use_existing_vpc}]
       default: create_new_vpc
