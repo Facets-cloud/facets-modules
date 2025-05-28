@@ -134,7 +134,6 @@ spec:
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
-      # x-ui-override-disable: true
       type: object
       patternProperties:
         ^[a-zA-Z0-9_.-]*$:
