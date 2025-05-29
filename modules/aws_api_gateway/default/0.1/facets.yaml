@@ -14,7 +14,7 @@ spec:
       x-ui-typeable: true
       enum:
       - HTTP
-      - WebSocket
+      - WEBSOCKET
       default: HTTP
     routes:
       type: object
