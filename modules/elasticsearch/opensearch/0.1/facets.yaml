@@ -19,8 +19,6 @@ spec:
       type: string
       title: Opensearch Version
       description: Version of OpenSearch. Refer to the url for more information https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html
-      minLength: 1
-      x-ui-placeholder: "Ex. OpenSearch_2.17"
       enum:
         - OpenSearch_2.17
         - OpenSearch_2.15
@@ -137,21 +135,17 @@ spec:
             - t2.micro.search
             - t2.small.search
             - t2.medium.search
-          x-ui-placeholder: "Select instance type"
         instance_count:
           type: integer
           title: Instance Count
           description: The number of instances to create
           minimum: 1
           maximum: 20
-          x-ui-placeholder: "Minimum value 1"
         volume:
           type: string
           title: Volume
           description: The size of the volume (in GiB).
           pattern: "^[0-9]+$"
-          x-ui-placeholder: "Enter volume size"
-          x-ui-error-message: "Value doesn't match '^[0-9]+$' pattern"
       required:
         - instance
         - instance_count
@@ -175,9 +169,6 @@ spec:
           type: string
           title: KMS Key ID
           description: KMS key ARN to use for encryption at rest. Defaults to 'aws/es'
-          x-ui-visible-if:
-            field: spec.encrypt_at_rest.enabled
-            values: [true]
           default: null
       default:
         enabled: true
@@ -196,20 +187,12 @@ spec:
       type: object
       title: Domain Endpoint Options
       description: Configuration settings for the domain endpoint.
-      x-ui-yaml-editor: true
       default:
         enforce_https: true
         tls_security_policy: Policy-Min-TLS-1-2-2019-07
   required:
     - size
     - elasticsearch_version
-  x-ui-order:
-    - elasticsearch_version
-    - size
-    - private
-    - encrypt_at_rest
-    - node_to_node_encryption
-    - domain_endpoint_options
 sample:
   $schema: "https://facets-cloud.github.io/facets-schemas/schemas/elasticsearch/elasticsearch.schema.json"
   flavor: opensearch
