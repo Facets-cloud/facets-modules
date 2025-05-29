@@ -1,6 +1,6 @@
 intent: aws_api_gateway
-flavor: default-test-0.2
-version: '0.2'
+flavor: default
+version: '0.1'
 description: Adds aws_api_gateway - default flavor
 clouds:
 - aws
@@ -18,39 +18,7 @@ spec:
       type: object
       title: API Routes
       description: Define the routes for your API Gateway
-      patternProperties:
-        ^[a-zA-Z0-9_-]+$:
-          type: object
-          title: Route Configuration
-          properties:
-            method:
-              type: string
-              title: HTTP Method
-              description: HTTP method for this route (e.g., GET, POST, PUT, DELETE,
-                etc.)
-              default: GET
-            path:
-              type: string
-              title: Route Path
-              description: URL path for this route (e.g., /, /users, /api/v1/data)
-              default: /
-            integration_type:
-              type: string
-              title: Integration Type
-              description: Type of integration for this route (e.g., HTTP_PROXY, AWS_PROXY
-                etc.)
-              default: HTTP_PROXY
-            integration_uri:
-              type: string
-              title: Integration URI
-              description: URI of the integration endpoint
-            timeout_milliseconds:
-              type: number
-              title: Timeout (ms)
-              description: Custom timeout between 50 and 29000 milliseconds
-              minimum: 50
-              maximum: 29000
-              default: 5000
+      x-ui-yaml-editor: true
   required:
   - protocol
   - routes
@@ -62,16 +30,13 @@ inputs:
       resource_type: network
       resource_name: default
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_api_gateway/aws_api_gateway.schema.json
   kind: aws_api_gateway
-  flavor: default-test-0.2
+  flavor: default
   disabled: true
   metadata:
     description: some desc
-  version: '0.2'
+  version: '0.1'
   spec:
     protocol: HTTP
     routes:
-      home_route:
-        method: GET
-        path: /
+      GET /: {}
