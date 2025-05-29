@@ -30,7 +30,6 @@ spec:
   required:
   - size
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/pvc/pvc.schema.json
   disabled: true
   flavor: k8s
   kind: pvc
