@@ -14,9 +14,7 @@ spec:
       description: Specifies the Postgres version to use.
       x-ui-typeable: true
       enum:
-      - "12.11"
       - "13.3"
-      - "14.0"
       - "15.2"
       - "16.1"
       x-ui-error-message: "Please select a supported Postgres version."
