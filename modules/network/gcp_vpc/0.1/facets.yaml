@@ -16,7 +16,7 @@ spec:
     choose_vpc_type:
       title: Choose VPC Type
       description: Choose the type of VPC
-      type: radio
+      type: string
       x-ui-immutable: true
       x-ui-overrides-only: true
       enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
@@ -30,6 +30,7 @@ spec:
       x-ui-immutable: true
       x-ui-overrides-only: true
       x-ui-fetch-az: true
+      x-ui-override-disable: true
       items:
         type: string
     vpc_cidr:

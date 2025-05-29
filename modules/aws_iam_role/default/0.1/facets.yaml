@@ -14,6 +14,7 @@ spec:
       description: IRSA block which required to attach EKS OIDC to service accounts
         for allowing applications to get cloud credentials
       properties:
+
         service_accounts:
           type: object
           title: Service Accounts
@@ -83,10 +84,10 @@ sample:
     irsa:
       service_accounts:
         arbitrary_name:
-          name: ''
+          name: 'example-service-account'
       oidc_providers:
         arbitrary_name:
-          arn: ''
+          arn: 'arn:aws:iam::123456789012:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/EXAMPLE'
     policies:
       external_policy:
-        arn: ''
+        arn: 'arn:aws:iam::123456789012:policy/ExamplePolicy'

@@ -3,7 +3,7 @@ flavor: aws_ecs_alb
 version: "0.1"
 description: Configures AWS ECS with Application Load Balancer
 clouds:
-- aws
+  - aws
 metadata:
   title: Metadata of AWS ECS ALB
   type: object
@@ -45,8 +45,8 @@ spec:
                 valueKey: resourceName
                 valueTemplate: "${ecs_service.{{value}}.out.attributes.ecs_service_arn}"
                 filterConditions:
-                - field: resourceType
-                  value: ecs_service
+                  - field: resourceType
+                    value: ecs_service
               x-ui-typeable: true
             port:
               type: integer
@@ -103,16 +103,14 @@ spec:
                 healthy_threshold:
                   type: integer
                   title: Healthy Threshold
-                  description: Number of successful checks before considering the
-                    target healthy
+                  description: Number of successful checks before considering the target healthy
                   default: 2
                   minimum: 2
                   maximum: 10
                 unhealthy_threshold:
                   type: integer
                   title: Unhealthy Threshold
-                  description: Number of failed checks before considering the target
-                    unhealthy
+                  description: Number of failed checks before considering the target unhealthy
                   default: 2
                   minimum: 2
                   maximum: 10
@@ -120,7 +118,8 @@ spec:
               type: string
               title: OIDC Authentication
               description: Name of the OIDC authentication to use
-              x-ui-dynamic-enum: spec.oidc_authentications.*.name
+              x-ui-dynamic-enum:
+                sourceField: spec.oidc_authentications.*.name
           type: object
     oidc_authentications:
       x-ui-toggle: true
@@ -163,9 +162,9 @@ spec:
               title: On Unauthenticated Request
               description: Action to take on unauthenticated requests
               enum:
-              - deny
-              - allow
-              - authenticate
+                - deny
+                - allow
+                - authenticate
             session_cookie_name:
               type: string
               title: Session Cookie Name
@@ -214,16 +213,15 @@ spec:
               description: ARN of the certificate for the domain
           type: object
   required:
-  - public
-  - rules
+    - public
+    - rules
   x-ui-order:
-  - public
-  - rules
-  - oidc_authentications
-  - additional_domains
+    - public
+    - rules
+    - oidc_authentications
+    - additional_domains
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/service/aws_ecs_alb.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/service/aws_ecs_alb.schema.json
   flavor: aws_ecs_alb
   metadata:
     labels:
@@ -236,6 +234,6 @@ sample:
     rules:
       rule1:
         ecs_service_arn: ${ecs_service.myservice.out.attributes.ecs_service_arn}
-        port: '80'
+        port: 80
         priority: 1
         path: "/"
