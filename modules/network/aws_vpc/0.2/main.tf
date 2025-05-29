@@ -135,6 +135,7 @@ resource "aws_subnet" "private" {
 resource "aws_eip" "nat" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
     for az in var.instance.spec.availability_zones : az => az
+
     } : {
     single = var.instance.spec.availability_zones[0]
   }
