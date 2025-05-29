@@ -1,8 +1,8 @@
 locals {
   output_attributes = {
     vpc_id              = aws_vpc.main.id
-    vpc_cidr      = aws_vpc.main.cidr_block
-    azs  = var.instance.spec.availability_zones
+    vpc_cidr            = aws_vpc.main.cidr_block
+    azs                 = var.instance.spec.availability_zones
     k8s_nodes_subnets   = lookup(var.instance.spec, "k8s_nodes_subnets", [])
     k8s_cluster_subnets = lookup(var.instance.spec, "k8s_cluster_subnets", [])
     k8s_subnets         = length(aws_subnet.private[*].id) > 0 ? slice(aws_subnet.private[*].id, 0, 2) : []

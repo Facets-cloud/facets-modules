@@ -70,6 +70,7 @@ spec:
           - '1024'
           - '2048'
           - '4096'
+          - '8192'
           default: '256'
       required:
       - count_per_az
