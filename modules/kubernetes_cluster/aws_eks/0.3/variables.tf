@@ -8,18 +8,18 @@ variable "instance" {
       kubernetes_version = string
       node_groups = object({
         default = object({
-          enabled        = bool
-          max_size_cpu   = number
+          enabled         = bool
+          max_size_cpu    = number
           max_size_memory = number
-          instance_types = string
-          capacity_type  = string
+          instance_types  = string
+          capacity_type   = string
         })
         dedicated = object({
-          enabled        = bool
-          max_size_cpu   = number
+          enabled         = bool
+          max_size_cpu    = number
           max_size_memory = number
-          instance_types = string
-          capacity_type  = string
+          instance_types  = string
+          capacity_type   = string
         })
       })
       cluster_endpoint_public_access       = bool
@@ -42,7 +42,7 @@ variable "instance_name" {
   description = "The architectural name for the resource as added in the Facets blueprint designer."
   type        = string
   validation {
-    condition = var.instance_name != null
+    condition     = var.instance_name != null
     error_message = "instance_name is required"
   }
   validation {
@@ -74,16 +74,4 @@ variable "inputs" {
       })
     })
   })
-}
-
-variable "cluster" {
-  description = "cluster object configuration"
-  type = any
-  default = {}
-}
-
-variable "cc_metadata" {
-  description = "cc_metadata object configuration"
-  type = any
-  default = {}
 }

@@ -1,0 +1,271 @@
+intent: kubernetes_node_pool
+flavor: aws_karpenter
+version: '0.1'
+clouds:
+- aws
+title: EKS Auto Mode Karpenter NodePool Manager
+description: Creates and manages dynamic node pools for EKS Auto Mode clusters with
+  intelligent scaling and cost optimization.
+spec:
+  type: object
+  x-ui-order:
+  - name
+  - instance_requirements
+  - scaling
+  - networking
+  - storage
+  - scheduling
+  - tags
+  properties:
+    name:
+      type: string
+      title: Node Pool Name
+      description: Name for this node pool configuration.
+      default: custom-nodepool
+    instance_requirements:
+      type: object
+      title: Instance Requirements
+      description: Define what types of EC2 instances this node pool can use.
+      x-ui-toggle: true
+      properties:
+        instance_families:
+          type: string
+          title: Instance Families
+          description: Comma-separated EC2 instance families (e.g., c5,m5,r5 for compute/memory/storage
+            optimized).
+          default: c5,c6i,m5,m6i,r5,r6i
+        cpu_range:
+          type: string
+          title: CPU Range
+          description: Comma-separated vCPU counts to allow (e.g., 2,4,8,16).
+          default: 2,4,8,16
+        architectures:
+          type: string
+          title: CPU Architectures
+          description: Comma-separated architectures to support.
+          default: x86_64,arm64
+          enum:
+          - x86_64
+          - arm64
+          - x86_64,arm64
+        capacity_types:
+          type: string
+          title: Instance Pricing
+          description: Choose between cost-optimized Spot instances or reliable On-Demand
+            instances.
+          default: spot,on-demand
+          enum:
+          - spot
+          - on-demand
+          - spot,on-demand
+        availability_zones:
+          type: string
+          title: Availability Zones
+          description: Comma-separated AZs where nodes can be placed (leave empty
+            to use all VPC zones).
+          default: ''
+          x-ui-overrides-only: true
+    scaling:
+      type: object
+      title: Scaling Configuration
+      description: Control how the node pool scales and manages resources.
+      x-ui-toggle: true
+      properties:
+        max_cpu:
+          type: string
+          title: Maximum CPU
+          description: Maximum total CPU cores for this node pool.
+          default: '1000'
+        max_memory:
+          type: string
+          title: Maximum Memory
+          description: Maximum total memory for this node pool (e.g., 1000Gi).
+          default: 1000Gi
+        consolidation_policy:
+          type: string
+          title: Cost Optimization
+          description: How aggressively to consolidate underutilized nodes to save
+            costs.
+          default: WhenEmptyOrUnderutilized
+          enum:
+          - WhenEmpty
+          - WhenEmptyOrUnderutilized
+        consolidation_delay:
+          type: string
+          title: Consolidation Delay
+          description: How long to wait before consolidating nodes (e.g., 30s, 5m).
+          default: 30s
+    networking:
+      type: object
+      title: Networking Configuration
+      description: Advanced networking settings for the nodes.
+      x-ui-toggle: true
+      properties:
+        subnet_selection:
+          type: object
+          title: Subnet Selection
+          description: Tags to select which subnets nodes should be placed in.
+          default: {}
+          x-ui-yaml-editor: true
+        security_group_selection:
+          type: object
+          title: Security Group Selection
+          description: Tags to select which security groups to apply to nodes.
+          default: {}
+          x-ui-yaml-editor: true
+        enable_public_ip:
+          type: boolean
+          title: Enable Public IP
+          description: Whether nodes should get public IP addresses.
+          default: false
+        proxy_configuration:
+          type: object
+          title: Proxy Configuration
+          description: HTTP/HTTPS proxy settings for restricted environments.
+          x-ui-toggle: true
+          properties:
+            https_proxy:
+              type: string
+              title: HTTPS Proxy URL
+              description: Proxy URL for HTTPS traffic (e.g., http://proxy.company.com:8080).
+            bypass_domains:
+              type: string
+              title: Bypass Domains
+              description: Comma-separated domains to bypass proxy.
+              default: localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com
+    storage:
+      type: object
+      title: Storage Configuration
+      description: Configure storage settings for the nodes.
+      x-ui-toggle: true
+      properties:
+        disk_size:
+          type: string
+          title: Disk Size
+          description: Size of the root disk for each node (e.g., 80Gi, 100Gi).
+          default: 80Gi
+        disk_type:
+          type: string
+          title: Disk Performance
+          description: Storage performance level for the nodes.
+          default: gp3-standard
+          enum:
+          - gp3-standard
+          - gp3-high-performance
+          - io2-ultra-performance
+        encryption_key:
+          type: string
+          title: Encryption Key (Optional)
+          description: KMS key ID/ARN for disk encryption (leave empty for default
+            encryption).
+    scheduling:
+      type: object
+      title: Workload Scheduling
+      description: Control which workloads can run on these nodes.
+      x-ui-toggle: true
+      properties:
+        node_labels:
+          type: object
+          title: Node Labels
+          description: Labels to apply to nodes for workload targeting.
+          default: {}
+          x-ui-yaml-editor: true
+        dedicated_workloads:
+          type: boolean
+          title: Dedicated for Specific Workloads
+          description: Whether to reserve these nodes for specific workloads only.
+          default: false
+        workload_isolation:
+          type: object
+          title: Workload Isolation
+          description: Configure node taints for workload isolation.
+          x-ui-toggle: true
+          x-ui-visible-if:
+            field: spec.scheduling.dedicated_workloads
+            values:
+            - true
+          properties:
+            taint_key:
+              type: string
+              title: Taint Key
+              description: Key for the node taint (e.g., workload-type).
+              default: dedicated
+            taint_value:
+              type: string
+              title: Taint Value
+              description: Value for the node taint (e.g., analytics).
+              default: 'true'
+            taint_effect:
+              type: string
+              title: Taint Effect
+              description: Effect of the taint on pod scheduling.
+              default: NoSchedule
+              enum:
+              - NoSchedule
+              - PreferNoSchedule
+              - NoExecute
+    tags:
+      type: object
+      title: Additional Tags
+      description: Custom tags to apply to EC2 instances for cost tracking and organization.
+      x-ui-toggle: true
+      x-ui-yaml-editor: true
+      default: {}
+  required:
+  - name
+inputs:
+  kubernetes_cluster:
+    type: '@outputs/kubernetes'
+    displayName: EKS Cluster
+    description: The EKS cluster where the node pool will be created
+    optional: false
+    providers:
+    - helm
+    - kubernetes
+    - kubernetes-alpha
+  network_details:
+    type: '@outputs/aws-vpc-details'
+    displayName: VPC Network
+    description: VPC network details for node placement
+    optional: false
+outputs:
+  default:
+    type: '@outputs/kubernetes_node_pool'
+    title: Karpenter NodePool and NodeClass
+sample:
+  kind: kubernetes_node_pool
+  flavor: aws_karpenter
+  version: '0.1'
+  metadata:
+    name: production-nodepool
+  spec:
+    name: production-nodes
+    instance_requirements:
+      instance_families: c5,m5,r5
+      cpu_range: 4,8,16
+      architectures: x86_64,arm64
+      capacity_types: spot,on-demand
+    scaling:
+      max_cpu: '500'
+      max_memory: 2000Gi
+      consolidation_policy: WhenEmptyOrUnderutilized
+      consolidation_delay: 30s
+    networking:
+      subnet_selection:
+        kubernetes.io/role/internal-elb: '1'
+        tier: private
+      security_group_selection:
+        Name: eks-worker-nodes
+      enable_public_ip: false
+    storage:
+      disk_size: 100Gi
+      disk_type: gp3-standard
+    scheduling:
+      node_labels:
+        environment: production
+        workload-type: general
+      dedicated_workloads: false
+    tags:
+      Environment: production
+      Team: platform
+      CostCenter: engineering

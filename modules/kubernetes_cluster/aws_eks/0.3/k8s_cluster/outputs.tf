@@ -12,6 +12,9 @@ output "k8s_details" {
     cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
     oidc_provider           = module.eks.oidc_provider
     oidc_provider_arn       = module.eks.oidc_provider_arn
+    node_group_iam_role_arn  = module.eks.node_iam_role_arn
+    node_group_iam_role_name = module.eks.node_iam_role_name
+    worker_nodes_secgrp      = module.eks.node_security_group_id
   }
 }
 
