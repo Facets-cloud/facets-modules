@@ -4,8 +4,34 @@ version: '0.1'
 description: Adds aws_api_gateway - default flavor
 clouds:
 - aws
+spec:
+  type: object
+  properties:
+    protocol:
+      type: string
+      title: Protocol Type
+      description: The protocol type for the API Gateway
+      x-ui-typeable: true
+      enum:
+      - HTTP
+      - WEBSOCKET
+      default: HTTP
+    routes:
+      type: object
+      title: API Routes
+      description: Define the routes for your API Gateway
+      x-ui-yaml-editor: true
+  required:
+  - protocol
+  - routes
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: network
+      resource_name: default
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_api_gateway/aws_api_gateway.schema.json
   kind: aws_api_gateway
   flavor: default
   disabled: true
@@ -15,4 +41,10 @@ sample:
   spec:
     protocol: HTTP
     routes:
-      GET /: {}
+      GET /:
+        integration_type: HTTP_PROXY
+        integration_uri: <uri>
+        integration_method: GET
+iac:
+  validated_files:
+  - variables.tf
