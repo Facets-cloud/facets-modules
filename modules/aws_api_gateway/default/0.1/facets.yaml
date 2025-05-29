@@ -42,7 +42,7 @@ sample:
     protocol: HTTP
     routes:
       GET /:
-        integration_type: <integration_type>
+        integration_type: HTTP_PROXY
         integration_uri: <uri>
         integration_method: GET
 iac:
