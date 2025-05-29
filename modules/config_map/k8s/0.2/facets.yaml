@@ -26,4 +26,4 @@ sample:
   metadata: {}
   disabled: true
   spec:
-    data:
+    data: {}

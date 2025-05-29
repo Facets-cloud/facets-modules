@@ -147,7 +147,6 @@ sample:
   disabled: true
   version: '0.1'
   spec:
-    domains:
     force_ssl_redirection: true
     private: false
     rules:
