@@ -3,11 +3,20 @@ flavor: default
 version: '0.1'
 description: Adds aws_efs - default flavor
 clouds:
-- aws
+  - aws
 spec:
   title: AWS EFS
   type: object
   description: Specification of the AWS EFS resource intent
+inputs:
+  network_details:
+    type: "@outputs/aws_vpc"
+    optional: false
+    displayName: "VPC Network Details"
+    description: "VPC network configuration for EFS mount targets"
+    default:
+      resource_type: network
+      resource_name: default
 sample:
   kind: aws_efs
   flavor: default
