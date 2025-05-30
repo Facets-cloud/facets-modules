@@ -178,10 +178,15 @@ spec:
         workload_isolation:
           type: object
           title: Workload Isolation
-          description: Configure multiple named taints for workload isolation. Each key represents a taint name with its configuration.
+          description: Configure multiple named taints for workload isolation. Each
+            key represents a taint name with its configuration.
           default: {}
+          x-ui-visible-if:
+            field: spec.scheduling.dedicated_workloads
+            values:
+            - true
           patternProperties:
-            "^[a-zA-Z0-9_-]+$":
+            ^[a-zA-Z0-9_-]+$:
               type: object
               title: Taint Configuration
               description: Configuration for a specific workload isolation taint.

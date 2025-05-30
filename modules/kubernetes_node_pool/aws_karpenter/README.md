@@ -54,6 +54,7 @@ module "production_nodepool" {
       environment    = "production"
       workload-type = "general"
     }
+    dedicated_workloads = true
     workload_isolation = {
       production = {
         key    = "environment"
@@ -141,10 +142,11 @@ networking = {
 
 ## Multiple Taints Support
 
-You can now define multiple named taint configurations for advanced workload isolation:
+You can define multiple named taint configurations for advanced workload isolation when `dedicated_workloads` is enabled:
 
 ```hcl
 scheduling = {
+  dedicated_workloads = true
   workload_isolation = {
     gpu-workload = {
       key    = "nvidia.com/gpu"
@@ -176,6 +178,7 @@ For complex workload isolation with multiple named taint configurations:
 
 ```hcl
 scheduling = {
+  dedicated_workloads = true
   workload_isolation = {
     gpu-workload = {
       key    = "nvidia.com/gpu"
@@ -213,7 +216,7 @@ scheduling = {
 }
 ```
 
-**Note**: Each key in `workload_isolation` represents a named taint configuration. You can define as many as needed for your workload isolation requirements.
+**Note**: The `workload_isolation` field is only visible and functional when `dedicated_workloads` is set to `true`. Each key in `workload_isolation` represents a named taint configuration.
 
 ## Outputs
 
