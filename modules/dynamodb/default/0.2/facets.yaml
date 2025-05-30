@@ -3,14 +3,13 @@ flavor: default
 version: '0.2'
 description: Adds dynamodb - default flavor
 clouds:
-  - aws
-
+- aws
 spec:
   type: object
-  title: AWS DynamoDB 
+  title: AWS DynamoDB
   description: Specification of the AWS DynamoDB table resource intent
   required:
-    - hash_key
+  - hash_key
   properties:
     hash_key:
       type: string
@@ -21,22 +20,27 @@ spec:
       type: object
       title: Table Attributes
       description: Define the attributes for the DynamoDB table
+      x-ui-typable: true
       patternProperties:
-        "^[a-zA-Z0-9_-]+$":
+        ^[a-zA-Z0-9_-]+$:
           type: object
           properties:
+            name:
+              type: string
+              title: Attribute Name
+              description: The name of the attribute
             type:
               type: string
               title: Attribute Type
               description: The type of the attribute
               enum:
-                - S  # String
-                - N  # Number
-                - B  # Binary
+              - S
+              - N
+              - B
               default: S
           required:
-            - type
-
+          - name
+          - type
 sample:
   kind: dynamodb
   flavor: default
@@ -50,7 +54,12 @@ sample:
   spec:
     hash_key: LockID
     attributes:
-      LockID:
+      key1:
+        name: LockID
         type: S
-      Timestamp:
+      key2:
+        name: Timestamp
         type: N
+      key3:
+        name: name
+        type: S
