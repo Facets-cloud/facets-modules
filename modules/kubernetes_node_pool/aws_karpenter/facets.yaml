@@ -223,11 +223,6 @@ inputs:
     - helm
     - kubernetes
     - kubernetes-alpha
-  network_details:
-    type: '@outputs/aws-vpc-details'
-    displayName: VPC Network
-    description: VPC network details for node placement
-    optional: false
 outputs:
   default:
     type: '@outputs/kubernetes_node_pool'

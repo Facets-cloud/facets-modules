@@ -4,7 +4,7 @@ locals {
 
   # Extract input dependencies
   kubernetes_cluster = var.inputs.kubernetes_cluster
-  network_details    = var.inputs.network_details
+  network_details    = var.inputs.kubernetes_cluster.attributes.network_details
 
   # Extract user configuration with defaults
   name                  = try(local.spec.name, "custom-nodepool")
