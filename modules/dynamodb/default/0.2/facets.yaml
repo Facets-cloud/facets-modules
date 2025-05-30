@@ -4,6 +4,7 @@ version: '0.2'
 description: Adds dynamodb - default flavor
 clouds:
   - aws
+
 spec:
   type: object
   title: AWS DynamoDB 
@@ -16,33 +17,25 @@ spec:
       title: Hash Key (Partition Key)
       description: The attribute name to use as the hash (partition) key for the table
       default: id
-    range_key:
-      type: string
-      title: Range Key (Sort Key)
-      description: Optional attribute name to use as the range (sort) key for the table
-    billing_mode:
-      type: string
-      title: Billing Mode
-      description: Controls how you are charged for read and write throughput
-      enum:
-        - PAY_PER_REQUEST
-        - PROVISIONED
-      default: PAY_PER_REQUEST
-    point_in_time_recovery_enabled:
-      type: boolean
-      title: Point-in-Time Recovery
-      description: Enable point-in-time recovery for continuous backups
-      default: false
-    server_side_encryption_enabled:
-      type: boolean
-      title: Server-Side Encryption
-      description: Enable server-side encryption for data at rest
-      default: false
-    tags:
+    attributes:
       type: object
-      description: Tags to apply to the DynamoDB table
-      additionalProperties:
-        type: string
+      title: Table Attributes
+      description: Define the attributes for the DynamoDB table
+      patternProperties:
+        "^[a-zA-Z0-9_-]+$":
+          type: object
+          properties:
+            type:
+              type: string
+              title: Attribute Type
+              description: The type of the attribute
+              enum:
+                - S  # String
+                - N  # Number
+                - B  # Binary
+              default: S
+          required:
+            - type
 
 sample:
   kind: dynamodb
@@ -56,10 +49,8 @@ sample:
       Project: example
   spec:
     hash_key: LockID
-    range_key: Timestamp
-    billing_mode: PAY_PER_REQUEST
-    point_in_time_recovery_enabled: true
-    server_side_encryption_enabled: true
-    tags:
-      Name: example-dynamodb-table
-      Team: ops
+    attributes:
+      LockID:
+        type: S
+      Timestamp:
+        type: N
