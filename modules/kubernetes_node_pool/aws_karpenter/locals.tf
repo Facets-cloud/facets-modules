@@ -73,6 +73,16 @@ locals {
     }
   ] : []
 
+  # Extract taints and labels for output
+  taints = local.node_taints
+  labels = merge(
+    try(local.scheduling.node_labels, {}),
+    {
+      "facets.cloud/nodepool"    = local.name
+      "facets.cloud/environment" = var.environment.name
+    }
+  )
+
   # Proxy userdata script
   proxy_userdata = try(local.networking.proxy_configuration.https_proxy, "") != "" ? base64encode(<<-EOF
     #!/bin/bash
