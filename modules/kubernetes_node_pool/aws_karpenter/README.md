@@ -54,7 +54,13 @@ module "production_nodepool" {
       environment    = "production"
       workload-type = "general"
     }
-    dedicated_workloads = false
+    workload_isolation = {
+      production = {
+        key    = "environment"
+        value  = "production"
+        effect = "NoSchedule"
+      }
+    }
   }
   
   tags = {
@@ -101,8 +107,8 @@ Configure storage settings:
 ### Workload Scheduling
 Control which workloads can run on these nodes:
 - **node_labels**: Labels for workload targeting
-- **dedicated_workloads**: Reserve nodes for specific workloads
-- **workload_isolation**: Configure taints for workload isolation
+- **workload_isolation**: Multiple named taint configurations for advanced workload isolation
+- **dedicated_workloads**: Reserve nodes for specific workloads (legacy flag)
 
 ## Smart Defaults
 
@@ -133,23 +139,81 @@ networking = {
 }
 ```
 
+## Multiple Taints Support
+
+You can now define multiple named taint configurations for advanced workload isolation:
+
+```hcl
+scheduling = {
+  workload_isolation = {
+    gpu-workload = {
+      key    = "nvidia.com/gpu"
+      value  = "true"
+      effect = "NoSchedule"
+    }
+    dedicated = {
+      key    = "dedicated"
+      value  = "production"
+      effect = "NoSchedule"
+    }
+    high-memory = {
+      key    = "memory-optimized"
+      value  = "true"
+      effect = "PreferNoSchedule"
+    }
+  }
+  node_labels = {
+    workload-type = "gpu-analytics"
+    memory-type   = "high"
+  }
+}
+```
+
 ## Workload Isolation
 
-To dedicate nodes for specific workloads:
+### Multiple Named Taints (Recommended)
+For complex workload isolation with multiple named taint configurations:
+
+```hcl
+scheduling = {
+  workload_isolation = {
+    gpu-workload = {
+      key    = "nvidia.com/gpu"
+      value  = "true"
+      effect = "NoSchedule"
+    }
+    dedicated = {
+      key    = "dedicated"
+      value  = "analytics"
+      effect = "NoSchedule"
+    }
+  }
+  node_labels = {
+    workload-type = "gpu-analytics"
+  }
+}
+```
+
+### Legacy Single Taint (Backward Compatibility)
+To dedicate nodes for specific workloads using the legacy method:
 
 ```hcl
 scheduling = {
   dedicated_workloads = true
   workload_isolation = {
-    taint_key    = "workload-type"
-    taint_value  = "analytics"
-    taint_effect = "NoSchedule"
+    default = {
+      key    = "workload-type"
+      value  = "analytics"
+      effect = "NoSchedule"
+    }
   }
   node_labels = {
     workload-type = "analytics"
   }
 }
 ```
+
+**Note**: Each key in `workload_isolation` represents a named taint configuration. You can define as many as needed for your workload isolation requirements.
 
 ## Outputs
 

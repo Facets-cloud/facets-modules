@@ -64,14 +64,14 @@ locals {
     }
   )
 
-  # Build node taints if workload isolation is enabled
-  node_taints = try(local.scheduling.dedicated_workloads, false) ? [
-    {
-      key    = try(local.scheduling.workload_isolation.taint_key, "dedicated")
-      value  = try(local.scheduling.workload_isolation.taint_value, "true")
-      effect = try(local.scheduling.workload_isolation.taint_effect, "NoSchedule")
+  # Build node taints from workload_isolation configurations
+  node_taints = [
+    for taint_name, taint_config in try(local.scheduling.workload_isolation, {}) : {
+      key    = taint_config.key
+      value  = taint_config.value
+      effect = taint_config.effect
     }
-  ] : []
+  ]
 
   # Extract taints and labels for output
   taints = local.node_taints

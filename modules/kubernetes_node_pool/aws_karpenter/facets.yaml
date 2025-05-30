@@ -178,32 +178,35 @@ spec:
         workload_isolation:
           type: object
           title: Workload Isolation
-          description: Configure node taints for workload isolation.
-          x-ui-toggle: true
-          x-ui-visible-if:
-            field: spec.scheduling.dedicated_workloads
-            values:
-            - true
-          properties:
-            taint_key:
-              type: string
-              title: Taint Key
-              description: Key for the node taint (e.g., workload-type).
-              default: dedicated
-            taint_value:
-              type: string
-              title: Taint Value
-              description: Value for the node taint (e.g., analytics).
-              default: 'true'
-            taint_effect:
-              type: string
-              title: Taint Effect
-              description: Effect of the taint on pod scheduling.
-              default: NoSchedule
-              enum:
-              - NoSchedule
-              - PreferNoSchedule
-              - NoExecute
+          description: Configure multiple named taints for workload isolation. Each key represents a taint name with its configuration.
+          default: {}
+          patternProperties:
+            "^[a-zA-Z0-9_-]+$":
+              type: object
+              title: Taint Configuration
+              description: Configuration for a specific workload isolation taint.
+              properties:
+                key:
+                  type: string
+                  title: Taint Key
+                  description: Key for the node taint (e.g., workload-type, nvidia.com/gpu).
+                value:
+                  type: string
+                  title: Taint Value
+                  description: Value for the node taint (e.g., analytics, true).
+                effect:
+                  type: string
+                  title: Taint Effect
+                  description: Effect of the taint on pod scheduling.
+                  default: NoSchedule
+                  enum:
+                  - NoSchedule
+                  - PreferNoSchedule
+                  - NoExecute
+              required:
+              - key
+              - value
+              - effect
     tags:
       type: object
       title: Additional Tags
@@ -265,6 +268,15 @@ sample:
         environment: production
         workload-type: general
       dedicated_workloads: false
+      workload_isolation:
+        gpu-workload:
+          key: nvidia.com/gpu
+          value: 'true'
+          effect: NoSchedule
+        dedicated:
+          key: dedicated
+          value: production
+          effect: NoSchedule
     tags:
       Environment: production
       Team: platform
