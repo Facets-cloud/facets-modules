@@ -1,12 +1,3 @@
-# Configure Terraform providers
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-  }
-}
-
 # Deploy NodeClass using any-k8s-resource for rollback capabilities
 module "node_class" {
   source = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"

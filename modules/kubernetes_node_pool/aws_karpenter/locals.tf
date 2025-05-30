@@ -4,7 +4,7 @@ locals {
 
   # Extract input dependencies
   kubernetes_cluster = var.inputs.kubernetes_cluster
-  network_details    = var.inputs.kubernetes_cluster.attributes.network_details
+  network_details    = var.inputs.network_details
 
   # Extract user configuration with defaults
   name                  = try(local.spec.name, "custom-nodepool")
@@ -26,7 +26,7 @@ locals {
   capacity_types_list    = split(",", try(local.instance_requirements.capacity_types, "spot,on-demand"))
 
   # Handle availability zones - use VPC zones if not specified
-  availability_zones_list = try(local.instance_requirements.availability_zones, "") != "" ? split(",", local.instance_requirements.availability_zones) : local.network_details.availability_zones
+  availability_zones_list = try(local.instance_requirements.availability_zones, "") != "" ? split(",", local.instance_requirements.availability_zones) : local.network_details.attributes.availability_zones
 
   # Parse proxy bypass domains
   proxy_bypass_list = try(local.networking.proxy_configuration.bypass_domains, "") != "" ? split(",", local.networking.proxy_configuration.bypass_domains) : split(",", "localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com")
@@ -40,8 +40,8 @@ locals {
 
   disk_config = local.disk_type_mapping[try(local.storage.disk_type, "gp3-standard")]
 
-  # Automatically detect IAM role from EKS cluster
-  node_iam_role_arn = local.kubernetes_cluster.k8s_details.node_group_iam_role_arn
+  # Automatically detect IAM role from EKS cluster - updated path for new structure
+  node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_arn
 
   # Build subnet selector based on user configuration or smart defaults
   subnet_selector_tags = length(try(local.networking.subnet_selection, {})) > 0 ? local.networking.subnet_selection : {
@@ -49,18 +49,18 @@ locals {
     "tier"                            = "private"
   }
 
-  # Build security group selector based on user configuration or smart defaults
+  # Build security group selector based on user configuration or smart defaults - updated cluster name path
   security_group_selector_tags = length(try(local.networking.security_group_selection, {})) > 0 ? local.networking.security_group_selection : {
-    "aws:eks:cluster-name" = local.kubernetes_cluster.cluster_name
+    "aws:eks:cluster-name" = local.kubernetes_cluster.attributes.cluster.name
   }
 
-  # Combine user tags with environment tags
+  # Combine user tags with environment tags - updated cluster name path
   combined_tags = merge(
     local.tags,
     {
-      "facets.cloud/environment"                                       = var.environment
-      "facets.cloud/managed-by"                                        = "facets"
-      "kubernetes.io/cluster/${local.kubernetes_cluster.cluster_name}" = "owned"
+      "facets.cloud/environment"                                                  = var.environment
+      "facets.cloud/managed-by"                                                   = "facets"
+      "kubernetes.io/cluster/${local.kubernetes_cluster.attributes.cluster.name}" = "owned"
     }
   )
 
@@ -79,7 +79,7 @@ locals {
     try(local.scheduling.node_labels, {}),
     {
       "facets.cloud/nodepool"    = local.name
-      "facets.cloud/environment" = var.environment.name
+      "facets.cloud/environment" = var.environment
     }
   )
 

@@ -5,7 +5,7 @@ Creates and manages dynamic node pools for EKS Auto Mode clusters with intellige
 ## Features
 
 - **Seamless User Experience**: Single, intuitive configuration without technical Karpenter details
-- **Automatic IAM Role Detection**: Uses EKS cluster's node IAM role automatically from `k8s_details`
+- **Automatic IAM Role Detection**: Uses EKS cluster's node IAM role automatically from cluster attributes
 - **Smart Defaults**: Intelligent subnet and security group selection
 - **Cost Optimization**: Built-in node consolidation and Spot instance support
 - **Rollback Capabilities**: Uses any-k8s-resource for reliable deployments
@@ -108,7 +108,7 @@ Control which workloads can run on these nodes:
 
 The module provides intelligent defaults that work out of the box:
 
-- **IAM Role**: Automatically uses EKS cluster's node IAM role from `k8s_details.node_group_iam_role_arn`
+- **IAM Role**: Automatically uses EKS cluster's node IAM role from `attributes.node_group.iam_role_arn`
 - **Subnets**: Selects private subnets with `kubernetes.io/role/internal-elb=1`
 - **Security Groups**: Uses EKS cluster security groups
 - **Instance Types**: Balanced mix of compute, memory, and storage optimized instances
@@ -166,14 +166,14 @@ scheduling = {
 
 ## Dependencies
 
-- **kubernetes_cluster**: EKS cluster output with `k8s_details.node_group_iam_role_arn`
+- **kubernetes_cluster**: EKS cluster output with node group IAM role details
 - **network_details**: VPC network configuration
 
 ## IAM Role Detection
 
 The module automatically detects and uses the EKS cluster's node IAM role from:
 ```
-kubernetes_cluster.k8s_details.node_group_iam_role_arn
+kubernetes_cluster.attributes.node_group.iam_role_arn
 ```
 
 This ensures seamless integration with existing EKS clusters without requiring manual IAM role configuration.
