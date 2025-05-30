@@ -122,3 +122,4 @@ resource "aws_iam_policy" "read_write_policy" {
 EOF
 
 }
+ 
