@@ -230,7 +230,7 @@ sample:
       enable_lambda: false
 outputs:
   default:
-    type: '@facets/aws-vpc-details'
+    type: '@outputs/aws_vpc'
 iac:
   validated_files:
   - variables.tf

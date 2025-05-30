@@ -10,8 +10,8 @@ module "name" {
 module "k8s_cluster" {
   source        = "./k8s_cluster"
   environment   = var.environment
-  vpc_id        = var.inputs.network_details.attributes.legacy_outputs.vpc_details.vpc_id
-  k8s_subnets   = var.inputs.network_details.attributes.legacy_outputs.vpc_details.k8s_subnets
+  vpc_id        = var.inputs.network_details.attributes.vpc_id
+  k8s_subnets   = var.inputs.network_details.attributes.private_subnet_ids
   instance      = var.instance
   instance_name = var.instance_name
   cluster       = var.cluster

@@ -22,10 +22,24 @@ variable "instance" {
           capacity_type   = string
         })
       })
-      cluster_endpoint_public_access       = bool
-      cluster_endpoint_private_access      = bool
-      cluster_endpoint_public_access_cidrs = string
-      enable_cluster_encryption            = bool
+      cluster_endpoint_public_access         = bool
+      cluster_endpoint_private_access        = bool
+      cluster_endpoint_public_access_cidrs   = list(string)
+      cluster_endpoint_private_access_cidrs  = list(string)
+      cloudwatch_log_group_retention_in_days = number
+      cluster_enabled_log_types              = list(string)
+      enable_cluster_encryption              = bool
+      default_reclaim_policy                 = string
+      kms = object({
+        deletion_window_in_days = number
+        enable_rotation         = bool
+        rotation_period_in_days = number
+      })
+      tags = map(string)
+      secret_copier = object({
+        enabled = bool
+        values  = map(any)
+      })
     })
   })
   validation {
@@ -35,7 +49,6 @@ variable "instance" {
     )
     error_message = "Invalid capacity_type for enabled node group(s). Allowed values are 'on-demand' or 'spot'."
   }
-
 }
 
 variable "instance_name" {
@@ -59,18 +72,24 @@ variable "environment" {
     cloud_tags  = map(string)
   })
 }
+
 variable "inputs" {
   description = "A map of inputs requested by the module developer."
   type = object({
     network_details = object({
       attributes = object({
-        legacy_outputs = object({
-          vpc_details = object({
-            vpc_id             = string
-            private_subnet_ids = list(string)
-            k8s_subnets        = list(string)
-          })
-        })
+        vpc_id                          = string
+        vpc_cidr_block                  = string
+        nat_gateway_ids                 = list(string)
+        public_subnet_ids               = list(string)
+        availability_zones              = list(string)
+        private_subnet_ids              = list(string)
+        internet_gateway_id             = string
+        vpc_endpoint_s3_id              = optional(string)
+        vpc_endpoint_dynamodb_id        = optional(string)
+        vpc_endpoint_ecr_api_id         = optional(string)
+        vpc_endpoint_ecr_dkr_id         = optional(string)
+        vpc_endpoints_security_group_id = optional(string)
       })
     })
   })

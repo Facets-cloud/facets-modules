@@ -76,7 +76,7 @@ locals {
             {
               key      = "topology.kubernetes.io/zone"
               operator = "In"
-              values   = [var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs[0]]
+              values   = [var.inputs.network_details.attributes.availability_zones[0]]
             },
             {
               key      = "kubernetes.io/arch"
@@ -149,7 +149,7 @@ locals {
             {
               key      = "topology.kubernetes.io/zone"
               operator = "In"
-              values   = [var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs[0]]
+              values   = [var.inputs.network_details.attributes.availability_zones[0]]
             },
             {
               key      = "kubernetes.io/arch"

@@ -1,5 +1,5 @@
 intent: kubernetes_cluster
-flavor: aws_eks
+flavor: aws_eks-test
 alias-flavors:
 - default
 version: '0.3'
@@ -269,7 +269,7 @@ spec:
   - cluster
 inputs:
   network_details:
-    type: '@outputs/vpc'
+    type: '@outputs/aws_vpc'
     default:
       resource_type: network
       resource_name: default
@@ -301,7 +301,7 @@ outputs:
           token: attributes.k8s_details.auth.token
 sample:
   kind: kubernetes_cluster
-  flavor: aws_eks
+  flavor: aws_eks-test
   alias-flavors:
   - default
   version: '0.3'
