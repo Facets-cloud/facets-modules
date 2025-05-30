@@ -9,9 +9,8 @@ spec:
   type: object
   description: Specification of the AWS EFS resource intent
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_efs/aws_efs.schema.json
-  version: '0.1'
-  flavor: default
   kind: aws_efs
+  flavor: default
   disabled: true
+  version: '0.1'
   spec: {}
