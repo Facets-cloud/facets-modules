@@ -91,9 +91,7 @@ sample:
   version: "0.2"
   disabled: true # always set this to true to disable the sample
   spec:
-    type: object
-    properties:
-      region: "" # dont set any value as this is a sample
-      role_arn: ""
-      role_session_name: ""
-      external_id: ""
+    region: "" # dont set any value as this is a sample
+    role_arn: ""
+    role_session_name: ""
+    external_id: ""
