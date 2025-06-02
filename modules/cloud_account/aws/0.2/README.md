@@ -1,6 +1,6 @@
 # Cloud Account Module
 
-This module provides a way to use a specific cloud account for creating resources using terraform on AWS. This module also allows users to use custom aws providers in facets cloud by exposing type `@outputs/aws_cloud_account`.
+This module provides a way to use a specific cloud account for creating resources using terraform on AWS. This module also allows users to use custom aws providers in facets cloud by exposing type `@outputs/cloud_account`.
 
 ## Functionality
 
