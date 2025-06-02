@@ -1,6 +1,6 @@
 intent: s3
-flavor: aws-s3
-version: "0.1"
+flavor: default
+version: "0.3"
 clouds: [ aws ]
 description: Adds S3 module
 imports:
@@ -12,7 +12,7 @@ imports:
   required: false
 inputs:
   cloud_account:
-    type: "@outputs/aws_cloud_account"
+    type: "@outputs/cloud_account"
     default:
       resource_type: cloud_account
       resource_name: default
@@ -134,12 +134,10 @@ spec:
                   title: Transition Days for Noncurrent Version
                   description: Number of days after a new version of the object is created when the noncurrent version is transitioned
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
   disabled: true
-  flavor: aws-s3
+  flavor: default
   kind: s3
   metadata: {}
-  version: "0.1"
+  version: "0.3"
   spec: {}
   advanced: {}
