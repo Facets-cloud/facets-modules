@@ -1,0 +1,319 @@
+intent: kubernetes_cluster
+flavor: aws_eks_0.3
+alias-flavors: [ "default" ]
+version: "0.3"
+clouds:
+  - aws
+title: EKS Cluster with Auto Mode support
+description: A Kubernetes EKS cluster module with auto mode enabled by default and all necessary configurations preset.
+spec:
+  type: object
+  x-ui-order:
+    - cluster
+    - node_pools
+    - secret_copier
+    - tags
+  properties:
+    secret_copier:
+      type: object
+      title: Secret Copier
+      description: Configuration for the Secret Copier.
+      x-ui-toggle: true
+      properties:
+        enabled:
+          type: boolean
+          title: Enabled
+          description: Enable secret copier.
+          default: true
+        values:
+          type: object
+          title: Values
+          description: Values to pass to the secret copier.
+          default: {}
+          x-ui-yaml-editor: true
+    cluster:
+      type: object
+      title: Cluster
+      description: Configuration for the EKS cluster.
+      x-ui-toggle: true
+      properties:
+        kubernetes_version:
+          type: string
+          title: Kubernetes Version
+          description: Version of Kubernetes to use for the EKS cluster.
+          default: "1.31"
+        cluster_endpoint_public_access:
+          type: boolean
+          title: Cluster Endpoint Public Access
+          description: Whether the Amazon EKS public API server endpoint is enabled.
+          default: true
+          x-ui-overrides-only: true
+        cluster_endpoint_private_access:
+          type: boolean
+          title: Cluster Endpoint Private Access
+          description: Whether the Amazon EKS private API server endpoint is enabled.
+          default: true
+          x-ui-overrides-only: true
+        cluster_endpoint_public_access_cidrs:
+          type: array
+          title: Cluster Endpoint Public Access CIDRs
+          description: List of CIDR blocks which can access the Amazon EKS public API server endpoint.
+          default: ["0.0.0.0/0"]
+          x-ui-overrides-only: true
+        cluster_endpoint_private_access_cidrs:
+          type: array
+          title: Cluster Endpoint Private Access CIDRs
+          description: List of CIDR blocks which can access the Amazon EKS private API server endpoint.
+          default: ["0.0.0.0/0"]
+          x-ui-overrides-only: true
+        cloudwatch_log_group_retention_in_days:
+          type: number
+          title: Cloudwatch Log Group Retention In Days
+          description: Retention period for the Cloudwatch log group.
+          default: 90
+        cluster_enabled_log_types:
+          type: array
+          title: Cluster Enabled Log Types
+          description: List of log types to enable for the EKS cluster.
+          default: ["api", "audit", "authenticator"]
+          x-ui-overrides-only: true
+        enable_cluster_encryption:
+          type: boolean
+          title: Enable Cluster Encryption
+          description: Enable encryption for the cluster secrets.
+          default: true
+        default_reclaim_policy:
+          type: string
+          title: Default Reclaim Policy
+          description: Default reclaim policy for the EKS cluster.
+          default: "Delete"
+          x-ui-overrides-only: true
+          enum:
+            - "Delete"
+            - "Retain"
+        kms: 
+          type: object
+          title: KMS
+          description: Configuration for the KMS key.
+          x-ui-toggle: true
+          properties:
+            deletion_window_in_days:
+              title: Deletion Window
+              description: Waiting period in days after which kms keys are deleted
+              type: number
+              minimum: 7
+              maximum: 30
+              default: 7
+              x-ui-error-message: Deletion window must be between 7 and 30
+              x-ui-overrides-only: true
+            enable_rotation:
+              title: Enable Rotation for KMS
+              description: Specifies whether key rotation is enabled
+              type: boolean
+              default: false
+              x-ui-overrides-only: true
+            rotation_period_in_days:
+              title: Rotation Period for KMS in days
+              description: Specifies Rotation Period for KMS in days
+              type: number
+              default: 90
+              minimum: 1
+              maximum: 365
+              x-ui-overrides-only: true
+              x-ui-visible-if:
+                field: spec.cluster.kms_keys.enable_rotation
+                values: [true]
+        required:
+          - kubernetes_version
+    tags:
+      type: object
+      title: Tags
+      description: Tags to apply to the EKS cluster.
+      x-ui-toggle: true
+      x-ui-yaml-editor: true
+    node_pools:
+      type: object
+      title: Node Pools
+      description: Configuration for managed node pools, that are created by facets
+      x-ui-toggle: true
+      properties:
+        dedicated:
+          type: object
+          title: Dedicated Node Pool
+          description: Configuration for dedicated managed node pool.
+          x-ui-toggle: true
+          properties:
+            enabled:
+              type: boolean
+              title: Enabled
+              description: Enable dedicated managed node pool.
+              default: false
+            max_size_cpu:
+              type: number
+              title: Maximum Size (CPU)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enabled
+                values: [true]
+            max_size_memory:
+              type: number
+              title: Maximum Size (Memory)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enabled
+                values: [true]
+            instance_types:
+              type: string
+              title: Instance Types
+              description: EC2 instance types for the worker nodes.
+              default: "t3.medium"
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enabled
+                values: [true]
+            capacity_type:
+              type: string
+              title: Capacity Type
+              description: Type of capacity associated with the EKS Node Group. Valid values are ON_DEMAND and SPOT.
+              default: "SPOT"
+              enum:
+                - "on-demand"
+                - "spot"
+              x-ui-visible-if:
+                field: spec.cluster.dedicated.enabled
+                values: [true]
+          required:
+            - enabled
+            - max_size_cpu
+            - max_size_memory
+            - instance_types
+            - capacity_type
+        default:
+          type: object
+          title: Default Node Pool
+          description: Configuration for default managed node pool.
+          x-ui-toggle: true
+          properties:
+            enabled:
+              type: boolean
+              title: Enabled
+              description: Enable default managed node pool.
+              default: true
+            max_size_cpu:
+              type: number
+              title: Maximum Size (CPU)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.node_pools.default.enabled
+                values: [true]
+            max_size_memory:
+              type: number
+              title: Maximum Size (Memory)
+              description: Maximum number of worker nodes.
+              default: 1000
+              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
+              x-ui-visible-if:
+                field: spec.node_pools.default.enabled
+                values: [true]
+            instance_types:
+              type: string
+              title: Instance Types
+              description: EC2 instance types for the worker nodes.
+              default: "t3.medium"
+              x-ui-visible-if:
+                field: spec.node_pools.default.enabled
+                values: [true]
+            capacity_type:
+              type: string
+              title: Capacity Type
+              description: Type of capacity associated with the EKS Node Group. Valid values are ON_DEMAND and SPOT.
+              default: "SPOT"
+              enum:
+                - "on-demand"
+                - "spot"
+              x-ui-visible-if:
+                field: spec.node_pools.default.enabled
+                values: [true]
+          required:
+            - enabled
+            - max_size_cpu
+            - max_size_memory
+            - instance_types
+            - capacity_type
+  required:
+    - cluster
+inputs:
+  network_details:
+    type: "@outputs/aws_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+outputs:
+  default:
+    type: "@outputs/kubernetes"
+    providers:
+      kubernetes:
+        source: hashicorp/kubernetes
+        version: 2.17.0
+        attributes:
+          host: attributes.k8s_details.auth.host
+          token: attributes.k8s_details.auth.token
+          cluster_ca_certificate: attributes.k8s_details.auth.cluster_ca_certificate
+      helm:
+        source: hashicorp/helm
+        version: 2.8.0
+        attributes:
+          kubernetes:
+            host: attributes.k8s_details.auth.host
+            token: attributes.k8s_details.auth.token
+            cluster_ca_certificate: attributes.k8s_details.auth.cluster_ca_certificate
+      kubernetes-alpha:
+        source: hashicorp/kubernetes-alpha
+        version: 0.6.0
+        attributes:
+          host: attributes.k8s_details.auth.host
+          cluster_ca_certificate: attributes.k8s_details.auth.cluster_ca_certificate
+          token: attributes.k8s_details.auth.token
+sample:
+  kind: kubernetes_cluster
+  flavor: aws_eks_0.3
+  alias-flavors: [ "default" ]
+  version: "0.3"
+  metadata:
+    name: "eks-cluster"
+  cluster:
+    kubernetes_version: "1.31"
+    cluster_endpoint_public_access: true
+    cluster_endpoint_private_access: true
+    cluster_endpoint_public_access_cidrs: ["0.0.0.0/0"]
+    cluster_endpoint_private_access_cidrs: ["0.0.0.0/0"]
+  secret_copier:
+    enabled: true
+    values:
+      resources:
+        requests:
+          cpu: "150m"
+          memory: "256Mi"
+  node_pools:
+    dedicated:
+      enabled: false
+      desired_size: 2
+      min_size: 1
+      max_size: 3
+      instance_types: "t3.medium"
+      disk_size: 50
+      capacity_type: "SPOT"
+    default:
+      enabled: false
+      desired_size: 2
+      min_size: 1
+      max_size: 3
+      instance_types: "t3.medium"
+      disk_size: 50
+      capacity_type: "SPOT"
+  
