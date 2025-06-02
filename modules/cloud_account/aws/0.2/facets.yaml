@@ -1,4 +1,4 @@
-intent: aws_cloud_account
+intent: cloud_account
 flavor: aws
 version: "0.1"
 clouds: [ aws ]
@@ -50,7 +50,7 @@ spec:
   - external_id
 outputs:
   default:
-    type: "@outputs/aws_cloud_account"
+    type: "@outputs/cloud_account"
     providers:
       aws:
         # exposses aws 5.97.0 provider
@@ -65,7 +65,7 @@ outputs:
               session_name: attributes.session_name
               external_id: attributes.external_id
 sample:
-  kind: aws_cloud_account
+  kind: cloud_account
   flavor: aws
   version: "0.1"
   disabled: true # always set this to true to disable the sample
