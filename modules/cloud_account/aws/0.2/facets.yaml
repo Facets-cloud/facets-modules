@@ -18,29 +18,29 @@ spec:
       title: Role ARN
       description: The Amazon Resource Name (ARN) of the role to assume.
       type: string
-      pattern: "^arn:aws:iam::[0-9]{12}:role/[\\w+=,.@-]$+" # regex pattern for role ARN
+      pattern: '^arn:aws:iam::[0-9]{12}:role/[\w+=,.@-]$+' # regex pattern for role ARN
       x-ui-placeholder: "Eg: arn:aws:iam::123456789012:role/role_name" # placeholder for the role ARN
-      x-ui-error-message: "Value did not match pattern \"^arn:aws:iam::[0-9]{12}:role/[\\w+=,.@-]$+\". Eg: arn:aws:iam::123456789012:role/role_name"
+      x-ui-error-message: 'Value did not match pattern "^arn:aws:iam::[0-9]{12}:role/[\w+=,.@-]$+". Eg: arn:aws:iam::123456789012:role/role_name'
       x-ui-override-disable: true # disables the override option in UI
     role_session_name:
       title: Role Session Name
       description: The identifier for the assumed role session. Used to to uniquely identify a session when the same role is assumed by different principals or for different reasons.
       type: string
-      pattern: "^[\\w+=,.@-]+$" # regex pattern for role session name
+      pattern: '^[\w+=,.@-]+$' # regex pattern for role session name
       minLength: 2 # minimum length for role session name
       maxLength: 27 # maximum length for role session name
       x-ui-placeholder: "Eg: session_name" # placeholder for the role session name
-      x-ui-error-message: "Value did not match pattern \"^[\\w+=,.@-]+$\" or length must be >=2 and <=27 characters. Eg: session_name"
+      x-ui-error-message: 'Value did not match pattern "^[\w+=,.@-]+$" or length must be >=2 and <=27 characters. Eg: session_name'
       x-ui-override-disable: true # disables the override option in UI
     external_id:
       title: External Id
       description: The unique identifier required to assume a role in another account.
       type: string
-      pattern: "^[\\w+=,.@-]+$" # regex pattern for external id
+      pattern: '^[\w+=,.@-]+$' # regex pattern for external id
       minLength: 2 # minimum length for external id
       maxLength: 1224 # maximum length for external id
       x-ui-placeholder: "Eg: external_id" # placeholder for the external id
-      x-ui-error-message: "Value did not match pattern \"^[\\w+=,.@-]+$\" or length must be >=2 and <=1224 characters. Eg: external_id"
+      x-ui-error-message: 'Value did not match pattern "^[\w+=,.@-]+$" or length must be >=2 and <=1224 characters. Eg: external_id'
       x-ui-secret-ref: true
       x-ui-typeable: true # allows the user to type in a value if not present in dropdown
   required:
@@ -53,7 +53,7 @@ outputs:
     type: "@outputs/cloud_account"
     providers:
       aws:
-        # exposses aws 5.97.0 provider
+        # exposses aws 5.99.0 provider
         source: hashicorp/aws
         version: "= 5.99.0"
         attributes:
