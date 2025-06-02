@@ -53,9 +53,30 @@ outputs:
     type: "@outputs/cloud_account"
     providers:
       aws:
-        # exposses aws 5.99.0 provider
         source: hashicorp/aws
-        version: "= 5.99.0"
+        version: "= 3.74.0"
+        attributes:
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
+      aws4:
+        source: hashicorp/aws4
+        version: "= 4.53.0"
+        attributes:
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
+      aws5:
+        source: hashicorp/aws5
+        version: "= 5.49.0"
         attributes:
           region: attributes.aws_region
           skip_region_validation: true
