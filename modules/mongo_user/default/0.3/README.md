@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `mongo_user - default` flavor (v0.2) enables the creation and management of MongoDB users through Kubernetes Custom Resource Definitions (CRDs) using the MongoDB Auth Operator. This module provides comprehensive user management capabilities with fine-grained permission control and role-based access for MongoDB databases in Kubernetes environments.
+The `mongo_user - default` flavor (v0.3) enables the creation and management of MongoDB users through Kubernetes Custom Resource Definitions (CRDs) using the MongoDB Auth Operator. This module provides comprehensive user management capabilities with fine-grained permission control and role-based access for MongoDB databases in Kubernetes environments.
 
 Supported clouds:
 - AWS
