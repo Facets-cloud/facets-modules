@@ -5,7 +5,7 @@ locals {
     azs                 = var.instance.spec.availability_zones
     k8s_nodes_subnets   = lookup(var.instance.spec, "k8s_nodes_subnets", [])
     k8s_cluster_subnets = lookup(var.instance.spec, "k8s_cluster_subnets", [])
-    k8s_subnets         = length(aws_subnet.private[*].id) > 0 ? slice(aws_subnet.private[*].id, 0, 2) : []
+    # k8s_subnets         = length(aws_subnet.private.*.id) > 0 ? slice(aws_subnet.private.*.id, 0, 2) : []
     # private_subnet_ids  = values(aws_subnet.private)[*].id
     # public_subnet_ids   = values(aws_subnet.public)[*].id
     # nat_gateway_ids = values(aws_nat_gateway.main)[*].id
