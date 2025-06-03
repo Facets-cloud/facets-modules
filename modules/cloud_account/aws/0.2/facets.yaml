@@ -18,7 +18,7 @@ spec:
       title: Role ARN
       description: The Amazon Resource Name (ARN) of the role to assume.
       type: string
-      pattern: '^(arn:aws:iam::(\d{12}|aws):role\/[A-Za-z0-9+=,.@\-_]+$' # regex pattern for role ARN
+      pattern: '^arn:aws:iam::(\d{12}|aws):role\/[A-Za-z0-9+=,.@\-_]+$' # regex pattern for role ARN
       x-ui-placeholder: 'Eg: arn:aws:iam::123456789012:role/role_name' # placeholder for the role ARN
       x-ui-error-message: 'Value did not match pattern "^(arn:aws:iam::(\d{12}|aws):role\/[A-Za-z0-9+=,.@\-_]+". Eg: arn:aws:iam::123456789012:role/role_name'
       x-ui-override-disable: true # disables the override option in UI
