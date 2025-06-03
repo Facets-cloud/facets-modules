@@ -1,5 +1,5 @@
 intent: network
-flavor: aws_vpc
+flavor: aws_vpc_02
 version: '0.2'
 description: Creates an AWS VPC with configurable public subnets and EKS private subnets
   across availability zones
@@ -19,36 +19,30 @@ spec:
       type: string
       title: AWS Region
       description: AWS region where the VPC will be created
-      enum:
-      - us-east-1
-      - us-east-2
-      - us-west-1
-      - us-west-2
-      - eu-west-1
-      - eu-west-2
-      - eu-west-3
-      - eu-central-1
-      - eu-north-1
-      - ap-southeast-1
-      - ap-southeast-2
-      - ap-northeast-1
-      - ap-northeast-2
-      - ap-south-1
-      - ca-central-1
-      - sa-east-1
-      x-ui-overrides-only: true
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/dropdown/aws/regions
+        method: GET
+        labelKey: regions
+        valueKey: region
     availability_zones:
       type: array
       title: Availability Zones
       description: List of availability zones to use for subnets
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/dropdown/aws/region/{{region}}/availability-zones
+        dynamicProperties:
+          region:
+            key: region
+            lookup: label
+        method: GET
       items:
         type: string
         pattern: ^[a-z]{2}-[a-z]+-[0-9][a-z]$
         x-ui-error-message: Availability zone must be in format like 'us-east-1a'
-      minItems: 2
-      maxItems: 4
+      x-ui-select-max: 4
+      x-ui-select-min: 2
       x-ui-overrides-only: true
-      x-ui-override-disable: true
+      x-ui-multi-select: true
     public_subnets:
       type: object
       title: Public Subnets Configuration
@@ -203,7 +197,7 @@ spec:
   - nat_gateway
 sample:
   kind: network
-  flavor: aws_vpc
+  flavor: aws_vpc_02
   version: '0.2'
   spec:
     public_subnets:
@@ -231,7 +225,7 @@ sample:
       enable_lambda: false
 outputs:
   default:
-    type: '@facets/aws-vpc-details'
+    type: '@outputs/aws_vpc'
 iac:
   validated_files:
   - variables.tf
