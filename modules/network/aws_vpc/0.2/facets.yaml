@@ -20,10 +20,11 @@ spec:
       title: AWS Region
       description: AWS region where the VPC will be created
       x-ui-api-source:
-        endpoint: /cc-ui/v1/dropdown/aws/regions
+        endpoint: /cc-ui/v1/dropdown/aws/regions-v2
         method: GET
-        labelKey: regions
+        labelKey: region
         valueKey: region
+        path: regions
     availability_zones:
       type: array
       title: Availability Zones
