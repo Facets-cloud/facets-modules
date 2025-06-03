@@ -43,7 +43,7 @@ spec:
       title: Permissions
       description: The permissions for the user
       patternProperties:
-        "^[0-9]+[m]?$":
+        "^[0-9a-zA-Z-]+$":
           type: object
           title: Permission Name
           description: The permission Configurations for a specific user
