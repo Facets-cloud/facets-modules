@@ -66,13 +66,13 @@ locals {
 
   # EKS tags for subnet discovery
   eks_tags = {
-    "kubernetes.io/role/elb"                                              = "1"
-    "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
+    "kubernetes.io/role/elb" = "1"
+    # "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
   }
 
   eks_private_tags = {
-    "kubernetes.io/role/internal-elb"                                     = "1"
-    "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb" = "1"
+    # "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
   }
 }
 
