@@ -13,4 +13,5 @@ output "username" {
 
 output "password" {
   value = local.user_password
+  sensitive = true
 }
