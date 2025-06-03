@@ -1,6 +1,5 @@
 intent: kubernetes_cluster
 flavor: gcp_gke
-alias-flavors: ["default"]
 version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:

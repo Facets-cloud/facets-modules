@@ -1,6 +1,5 @@
 intent: network
 flavor: azure_vpc
-alias-flavors: ["default"]
 version: "0.1"
 description: Adds network - azure vpc flavor
 clouds:
