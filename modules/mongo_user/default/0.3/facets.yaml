@@ -1,0 +1,129 @@
+intent: mongo_user
+flavor: default
+version: '0.3'
+description: Adds mongo_user - default flavor
+clouds:
+- aws
+- gcp
+- azure
+- kubernetes
+depends_on: []
+lifecycle: ENVIRONMENT
+input_type: instance
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@output/kubernetes"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the CRD for managing mongo user will be created
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+  mongodb_auth_operator_details:
+    type: "@output/mongodb_auth_operator"
+    displayName: MongoDB Auth Operator
+    description: The details of MongoDB Auth Operator which is responsible to create mongo users
+    optional: false
+  mongo_details:
+    type: "@output/mongo"
+    displayName: Mongo
+    description: The details of Mongo where the user needs to be created
+    optional: false
+spec:
+  title: MongoDB User
+  type: object
+  description: Specifications of user for MongoDB
+  properties:
+    database:
+      type: string
+      title: Database
+      description: The database name
+    permissions:
+      type: object
+      title: Permissions
+      description: The permissions for the user
+      patternProperties:
+        "^[0-9a-zA-Z-]+$":
+          type: object
+          title: Permission Name
+          description: The permission Configurations for a specific user
+          properties:
+            permission:
+              type: string
+              title: Permission
+              description: The permission for the user
+              x-ui-placeholder: "Enter comma separated permissions"
+            database:
+              type: string
+              title: Database
+              description: The database name for which the permission should be given
+              x-ui-placeholder: "Enter the database name"
+            collection:
+              type: string
+              title: Collection
+              description: The collection name of the database
+              x-ui-placeholder: "Enter the collection name"
+            cluster:
+              type: boolean
+              title: Cluster
+              description: Determines if permission should be at cluster level
+    mongo_user:
+      type: object
+      title: Mongo User
+      description: The user details for MongoDB
+      properties:
+        user:
+          type: object
+          title: User
+          description: The custom user details
+          properties:
+            username:
+              type: string
+              title: Username
+              description: The username for the user
+              x-ui-placeholder: "Enter the username"
+            password:
+              type: string
+              title: Password
+              description: The password for the user
+              x-ui-placeholder: "Enter the password"
+            customData:
+              type: object
+              title: Custom Data
+              description: The custom data for the database
+              x-ui-yaml-editor: true
+            mechanisms:
+              type: string
+              title: Mechanisms
+              description: The mechanisms for the user
+              x-ui-placeholder: "Enter the mechanisms"
+            dbRoles:
+              type: object
+              title: DB Roles
+              description: The database roles for the user
+              x-ui-yaml-editor: true
+            rolesToRole:
+              type: string
+              title: Roles to Role
+              description: The roles to role for the user
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
+  kind: mongo_user
+  flavor: default
+  version: '0.3'
+  disabled: false
+  metadata: {}
+  out: {}
+  spec:
+    database: stage
+    permissions:
+      p1:
+        permission: createCollection,listCollections
+        database: stage
+        collection: ''
+        cluster: true
+      p2:
+        permission: find,update,insert
+        database: stage
+        collection: myCollection2
+        cluster: false
