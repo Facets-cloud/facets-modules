@@ -297,18 +297,11 @@ spec:
   - size
   - postgres_version
   x-ui-order:
-<<<<<<< HEAD
-  - postgres_version
-  - size
-  - db_names
-  - db_schemas
-=======
     - postgres_version
     - size
     - backup_configuration
     - db_names
     - db_schemas
->>>>>>> 4d13afa2 (added backup configuration for k8s db)
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
