@@ -17,11 +17,6 @@ spec:
         key: value (provide a space after ':' as expected in the YAML format)"
       x-ui-yaml-editor: true
       x-ui-placeholder: "Enter the value of the config. Eg. key: config_value"
-    json_data:
-      title: Json Data`1`
-      type: object
-      description: "Enter a valid data for config-map in JSON format"
-      x-ui-textarea: true
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
