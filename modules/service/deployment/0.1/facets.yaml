@@ -43,6 +43,7 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
+    
     cloud_permissions:
       type: object
       title: Cloud Permissions
@@ -884,6 +885,11 @@ spec:
                 to be unavailable during disruption, this is pod disruption budget"
               x-ui-error-message: "Value doesn't match pattern, it should be number
                 ranging from 0 to 100 or 0% to 100%"
+    env:
+      title: Environment Variables
+      description: Map of environment variables passed to the main container.
+      type: object
+      x-ui-yaml-editor: true
     init_containers:
       title: Init Containers
       description: Map of specialized containers that run before app containers in
@@ -1630,6 +1636,7 @@ spec:
   - enable_host_anti_affinity
   - runtime
   - release
+  - env
   - init_containers
   - sidecars
   - cloud_permissions
