@@ -1,7 +1,8 @@
 intent: network
 flavor: aws_vpc
 version: '0.2'
-description: Creates an AWS VPC with configurable public subnets, private subnets, and database subnets across availability zones
+description: Creates an AWS VPC with configurable public subnets, private subnets,
+  and database subnets across availability zones
 clouds:
 - aws
 spec:
@@ -130,7 +131,8 @@ spec:
         strategy:
           type: string
           title: NAT Gateway Strategy
-          description: Choose whether to create one NAT Gateway or one per availability zone
+          description: Choose whether to create one NAT Gateway or one per availability
+            zone
           enum:
           - single
           - per_az
@@ -140,7 +142,8 @@ spec:
     vpc_endpoints:
       type: object
       title: VPC Endpoints Configuration
-      description: Configure VPC endpoints for AWS services to reduce data transfer costs and improve security
+      description: Configure VPC endpoints for AWS services to reduce data transfer
+        costs and improve security
       x-ui-toggle: true
       properties:
         enable_s3:
@@ -151,7 +154,8 @@ spec:
         enable_dynamodb:
           type: boolean
           title: Enable DynamoDB VPC Endpoint
-          description: Create a Gateway endpoint for Amazon DynamoDB (no additional charges)
+          description: Create a Gateway endpoint for Amazon DynamoDB (no additional
+            charges)
           default: true
         enable_ecr_api:
           type: boolean
@@ -161,7 +165,8 @@ spec:
         enable_ecr_dkr:
           type: boolean
           title: Enable ECR Docker VPC Endpoint
-          description: Create an Interface endpoint for Amazon ECR Docker registry (charges apply)
+          description: Create an Interface endpoint for Amazon ECR Docker registry
+            (charges apply)
           default: true
         enable_eks:
           type: boolean
@@ -176,7 +181,8 @@ spec:
         enable_ssm:
           type: boolean
           title: Enable SSM VPC Endpoint
-          description: Create an Interface endpoint for AWS Systems Manager (charges apply)
+          description: Create an Interface endpoint for AWS Systems Manager (charges
+            apply)
           default: true
         enable_ssm_messages:
           type: boolean
@@ -201,7 +207,8 @@ spec:
         enable_monitoring:
           type: boolean
           title: Enable CloudWatch Monitoring VPC Endpoint
-          description: Create an Interface endpoint for CloudWatch Monitoring (charges apply)
+          description: Create an Interface endpoint for CloudWatch Monitoring (charges
+            apply)
           default: false
         enable_sts:
           type: boolean
