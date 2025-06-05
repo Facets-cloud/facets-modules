@@ -253,7 +253,7 @@ resource "aws_route_table_association" "private" {
   for_each = aws_subnet.private
 
   subnet_id      = each.value.id
-  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_route_table.private[split("-", each.key)[0]].id : aws_route_table.private["single"].id
+  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_route_table.private[each.value.availability_zone].id : aws_route_table.private["single"].id
 }
 
 # Database Route Tables (isolated - no internet access)
@@ -274,7 +274,7 @@ resource "aws_route_table_association" "database" {
   for_each = aws_subnet.database
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.database[split("-", each.key)[0]].id
+  route_table_id = aws_route_table.database[each.value.availability_zone].id
 }
 
 # Security Group for VPC Endpoints
