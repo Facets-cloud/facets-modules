@@ -44,7 +44,6 @@ spec:
 sample:
   kind: dynamodb
   flavor: default
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/dynamodb/dynamodb.schema.json
   disabled: false
   version: '0.2'
   metadata:
