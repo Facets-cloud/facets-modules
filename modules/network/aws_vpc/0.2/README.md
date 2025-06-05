@@ -1,54 +1,94 @@
-# AWS VPC with Public and EKS Subnets
+# AWS VPC Module v0.2
 
-This module creates a comprehensive AWS VPC infrastructure with configurable public subnets, EKS-ready private subnets, and optional VPC endpoints across multiple availability zones. It's designed to provide a solid foundation for deploying applications and EKS clusters with proper network isolation, routing, and cost optimization.
+[![Terraform](https://img.shields.io/badge/terraform-v1.5.7-blue.svg)](https://www.terraform.io/)
+[![AWS](https://img.shields.io/badge/provider-aws-orange.svg)](https://registry.terraform.io/providers/hashicorp/aws/latest)
+
+## Overview
+
+This module creates a comprehensive AWS VPC with configurable public subnets, private subnets, and database subnets across multiple availability zones. It provides a robust three-tier network architecture for hosting applications and databases with proper network isolation and security. The module is designed with EKS compatibility and includes appropriate subnet tagging for load balancer placement.
 
 ## Environment as Dimension
 
-This module is environment-aware and uses both `environment.unique_name` and `instance_name` to create globally unique resource names. All resources follow the naming pattern `${environment.unique_name}-${instance_name}-<resource_type>`, ensuring complete isolation between environments and instances while maintaining clear resource identification.
+The module is environment-aware and adapts configurations based on the deployment environment:
+
+- **VPC CIDR blocks** can be customized per environment to avoid conflicts
+- **Availability zones** selection varies by region and environment requirements  
+- **Subnet count and sizing** can be adjusted based on environment scale (dev vs prod)
+- **NAT Gateway strategy** can differ (single for dev, per-AZ for prod)
+- **VPC endpoints** can be selectively enabled based on environment needs and cost considerations
 
 ## Resources Created
 
-- **VPC** with custom CIDR block and DNS support enabled
+- **VPC** with DNS hostnames and support enabled
 - **Internet Gateway** for public internet access
-- **Public Subnets** (configurable count per availability zone) with auto-assigned public IPs
-- **Private Subnets** for EKS workloads (one per availability zone)
-- **NAT Gateways** for private subnet internet access (single or per-AZ strategy)
-- **Elastic IPs** for NAT Gateway associations
-- **Route Tables** and associations for proper traffic routing
-- **VPC Endpoints** for AWS services (Gateway and Interface types)
-- **Security Group** for VPC endpoints with appropriate access controls
-- **EKS-specific tags** for automatic subnet discovery by EKS clusters
+- **Public Subnets** across specified availability zones with auto-assign public IPs
+- **Private Subnets** for internal resources with NAT Gateway routing
+- **Database Subnets** for isolated database resources
+- **DB Subnet Group** for RDS deployments
+- **NAT Gateways** with Elastic IPs (single or per-AZ strategy)
+- **Route Tables** for public, private, and database subnet routing
+- **VPC Endpoints** for AWS services (S3, DynamoDB, ECR, EKS, SSM, etc.)
+- **Security Groups** for VPC endpoint access
 
 ## Key Features
 
-**Flexible Subnet Configuration**: Configure the number of public subnets per availability zone and choose from predefined IP address counts (256, 512, 1024, 2048, 4096, 8192) for easy CIDR calculation.
+### Three-Tier Architecture
+- **Public Tier**: Internet-facing resources like load balancers and bastion hosts
+- **Private Tier**: Application workloads, containers, and compute resources  
+- **Database Tier**: Completely isolated database resources with no internet access
 
-**NAT Gateway Strategy**: Choose between a single NAT Gateway (cost-effective) or one NAT Gateway per availability zone (high availability).
+### EKS Ready
+The module includes proper subnet tagging for EKS integration:
+- **Public subnets** are tagged with `kubernetes.io/role/elb = "1"` for external load balancers
+- **Private subnets** are tagged with `kubernetes.io/role/internal-elb = "1"` for internal load balancers
+- No cluster-specific naming required - works with any EKS cluster
 
-**VPC Endpoints**: Comprehensive support for 14 commonly used AWS services with sensible defaults enabled for production workloads. Includes both free Gateway endpoints (S3, DynamoDB) and Interface endpoints for container/EKS workloads.
+### Consistent Subnet Configuration
+All subnet types follow the same flexible pattern:
+- **Public subnets**: 0-3 subnets per availability zone (configurable)
+- **Private subnets**: 1-3 subnets per availability zone (configurable)
+- **Database subnets**: 1-3 subnets per availability zone (configurable)
 
-**EKS Integration**: Private subnets are automatically tagged for EKS cluster discovery and load balancer placement, with proper tags for both public and internal load balancers.
+This consistency allows for:
+- **Workload separation** within each tier
+- **Scalable architecture** that grows with your needs
+- **Flexible resource placement** across multiple subnets
 
-**Automatic CIDR Calculation**: The module automatically calculates subnet CIDR blocks based on your chosen IP count, eliminating manual subnet planning.
+### Database Isolation by Default
+Database subnets are always created, providing immediate security benefits for database workloads with complete network isolation.
 
-**Environment-Aware Naming**: All resources use a consistent naming pattern that includes environment unique name and instance name for complete isolation and easy identification.
+### Flexible NAT Strategy
+Choose between a single NAT Gateway (cost-effective) or one per availability zone (high availability).
 
-## VPC Endpoints Configuration
-
-The module supports optional VPC endpoints for reduced data transfer costs and improved security. Sensible defaults are enabled for production workloads:
-
-**Enabled by Default (Production Ready)**:
-- S3 and DynamoDB (Gateway endpoints - free)
-- ECR API and Docker registry (essential for EKS)
-- Systems Manager, SSM Messages, EC2 Messages (instance management)
-
-**Disabled by Default (Optional)**:
-- EKS, EC2, KMS, CloudWatch Logs/Monitoring, STS, Lambda
+### VPC Endpoints
+Reduce data transfer costs and improve security by enabling VPC endpoints for commonly used AWS services. Gateway endpoints (S3, DynamoDB) incur no additional charges, while Interface endpoints have hourly and data processing fees.
 
 ## Security Considerations
 
-Public subnets have direct internet access through the Internet Gateway and should be used for load balancers, bastion hosts, and other internet-facing resources. Private subnets route internet traffic through NAT Gateways and are suitable for application servers, databases, and EKS worker nodes.
+- **Database subnets are completely isolated** with no internet access
+- **Private subnets route through NAT Gateways** for outbound internet access only
+- **VPC endpoints use security groups** to restrict access to VPC CIDR blocks
+- **All resources are tagged** with environment and instance identifiers for governance
+- **Network segmentation** follows AWS Well-Architected Framework principles
+- **EKS-compatible subnet tagging** enables proper load balancer placement
 
-VPC endpoints are secured with a dedicated security group that allows HTTPS traffic from within the VPC CIDR block. Interface endpoints are deployed in private subnets with private DNS resolution enabled for seamless service integration.
+## Network Architecture
 
-Network ACLs use VPC defaults, and additional security should be implemented through security groups at the resource level. Consider implementing VPC Flow Logs for network monitoring and compliance requirements.
+The module implements a secure three-tier network design:
+
+1. **Public Tier (DMZ)**: 
+   - Internet-accessible subnets (0-3 per AZ)
+   - Load balancers, NAT Gateways, bastion hosts
+   - Tagged for EKS external load balancers
+
+2. **Private Tier (Application)**:
+   - NAT Gateway routing for outbound internet access (1-3 per AZ)
+   - Application servers, containers, EKS worker nodes
+   - Tagged for EKS internal load balancers
+
+3. **Database Tier (Data)**:
+   - No internet access (1-3 per AZ)
+   - Database servers, RDS instances, data stores
+   - Automatic DB subnet group creation
+
+This architecture provides defense in depth and follows security best practices for cloud networking while maintaining EKS compatibility and offering maximum flexibility for subnet organization.

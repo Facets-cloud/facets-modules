@@ -10,8 +10,9 @@ locals {
     "8192" = 19 # /19 = 8192 IPs
   }
 
-  public_subnet_newbits = local.subnet_mask_map[var.instance.spec.public_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-  eks_subnet_newbits    = local.subnet_mask_map[var.instance.spec.eks_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+  public_subnet_newbits   = local.subnet_mask_map[var.instance.spec.public_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+  private_subnet_newbits  = local.subnet_mask_map[var.instance.spec.private_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+  database_subnet_newbits = local.subnet_mask_map[var.instance.spec.database_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
 
   # Create list of all public subnets needed
   public_subnets = flatten([
@@ -25,14 +26,29 @@ locals {
     ]
   ])
 
-  # Create list of all EKS private subnets (one per AZ)
-  eks_subnets = [
-    for az_index, az in var.instance.spec.availability_zones : {
-      az_index   = az_index
-      az         = az
-      cidr_index = length(local.public_subnets) + az_index
-    }
-  ]
+  # Create list of all private subnets needed
+  private_subnets = flatten([
+    for az_index, az in var.instance.spec.availability_zones : [
+      for subnet_index in range(var.instance.spec.private_subnets.count_per_az) : {
+        az_index     = az_index
+        subnet_index = subnet_index
+        az           = az
+        cidr_index   = length(local.public_subnets) + (az_index * var.instance.spec.private_subnets.count_per_az) + subnet_index
+      }
+    ]
+  ])
+
+  # Create list of all database subnets needed
+  database_subnets = flatten([
+    for az_index, az in var.instance.spec.availability_zones : [
+      for subnet_index in range(var.instance.spec.database_subnets.count_per_az) : {
+        az_index     = az_index
+        subnet_index = subnet_index
+        az           = az
+        cidr_index   = length(local.public_subnets) + length(local.private_subnets) + (az_index * var.instance.spec.database_subnets.count_per_az) + subnet_index
+      }
+    ]
+  ])
 
   # VPC endpoints configuration with defaults
   vpc_endpoints = var.instance.spec.vpc_endpoints != null ? var.instance.spec.vpc_endpoints : {
@@ -64,15 +80,14 @@ locals {
     }
   )
 
-  # EKS tags for subnet discovery
-  eks_tags = {
-    "kubernetes.io/role/elb"                                              = "1"
-    "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
+  # EKS tags for public subnets (for external load balancers)
+  eks_public_tags = {
+    "kubernetes.io/role/elb" = "1"
   }
 
+  # EKS tags for private subnets (for internal load balancers)
   eks_private_tags = {
-    "kubernetes.io/role/internal-elb"                                     = "1"
-    "kubernetes.io/cluster/${var.instance.spec.eks_subnets.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb" = "1"
   }
 }
 
@@ -108,26 +123,53 @@ resource "aws_subnet" "public" {
   availability_zone       = each.value.az
   map_public_ip_on_launch = true
 
-  tags = merge(local.common_tags, local.eks_tags, {
+  tags = merge(local.common_tags, local.eks_public_tags, {
     Name = "${local.name_prefix}-public-${each.value.az}-${each.value.subnet_index + 1}"
     Type = "Public"
   })
 }
 
-# EKS Private Subnets
+# Private Subnets
 resource "aws_subnet" "private" {
   for_each = {
-    for subnet in local.eks_subnets :
-    subnet.az => subnet
+    for subnet in local.private_subnets :
+    "${subnet.az}-${subnet.subnet_index}" => subnet
   }
 
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.instance.spec.vpc_cidr, local.eks_subnet_newbits, each.value.cidr_index)
+  cidr_block        = cidrsubnet(var.instance.spec.vpc_cidr, local.private_subnet_newbits, each.value.cidr_index)
   availability_zone = each.value.az
 
   tags = merge(local.common_tags, local.eks_private_tags, {
-    Name = "${local.name_prefix}-private-${each.value.az}"
+    Name = "${local.name_prefix}-private-${each.value.az}-${each.value.subnet_index + 1}"
     Type = "Private"
+  })
+}
+
+# Database Subnets
+resource "aws_subnet" "database" {
+  for_each = {
+    for subnet in local.database_subnets :
+    "${subnet.az}-${subnet.subnet_index}" => subnet
+  }
+
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(var.instance.spec.vpc_cidr, local.database_subnet_newbits, each.value.cidr_index)
+  availability_zone = each.value.az
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-database-${each.value.az}-${each.value.subnet_index + 1}"
+    Type = "Database"
+  })
+}
+
+# Database Subnet Group
+resource "aws_db_subnet_group" "database" {
+  name       = "${local.name_prefix}-database-subnet-group"
+  subnet_ids = values(aws_subnet.database)[*].id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-database-subnet-group"
   })
 }
 
@@ -211,7 +253,28 @@ resource "aws_route_table_association" "private" {
   for_each = aws_subnet.private
 
   subnet_id      = each.value.id
-  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_route_table.private[each.key].id : aws_route_table.private["single"].id
+  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_route_table.private[split("-", each.key)[0]].id : aws_route_table.private["single"].id
+}
+
+# Database Route Tables (isolated - no internet access)
+resource "aws_route_table" "database" {
+  for_each = {
+    for az in var.instance.spec.availability_zones : az => az
+  }
+
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-database-rt-${each.key}"
+  })
+}
+
+# Database Route Table Associations
+resource "aws_route_table_association" "database" {
+  for_each = aws_subnet.database
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.database[split("-", each.key)[0]].id
 }
 
 # Security Group for VPC Endpoints
@@ -266,7 +329,8 @@ resource "aws_vpc_endpoint" "s3" {
 
   route_table_ids = concat(
     [aws_route_table.public.id],
-    values(aws_route_table.private)[*].id
+    values(aws_route_table.private)[*].id,
+    values(aws_route_table.database)[*].id
   )
 
   tags = merge(local.common_tags, {
@@ -284,7 +348,8 @@ resource "aws_vpc_endpoint" "dynamodb" {
 
   route_table_ids = concat(
     [aws_route_table.public.id],
-    values(aws_route_table.private)[*].id
+    values(aws_route_table.private)[*].id,
+    values(aws_route_table.database)[*].id
   )
 
   tags = merge(local.common_tags, {

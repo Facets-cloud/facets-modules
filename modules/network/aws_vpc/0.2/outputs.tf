@@ -6,6 +6,8 @@ locals {
     public_subnet_ids               = values(aws_subnet.public)[*].id
     availability_zones              = var.instance.spec.availability_zones
     private_subnet_ids              = values(aws_subnet.private)[*].id
+    database_subnet_ids             = values(aws_subnet.database)[*].id
+    database_subnet_group_name      = aws_db_subnet_group.database.name
     internet_gateway_id             = aws_internet_gateway.main.id
     vpc_endpoint_s3_id              = try(aws_vpc_endpoint.s3[0].id, null)
     vpc_endpoint_dynamodb_id        = try(aws_vpc_endpoint.dynamodb[0].id, null)

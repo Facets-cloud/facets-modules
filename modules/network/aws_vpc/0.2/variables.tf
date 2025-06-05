@@ -31,9 +31,14 @@ variable "instance" {
         subnet_size  = string
       })
 
-      eks_subnets = object({
+      private_subnets = object({
+        count_per_az = number
         subnet_size  = string
-        cluster_name = string
+      })
+
+      database_subnets = object({
+        count_per_az = number
+        subnet_size  = string
       })
 
       nat_gateway = object({
@@ -98,8 +103,23 @@ variable "instance" {
   }
 
   validation {
-    condition     = contains(["256", "512", "1024", "2048", "4096", "8192"], var.instance.spec.eks_subnets.subnet_size)
-    error_message = "EKS subnet size must be one of: 256, 512, 1024, 2048, 4096, 8192."
+    condition     = var.instance.spec.private_subnets.count_per_az >= 1 && var.instance.spec.private_subnets.count_per_az <= 3
+    error_message = "Private subnets count per AZ must be between 1 and 3."
+  }
+
+  validation {
+    condition     = contains(["256", "512", "1024", "2048", "4096", "8192"], var.instance.spec.private_subnets.subnet_size)
+    error_message = "Private subnet size must be one of: 256, 512, 1024, 2048, 4096, 8192."
+  }
+
+  validation {
+    condition     = var.instance.spec.database_subnets.count_per_az >= 1 && var.instance.spec.database_subnets.count_per_az <= 3
+    error_message = "Database subnets count per AZ must be between 1 and 3."
+  }
+
+  validation {
+    condition     = contains(["256", "512", "1024", "2048"], var.instance.spec.database_subnets.subnet_size)
+    error_message = "Database subnet size must be one of: 256, 512, 1024, 2048."
   }
 
   validation {
