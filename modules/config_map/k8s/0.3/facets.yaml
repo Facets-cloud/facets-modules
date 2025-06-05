@@ -17,7 +17,7 @@ spec:
       patternProperties:
         "^[a-zA-Z0-9_.-]*$":
           title: Data Object Block
-          description: something
+          description: A block representing a key-value pair in the ConfigMap
           type: object
           properties:
             key:
