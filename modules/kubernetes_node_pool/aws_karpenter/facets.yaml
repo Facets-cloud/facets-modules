@@ -4,8 +4,7 @@ version: '0.1'
 clouds:
 - aws
 title: EKS Auto Mode Karpenter NodePool Manager
-description: Creates and manages dynamic node pools for EKS Auto Mode clusters with
-  intelligent scaling and cost optimization.
+description: Creates and manages dynamic node pools for EKS Auto Mode clusters with intelligent scaling and cost optimization.
 spec:
   type: object
   x-ui-order:
@@ -20,8 +19,12 @@ spec:
     name:
       type: string
       title: Node Pool Name
-      description: Name for this node pool configuration.
+      description: Name for this node pool configuration. Must be a valid Kubernetes resource name.
       default: custom-nodepool
+      pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+      minLength: 1
+      maxLength: 63
+      x-ui-error-message: "Must be a valid Kubernetes resource name (lowercase, alphanumeric, hyphens allowed)"
     instance_requirements:
       type: object
       title: Instance Requirements
@@ -31,28 +34,30 @@ spec:
         instance_families:
           type: string
           title: Instance Families
-          description: Comma-separated EC2 instance families (e.g., c5,m5,r5 for compute/memory/storage
-            optimized).
+          description: Comma-separated EC2 instance families (e.g., c5,m5,r5 for compute/memory/storage optimized).
           default: c5,c6i,m5,m6i,r5,r6i
+          pattern: '^[a-z0-9]+(,[a-z0-9]+)*$'
+          x-ui-error-message: "Must be comma-separated EC2 instance families (e.g., c5,m5,r5)"
         cpu_range:
           type: string
           title: CPU Range
-          description: Comma-separated vCPU counts to allow (e.g., 2,4,8,16).
+          description: Comma-separated vCPU counts to allow (e.g., 2,4,8,16). Must be powers of 2 or common CPU counts.
           default: 2,4,8,16
+          pattern: '^[0-9]+(,[0-9]+)*$'
+          x-ui-error-message: "Must be comma-separated CPU counts (e.g., 2,4,8,16)"
         architectures:
           type: string
           title: CPU Architectures
-          description: Comma-separated architectures to support.
-          default: x86_64,arm64
+          description: Comma-separated architectures to support. Must match Kubernetes architecture labels.
+          default: amd64,arm64
           enum:
-          - x86_64
+          - amd64
           - arm64
-          - x86_64,arm64
+          - amd64,arm64
         capacity_types:
           type: string
           title: Instance Pricing
-          description: Choose between cost-optimized Spot instances or reliable On-Demand
-            instances.
+          description: Choose between cost-optimized Spot instances or reliable On-Demand instances.
           default: spot,on-demand
           enum:
           - spot
@@ -61,10 +66,25 @@ spec:
         availability_zones:
           type: string
           title: Availability Zones
-          description: Comma-separated AZs where nodes can be placed (leave empty
-            to use all VPC zones).
+          description: Comma-separated AZs where nodes can be placed (leave empty to use all VPC zones). Must be valid AWS AZ format.
           default: ''
+          pattern: '^$|^[a-z]{2}-[a-z]+-[0-9]+[a-z](,[a-z]{2}-[a-z]+-[0-9]+[a-z])*$'
           x-ui-overrides-only: true
+          x-ui-error-message: "Must be valid AWS availability zones (e.g., us-west-2a,us-west-2b) or empty"
+        instance_generation:
+          type: string
+          title: Minimum Instance Generation
+          description: Minimum EC2 instance generation to allow (e.g., 3,4,5). Higher generations provide better performance.
+          default: '3'
+          pattern: '^[0-9]+(,[0-9]+)*$'
+          x-ui-error-message: "Must be numeric generation values (e.g., 3,4,5)"
+        instance_categories:
+          type: string
+          title: Instance Categories
+          description: Comma-separated EC2 instance categories to allow. Controls the type of compute optimization.
+          default: c,m,r
+          pattern: '^[a-z](,[a-z])*$'
+          x-ui-error-message: "Must be single letters representing EC2 categories (e.g., c,m,r,g)"
     scaling:
       type: object
       title: Scaling Configuration
@@ -74,18 +94,21 @@ spec:
         max_cpu:
           type: string
           title: Maximum CPU
-          description: Maximum total CPU cores for this node pool.
+          description: Maximum total CPU cores for this node pool. Must be a positive integer.
           default: '1000'
+          pattern: '^[1-9][0-9]*$'
+          x-ui-error-message: "Must be a positive integer representing CPU cores"
         max_memory:
           type: string
           title: Maximum Memory
-          description: Maximum total memory for this node pool (e.g., 1000Gi).
+          description: Maximum total memory for this node pool (e.g., 1000Gi). Must use Kubernetes memory format.
           default: 1000Gi
+          pattern: '^[1-9][0-9]*([KMGT]i|[KMGT])?$'
+          x-ui-error-message: "Must be valid Kubernetes memory format (e.g., 1000Gi, 500Mi)"
         consolidation_policy:
           type: string
           title: Cost Optimization
-          description: How aggressively to consolidate underutilized nodes to save
-            costs.
+          description: How aggressively to consolidate underutilized nodes to save costs.
           default: WhenEmptyOrUnderutilized
           enum:
           - WhenEmpty
@@ -93,8 +116,24 @@ spec:
         consolidation_delay:
           type: string
           title: Consolidation Delay
-          description: How long to wait before consolidating nodes (e.g., 30s, 5m).
+          description: How long to wait before consolidating nodes. Must be valid duration format.
           default: 30s
+          pattern: '^([0-9]+(\.[0-9]+)?(ns|us|ms|s|m|h))+$'
+          x-ui-error-message: "Must be valid duration (e.g., 30s, 5m, 1h)"
+        expire_after:
+          type: string
+          title: Node Expiration
+          description: How long nodes can live before being replaced. Use 'Never' to disable expiration.
+          default: 720h
+          pattern: '^(Never|([0-9]+(\.[0-9]+)?(ns|us|ms|s|m|h))+)$'
+          x-ui-error-message: "Must be 'Never' or valid duration (e.g., 720h, 24h)"
+        termination_grace_period:
+          type: string
+          title: Termination Grace Period
+          description: How long a node can drain before forcible termination. Must be valid duration.
+          default: 48h
+          pattern: '^([0-9]+(\.[0-9]+)?(ns|us|ms|s|m|h))+$'
+          x-ui-error-message: "Must be valid duration (e.g., 48h, 1h, 30m)"
     networking:
       type: object
       title: Networking Configuration
@@ -102,21 +141,21 @@ spec:
       x-ui-toggle: true
       properties:
         subnet_selection:
-          type: object
-          title: Subnet Selection
-          description: Tags to select which subnets nodes should be placed in.
-          default: {}
+          type: string
+          title: Custom Subnet Selection (Tags)
+          description: YAML-formatted tags to select which subnets nodes should be placed in. When specified, overrides automatic subnet selection based on 'Enable Public IP' setting.
+          default: ''
           x-ui-yaml-editor: true
         security_group_selection:
-          type: object
+          type: string
           title: Security Group Selection
-          description: Tags to select which security groups to apply to nodes.
-          default: {}
+          description: YAML-formatted tags to select which security groups to apply to nodes. Must match existing security groups.
+          default: ''
           x-ui-yaml-editor: true
         enable_public_ip:
           type: boolean
           title: Enable Public IP
-          description: Whether nodes should get public IP addresses.
+          description: Whether nodes should get public IP addresses. When false, uses private subnets from VPC. When true, uses public subnets from VPC.
           default: false
         proxy_configuration:
           type: object
@@ -128,11 +167,15 @@ spec:
               type: string
               title: HTTPS Proxy URL
               description: Proxy URL for HTTPS traffic (e.g., http://proxy.company.com:8080).
+              pattern: '^https?://[a-zA-Z0-9.-]+:[0-9]+/?$'
+              x-ui-error-message: "Must be valid HTTP/HTTPS URL with port (e.g., http://proxy.company.com:8080)"
             bypass_domains:
               type: string
               title: Bypass Domains
               description: Comma-separated domains to bypass proxy.
               default: localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com
+              pattern: '^[a-zA-Z0-9.-]+(,[a-zA-Z0-9.-]+)*$'
+              x-ui-error-message: "Must be comma-separated domain names or IP addresses"
     storage:
       type: object
       title: Storage Configuration
@@ -142,8 +185,10 @@ spec:
         disk_size:
           type: string
           title: Disk Size
-          description: Size of the root disk for each node (e.g., 80Gi, 100Gi).
+          description: Size of the root disk for each node. Must be valid Kubernetes storage format (minimum 20Gi for EKS).
           default: 80Gi
+          pattern: '^([2-9][0-9]|[1-9][0-9]{2,})(Gi|G|Ti|T|Mi|M|Ki|K)?$'
+          x-ui-error-message: "Must be at least 20Gi and use valid Kubernetes storage format (e.g., 80Gi, 100Gi)"
         disk_type:
           type: string
           title: Disk Performance
@@ -156,8 +201,9 @@ spec:
         encryption_key:
           type: string
           title: Encryption Key (Optional)
-          description: KMS key ID/ARN for disk encryption (leave empty for default
-            encryption).
+          description: KMS key ID/ARN for disk encryption (leave empty for default encryption).
+          pattern: '^$|^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-f0-9-]{36}$|^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+          x-ui-error-message: "Must be empty, valid KMS key ID, or KMS ARN"
     scheduling:
       type: object
       title: Workload Scheduling
@@ -165,60 +211,38 @@ spec:
       x-ui-toggle: true
       properties:
         node_labels:
-          type: object
+          type: string
           title: Node Labels
-          description: Labels to apply to nodes for workload targeting.
-          default: {}
+          description: YAML-formatted labels to apply to nodes for workload targeting. Must be valid Kubernetes labels.
+          default: ''
           x-ui-yaml-editor: true
         dedicated_workloads:
           type: boolean
           title: Dedicated for Specific Workloads
           description: Whether to reserve these nodes for specific workloads only.
           default: false
-        workload_isolation:
-          type: object
-          title: Workload Isolation
-          description: Configure multiple named taints for workload isolation. Each
-            key represents a taint name with its configuration.
-          default: {}
+        workload_isolation_taints:
+          type: string
+          title: Workload Isolation Taints
+          description: YAML-formatted taints for workload isolation. Applied when dedicated workloads is enabled.
+          default: ''
+          x-ui-yaml-editor: true
           x-ui-visible-if:
             field: spec.scheduling.dedicated_workloads
             values:
             - true
-          patternProperties:
-            ^[a-zA-Z0-9_-]+$:
-              type: object
-              title: Taint Configuration
-              description: Configuration for a specific workload isolation taint.
-              properties:
-                key:
-                  type: string
-                  title: Taint Key
-                  description: Key for the node taint (e.g., workload-type, nvidia.com/gpu).
-                value:
-                  type: string
-                  title: Taint Value
-                  description: Value for the node taint (e.g., analytics, true).
-                effect:
-                  type: string
-                  title: Taint Effect
-                  description: Effect of the taint on pod scheduling.
-                  default: NoSchedule
-                  enum:
-                  - NoSchedule
-                  - PreferNoSchedule
-                  - NoExecute
-              required:
-              - key
-              - value
-              - effect
+        startup_taints:
+          type: string
+          title: Startup Taints
+          description: YAML-formatted temporary taints applied during node initialization (e.g., for CNI setup). These don't require pod tolerations.
+          default: ''
+          x-ui-yaml-editor: true
     tags:
-      type: object
+      type: string
       title: Additional Tags
-      description: Custom tags to apply to EC2 instances for cost tracking and organization.
-      x-ui-toggle: true
+      description: YAML-formatted custom tags to apply to EC2 instances for cost tracking and organization. Must be valid AWS tags.
+      default: ''
       x-ui-yaml-editor: true
-      default: {}
   required:
   - name
 inputs:
@@ -234,7 +258,7 @@ inputs:
   network_details:
     type: '@outputs/aws_vpc'
     displayName: VPC Network
-    description: VPC network details for node placement
+    description: VPC network details for automatic subnet selection based on public/private IP preference
     optional: false
 outputs:
   default:
@@ -251,38 +275,41 @@ sample:
     instance_requirements:
       instance_families: c5,m5,r5
       cpu_range: 4,8,16
-      architectures: x86_64,arm64
+      architectures: amd64,arm64
       capacity_types: spot,on-demand
+      instance_generation: '3'
+      instance_categories: c,m,r
     scaling:
       max_cpu: '500'
       max_memory: 2000Gi
       consolidation_policy: WhenEmptyOrUnderutilized
       consolidation_delay: 30s
+      expire_after: 720h
+      termination_grace_period: 48h
     networking:
-      subnet_selection:
-        kubernetes.io/role/internal-elb: '1'
-        tier: private
-      security_group_selection:
-        Name: eks-worker-nodes
       enable_public_ip: false
+      security_group_selection: |
+        Name: eks-worker-nodes
     storage:
       disk_size: 100Gi
       disk_type: gp3-standard
     scheduling:
-      node_labels:
+      node_labels: |
         environment: production
         workload-type: general
-      dedicated_workloads: false
-      workload_isolation:
-        gpu-workload:
-          key: nvidia.com/gpu
+      dedicated_workloads: true
+      workload_isolation_taints: |
+        - key: nvidia.com/gpu
           value: 'true'
           effect: NoSchedule
-        dedicated:
-          key: dedicated
+        - key: dedicated
           value: production
           effect: NoSchedule
-    tags:
+      startup_taints: |
+        - key: node.cilium.io/agent-not-ready
+          value: 'true'
+          effect: NoExecute
+    tags: |
       Environment: production
       Team: platform
-      CostCenter: engineering
+      CostCenter: engineering 

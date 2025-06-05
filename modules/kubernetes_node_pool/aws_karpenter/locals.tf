@@ -43,11 +43,25 @@ locals {
   # Automatically detect IAM role from EKS cluster - updated path for new structure
   node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_arn
 
-  # Build subnet selector based on user configuration or smart defaults
-  subnet_selector_tags = length(try(local.networking.subnet_selection, {})) > 0 ? local.networking.subnet_selection : {
-    "kubernetes.io/role/internal-elb" = "1"
-    "tier"                            = "private"
-  }
+  # Smart subnet selection logic based on enable_public_ip and custom subnet selection
+  enable_public_ip        = try(local.networking.enable_public_ip, false)
+  custom_subnet_selection = try(local.networking.subnet_selection, {})
+
+  # Build subnet selector terms based on user preference
+  subnet_selector_terms = length(local.custom_subnet_selection) > 0 ? [
+    # Use custom tag-based selection when explicitly specified
+    {
+      tags = local.custom_subnet_selection
+    }
+    ] : [
+    # Automatically use appropriate subnet IDs from network output based on enable_public_ip
+    for subnet_id in(local.enable_public_ip ?
+      local.network_details.attributes.public_subnet_ids :
+      local.network_details.attributes.private_subnet_ids
+      ) : {
+      id = subnet_id
+    }
+  ]
 
   # Build security group selector based on user configuration or smart defaults - updated cluster name path
   security_group_selector_tags = length(try(local.networking.security_group_selection, {})) > 0 ? local.networking.security_group_selection : {
@@ -134,12 +148,8 @@ locals {
         # IAM role automatically detected from EKS cluster
         role = local.node_iam_role_arn
 
-        # Subnet selection
-        subnetSelectorTerms = [
-          {
-            tags = local.subnet_selector_tags
-          }
-        ]
+        # Use the smart subnet selector terms
+        subnetSelectorTerms = local.subnet_selector_terms
 
         # Security group selection
         securityGroupSelectorTerms = [
@@ -208,7 +218,7 @@ locals {
         }
         spec = merge(
           {
-            # NodeClass reference
+            # Node class reference
             nodeClassRef = {
               apiVersion = "karpenter.k8s.aws/v1beta1"
               kind       = "EC2NodeClass"
@@ -217,28 +227,33 @@ locals {
 
             # Instance requirements
             requirements = concat(
+              # Instance families
               [
                 {
-                  key      = "karpenter.k8s.aws/instance-category"
+                  key      = "node.kubernetes.io/instance-type"
                   operator = "In"
-                  values   = local.instance_families_list
-                },
-                {
-                  key      = "karpenter.k8s.aws/instance-cpu"
-                  operator = "In"
-                  values   = local.cpu_range_list
-                },
+                  values = [
+                    for family in local.instance_families_list : "${family}.*"
+                  ]
+                }
+              ],
+              # CPU requirements
+              [
                 {
                   key      = "kubernetes.io/arch"
                   operator = "In"
                   values   = local.architectures_list
-                },
+                }
+              ],
+              # Capacity type requirements
+              [
                 {
                   key      = "karpenter.sh/capacity-type"
                   operator = "In"
                   values   = local.capacity_types_list
                 }
               ],
+              # Availability zone requirements
               length(local.availability_zones_list) > 0 ? [
                 {
                   key      = "topology.kubernetes.io/zone"
@@ -248,11 +263,17 @@ locals {
               ] : []
             )
           },
-          # Add taints if workload isolation is enabled
+          # Add taints if any are configured
           length(local.node_taints) > 0 ? {
             taints = local.node_taints
           } : {}
         )
+      }
+
+      # Disruption configuration
+      disruption = {
+        consolidationPolicy = try(local.scaling.consolidation_policy, "WhenEmptyOrUnderutilized")
+        consolidateAfter    = try(local.scaling.consolidation_delay, "30s")
       }
 
       # Resource limits
@@ -260,18 +281,6 @@ locals {
         cpu    = try(local.scaling.max_cpu, "1000")
         memory = try(local.scaling.max_memory, "1000Gi")
       }
-
-      # Disruption settings for cost optimization
-      disruption = {
-        consolidationPolicy = try(local.scaling.consolidation_policy, "WhenEmptyOrUnderutilized")
-        consolidateAfter    = try(local.scaling.consolidation_delay, "30s")
-      }
     }
   }
-
-  # Combined manifests for output
-  all_manifests = [
-    local.node_class_manifest,
-    local.node_pool_manifest
-  ]
 }
