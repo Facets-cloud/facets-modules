@@ -1,0 +1,130 @@
+intent: iam_user
+intentDetails:
+  type: IAM
+  description: An IAM (Identity and Access Management) user in AWS is an identity within your AWS account that has specific permissions to interact with AWS resources
+  displayName: IAM User
+flavor: aws
+version: '1.0'
+clouds:
+- aws
+description: An IAM (Identity and Access Management) user in AWS is an identity within your AWS account that has specific permissions to interact with AWS resources
+spec:
+  title: AWS IAM USER
+  description: An IAM (Identity and Access Management) user in AWS is an identity within your AWS account that has specific permissions to interact with AWS resources
+  type: object
+  properties:
+    generate_access_key:
+      title: Generate Access Key
+      description: Boolean to enable generation of access key for IAM User
+      type: boolean
+      default: false
+    tags:
+      title: Tags
+      description: Map of Tag objects to be assigned to IAM User
+      type: object
+      patternProperties:
+        ^[a-zA-Z0-9-_.]+$:
+          title: Tag Object Key
+          description: Tag Object Key
+          type: object
+          properties:
+            tag_name:
+              title: Tag Key
+              description: Key of the tag to assign to IAM User
+              type: string
+              pattern: ^(?! )[a-zA-Z0-9 _\.:/=+\-@]{1,128}(?<! )$
+              x-ui-error-message: 'Value did not match pattern "^(?! )[a-zA-Z0-9 _\.:/=+\-@]{1,128}(?<! )$". Eg: ENVIRONMENT'
+            tag_value:
+              title: Tag Value
+              description: Value of the tag to assign to IAM User
+              type: string
+              pattern: ^(?! )[a-zA-Z0-9 _\.:/=+\-@]{1,256}(?<! )$
+              x-ui-error-message: 'Value did not match pattern "^(?! )[a-zA-Z0-9 _\.:/=+\-@]{1,256}(?<! )$". Eg: production'
+          required:
+          - tag_name
+          - tag_value
+    name_override:
+      title: Name Override
+      description: Name of the IAM User to be created, if not set it will be generated using instance name
+      type: string
+      pattern: ^[a-zA-Z0-9+=,.@-]{1,64}$
+      x-ui-placeholder: 'Eg: my-iam-user'
+      x-ui-error-message: 'Value did not match pattern "^[a-zA-Z0-9+=,.@-]{1,64}$". Eg: my-iam-user'
+    policy_arns:
+      title: Policy ARNs
+      description: The map of policy arns that will be attached to the IAM User
+      type: object
+      patternProperties:
+        ^[a-zA-Z0-9-_.]*$:
+          title: Policy ARN Object
+          description: Policy ARN Object
+          type: object
+          properties:
+            policy_arn:
+              title: Policy ARN
+              description: ARN (Amazon Resource Name) of the IAM Policy that you want to attach to the IAM User
+              type: string
+              pattern: ^arn:aws:iam::[0-9]{12}:policy/[a-zA-Z0-9+=,.@\-_/]{1,128}$
+              x-ui-placeholder: 'Eg: arn:aws:iam::123456789012:policy/my-policy'
+              x-ui-error-message: 'Value did not match pattern "^arn:aws:iam::[0-9]{12}:policy/[a-zA-Z0-9+=,.@\-_/]{1,128}$". Eg: arn:aws:iam::123456789012:policy/my-policy'
+              x-ui-output-type: iam_policy_arn
+              x-ui-typeable: true
+          required:
+          - policy_arn
+    custom_policies:
+      title: Custom Policies
+      description: Map of custom policies to be attached to the IAM User
+      type: object
+      patternProperties:
+        ^[a-zA-Z-_.]+$:
+          title: Custom Policy Object
+          description: Custom Policy Object
+          type: object
+          properties:
+            name:
+              title: Policy Name
+              description: Name of the Custom Policy
+              type: string
+              pattern: ^[a-zA-Z0-9+=,.@-]{1,128}$
+              x-ui-placeholder: 'Eg: my-custom-policy'
+              x-ui-error-message: 'Value did not match pattern "^[a-zA-Z0-9+=,.@-]{1,128}$". Eg: my-custom-policy'
+            policy:
+              title: Policy Document
+              description: JSON policy document to be attached to the IAM User
+              type: string
+              x-ui-placeholder: '{"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]}'
+          required:
+          - name
+          - policy
+  required:
+  - generate_access_key
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    default:
+      resource_type: cloud_account
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/iam_user'
+sample:
+  kind: iam_user
+  flavor: aws
+  version: '1.0'
+  disabled: true
+  spec:
+    type: object
+    properties:
+      generate_access_key: false
+      tags:
+        environment:
+          tag_name: ENVIRONMENT
+          tag_value: production
+      name_override: ''
+      policy_arns:
+        my_policy:
+          policy_arn: arn:aws:iam::123456789012:policy/my-policy
+      custom_policies:
+        my_custom_policy:
+          name: my-custom-policy
+          policy: '{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": \"*\", \"Resource\": \"*\"}]}'
