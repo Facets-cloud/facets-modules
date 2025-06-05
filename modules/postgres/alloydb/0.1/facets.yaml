@@ -12,6 +12,7 @@ spec:
       type: string
       title: Postgres Version
       description: Specifies the Postgres version to use.
+      x-ui-typeable: true
       enum:
       - "12.11"
       - "13.3"

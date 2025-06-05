@@ -15,6 +15,7 @@ spec:
       type: string
       title: MySQL Version
       description: Version of MySQL
+      x-ui-typeable: true
       enum:
         - "5.7.43"
         - "8.0.34"

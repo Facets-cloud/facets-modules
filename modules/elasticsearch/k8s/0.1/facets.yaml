@@ -16,6 +16,7 @@ spec:
       title: Elasticsearch Version
       description: Version of Elasticsearch
       minLength: 1
+      x-ui-typeable: true
       enum:
         - 8.14.1
         - 7.16.3
