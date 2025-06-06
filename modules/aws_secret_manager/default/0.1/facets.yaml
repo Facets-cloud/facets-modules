@@ -29,8 +29,24 @@ spec:
     secrets:
       title: Secrets
       type: object
-      description: 'Enter a valid key-value pair for secrets. Eg. key: value'
-      x-ui-placeholder: 'Enter the value of the secret. Eg. key1: value1'
+      description: Configure secret key-value pairs
+      properties:
+        secret_1_key:
+          type: string
+          title: Secret Key 1
+          description: Name of the first secret
+        secret_1_value:
+          type: string
+          title: Secret Value 1
+          description: Value of the first secret
+        secret_2_key:
+          type: string
+          title: Secret Key 2
+          description: Name of the second secret
+        secret_2_value:
+          type: string
+          title: Secret Value 2
+          description: Value of the second secret
   required:
   - override_default_name
   - secrets
