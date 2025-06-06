@@ -13,19 +13,27 @@ spec:
       type: boolean
       title: Override Default Name
       description: Set it to true if secret is to be created with custom name
+      default: false
     override_name:
       type: string
       title: Override Name
-      description: Custom name for secret. Applies only if override_default_name is set to true.
-      pattern: '^[a-zA-Z0-9/_+=.@-]+$'
-      x-ui-placeholder: "Enter the custom name"
-      x-ui-error-message: "Value doesn't match the format eg. facets-secret"
+      description: Custom name for secret. Applies only if override_default_name is
+        set to true.
+      pattern: ^[a-zA-Z0-9/_+=.@-]+$
+      x-ui-placeholder: Enter the custom name
+      x-ui-error-message: Value doesn't match the format eg. facets-secret
+      x-ui-visible-if:
+        field: spec.override_default_name
+        values:
+        - true
     secrets:
       title: Secrets
       type: object
-      description: "Enter a valid key-value pair for secrets in YAML format. Eg. key: value (provide a space after ':' as expected in the YAML format)"
-      x-ui-yaml-editor: true
-      x-ui-placeholder: "Enter the value of the secret. Eg. key1: value1"
+      description: 'Enter a valid key-value pair for secrets. Eg. key: value'
+      x-ui-placeholder: 'Enter the value of the secret. Eg. key1: value1'
+  required:
+  - override_default_name
+  - secrets
 sample:
   kind: aws_secret_manager
   flavor: default
@@ -38,11 +46,10 @@ sample:
     name: ''
   spec:
     override_default_name: false
-    override_name: ""
+    override_name: ''
     secrets:
       key1: value1
       key2: value2
   advanced:
     secret_manager: {}
   out: {}
-
