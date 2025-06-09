@@ -1,6 +1,5 @@
 intent: kubernetes_cluster
 flavor: aws_eks
-alias-flavors: ["default"]
 version: "0.2"
 description: Adds kubernetes cluster - eks flavor
 clouds:

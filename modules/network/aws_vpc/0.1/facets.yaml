@@ -1,6 +1,5 @@
 intent: network
 flavor: aws_vpc
-alias-flavors: ["default"]
 version: "0.1"
 description: Adds network - aws vpc flavor
 clouds:
