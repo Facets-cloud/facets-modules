@@ -1,0 +1,17 @@
+{
+    "provides": "aws_static_website",
+    "flavors": [
+      "default"
+    ],
+    "supported_clouds": [
+      "aws"
+    ],
+    "inputs": {},
+    "lifecycle": "ENVIRONMENT",
+    "version": "0.1",
+    "depends_on": [],
+    "input_type": "instance",
+    "composition": {},
+    "conditional_on_intent": ""
+}
+  
