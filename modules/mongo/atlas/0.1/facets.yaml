@@ -78,7 +78,7 @@ spec:
       title: Replication Specifications
       description: Configuration for cluster replication and regions.
       x-ui-yaml-editor: true
-    required:
+  required:
     - mongodb_version
     - region
     - size

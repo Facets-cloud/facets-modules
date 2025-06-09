@@ -4,7 +4,6 @@ version: '0.1'
 description: Adds mongo - documentdb flavor
 clouds:
 - aws
-- AWS
 spec:
   title: DocumentDB Configuration
   type: object
@@ -21,7 +20,6 @@ spec:
         - "6.0"
         - "7.0"
         - "8.0"
-    
     size:
       type: object
       title: Cluster Size
