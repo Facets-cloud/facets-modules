@@ -1,12 +1,12 @@
 intent: pvc
 flavor: k8s
-version: "0.1"
+version: '0.1'
 description: Adds pvc module
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: k8s pvc
   type: object
@@ -21,24 +21,24 @@ spec:
           title: Volume
           description: The size of the volume.
           minLength: 1
-          pattern: "^[0-9]+Gi$"
-          x-ui-placeholder: "e.g., '10Gi' or '50Gi'"
-          x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
+          pattern: ^[0-9]+Gi$
+          x-ui-placeholder: e.g., '10Gi' or '50Gi'
+          x-ui-error-message: Volume must be specified in the correct format (e.g.,
+            '10Gi' or '50Gi').
       required:
-        - volume
+      - volume
   required:
-    - size
+  - size
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/pvc/pvc.schema.json
   disabled: true
   flavor: k8s
   kind: pvc
   metadata: {}
-  version: "0.1"
+  version: '0.1'
   spec:
     size:
-      volume: "2Gi"
+      volume: 2Gi
   advanced:
     accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
+    storage_class_name: gp2

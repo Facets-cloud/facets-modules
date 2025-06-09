@@ -2,7 +2,7 @@ resource "helm_release" "mongodb-auth-operator" {
   name             = "mongodb-auth-operator"
   repository       = "https://facets-cloud.github.io/helm-charts"
   chart            = "mongodb-auth-operator"
-  version          = lookup(local.mongodb_auth_operator, "version", "0.1.0")
+  version          = lookup(local.mongodb_auth_operator, "version", "0.1.1")
   cleanup_on_fail  = lookup(local.mongodb_auth_operator, "cleanup_on_fail", true)
   namespace        = local.namespace
   create_namespace = lookup(local.mongodb_auth_operator, "create_namespace", false)
