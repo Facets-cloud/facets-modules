@@ -1,13 +1,131 @@
 intent: aws_dlm_lifecycle_policy
-flavor: default
+flavor: omendra
 version: '0.1'
 description: Adds aws_dlm_lifecycle_policy - default flavor
 clouds:
 - aws
+spec:
+  type: object
+  properties:
+    schedules:
+      type: object
+      title: DLM Schedules
+      description: Configuration for DLM policy schedules
+      patternProperties:
+        "^[a-zA-Z0-9_-]+$":
+          type: object
+          properties:
+            copy_tags:
+              type: boolean
+              title: Copy Tags
+              description: Whether to copy tags to snapshots
+              default: true
+            create_rule:
+              type: object
+              title: Create Rule
+              description: Schedule for creating snapshots
+              properties:
+                interval:
+                  type: number
+                  title: Interval
+                  description: Snapshot creation interval
+                  minimum: 1
+                interval_unit:
+                  type: string
+                  title: Interval Unit
+                  description: Unit for the interval
+                  enum: ["HOURS", "DAYS"]
+                times:
+                  type: array
+                  title: Times
+                  description: Times of day to create snapshots (HH:MM format)
+                  x-ui-override-disable: true
+                  items:
+                    type: string
+                    pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+                cron_expression:
+                  type: string
+                  title: Cron Expression
+                  description: Cron expression for complex scheduling
+                  pattern: "^cron\\(.*\\)$"
+              required: []
+            retain_rule:
+              type: object
+              title: Retain Rule
+              description: Rules for retaining snapshots
+              properties:
+                count:
+                  type: number
+                  title: Count
+                  description: Number of snapshots to retain
+                  minimum: 1
+                interval:
+                  type: number
+                  title: Interval
+                  description: Retention interval
+                  minimum: 1
+                interval_unit:
+                  type: string
+                  title: Interval Unit
+                  description: Unit for retention interval
+                  enum: ["DAYS", "WEEKS", "MONTHS", "YEARS"]
+              required: []
+            cross_region_copy_rules:
+              type: object
+              title: Cross Region Copy Rules
+              description: Rules for copying snapshots to other regions
+              patternProperties:
+                "^[a-zA-Z0-9_-]+$":
+                  type: object
+                  properties:
+                    target:
+                      type: string
+                      title: Target Region
+                      description: AWS region to copy snapshots to
+                    encrypted:
+                      type: boolean
+                      title: Encrypted
+                      description: Whether to encrypt copied snapshots
+                      default: true
+                    copy_tags:
+                      type: boolean
+                      title: Copy Tags
+                      description: Whether to copy tags to cross-region snapshots
+                      default: true
+                    retain_rule:
+                      type: object
+                      title: Retain Rule
+                      description: Retention rules for cross-region copies
+                      properties:
+                        interval:
+                          type: number
+                          title: Interval
+                          description: Retention interval
+                          minimum: 1
+                        interval_unit:
+                          type: string
+                          title: Interval Unit
+                          description: Unit for retention interval
+                          enum: ["DAYS", "WEEKS", "MONTHS", "YEARS"]
+                      required: ["interval", "interval_unit"]
+                  required: ["target", "retain_rule"]
+            tags_to_add:
+              type: object
+              title: Tags to Add
+              description: Additional tags to apply to snapshots
+              x-ui-yaml-editor: true
+          required: ["copy_tags", "create_rule", "retain_rule", "tags_to_add"]
+    target_tags:
+      type: object
+      title: Target Tags
+      description: Tags used to identify volumes for snapshot policy
+      x-ui-yaml-editor: true
+  required:
+    - schedules
+    - target_tags
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_dlm_lifecycle_policy/aws_dlm_lifecycle_policy.schema.json
   kind: aws_dlm_lifecycle_policy
-  flavor: default
+  flavor: omendra
   version: '0.1'
   metadata: {}
   spec:
