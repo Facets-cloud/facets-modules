@@ -4,6 +4,68 @@ version: '0.1'
 description: Adds azure_functions - default flavor
 clouds:
 - azure
+spec:
+  type: object
+  properties:
+    os:
+      type: string
+      title: Operating System
+      description: Operating system for the Azure Function App
+      enum: ["Linux", "Windows"]
+      default: "Linux"
+    sku:
+      type: string
+      title: SKU/Pricing Tier
+      description: Pricing tier for the Azure Function App service plan
+      default: "Y1"
+    runtime:
+      type: object
+      title: Runtime Configuration
+      description: Runtime stack and version configuration
+      properties:
+        stack:
+          type: string
+          title: Runtime Stack
+          description: Runtime stack for the function app
+          enum: ["node", "python", "dotnet", "java", "powershell_core", "custom_runtime", "docker"]
+        version:
+          type: string
+          title: Runtime Version
+          description: Version of the runtime stack
+      required:
+        - stack
+        - version
+    deploy_as:
+      type: string
+      title: Deployment Method
+      description: How the function app should be deployed
+      enum: ["code", "container"]
+      default: "code"
+    in_vnet:
+      type: boolean
+      title: Deploy in VNet
+      description: Whether the Azure Function should be deployed in a Virtual Network
+      default: true
+    app_setting:
+      type: object
+      title: Application Settings
+      description: Key-value pairs for application settings
+      x-ui-yaml-editor: true
+    release:
+      type: object
+      title: Release Configuration
+      description: Configuration for function app release/deployment
+      properties:
+        zip_path:
+          type: string
+          title: Zip File Path
+          description: Path to the zip file containing the function app code
+      required:
+        - zip_path
+  required:
+    - os
+    - runtime
+    - release
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/azure_functions/azure_functions.schema.json
   flavor: default
