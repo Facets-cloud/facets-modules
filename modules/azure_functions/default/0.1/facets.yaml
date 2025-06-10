@@ -1,5 +1,5 @@
 intent: azure_functions
-flavor: default
+flavor: omendra
 version: '0.1'
 description: Adds azure_functions - default flavor
 clouds:
@@ -67,8 +67,7 @@ spec:
     - runtime
     - release
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/azure_functions/azure_functions.schema.json
-  flavor: default
+  flavor: omendra
   metadata:
     tags: {}
   kind: azure_functions
