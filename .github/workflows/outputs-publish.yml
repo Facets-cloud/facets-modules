@@ -1,0 +1,43 @@
+name: Publish Outputs to S3
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'outputs/**/*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (no S3 upload)'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: publish-output-trees
+
+jobs:
+  publish:
+    runs-on: iac-arc
+
+    steps:
+      - name: Set BRANCH_NAME variable
+        run: echo "BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/workflows/innersourcing/requirements.txt
+
+      - name: Generate Output Trees
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          S3_BUCKET_NAME: ${{ vars.FACETS_MODULES_BUCKET_NAME }}
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: python .github/workflows/innersourcing/generate_output_trees.py
