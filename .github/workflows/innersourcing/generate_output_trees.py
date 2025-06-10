@@ -240,7 +240,7 @@ def main():
             
             # Upload to S3 if not in dry run mode
             if not dry_run:
-                s3_key = f"{output_name}/output-lookup-tree.json"
+                s3_key = f"outputs/{output_name}/output-lookup-tree.json"
                 print(f"Uploading: {s3_key}")
                 upload_future = executor.submit(upload_to_s3, local_file_path, s3_client, s3_bucket_name, s3_key)
                 upload_futures.append(upload_future)
