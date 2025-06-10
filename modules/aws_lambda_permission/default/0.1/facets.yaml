@@ -1,5 +1,5 @@
 intent: aws_lambda_permission
-flavor: rauneet
+flavor: default
 version: '0.1'
 description: Adds aws_lambda_permission - default flavor
 clouds:
@@ -31,9 +31,8 @@ spec:
   - allowed_triggers
   - lambda_name
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda_permission/aws_lambda_permission.schema.json
   kind: aws_lambda_permission
-  flavor: rauneet
+  flavor: default
   disabled: true
   metadata: {}
   version: '0.1'
