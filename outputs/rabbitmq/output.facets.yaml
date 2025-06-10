@@ -1,122 +1,94 @@
 name: rabbitmq
 out:
   type: object
-  additionalProperties: false
   description: Output from the RabbitMQ module
-  allOf:
-    - properties:
-        interfaces:
-          type: object
-          additionalProperties: false
-          properties:
-            cluster:
-              type: object
-              description: Map of type interface for cluster endpoint & port of RabbitMQ
-              allOf:
-                - $schema: 'http://json-schema.org/draft-07/schema#'
-                  type: object
-                  required:
-                    - endpoint
-                    - connection_string
-                  properties:
-                    endpoint:
-                      type: string
-                      pattern: >-
-                        ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}(,[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}$
-                      description: >-
-                        A comma-separated string of endpoints in the format
-                        'host1:port1,host2:port2'. The number of endpoints
-                        must be greater than or equal to 1.
-                    username:
-                      type: string
-                      description: >-
-                        The username to use for authentication when connecting
-                        to the datastore.
-                    password:
-                      type: string
-                      description: >-
-                        The password to use for authentication when connecting
-                        to the datastore.
-                    connection_string:
-                      type: string
-                      description: >-
-                        The connection_string to use when connecting to the
-                        datastore.
-            tcp:
-              type: object
-              description: Map of type interface for tcp port of RabbitMQ
-              allOf:
-                - $schema: 'http://json-schema.org/draft-07/schema#'
-                  type: object
-                  required:
-                    - host
-                    - port
-                    - connection_string
-                  properties:
-                    host:
-                      type: string
-                      description: >-
-                        The hostname or IP address of the database or cache
-                        server.
-                    port:
-                      type: integer
-                      description: >-
-                        The port number to use for connecting to the database
-                        or cache server.
-                      minimum: 1
-                      maximum: 65535
-                    username:
-                      type: string
-                      description: >-
-                        The username to use for authentication when connecting
-                        to the database or cache server.
-                    password:
-                      type: string
-                      description: >-
-                        The password to use for authentication when connecting
-                        to the database or cache server.
-                    connection_string:
-                      type: string
-                      description: >-
-                        The connection_string to use when connecting to the
-                        datastore.
-            http:
-              type: object
-              description: Map of type interface for http port of RabbitMQ
-              allOf:
-                - $schema: 'http://json-schema.org/draft-07/schema#'
-                  type: object
-                  required:
-                    - host
-                    - port
-                    - connection_string
-                  properties:
-                    host:
-                      type: string
-                      description: >-
-                        The hostname or IP address of the database or cache
-                        server.
-                    port:
-                      type: integer
-                      description: >-
-                        The port number to use for connecting to the database
-                        or cache server.
-                      minimum: 1
-                      maximum: 65535
-                    username:
-                      type: string
-                      description: >-
-                        The username to use for authentication when connecting
-                        to the database or cache server.
-                    password:
-                      type: string
-                      description: >-
-                        The password to use for authentication when connecting
-                        to the database or cache server.
-                    connection_string:
-                      type: string
-                      description: >-
-                        The connection_string to use when connecting to the
-                        datastore.
-          description: 'Map of http, tcp & cluster output generated by the module'
-      required: [ ]
+  properties:
+    interfaces:
+      cluster:
+        endpoint:
+          type: string
+          required: true
+          pattern: >-
+            ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}(,[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]):[0-9]{1,5}$
+          description: >-
+            A comma-separated string of endpoints in the format
+            'host1:port1,host2:port2'. The number of endpoints
+            must be greater than or equal to 1.
+        username:
+          type: string
+          description: >-
+            The username to use for authentication when connecting
+            to the datastore.
+        password:
+          type: string
+          description: >-
+            The password to use for authentication when connecting
+            to the datastore.
+        connection_string:
+          type: string
+          required: true
+          description: >-
+            The connection_string to use when connecting to the
+            datastore.
+      tcp:
+        host:
+          type: string
+          required: true
+          description: >-
+            The hostname or IP address of the database or cache
+            server.
+        port:
+          type: integer
+          required: true
+          description: >-
+            The port number to use for connecting to the database
+            or cache server.
+          minimum: 1
+          maximum: 65535
+        username:
+          type: string
+          description: >-
+            The username to use for authentication when connecting
+            to the database or cache server.
+        password:
+          type: string
+          description: >-
+            The password to use for authentication when connecting
+            to the database or cache server.
+        connection_string:
+          type: string
+          required: true
+          description: >-
+            The connection_string to use when connecting to the
+            datastore.
+      http:
+        host:
+          type: string
+          required: true
+          description: >-
+            The hostname or IP address of the database or cache
+            server.
+        port:
+          type: integer
+          required: true
+          description: >-
+            The port number to use for connecting to the database
+            or cache server.
+          minimum: 1
+          maximum: 65535
+        username:
+          type: string
+          description: >-
+            The username to use for authentication when connecting
+            to the database or cache server.
+        password:
+          type: string
+          description: >-
+            The password to use for authentication when connecting
+            to the database or cache server.
+        connection_string:
+          type: string
+          required: true
+          description: >-
+            The connection_string to use when connecting to the
+            datastore.
