@@ -36,18 +36,14 @@ spec:
             key: region
             lookup: label
         method: GET
-      x-ui-select-min: 2
-      x-ui-select-max: 4
-      x-ui-multi-select: true
-      x-ui-disable-tooltip: No AZs Found for the Region selected
-      x-ui-typeable: true
-      x-ui-override-disable: true
       items:
         type: string
         pattern: ^[a-z]{2}-[a-z]+-[0-9][a-z]$
         x-ui-error-message: Availability zone must be in format like 'us-east-1a'
-      minItems: 2
-      maxItems: 4
+      x-ui-select-max: 4
+      x-ui-select-min: 2
+      x-ui-overrides-only: true
+      x-ui-multi-select: true
     public_subnets:
       type: object
       title: Public Subnets Configuration
