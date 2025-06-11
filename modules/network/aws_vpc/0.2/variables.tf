@@ -126,4 +126,161 @@ variable "instance" {
     condition     = contains(["single", "per_az"], var.instance.spec.nat_gateway.strategy)
     error_message = "NAT Gateway strategy must be either 'single' or 'per_az'."
   }
+
+  # Enhanced validation: VPC CIDR capacity check
+  validation {
+    condition = (
+      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) +
+      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) +
+      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)
+    ) <= pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
+    error_message = "Total IP allocation exceeds VPC capacity. For your VPC CIDR ${var.instance.spec.vpc_cidr}, you have ${pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} total IPs available, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) + length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) + length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)} IPs across all subnets."
+  }
+
+  # Enhanced validation: Subnet size compatibility with VPC CIDR
+  validation {
+    condition = alltrue([
+      # Public subnets compatibility
+      var.instance.spec.public_subnets.count_per_az == 0 || (
+        lookup({
+          "256"  = 24,
+          "512"  = 23,
+          "1024" = 22,
+          "2048" = 21,
+          "4096" = 20
+        }, var.instance.spec.public_subnets.subnet_size, 32) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+      ),
+      # Private subnets compatibility  
+      lookup({
+        "256"  = 24,
+        "512"  = 23,
+        "1024" = 22,
+        "2048" = 21,
+        "4096" = 20,
+        "8192" = 19
+      }, var.instance.spec.private_subnets.subnet_size, 32) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1]),
+      # Database subnets compatibility
+      lookup({
+        "256"  = 24,
+        "512"  = 23,
+        "1024" = 22,
+        "2048" = 21
+      }, var.instance.spec.database_subnets.subnet_size, 32) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+    ])
+    error_message = "One or more subnet sizes are incompatible with VPC CIDR ${var.instance.spec.vpc_cidr}. Subnet sizes must require a subnet mask greater than or equal to the VPC prefix length."
+  }
+
+  # Enhanced validation: Individual subnet type feasibility  
+  validation {
+    condition = var.instance.spec.public_subnets.count_per_az == 0 || (
+      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az <=
+      pow(2, lookup({
+        "256"  = 24,
+        "512"  = 23,
+        "1024" = 22,
+        "2048" = 21,
+        "4096" = 20
+      }, var.instance.spec.public_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
+    )
+    error_message = "Too many public subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.public_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az}."
+  }
+
+  validation {
+    condition = (
+      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az <=
+      pow(2, lookup({
+        "256"  = 24,
+        "512"  = 23,
+        "1024" = 22,
+        "2048" = 21,
+        "4096" = 20,
+        "8192" = 19
+      }, var.instance.spec.private_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
+    )
+    error_message = "Too many private subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.private_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az}."
+  }
+
+  validation {
+    condition = (
+      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az <=
+      pow(2, lookup({
+        "256"  = 24,
+        "512"  = 23,
+        "1024" = 22,
+        "2048" = 21
+      }, var.instance.spec.database_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
+    )
+    error_message = "Too many database subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.database_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az}."
+  }
+
+  # Enhanced validation: Reasonable total subnet limits for practical usage
+  validation {
+    condition = (
+      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az +
+      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az +
+      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az
+    ) <= 50
+    error_message = "Total number of subnets across all types exceeds practical limit of 50. You're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az + length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az + length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az} subnets. Consider reducing subnet counts or using larger subnet sizes."
+  }
+
+  # Enhanced validation: Ensure at least one private subnet for best practices
+  validation {
+    condition     = var.instance.spec.private_subnets.count_per_az >= 1
+    error_message = "At least one private subnet per AZ is required for security best practices."
+  }
+
+  # Enhanced validation: VPC CIDR size limits for practical usage
+  validation {
+    condition = (
+      tonumber(split("/", var.instance.spec.vpc_cidr)[1]) >= 16 &&
+      tonumber(split("/", var.instance.spec.vpc_cidr)[1]) <= 28
+    )
+    error_message = "VPC CIDR prefix must be between /16 and /28 for practical usage. Your CIDR ${var.instance.spec.vpc_cidr} has prefix /${tonumber(split("/", var.instance.spec.vpc_cidr)[1])}."
+  }
+
+  # Enhanced validation: CIDR allocation feasibility check  
+  # Test if cidrsubnets function can successfully allocate all requested subnets
+  validation {
+    condition = (
+      # First check that all newbits values are positive (subnet prefix >= VPC prefix)
+      alltrue([
+        # Public subnets newbits check
+        var.instance.spec.public_subnets.count_per_az == 0 || (
+          lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+        ),
+        # Private subnets newbits check
+        lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1]),
+        # Database subnets newbits check  
+        lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+      ]) &&
+      # Then test if cidrsubnets can actually allocate all subnets
+      can(
+        cidrsubnets(
+          var.instance.spec.vpc_cidr,
+          # Create list of newbits for all subnets (same logic as main.tf)
+          concat(
+            var.instance.spec.public_subnets.count_per_az > 0 ? [
+              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az) :
+              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+            ] : [],
+            [
+              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az) :
+              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+            ],
+            [
+              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az) :
+              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+            ]
+          )...
+        )
+      )
+    )
+    error_message = "CIDR allocation conflict! Cannot allocate requested subnets in VPC ${var.instance.spec.vpc_cidr}. Check: (1) All subnet sizes must fit within VPC (subnet prefix ≥ VPC prefix), (2) Total subnet space must fit without overlap. Requested: ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az} public (${var.instance.spec.public_subnets.subnet_size} IPs), ${length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az} private (${var.instance.spec.private_subnets.subnet_size} IPs), ${length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az} database (${var.instance.spec.database_subnets.subnet_size} IPs)."
+  }
+
+  # Enhanced validation: NAT Gateway requirements
+  validation {
+    condition     = var.instance.spec.public_subnets.count_per_az == 0 || var.instance.spec.nat_gateway.strategy != null
+    error_message = "NAT Gateway strategy must be specified when private subnets are configured, but no public subnets are available for NAT placement."
+  }
 }

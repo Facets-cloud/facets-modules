@@ -10,42 +10,79 @@ locals {
     "8192" = 19 # /19 = 8192 IPs
   }
 
-  public_subnet_newbits   = local.subnet_mask_map[var.instance.spec.public_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-  private_subnet_newbits  = local.subnet_mask_map[var.instance.spec.private_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-  database_subnet_newbits = local.subnet_mask_map[var.instance.spec.database_subnets.subnet_size] - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
+  vpc_prefix_length = tonumber(split("/", var.instance.spec.vpc_cidr)[1])
 
-  # Create list of all public subnets needed
-  public_subnets = flatten([
+  public_subnet_newbits   = local.subnet_mask_map[var.instance.spec.public_subnets.subnet_size] - local.vpc_prefix_length
+  private_subnet_newbits  = local.subnet_mask_map[var.instance.spec.private_subnets.subnet_size] - local.vpc_prefix_length
+  database_subnet_newbits = local.subnet_mask_map[var.instance.spec.database_subnets.subnet_size] - local.vpc_prefix_length
+
+  # Calculate total number of subnets needed
+  public_total_subnets   = length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az
+  private_total_subnets  = length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az
+  database_total_subnets = length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az
+
+  # Create list of newbits for cidrsubnets function
+  # Order: public subnets, private subnets, database subnets
+  subnet_newbits = concat(
+    var.instance.spec.public_subnets.count_per_az > 0 ? [
+      for i in range(local.public_total_subnets) : local.public_subnet_newbits
+    ] : [],
+    [for i in range(local.private_total_subnets) : local.private_subnet_newbits],
+    [for i in range(local.database_total_subnets) : local.database_subnet_newbits]
+  )
+
+  # Generate all subnet CIDRs using cidrsubnets function - this prevents overlaps
+  all_subnet_cidrs = cidrsubnets(var.instance.spec.vpc_cidr, local.subnet_newbits...)
+
+  # Extract subnet CIDRs by type
+  public_subnet_cidrs = var.instance.spec.public_subnets.count_per_az > 0 ? slice(
+    local.all_subnet_cidrs,
+    0,
+    local.public_total_subnets
+  ) : []
+
+  private_subnet_cidrs = slice(
+    local.all_subnet_cidrs,
+    var.instance.spec.public_subnets.count_per_az > 0 ? local.public_total_subnets : 0,
+    var.instance.spec.public_subnets.count_per_az > 0 ? local.public_total_subnets + local.private_total_subnets : local.private_total_subnets
+  )
+
+  database_subnet_cidrs = slice(
+    local.all_subnet_cidrs,
+    var.instance.spec.public_subnets.count_per_az > 0 ? local.public_total_subnets + local.private_total_subnets : local.private_total_subnets,
+    var.instance.spec.public_subnets.count_per_az > 0 ? local.public_total_subnets + local.private_total_subnets + local.database_total_subnets : local.private_total_subnets + local.database_total_subnets
+  )
+
+  # Create subnet mappings with AZ and CIDR
+  public_subnets = var.instance.spec.public_subnets.count_per_az > 0 ? flatten([
     for az_index, az in var.instance.spec.availability_zones : [
       for subnet_index in range(var.instance.spec.public_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index
         az           = az
-        cidr_index   = az_index * var.instance.spec.public_subnets.count_per_az + subnet_index
+        cidr_block   = local.public_subnet_cidrs[az_index * var.instance.spec.public_subnets.count_per_az + subnet_index]
       }
     ]
-  ])
+  ]) : []
 
-  # Create list of all private subnets needed
   private_subnets = flatten([
     for az_index, az in var.instance.spec.availability_zones : [
       for subnet_index in range(var.instance.spec.private_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index
         az           = az
-        cidr_index   = length(local.public_subnets) + (az_index * var.instance.spec.private_subnets.count_per_az) + subnet_index
+        cidr_block   = local.private_subnet_cidrs[az_index * var.instance.spec.private_subnets.count_per_az + subnet_index]
       }
     ]
   ])
 
-  # Create list of all database subnets needed
   database_subnets = flatten([
     for az_index, az in var.instance.spec.availability_zones : [
       for subnet_index in range(var.instance.spec.database_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index
         az           = az
-        cidr_index   = length(local.public_subnets) + length(local.private_subnets) + (az_index * var.instance.spec.database_subnets.count_per_az) + subnet_index
+        cidr_block   = local.database_subnet_cidrs[az_index * var.instance.spec.database_subnets.count_per_az + subnet_index]
       }
     ]
   ])
@@ -113,13 +150,13 @@ resource "aws_internet_gateway" "main" {
 
 # Public Subnets
 resource "aws_subnet" "public" {
-  for_each = {
+  for_each = var.instance.spec.public_subnets.count_per_az > 0 ? {
     for subnet in local.public_subnets :
     "${subnet.az}-${subnet.subnet_index}" => subnet
-  }
+  } : {}
 
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.instance.spec.vpc_cidr, local.public_subnet_newbits, each.value.cidr_index)
+  cidr_block              = each.value.cidr_block
   availability_zone       = each.value.az
   map_public_ip_on_launch = true
 
@@ -137,7 +174,7 @@ resource "aws_subnet" "private" {
   }
 
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.instance.spec.vpc_cidr, local.private_subnet_newbits, each.value.cidr_index)
+  cidr_block        = each.value.cidr_block
   availability_zone = each.value.az
 
   tags = merge(local.common_tags, local.eks_private_tags, {
@@ -154,7 +191,7 @@ resource "aws_subnet" "database" {
   }
 
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.instance.spec.vpc_cidr, local.database_subnet_newbits, each.value.cidr_index)
+  cidr_block        = each.value.cidr_block
   availability_zone = each.value.az
 
   tags = merge(local.common_tags, {
@@ -177,9 +214,9 @@ resource "aws_db_subnet_group" "database" {
 resource "aws_eip" "nat" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
     for az in var.instance.spec.availability_zones : az => az
-    } : {
+    } : var.instance.spec.public_subnets.count_per_az > 0 ? {
     single = var.instance.spec.availability_zones[0]
-  }
+  } : {}
 
   tags = merge(local.common_tags, {
     Name = var.instance.spec.nat_gateway.strategy == "per_az" ? "${local.name_prefix}-eip-${each.key}" : "${local.name_prefix}-eip"
@@ -192,9 +229,9 @@ resource "aws_eip" "nat" {
 resource "aws_nat_gateway" "main" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
     for az in var.instance.spec.availability_zones : az => az
-    } : {
+    } : var.instance.spec.public_subnets.count_per_az > 0 ? {
     single = var.instance.spec.availability_zones[0]
-  }
+  } : {}
 
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_subnet.public["${each.key}-0"].id : aws_subnet.public["${var.instance.spec.availability_zones[0]}-0"].id
@@ -208,6 +245,8 @@ resource "aws_nat_gateway" "main" {
 
 # Public Route Table
 resource "aws_route_table" "public" {
+  count = var.instance.spec.public_subnets.count_per_az > 0 ? 1 : 0
+
   vpc_id = aws_vpc.main.id
 
   route {
@@ -225,22 +264,25 @@ resource "aws_route_table_association" "public" {
   for_each = aws_subnet.public
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.public.id
+  route_table_id = aws_route_table.public[0].id
 }
 
 # Private Route Tables
 resource "aws_route_table" "private" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
     for az in var.instance.spec.availability_zones : az => az
-    } : {
+    } : var.instance.spec.public_subnets.count_per_az > 0 ? {
     single = "single"
-  }
+  } : {}
 
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_nat_gateway.main[each.key].id : aws_nat_gateway.main["single"].id
+  dynamic "route" {
+    for_each = var.instance.spec.public_subnets.count_per_az > 0 ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_nat_gateway.main[each.key].id : aws_nat_gateway.main["single"].id
+    }
   }
 
   tags = merge(local.common_tags, {
@@ -328,7 +370,7 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = concat(
-    [aws_route_table.public.id],
+    var.instance.spec.public_subnets.count_per_az > 0 ? [aws_route_table.public[0].id] : [],
     values(aws_route_table.private)[*].id,
     values(aws_route_table.database)[*].id
   )
@@ -347,7 +389,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = concat(
-    [aws_route_table.public.id],
+    var.instance.spec.public_subnets.count_per_az > 0 ? [aws_route_table.public[0].id] : [],
     values(aws_route_table.private)[*].id,
     values(aws_route_table.database)[*].id
   )
