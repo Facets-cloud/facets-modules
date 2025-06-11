@@ -3,10 +3,90 @@ flavor: default
 version: '0.1'
 description: Adds alert_group - default flavor
 clouds:
-- aws
-- gcp
-- azure
-- kubernetes
+  - aws
+  - gcp
+  - azure
+  - kubernetes
+
+spec:
+  type: object
+  title: Alert Group Configuration
+  description: Configuration for a group of alert rules that can be defined in alertmanager.
+  properties:
+    rules:
+      type: object
+      title: Alert Rules
+      description: Map of alert rule definitions
+      patternProperties:
+        "^[a-zA-Z][a-zA-Z0-9_]*$":
+          type: object
+          title: Alert Rule
+          description: Configuration for an individual alert rule
+          properties:
+            expr:
+              type: string
+              title: Expression
+              description: PromQL expression that defines the alert condition
+            for:
+              type: string
+              title: Duration
+              description: How long the condition must be true to fire the alert (e.g., "5m", "1h")
+              default: "5m"
+            summary:
+              type: string
+              title: Summary
+              description: Brief summary of what the alert indicates
+            message:
+              type: string
+              title: Message
+              description: Detailed message describing the alert condition
+            severity:
+              type: string
+              title: Severity Level
+              description: Severity level of the alert
+              enum:
+                - critical
+                - warning
+                - info
+              default: warning
+            resource_name:
+              type: string
+              title: Resource Name
+              description: Template for the resource name (supports Go templating with labels)
+            resource_type:
+              type: string
+              title: Resource Type
+              description: Type of resource this alert applies to (e.g., pod, statefulset, deployment)
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Whether this rule is disabled
+              default: false
+            labels:
+              type: object
+              title: Labels
+              description: Additional labels to attach to the alert
+              patternProperties:
+                "^[a-zA-Z_][a-zA-Z0-9_]*$":
+                  type: string
+              default: {}
+            annotations:
+              type: object
+              title: Annotations
+              description: Additional annotations to attach to the alert
+              patternProperties:
+                "^[a-zA-Z_][a-zA-Z0-9_]*$":
+                  type: string
+              default: {}
+          required:
+            - expr
+            - summary
+            - message
+            - severity
+          additionalProperties: false
+      additionalProperties: false
+  additionalProperties: false
+
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
   kind: alert_group
@@ -17,12 +97,10 @@ sample:
   spec:
     rules:
       KubernetesPodCrashLooping1:
-        expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m])
-          * 1200 > 5
+        expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m]) * 1200 > 5
         for: 5m
         summary: Kubernetes pod crash looping
-        message: Kubernetes pod crash looping since last 5 minutes for {{ $labels.instance
-          }}
+        message: Kubernetes pod crash looping since last 5 minutes for {{ $labels.instance }}
         severity: critical
         resource_name: '{{ $labels.pod }}'
         resource_type: pod
@@ -35,19 +113,6 @@ sample:
         message: StatefuleSet has non-ready pods for longer than a 15m
         summary: StatefuleSet has non-ready pods
         for: 15m
-        labels:
-          team: stack_owner
-        annotations:
-          k2: v2
-        severity: warning
-        resource_name: '{{ $labels.statefulset }}'
-        resource_type: statefulset
-      StatefulSetNonReadyPods2:
-        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
-        message: StatefuleSet has non-ready pods for longer than a 15m
-        summary: StatefuleSet has non-ready pods
-        for: 15m
-        disabled: true
         labels:
           team: stack_owner
         annotations:
