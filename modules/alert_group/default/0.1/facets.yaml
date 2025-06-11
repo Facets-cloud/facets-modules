@@ -78,9 +78,11 @@ spec:
               default: {}
           required:
             - expr
+            - for
+            - resource_name
+            - resource_type
             - summary
             - message
-            - severity
           additionalProperties: false
       additionalProperties: false
   additionalProperties: false
