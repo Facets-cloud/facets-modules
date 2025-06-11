@@ -1,7 +1,7 @@
 intent: alert_group
 flavor: default
 version: '0.1'
-description: Adds alert_group - default flavor
+description: Creates Prometheus alert rules for monitoring and alerting
 clouds:
   - aws
   - gcp
@@ -87,12 +87,9 @@ spec:
       additionalProperties: false
   additionalProperties: false
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
   kind: alert_group
   flavor: default
   version: '0.1'
-  disabled: true
-  metadata: {}
   spec:
     disabled: false
     rules:
