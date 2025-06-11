@@ -106,15 +106,3 @@ sample:
           team: stack_owner
         annotations:
           sample: This is a sample annotation
-      StatefulSetNonReadyPods1:
-        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
-        message: StatefuleSet has non-ready pods for longer than a 15m
-        summary: StatefuleSet has non-ready pods
-        for: 15m
-        labels:
-          team: stack_owner
-        annotations:
-          sample: This is a sample annotation
-        severity: warning
-        resource_name: '{{ $labels.statefulset }}'
-        resource_type: statefulset

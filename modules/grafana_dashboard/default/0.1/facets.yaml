@@ -19,3 +19,4 @@ sample:
   disabled: true
   metadata: {}
   spec:
+    dashboard: {}
