@@ -1,5 +1,5 @@
 intent: aws_dlm_lifecycle_policy
-flavor: omendra
+flavor: default
 version: '0.1'
 description: Adds aws_dlm_lifecycle_policy - default flavor
 clouds:
@@ -125,7 +125,7 @@ spec:
     - target_tags
 sample:
   kind: aws_dlm_lifecycle_policy
-  flavor: omendra
+  flavor: default
   version: '0.1'
   metadata: {}
   spec:
