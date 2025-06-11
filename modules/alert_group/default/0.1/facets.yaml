@@ -10,8 +10,6 @@ clouds:
 
 spec:
   type: object
-  title: Alert Group Configuration
-  description: Configuration for a group of alert rules that can be defined in alertmanager.
   properties:
     rules:
       type: object
@@ -66,17 +64,17 @@ spec:
               type: object
               title: Labels
               description: Additional labels to attach to the alert
-              patternProperties:
-                "^[a-zA-Z_][a-zA-Z0-9_]*$":
-                  type: string
+              x-ui-yaml-editor: true
+              additionalProperties:
+                type: string
               default: {}
             annotations:
               type: object
               title: Annotations
               description: Additional annotations to attach to the alert
-              patternProperties:
-                "^[a-zA-Z_][a-zA-Z0-9_]*$":
-                  type: string
+              x-ui-yaml-editor: true
+              additionalProperties:
+                type: string
               default: {}
           required:
             - expr
@@ -86,15 +84,15 @@ spec:
           additionalProperties: false
       additionalProperties: false
   additionalProperties: false
-
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
   kind: alert_group
   flavor: default
   version: '0.1'
-  disabled: true
+  disabled: false
   metadata: {}
   spec:
+    disabled: false
     rules:
       KubernetesPodCrashLooping1:
         expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m]) * 1200 > 5
