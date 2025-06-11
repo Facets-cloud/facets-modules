@@ -91,7 +91,7 @@ sample:
   kind: alert_group
   flavor: default
   version: '0.1'
-  disabled: false
+  disabled: true
   metadata: {}
   spec:
     disabled: false
