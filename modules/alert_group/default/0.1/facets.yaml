@@ -1,57 +1,110 @@
 intent: alert_group
 flavor: default
 version: '0.1'
-description: Adds alert_group - default flavor
+description: Creates Prometheus alert rules for monitoring and alerting
 clouds:
-- aws
-- gcp
-- azure
 - kubernetes
+spec:
+  type: object
+  properties:
+    rules:
+      type: object
+      title: Alert Rules
+      description: Define alert rules for Prometheus monitoring
+      patternProperties:
+        ^[a-zA-Z0-9_-]+$:
+          type: object
+          properties:
+            expr:
+              type: string
+              title: Prometheus Expression
+              description: PromQL expression for the alert condition
+            for:
+              type: string
+              title: Alert Duration
+              description: Duration for which the condition must be true
+            message:
+              type: string
+              title: Alert Message
+              description: Message when alert fires
+            summary:
+              type: string
+              title: Alert Summary
+              description: Brief summary of the alert
+            resource_type:
+              type: string
+              title: Resource Type
+              description: Type of resource being monitored
+            resource_name:
+              type: string
+              title: Resource Name
+              description: Name of the resource being monitored
+            alert_type:
+              type: string
+              title: Alert Type
+              description: Type of the alert
+            severity:
+              type: string
+              title: Severity
+              description: Alert severity level
+            disabled:
+              type: boolean
+              title: Disabled
+              description: Whether this alert is disabled
+              default: false
+            labels:
+              type: object
+              title: Labels
+              description: Additional labels for the alert
+            annotations:
+              type: object
+              title: Annotations
+              description: Additional annotations for the alert
+          required:
+          - expr
+          - for
+          - message
+          - summary
+          - resource_type
+          - resource_name
+inputs:
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: false
+    default:
+      resource_type: configuration
+      resource_name: prometheus
+  kubernetes_details:
+    type: '@outputs/kubernetes'
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
   kind: alert_group
   flavor: default
   version: '0.1'
-  disabled: true
-  metadata: {}
   spec:
     rules:
-      KubernetesPodCrashLooping1:
-        expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m])
-          * 1200 > 5
+      high_cpu_usage:
+        expr: cpu_usage_percent > 80
         for: 5m
-        summary: Kubernetes pod crash looping
-        message: Kubernetes pod crash looping since last 5 minutes for {{ $labels.instance
-          }}
-        severity: critical
-        resource_name: '{{ $labels.pod }}'
+        message: CPU usage is above 80% for more than 5 minutes
+        summary: High CPU usage detected
         resource_type: pod
-        labels:
-          team: stack_owner
-        annotations:
-          k1: v1
-      StatefulSetNonReadyPods1:
-        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
-        message: StatefuleSet has non-ready pods for longer than a 15m
-        summary: StatefuleSet has non-ready pods
-        for: 15m
-        labels:
-          team: stack_owner
-        annotations:
-          k2: v2
-        severity: warning
-        resource_name: '{{ $labels.statefulset }}'
-        resource_type: statefulset
-      StatefulSetNonReadyPods2:
-        expr: kube_statefulset_status_replicas_ready != kube_statefulset_status_replicas
-        message: StatefuleSet has non-ready pods for longer than a 15m
-        summary: StatefuleSet has non-ready pods
-        for: 15m
-        disabled: true
-        labels:
-          team: stack_owner
-        annotations:
-          k2: v2
-        severity: warning
-        resource_name: '{{ $labels.statefulset }}'
-        resource_type: statefulset
+        resource_name: my-application
+        alert_type: warning
+        severity: medium
+      memory_usage_critical:
+        expr: memory_usage_percent > 95
+        for: 2m
+        message: Memory usage is critically high
+        summary: Critical memory usage detected
+        resource_type: container
+        resource_name: my-app-container
+        alert_type: critical
+        severity: high
