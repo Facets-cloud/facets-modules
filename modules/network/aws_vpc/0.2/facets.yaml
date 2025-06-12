@@ -222,7 +222,8 @@ spec:
     tags:
       type: object
       title: Additional Tags
-      description: Optional additional tags to apply to all VPC resources. These will be merged with the standard environment tags.
+      description: Optional additional tags to apply to all VPC resources. These will
+        be merged with the standard environment tags.
       x-ui-yaml-editor: true
   required:
   - vpc_cidr
