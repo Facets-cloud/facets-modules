@@ -1,7 +1,8 @@
 intent: alert_group
 flavor: default
 version: '0.1'
-description: Creates Prometheus alert rules for monitoring and alerting
+description: Creates Prometheus alert rules for monitoring and alerting with comprehensive
+  validation and enhanced UI features
 clouds:
   - aws
   - gcp
@@ -60,6 +61,54 @@ spec:
               title: Disabled
               description: Whether this rule is disabled
               default: false
+            runbook_url:
+              type: string
+              title: Runbook URL
+              description: URL to documentation or runbook for handling this alert
+              pattern: ^https?://.*
+              x-ui-error-message: Runbook URL must be a valid HTTP/HTTPS URL
+            escalation_policy:
+              type: string
+              title: Escalation Policy
+              description: Name of the escalation policy for this alert
+              enum:
+              - immediate
+              - standard
+              - low_priority
+              - business_hours
+              - weekend_only
+              - custom
+              default: standard
+              x-ui-error-message: Please select a valid escalation policy
+            thresholds:
+              type: object
+              title: Alert Thresholds
+              description: Configurable thresholds for the alert condition
+              x-ui-toggle: true
+              properties:
+                warning:
+                  type: number
+                  title: Warning Threshold
+                  description: Threshold value for warning level alerts
+                  minimum: 0
+                critical:
+                  type: number
+                  title: Critical Threshold
+                  description: Threshold value for critical level alerts
+                  minimum: 0
+                unit:
+                  type: string
+                  title: Unit
+                  description: Unit of measurement for thresholds
+                  enum:
+                  - percent
+                  - bytes
+                  - count
+                  - seconds
+                  - milliseconds
+                  - requests_per_second
+                  - errors_per_minute
+                  default: percent
             labels:
               type: object
               title: Labels
