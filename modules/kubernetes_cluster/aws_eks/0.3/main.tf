@@ -79,15 +79,15 @@ module "dedicated_node_pool" {
 }
 
 provider "kubernetes" {
-  host                   = module.k8s_cluster.k8s_details.auth.host
-  cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate
-  token                  = module.k8s_cluster.k8s_details.auth.token
+  host                   = module.k8s_cluster.k8s_details.cluster.auth.host
+  cluster_ca_certificate = module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate
+  token                  = module.k8s_cluster.k8s_details.cluster.auth.token
 }
 provider "helm" {
   kubernetes {
-    host                   = module.k8s_cluster.k8s_details.auth.host
-    cluster_ca_certificate = module.k8s_cluster.k8s_details.auth.cluster_ca_certificate
-    token                  = module.k8s_cluster.k8s_details.auth.token
+    host                   = module.k8s_cluster.k8s_details.cluster.auth.host
+    cluster_ca_certificate = module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate
+    token                  = module.k8s_cluster.k8s_details.cluster.auth.token
   }
 }
 resource "helm_release" "secret-copier" {
