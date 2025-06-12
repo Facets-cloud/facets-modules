@@ -41,7 +41,7 @@ locals {
   disk_config = local.disk_type_mapping[try(local.storage.disk_type, "gp3-standard")]
 
   # Automatically detect IAM role from EKS cluster - updated path for new structure
-  node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_arn
+  node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_name
 
   # Subnet selection based on user choice from dropdown
   subnet_type = try(local.networking.subnet_type, "private")
@@ -67,9 +67,9 @@ locals {
   combined_tags = merge(
     local.tags,
     {
-      "facets.cloud/environment"                                                  = var.environment.name
-      "facets.cloud/managed-by"                                                   = "facets"
-      "kubernetes.io/cluster/${local.kubernetes_cluster.attributes.cluster.name}" = "owned"
+      "facets.cloud/environment" = var.environment.name
+      "facets.cloud/managed-by"  = "facets"
+      # "kubernetes.io/cluster/${local.kubernetes_cluster.attributes.cluster.name}" = "owned"
     }
   )
 
