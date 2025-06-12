@@ -67,7 +67,7 @@ locals {
   combined_tags = merge(
     local.tags,
     {
-      "facets.cloud/environment"                                                  = var.environment
+      "facets.cloud/environment"                                                  = var.environment.name
       "facets.cloud/managed-by"                                                   = "facets"
       "kubernetes.io/cluster/${local.kubernetes_cluster.attributes.cluster.name}" = "owned"
     }
@@ -88,7 +88,7 @@ locals {
     try(local.scheduling.node_labels, {}),
     {
       "facets.cloud/nodepool"    = local.name
-      "facets.cloud/environment" = var.environment
+      "facets.cloud/environment" = var.environment.name
     }
   )
 
@@ -197,7 +197,7 @@ locals {
             try(local.scheduling.node_labels, {}),
             {
               "facets.cloud/nodepool"    = local.name
-              "facets.cloud/environment" = var.environment
+              "facets.cloud/environment" = var.environment.name
             }
           )
           annotations = {
