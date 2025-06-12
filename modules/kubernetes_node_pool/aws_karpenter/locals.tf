@@ -43,30 +43,25 @@ locals {
   # Automatically detect IAM role from EKS cluster - updated path for new structure
   node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_arn
 
-  # Smart subnet selection logic based on enable_public_ip and custom subnet selection
-  enable_public_ip        = try(local.networking.enable_public_ip, false)
-  custom_subnet_selection = try(local.networking.subnet_selection, {})
+  # Subnet selection based on user choice from dropdown
+  subnet_type = try(local.networking.subnet_type, "private")
 
-  # Build subnet selector terms based on user preference
-  subnet_selector_terms = length(local.custom_subnet_selection) > 0 ? [
-    # Use custom tag-based selection when explicitly specified
-    {
-      tags = local.custom_subnet_selection
-    }
-    ] : [
-    # Automatically use appropriate subnet IDs from network output based on enable_public_ip
-    for subnet_id in(local.enable_public_ip ?
-      local.network_details.attributes.public_subnet_ids :
-      local.network_details.attributes.private_subnet_ids
-      ) : {
+  # Map subnet type to actual subnet IDs from network output
+  subnet_ids_map = {
+    private  = local.network_details.attributes.private_subnet_ids
+    public   = local.network_details.attributes.public_subnet_ids
+    database = local.network_details.attributes.database_subnet_ids
+  }
+
+  # Build subnet selector terms using selected subnet type
+  subnet_selector_terms = [
+    for subnet_id in local.subnet_ids_map[local.subnet_type] : {
       id = subnet_id
     }
   ]
 
-  # Build security group selector based on user configuration or smart defaults - updated cluster name path
-  security_group_selector_tags = length(try(local.networking.security_group_selection, {})) > 0 ? local.networking.security_group_selection : {
-    "aws:eks:cluster-name" = local.kubernetes_cluster.attributes.cluster.name
-  }
+  # Always use the node security group ID from EKS cluster output
+  node_security_group_id = local.kubernetes_cluster.attributes.node_group.security_group_id
 
   # Combine user tags with environment tags - updated cluster name path
   combined_tags = merge(
@@ -151,10 +146,10 @@ locals {
         # Use the smart subnet selector terms
         subnetSelectorTerms = local.subnet_selector_terms
 
-        # Security group selection
+        # Security group selection - always use node security group ID from EKS cluster
         securityGroupSelectorTerms = [
           {
-            tags = local.security_group_selector_tags
+            id = local.node_security_group_id
           }
         ]
 

@@ -34,14 +34,7 @@ module "production_nodepool" {
   }
   
   networking = {
-    subnet_selection = {
-      "kubernetes.io/role/internal-elb" = "1"
-      "tier" = "private"
-    }
-    security_group_selection = {
-      "Name" = "eks-worker-nodes"
-    }
-    enable_public_ip = false
+    subnet_type = "private"
   }
   
   storage = {
@@ -94,9 +87,7 @@ Control how the node pool scales and manages resources:
 
 ### Networking Configuration
 Advanced networking settings:
-- **subnet_selection**: Tags to select subnets for node placement
-- **security_group_selection**: Tags to select security groups
-- **enable_public_ip**: Whether nodes get public IP addresses
+- **subnet_type**: Type of subnets to use (private, public, database) - automatically uses the corresponding subnets from VPC network configuration
 - **proxy_configuration**: HTTP/HTTPS proxy settings for restricted environments
 
 ### Storage Configuration
@@ -116,8 +107,8 @@ Control which workloads can run on these nodes:
 The module provides intelligent defaults that work out of the box:
 
 - **IAM Role**: Automatically uses EKS cluster's node IAM role from `attributes.node_group.iam_role_arn`
-- **Subnets**: Selects private subnets with `kubernetes.io/role/internal-elb=1`
-- **Security Groups**: Uses EKS cluster security groups
+- **Subnets**: Uses subnet type selection (private/public/database) from VPC network configuration
+- **Security Groups**: Automatically uses EKS cluster node security group from `attributes.node_group.security_group_id`
 - **Instance Types**: Balanced mix of compute, memory, and storage optimized instances
 - **Cost Optimization**: Enables both Spot and On-Demand with smart consolidation
 
