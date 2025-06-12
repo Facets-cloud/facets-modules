@@ -132,11 +132,10 @@ locals {
 
   # NodeClass manifest
   node_class_manifest = {
-    apiVersion = "karpenter.k8s.aws/v1beta1"
-    kind       = "EC2NodeClass"
+    apiVersion = "eks.amazonaws.com/v1"
+    kind       = "NodeClass"
     metadata = {
-      name      = local.node_class_name
-      namespace = "karpenter"
+      name = local.node_class_name
     }
     spec = merge(
       {
@@ -153,48 +152,42 @@ locals {
           }
         ]
 
-        # Storage configuration
-        blockDeviceMappings = [
-          {
-            deviceName = "/dev/xvda"
-            ebs = merge(
-              {
-                volumeSize          = try(local.storage.disk_size, "80Gi")
-                volumeType          = local.disk_config.type
-                iops                = local.disk_config.iops
-                throughput          = local.disk_config.throughput
-                deleteOnTermination = true
-                encrypted           = true
-              },
-              try(local.storage.encryption_key, "") != "" ? {
-                kmsKeyID = local.storage.encryption_key
-              } : {}
-            )
-          }
-        ]
-
         # Networking policies for EKS Auto Mode
         snatPolicy             = "Random"
         networkPolicy          = "DefaultAllow"
         networkPolicyEventLogs = "Disabled"
 
+        # Ephemeral storage configuration
+        ephemeralStorage = merge(
+          {
+            size       = try(local.storage.disk_size, "80Gi")
+            iops       = local.disk_config.iops
+            throughput = local.disk_config.throughput
+          },
+          try(local.storage.encryption_key, "") != "" ? {
+            kmsKeyID = local.storage.encryption_key
+          } : {}
+        )
+
         # Instance tags
         tags = local.combined_tags
       },
-      # Add proxy configuration if specified
-      local.proxy_userdata != null ? {
-        userData = local.proxy_userdata
+      # Add proxy configuration if specified - using EKS Auto Mode format
+      try(local.networking.proxy_configuration.https_proxy, "") != "" ? {
+        advancedNetworking = {
+          httpsProxy = local.networking.proxy_configuration.https_proxy
+          noProxy    = local.proxy_bypass_list
+        }
       } : {}
     )
   }
 
   # NodePool manifest
   node_pool_manifest = {
-    apiVersion = "karpenter.sh/v1beta1"
+    apiVersion = "karpenter.sh/v1"
     kind       = "NodePool"
     metadata = {
-      name      = local.node_pool_name
-      namespace = "karpenter"
+      name = local.node_pool_name
     }
     spec = {
       # Reference to NodeClass
@@ -215,24 +208,30 @@ locals {
           {
             # Node class reference
             nodeClassRef = {
-              apiVersion = "karpenter.k8s.aws/v1beta1"
-              kind       = "EC2NodeClass"
-              name       = local.node_class_name
+              group = "eks.amazonaws.com"
+              kind  = "NodeClass"
+              name  = local.node_class_name
             }
 
             # Instance requirements
             requirements = concat(
-              # Instance families
+              # Instance categories
               [
                 {
-                  key      = "node.kubernetes.io/instance-type"
+                  key      = "eks.amazonaws.com/instance-category"
                   operator = "In"
-                  values = [
-                    for family in local.instance_families_list : "${family}.*"
-                  ]
+                  values   = local.instance_families_list
                 }
               ],
               # CPU requirements
+              [
+                {
+                  key      = "eks.amazonaws.com/instance-cpu"
+                  operator = "In"
+                  values   = local.cpu_range_list
+                }
+              ],
+              # Architecture requirements
               [
                 {
                   key      = "kubernetes.io/arch"
