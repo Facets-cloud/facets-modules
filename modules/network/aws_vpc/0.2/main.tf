@@ -111,6 +111,7 @@ locals {
   # Common tags
   common_tags = merge(
     var.environment.cloud_tags,
+    lookup(var.instance.spec, "tags", {}),
     {
       Name        = local.name_prefix
       Environment = var.environment.name

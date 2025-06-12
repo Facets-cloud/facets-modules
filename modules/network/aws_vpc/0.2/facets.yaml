@@ -219,6 +219,11 @@ spec:
           title: Enable Lambda VPC Endpoint
           description: Create an Interface endpoint for AWS Lambda (charges apply)
           default: false
+    tags:
+      type: object
+      title: Additional Tags
+      description: Optional additional tags to apply to all VPC resources. These will be merged with the standard environment tags.
+      x-ui-yaml-editor: true
   required:
   - vpc_cidr
   - region

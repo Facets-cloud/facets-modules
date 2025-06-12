@@ -61,6 +61,8 @@ variable "instance" {
         enable_sts          = optional(bool, false)
         enable_lambda       = optional(bool, false)
       }), {})
+
+      tags = optional(map(string), {})
     })
   })
 
@@ -282,5 +284,21 @@ variable "instance" {
   validation {
     condition     = var.instance.spec.public_subnets.count_per_az == 0 || var.instance.spec.nat_gateway.strategy != null
     error_message = "NAT Gateway strategy must be specified when private subnets are configured, but no public subnets are available for NAT placement."
+  }
+
+  # Validation for tags: ensure all tag values are strings
+  validation {
+    condition = alltrue([
+      for k, v in var.instance.spec.tags : can(tostring(v))
+    ])
+    error_message = "All tag values must be strings."
+  }
+
+  # Validation for tags: ensure tag keys don't conflict with reserved keys
+  validation {
+    condition = alltrue([
+      for k in keys(var.instance.spec.tags) : !contains(["Name", "Environment"], k)
+    ])
+    error_message = "Tag keys 'Name' and 'Environment' are reserved and will be overridden by the module."
   }
 }
