@@ -1,6 +1,6 @@
 resource "helm_release" "alert_group_helm" {
   name            = "alert-group-${var.instance_name}"
-  chart           = "./any-resource-0.1.0.tgz"
+  chart           = "${path.module}/any-resource-0.1.0.tgz"
   repository      = "kiwigrid"
   namespace       = var.environment.namespace
   version         = "0.1.0"
