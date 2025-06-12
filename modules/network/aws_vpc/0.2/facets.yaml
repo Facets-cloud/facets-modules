@@ -1,5 +1,5 @@
 intent: network
-flavor: aws_vpc
+flavor: aws_vpc-pa
 version: '0.2'
 description: Creates an AWS VPC with configurable public subnets, private subnets,
   and database subnets across availability zones
@@ -233,9 +233,23 @@ spec:
   - private_subnets
   - database_subnets
   - nat_gateway
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The AWS Cloud Account where the EKS cluster will be created
+    optional: false
+    providers:
+    - aws
+    - aws4
+    - aws5
+    - aws593
+outputs:
+  default:
+    type: '@facets/aws-vpc-details'
 sample:
   kind: network
-  flavor: aws_vpc
+  flavor: aws_vpc-pa
   version: '0.2'
   spec:
     public_subnets:
@@ -264,9 +278,6 @@ sample:
       enable_monitoring: false
       enable_sts: false
       enable_lambda: false
-outputs:
-  default:
-    type: '@facets/aws-vpc-details'
 iac:
   validated_files:
   - variables.tf

@@ -1,5 +1,5 @@
 intent: kubernetes_cluster
-flavor: aws_eks-test
+flavor: aws_eks-pa
 alias-flavors:
 - default
 version: '0.3'
@@ -238,7 +238,7 @@ spec:
                 values:
                 - true
             instance_types:
-              type: string
+              type: array
               title: Instance Types
               description: EC2 instance types for the worker nodes.
               default: t3.medium
@@ -246,19 +246,18 @@ spec:
                 field: spec.node_pools.default.enabled
                 values:
                 - true
+              x-ui-overrides-only: true
             capacity_type:
-              type: string
+              type: array
               title: Capacity Type
               description: Type of capacity associated with the EKS Node Group. Valid
                 values are ON_DEMAND and SPOT.
               default: SPOT
-              enum:
-              - on-demand
-              - spot
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
                 - true
+              x-ui-overrides-only: true
           required:
           - enabled
           - max_size_cpu
@@ -269,10 +268,21 @@ spec:
   - cluster
 inputs:
   network_details:
-    type: '@outputs/aws_vpc'
+    type: '@facets/aws-vpc-details'
+    displayName: Network
     default:
       resource_type: network
       resource_name: default
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The AWS Cloud Account where the EKS cluster will be created
+    optional: false
+    providers:
+    - aws
+    - aws4
+    - aws5
+    - aws593
 outputs:
   default:
     type: '@outputs/kubernetes'
@@ -301,7 +311,7 @@ outputs:
           token: attributes.k8s_details.auth.token
 sample:
   kind: kubernetes_cluster
-  flavor: aws_eks-test
+  flavor: aws_eks-pa
   alias-flavors:
   - default
   version: '0.3'
@@ -340,3 +350,4 @@ sample:
         instance_types: t3.medium
         disk_size: 50
         capacity_type: SPOT
+    tags: {}
