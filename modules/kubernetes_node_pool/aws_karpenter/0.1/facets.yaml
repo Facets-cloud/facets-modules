@@ -22,10 +22,12 @@ spec:
       title: Node Pool Name
       description: Name for this node pool configuration.
       default: custom-nodepool
-      pattern: '^[a-z0-9]([a-z0-9-]*[a-z0-9])?$'
+      pattern: ^[a-z0-9]([a-z0-9-]*[a-z0-9])?$
       minLength: 3
       maxLength: 63
-      x-ui-error-message: "Node pool name must be 3-63 characters, start and end with alphanumeric characters, and contain only lowercase letters, numbers, and hyphens"
+      x-ui-error-message: Node pool name must be 3-63 characters, start and end with
+        alphanumeric characters, and contain only lowercase letters, numbers, and
+        hyphens
     instance_requirements:
       type: object
       title: Instance Requirements
@@ -43,8 +45,9 @@ spec:
           title: Instance Family (Category)
           description: EC2 instance family/category (e.g., c, m, r, g, etc.)
           default: c
-          pattern: '^[a-z][0-9]*[a-z]*$'
-          x-ui-error-message: "Instance family must be a valid EC2 family (e.g., c, m, r, g, t, x, z)"
+          pattern: ^[a-z][0-9]*[a-z]*$
+          x-ui-error-message: Instance family must be a valid EC2 family (e.g., c,
+            m, r, g, t, x, z)
           x-ui-visible-if:
             field: spec.instance_requirements.use_instance_family
             values:
@@ -54,8 +57,9 @@ spec:
           title: Instance Type
           description: Specific EC2 instance type (e.g., m6i.large, c5.xlarge)
           default: m6i.large
-          pattern: '^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)$'
-          x-ui-error-message: "Instance type must be a valid EC2 instance type (e.g., m6i.large, c5.xlarge)"
+          pattern: ^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)$
+          x-ui-error-message: Instance type must be a valid EC2 instance type (e.g.,
+            m6i.large, c5.xlarge)
           x-ui-visible-if:
             field: spec.instance_requirements.use_instance_family
             values:
@@ -65,8 +69,8 @@ spec:
           title: CPU Range
           description: Comma-separated vCPU counts to allow (e.g., 2,4,8,16).
           default: 2,4,8,16
-          pattern: '^[0-9]+(,[0-9]+)*$'
-          x-ui-error-message: "CPU range must be comma-separated numbers (e.g., 2,4,8,16)"
+          pattern: ^[0-9]+(,[0-9]+)*$
+          x-ui-error-message: CPU range must be comma-separated numbers (e.g., 2,4,8,16)
         architectures:
           type: string
           title: CPU Architectures
@@ -92,8 +96,9 @@ spec:
           description: Comma-separated AZs where nodes can be placed (leave empty
             to use all VPC zones).
           default: ''
-          pattern: '^$|^[a-z0-9-]+[a-z](,[a-z0-9-]+[a-z])*$'
-          x-ui-error-message: "Availability zones must be comma-separated valid AWS AZ names (e.g., us-west-2a,us-west-2b) or empty"
+          pattern: ^$|^[a-z0-9-]+[a-z](,[a-z0-9-]+[a-z])*$
+          x-ui-error-message: Availability zones must be comma-separated valid AWS
+            AZ names (e.g., us-west-2a,us-west-2b) or empty
           x-ui-overrides-only: true
     scaling:
       type: object
@@ -106,15 +111,16 @@ spec:
           title: Maximum CPU
           description: Maximum total CPU cores for this node pool.
           default: '1000'
-          pattern: '^[1-9][0-9]*$'
-          x-ui-error-message: "Maximum CPU must be a positive integer"
+          pattern: ^[1-9][0-9]*$
+          x-ui-error-message: Maximum CPU must be a positive integer
         max_memory:
           type: string
           title: Maximum Memory
           description: Maximum total memory for this node pool (e.g., 1000Gi).
           default: 1000Gi
-          pattern: '^[1-9][0-9]*(Gi|Mi|Ti)$'
-          x-ui-error-message: "Maximum memory must be a positive number followed by Gi, Mi, or Ti (e.g., 1000Gi)"
+          pattern: ^[1-9][0-9]*(Gi|Mi|Ti)$
+          x-ui-error-message: Maximum memory must be a positive number followed by
+            Gi, Mi, or Ti (e.g., 1000Gi)
         consolidation_policy:
           type: string
           title: Cost Optimization
@@ -129,8 +135,9 @@ spec:
           title: Consolidation Delay
           description: How long to wait before consolidating nodes (e.g., 30s, 5m).
           default: 30s
-          pattern: '^[1-9][0-9]*(s|m|h)$'
-          x-ui-error-message: "Consolidation delay must be a positive number followed by s (seconds), m (minutes), or h (hours)"
+          pattern: ^[1-9][0-9]*(s|m|h)$
+          x-ui-error-message: Consolidation delay must be a positive number followed
+            by s (seconds), m (minutes), or h (hours)
     networking:
       type: object
       title: Networking Configuration
@@ -157,15 +164,17 @@ spec:
               type: string
               title: HTTPS Proxy URL
               description: Proxy URL for HTTPS traffic (e.g., http://proxy.company.com:8080).
-              pattern: '^https?://[a-zA-Z0-9.-]+:[0-9]+$'
-              x-ui-error-message: "HTTPS proxy must be a valid URL with protocol and port (e.g., http://proxy.company.com:8080)"
+              pattern: ^https?://[a-zA-Z0-9.-]+:[0-9]+$
+              x-ui-error-message: HTTPS proxy must be a valid URL with protocol and
+                port (e.g., http://proxy.company.com:8080)
             bypass_domains:
               type: string
               title: Bypass Domains
               description: Comma-separated domains to bypass proxy.
               default: localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com
-              pattern: '^[a-zA-Z0-9.-]+(,[a-zA-Z0-9.-]+)*$'
-              x-ui-error-message: "Bypass domains must be comma-separated domain names or IP addresses"
+              pattern: ^[a-zA-Z0-9.-]+(,[a-zA-Z0-9.-]+)*$
+              x-ui-error-message: Bypass domains must be comma-separated domain names
+                or IP addresses
     storage:
       type: object
       title: Storage Configuration
@@ -177,8 +186,9 @@ spec:
           title: Disk Size (Gi)
           description: Size of the root disk for each node (e.g., 80Gi, 100Gi).
           default: 80Gi
-          pattern: '^[1-9][0-9]*Gi$'
-          x-ui-error-message: "Disk size must be a positive number followed by Gi (e.g., 80Gi)"
+          pattern: ^[1-9][0-9]*Gi$
+          x-ui-error-message: Disk size must be a positive number followed by Gi (e.g.,
+            80Gi)
         disk_iops:
           type: integer
           title: Disk IOPS
@@ -186,7 +196,7 @@ spec:
           default: 3000
           minimum: 100
           maximum: 64000
-          x-ui-error-message: "Disk IOPS must be between 100 and 64000"
+          x-ui-error-message: Disk IOPS must be between 100 and 64000
         disk_throughput:
           type: integer
           title: Disk Throughput (MB/s)
@@ -194,13 +204,15 @@ spec:
           default: 125
           minimum: 125
           maximum: 1000
-          x-ui-error-message: "Disk throughput must be between 125 and 1000 MB/s"
+          x-ui-error-message: Disk throughput must be between 125 and 1000 MB/s
         encryption_key:
           type: string
           title: Encryption Key (Optional)
-          description: KMS key ID/ARN for disk encryption (leave empty for default encryption).
-          pattern: '^$|^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-f0-9-]+$|^[a-f0-9-]+$'
-          x-ui-error-message: "Encryption key must be empty, a valid KMS key ID, or a valid KMS key ARN"
+          description: KMS key ID/ARN for disk encryption (leave empty for default
+            encryption).
+          pattern: ^$|^arn:aws:kms:[a-z0-9-]+:[0-9]{12}:key/[a-f0-9-]+$|^[a-f0-9-]+$
+          x-ui-error-message: Encryption key must be empty, a valid KMS key ID, or
+            a valid KMS key ARN
     scheduling:
       type: object
       title: Workload Scheduling
@@ -238,17 +250,19 @@ spec:
                   type: string
                   title: Taint Key
                   description: Key for the node taint (e.g., workload-type, nvidia.com/gpu).
-                  pattern: '^[a-zA-Z0-9._/-]+$'
+                  pattern: ^[a-zA-Z0-9._/-]+$
                   minLength: 1
                   maxLength: 253
-                  x-ui-error-message: "Taint key must be 1-253 characters and contain only alphanumeric characters, dots, slashes, hyphens, and underscores"
+                  x-ui-error-message: Taint key must be 1-253 characters and contain
+                    only alphanumeric characters, dots, slashes, hyphens, and underscores
                 value:
                   type: string
                   title: Taint Value
                   description: Value for the node taint (e.g., analytics, true).
-                  pattern: '^[a-zA-Z0-9._/-]*$'
+                  pattern: ^[a-zA-Z0-9._/-]*$
                   maxLength: 63
-                  x-ui-error-message: "Taint value must be 0-63 characters and contain only alphanumeric characters, dots, slashes, hyphens, and underscores"
+                  x-ui-error-message: Taint value must be 0-63 characters and contain
+                    only alphanumeric characters, dots, slashes, hyphens, and underscores
                 effect:
                   type: string
                   title: Taint Effect
