@@ -215,12 +215,17 @@ locals {
 
             # Instance requirements
             requirements = concat(
-              # Instance categories
-              [
+              local.use_instance_family ? [
                 {
                   key      = "eks.amazonaws.com/instance-category"
                   operator = "In"
-                  values   = local.instance_families_list
+                  values   = [local.instance_family]
+                }
+                ] : [
+                {
+                  key      = "node.kubernetes.io/instance-type"
+                  operator = "In"
+                  values   = [local.instance_type]
                 }
               ],
               # CPU requirements
@@ -257,7 +262,6 @@ locals {
               ] : []
             )
           },
-          # Add taints if any are configured
           length(local.node_taints) > 0 ? {
             taints = local.node_taints
           } : {}
@@ -277,4 +281,8 @@ locals {
       }
     }
   }
+
+  use_instance_family = try(local.instance_requirements.use_instance_family, true)
+  instance_family     = try(local.instance_requirements.instance_family, "c")
+  instance_type       = try(local.instance_requirements.instance_type, "m6i.large")
 }

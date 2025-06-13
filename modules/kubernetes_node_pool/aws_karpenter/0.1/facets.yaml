@@ -28,12 +28,30 @@ spec:
       description: Define what types of EC2 instances this node pool can use.
       x-ui-toggle: true
       properties:
-        instance_families:
+        use_instance_family:
+          type: boolean
+          title: Use Instance Family
+          description: Toggle to select by instance family (category) or by specific
+            instance type.
+          default: true
+        instance_family:
           type: string
-          title: Instance Families
-          description: Comma-separated EC2 instance families (e.g., c5,m5,r5 for compute/memory/storage
-            optimized).
-          default: c5,c6i,m5,m6i,r5,r6i
+          title: Instance Family (Category)
+          description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+          default: c
+          x-ui-visible-if:
+            field: spec.instance_requirements.use_instance_family
+            values:
+            - true
+        instance_type:
+          type: string
+          title: Instance Type
+          description: Specific EC2 instance type (e.g., m6i.large, c5.xlarge)
+          default: m6i.large
+          x-ui-visible-if:
+            field: spec.instance_requirements.use_instance_family
+            values:
+            - false
         cpu_range:
           type: string
           title: CPU Range
@@ -231,8 +249,8 @@ inputs:
     optional: false
 outputs:
   default:
-    type: '@outputs/kubernetes_node_pool'
-    title: Karpenter NodePool and NodeClass
+    type: '@outputs/aws_karpenter'
+    title: AWS Karpenter NodePool
 sample:
   kind: kubernetes_node_pool
   flavor: aws_karpenter
