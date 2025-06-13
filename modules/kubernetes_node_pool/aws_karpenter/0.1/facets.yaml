@@ -82,7 +82,7 @@ spec:
           - amd64,arm64
         capacity_types:
           type: string
-          title: Instance Pricing
+          title: Capacity Types
           description: Choose between cost-optimized Spot instances or reliable On-Demand
             instances.
           default: spot,on-demand
