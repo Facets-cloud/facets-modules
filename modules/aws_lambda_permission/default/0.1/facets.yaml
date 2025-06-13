@@ -42,4 +42,4 @@ sample:
         action: lambda:InvokeFunction
         principal: events.amazonaws.com
     lambda_name: ''
-    lambda_version: null
+    lambda_version: '0.1'
