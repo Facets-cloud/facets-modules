@@ -225,26 +225,17 @@ spec:
           description: Labels to apply to nodes for workload targeting.
           default: {}
           x-ui-yaml-editor: true
-        dedicated_workloads:
-          type: boolean
-          title: Dedicated for Specific Workloads
-          description: Whether to reserve these nodes for specific workloads only.
-          default: false
-        workload_isolation:
+        taints:
           type: object
-          title: Workload Isolation
-          description: Configure multiple named taints for workload isolation. Each
-            key represents a taint name with its configuration.
+          title: Node Taints
+          description: Configure node taints for workload isolation. Each key represents
+            a taint name with its configuration.
           default: {}
-          x-ui-visible-if:
-            field: spec.scheduling.dedicated_workloads
-            values:
-            - true
           patternProperties:
             ^[a-zA-Z0-9_-]+$:
               type: object
               title: Taint Configuration
-              description: Configuration for a specific workload isolation taint.
+              description: Configuration for a specific node taint.
               properties:
                 key:
                   type: string
@@ -333,8 +324,7 @@ sample:
       node_labels:
         environment: production
         workload-type: general
-      dedicated_workloads: false
-      workload_isolation:
+      taints:
         gpu-workload:
           key: nvidia.com/gpu
           value: 'true'
