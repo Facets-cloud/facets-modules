@@ -31,15 +31,6 @@ locals {
   # Parse proxy bypass domains
   proxy_bypass_list = try(local.networking.proxy_configuration.bypass_domains, "") != "" ? split(",", local.networking.proxy_configuration.bypass_domains) : split(",", "localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com")
 
-  # Map disk types to AWS EBS configurations
-  disk_type_mapping = {
-    "gp3-standard"          = { type = "gp3", iops = 3000, throughput = 125 }
-    "gp3-high-performance"  = { type = "gp3", iops = 10000, throughput = 500 }
-    "io2-ultra-performance" = { type = "io2", iops = 16000, throughput = 1000 }
-  }
-
-  disk_config = local.disk_type_mapping[try(local.storage.disk_type, "gp3-standard")]
-
   # Automatically detect IAM role from EKS cluster - updated path for new structure
   node_iam_role_arn = local.kubernetes_cluster.attributes.node_group.iam_role_name
 
@@ -161,8 +152,8 @@ locals {
         ephemeralStorage = merge(
           {
             size       = try(local.storage.disk_size, "80Gi")
-            iops       = local.disk_config.iops
-            throughput = local.disk_config.throughput
+            iops       = try(local.storage.disk_iops, 3000)
+            throughput = try(local.storage.disk_throughput, 125)
           },
           try(local.storage.encryption_key, "") != "" ? {
             kmsKeyID = local.storage.encryption_key
