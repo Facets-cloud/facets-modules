@@ -4,6 +4,129 @@ version: '0.2'
 description: Adds postgres - alloydb flavor
 clouds:
 - gcp
+spec:
+  title: AlloyDB Configuration
+  type: object
+  properties:
+    postgres_version:
+      type: string
+      title: PostgreSQL Version
+      description: Specifies the PostgreSQL version to use.
+      x-ui-typeable: true
+      enum:
+        - "13.0"
+        - "14.0"
+        - "15.0"
+        - "16.0"
+      x-ui-placeholder: "e.g., '15.0'"
+      x-ui-error-message: "Please select a valid PostgreSQL version."
+    size:
+      type: object
+      title: Size Configuration
+      description: Size and capacity configuration for AlloyDB instances.
+      properties:
+        writer:
+          type: object
+          title: Writer Instance Configuration
+          description: Configuration for the primary writer instance.
+          properties:
+            cpu:
+              type: integer
+              title: CPU Count
+              description: Number of CPU cores for the writer instance.
+              minimum: 2
+              maximum: 128
+              default: 2
+              x-ui-placeholder: "e.g., 4"
+              x-ui-error-message: "CPU count must be between 2 and 128."
+          required:
+            - cpu
+        reader:
+          type: object
+          title: Reader Instance Configuration
+          description: Configuration for read replica instances.
+          properties:
+            replica_count:
+              type: integer
+              title: Replica Count
+              description: Number of read replica instances.
+              minimum: 0
+              maximum: 10
+              default: 0
+              x-ui-placeholder: "e.g., 2"
+              x-ui-error-message: "Replica count must be between 0 and 10."
+            instance_count:
+              type: integer
+              title: Instance Count
+              description: Number of read instances (alias for replica_count).
+              minimum: 0
+              maximum: 10
+              default: 0
+              x-ui-placeholder: "e.g., 2"
+              x-ui-error-message: "Instance count must be between 0 and 10."
+            cpu:
+              type: integer
+              title: CPU Count
+              description: Number of CPU cores for each reader instance.
+              minimum: 2
+              maximum: 128
+              default: 2
+              x-ui-placeholder: "e.g., 4"
+              x-ui-error-message: "CPU count must be between 2 and 128."
+          required:
+            - cpu
+      required:
+        - writer
+        - reader
+    max_connections:
+      type: object
+      title: Maximum Connections
+      description: Maximum connection limits for database instances.
+      properties:
+        writer:
+          type: integer
+          title: Writer Max Connections
+          description: Maximum connections for the writer instance.
+          minimum: 1
+          maximum: 10000
+          x-ui-placeholder: "e.g., 100"
+          x-ui-error-message: "Max connections must be between 1 and 10000."
+        reader:
+          type: integer
+          title: Reader Max Connections
+          description: Maximum connections for reader instances.
+          minimum: 1
+          maximum: 10000
+          x-ui-placeholder: "e.g., 100"
+          x-ui-error-message: "Max connections must be between 1 and 10000."
+    db_names:
+      type: array
+      title: Database Names
+      description: List of database names to create.
+      minLength: 1
+      maxLength: 63
+      pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+      x-ui-override-disable: true
+      x-ui-error-message: "Database name must start with a letter and contain only letters, numbers, and underscores."
+      x-ui-placeholder: "e.g., ['myapp', 'analytics']"
+      default: []
+    db_schemas:
+      type: object
+      title: Database Schemas
+      description: Schema definitions for the databases.
+      type: array
+      x-ui-override-disable: true
+      x-ui-yaml-editor: true
+      default: {}
+  required:
+    - postgres_version
+    - size
+  x-ui-order:
+    - postgres_version
+    - size
+    - max_connections
+    - db_names
+    - db_schemas
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
   flavor: alloydb
