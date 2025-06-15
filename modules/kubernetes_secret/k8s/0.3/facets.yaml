@@ -1,5 +1,5 @@
 intent: kubernetes_secret
-flavor: rauni
+flavor: k8s
 version: '0.3'
 description: kubernetes_secret - k8s
 clouds:
@@ -40,7 +40,7 @@ spec:
 sample:
   kind: kubernetes_secret
   disabled: true
-  flavor: rauni
+  flavor: k8s
   version: '0.3'
   metadata: {}
   spec:
