@@ -1,7 +1,7 @@
 # # Define your terraform resources here
 
 module "facets-secret" {
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resources"
+  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = lower(var.instance_name)
   namespace       = local.namespace
   advanced_config = {}
@@ -20,7 +20,7 @@ module "facets-secret" {
       data = {
         for k, v in lookup(local.spec, "data", {}) : v.key => v.value
       }
-    } : {
+      } : {
       data = {
         for k, v in lookup(local.spec, "data", {}) : v.key => base64encode(v.value)
       }
