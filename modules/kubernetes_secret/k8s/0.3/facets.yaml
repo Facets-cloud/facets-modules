@@ -1,7 +1,7 @@
 intent: kubernetes_secret
 flavor: k8s
 version: '0.3'
-description: "kubernetes_secret - k8s"
+description: kubernetes_secret - k8s
 clouds:
 - aws
 - azure
@@ -10,14 +10,22 @@ clouds:
 spec:
   type: object
   properties:
+    skip_base64_encode:
+      title: Skip Base64 Encode
+      description: Set to `true` if the corresponding 'data' value is already Base64
+        encoded and should therefore bypass the module's automatic Base64 encoding
+        process. When `true`, the provided data will be used as-is. Set to `false`
+        (default) if the data is plain text and requires Base64 encoding by the module.
+      type: boolean
+      default: false
     data:
       title: Data
       type: object
       description: Data objects containing key, value pair
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           title: Data Object Block
-          description: something
+          description: Data object block containing key, value pair
           type: object
           properties:
             key:
@@ -30,8 +38,6 @@ spec:
               type: string
               x-ui-textarea: true
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_secret/kubernetes_secret.schema.json
   kind: kubernetes_secret
   disabled: true
   flavor: k8s
