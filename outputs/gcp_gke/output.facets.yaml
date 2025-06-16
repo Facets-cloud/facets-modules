@@ -1,0 +1,52 @@
+name: gcp_gke
+out:
+  type: object
+  title: GCP Gke Module Outputs
+  description: Outputs from the GCP Gke module including cluster details and configurations
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the GCP Gke module outputs
+      properties:
+        legacy_outputs:
+          type: object
+          description: Legacy outputs for backward compatibility
+          properties:
+            registry_secret_objects:
+              type: array
+              description: List of registry secret objects
+            k8s_details:
+              type: object
+              description: Details of the Kubernetes cluster
+              properties:
+                kubernetes_version:
+                  type: string
+                  description: Version of the Kubernetes cluster
+                cluster_name:
+                  type: string
+                  description: Name of the Kubernetes cluster
+                node_group_iam_role_arn:
+                  type: string
+                  description: ARN of the IAM role for the GKE node group
+                node_pool_service_account:
+                  type: string
+                  description: Service account for the GKE node pool
+                priority-class:
+                  type: string
+                  description: Priority class for the GKE cluster
+            storageclass_id:
+              type: string
+              description: ID of the storage class for the GKE cluster
+            ENABLE_FACETS_DEDICATED_NODEPOOL:
+              type: boolean
+              description: Flag to enable dedicated node pool for facets
+            facets_dedicated_tolerations:
+              type: array
+              description: Tolerations for the facets dedicated node pool
+            facets_dedicated_node_selectors:
+              type: object
+              description: Node selectors for the facets dedicated node pool
+            gcp_cloud:
+              type: object
+              description: GCP cloud details   
+    interfaces: {}             

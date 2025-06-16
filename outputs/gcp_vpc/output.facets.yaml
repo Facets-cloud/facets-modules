@@ -5,79 +5,82 @@ out:
   description: Outputs for Google Cloud Platform VPC infrastructure including legacy attributes
   properties:
     attributes:
-      legacy_attributes:
-        required: true
-        type: object
-        properties:
-          vpc_details:
-            type: object
-            description: Details about the VPC infrastructure in GCP
-            properties:
-              private_subnets:
-                type: array
-                description: List of private subnet IDs
-              private_subnets_map:
-                type: object
-                description: Map of private subnets with additional details
-                additionalProperties:
+      type: object
+      description: Attributes of the GCP VPC module outputs
+      properties:
+        legacy_outputs:
+          required: true
+          type: object
+          properties:
+            vpc_details:
+              type: object
+              description: Details about the VPC infrastructure in GCP
+              properties:
+                private_subnets:
+                  type: array
+                  description: List of private subnet IDs
+                private_subnets_map:
                   type: object
-              secondary_ip_range_names:
-                type: object
-                description: Secondary IP range names for GKE cluster
-                properties:
-                  pod_cidr_range_legacy:
-                    type: string
-                    description: Legacy secondary range name for pod CIDR
-                  service_cidr_range:
-                    type: string
-                    description: Secondary range name for service CIDR
-                  pod_cidr_range:
-                    type: string
-                    description: Secondary range name for pod CIDR
-              vpc_id:
-                type: string
-                description: The ID of the VPC network
-              allocatable_ip_range:
-                type: string
-                description: ID of the allocatable IP range for Google service connection
-              google_service_connection_ip_range_name:
-                type: string
-                description: Name of the Google service connection IP range
-              main_subnet_ip_cidr_range:
-                type: string
-                description: IP CIDR range of the main subnet
-              main_subnet_secondary_ip_range_names_list:
-                type: object
-                description: Map of secondary IP range names to their CIDR ranges
-                additionalProperties:
+                  description: Map of private subnets with additional details
+                  additionalProperties:
+                    type: object
+                secondary_ip_range_names:
+                  type: object
+                  description: Secondary IP range names for GKE cluster
+                  properties:
+                    pod_cidr_range_legacy:
+                      type: string
+                      description: Legacy secondary range name for pod CIDR
+                    service_cidr_range:
+                      type: string
+                      description: Secondary range name for service CIDR
+                    pod_cidr_range:
+                      type: string
+                      description: Secondary range name for pod CIDR
+                vpc_id:
                   type: string
-              azs:
-                type: array
-                description: List of availability zones
-              region:
-                type: string
-                description: GCP region where resources are deployed
-          gcp_cloud:
-            type: object
-            description: GCP cloud configuration details
-            properties:
-              sharedVPCSettings:
-                type: object
-                description: Settings for shared VPC configuration
-                additionalProperties: true
-              shared_vpc_project:
-                type: string
-                description: Project ID of the shared VPC host project
-              project_id:
-                type: string
-                description: GCP project ID
-              network_name:
-                type: string
-                description: Name of the VPC network
-              subnetwork_name:
-                type: string
-                description: Name of the subnetwork
-              subnetwork_id:
-                type: string
-                description: ID of the subnetwork
+                  description: The ID of the VPC network
+                allocatable_ip_range:
+                  type: string
+                  description: ID of the allocatable IP range for Google service connection
+                google_service_connection_ip_range_name:
+                  type: string
+                  description: Name of the Google service connection IP range
+                main_subnet_ip_cidr_range:
+                  type: string
+                  description: IP CIDR range of the main subnet
+                main_subnet_secondary_ip_range_names_list:
+                  type: object
+                  description: Map of secondary IP range names to their CIDR ranges
+                  additionalProperties:
+                    type: string
+                azs:
+                  type: array
+                  description: List of availability zones
+                region:
+                  type: string
+                  description: GCP region where resources are deployed
+            gcp_cloud:
+              type: object
+              description: GCP cloud configuration details
+              properties:
+                sharedVPCSettings:
+                  type: object
+                  description: Settings for shared VPC configuration
+                  additionalProperties: true
+                shared_vpc_project:
+                  type: string
+                  description: Project ID of the shared VPC host project
+                project_id:
+                  type: string
+                  description: GCP project ID
+                network_name:
+                  type: string
+                  description: Name of the VPC network
+                subnetwork_name:
+                  type: string
+                  description: Name of the subnetwork
+                subnetwork_id:
+                  type: string
+                  description: ID of the subnetwork
     interfaces:
