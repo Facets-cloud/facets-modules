@@ -8,7 +8,7 @@ out:
       type: object
       description: Attributes of the Azure VPC module outputs
       properties:
-        legacy_attributes:
+        legacy_outputs:
           required: true
           type: object
           properties:
