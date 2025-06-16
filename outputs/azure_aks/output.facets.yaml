@@ -1,0 +1,72 @@
+name: azure_aks
+out:
+  type: object
+  title: Azure AKS Module Outputs
+  description: Outputs from the Azure AKS module including cluster details and configurations
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the Azure AKS module outputs
+      properties:
+        legacy_outputs:
+          type: object
+          description: Legacy outputs for backward compatibility
+          properties:
+            k8s_details:
+              type: object
+              description: Details of the Azure VPC
+              properties:
+                az_storage_account:
+                  type: string
+                  description: Name of the Azure Storage Account for Kubernetes 
+                az_storage_account_id:
+                  type: string
+                  description: ID of the Azure Storage Account for Kubernetes
+                az_storage_account_key:
+                  type: string
+                  description: Key for the Azure Storage Account for Kubernetes
+                node_group_iam_role_arn:
+                  type: string
+                  description: ARN of the IAM role for the AKS node group
+                cluster_id:
+                  type: string
+                  description: ID of the Kubernetes cluster
+                principalId:
+                  type: string
+                  description: Principal ID of the AKS cluster
+                priority-class:
+                  type: string
+                  description: Priority class for the AKS cluster 
+            registry_secret_objects:
+              type: array
+              description: List of registry secret objects
+            cluster_auto_upgrade:
+              type: boolean
+              description: Indicates if cluster auto upgrade is enabled
+            pmm_admin_pass:
+              type: string
+              description: Password for PMM admin user
+            azure_cloud:
+              type: object
+              description: Azure cloud details
+              properties:
+                node_resource_group_id:
+                  type: string
+                  description: Resource group ID for the AKS node pool
+                node_resource_group:
+                  type: string
+                  description: Name of the resource group for the AKS node pool
+                kubernetes_cluster_id:
+                  type: string
+                  description: ID of the Kubernetes cluster
+                ENABLE_FACETS_DEDICATED_NODEPOOL:
+                  type: boolean
+                  description: Flag to enable dedicated node pool for Facets
+                facets_dedicated_tolerations:
+                  type: array
+                  description: Tolerations for the dedicated node pool
+                facets_dedicated_node_selectors:
+                  type: object
+                  description: Node selectors for the dedicated node pool
+    interfaces: {}
+      

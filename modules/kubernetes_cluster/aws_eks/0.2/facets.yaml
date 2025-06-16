@@ -10,6 +10,9 @@ inputs:
     default:
       resource_type: network
       resource_name: default
+outputs:
+  default:
+    type: "@outputs/aws_eks"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for aws eks flavor

@@ -4,6 +4,9 @@ version: "0.1"
 description: Adds kubernetes cluster - gke flavor
 clouds:
 - gcp
+outputs:
+  default:
+    type: "@outputs/gcp_gke"
 inputs:
   network_details:
     type: "@outputs/gcp_vpc"
