@@ -5,8 +5,7 @@ module "facets-secret" {
   name            = lower(var.instance_name)
   namespace       = local.namespace
   advanced_config = {}
-  data = merge(
-    {
+  data = {
       apiVersion = "v1"
       kind       = "Secret"
       metadata = {
@@ -15,17 +14,10 @@ module "facets-secret" {
         annotations = lookup(local.metadata, "annotations", {})
         labels      = lookup(local.metadata, "labels", {})
       }
-    },
-    local.skip_base64_encode ? {
       data = {
-        for k, v in lookup(local.spec, "data", {}) : v.key => v.value
-      }
-      } : {
-      data = {
-        for k, v in lookup(local.spec, "data", {}) : v.key => base64encode(v.value)
+        for k, v in lookup(local.spec, "data", {}) : v.key => local.skip_base64_encode ? v.value : base64encode(v.value)
       }
     }
-  )
 }
 
 
