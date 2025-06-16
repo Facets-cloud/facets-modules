@@ -8,7 +8,7 @@ out:
       type: object
       description: Attributes of the GCP VPC module outputs
       properties:
-        legacy_outputs:
+        legacy_attributes:
           required: true
           type: object
           properties:

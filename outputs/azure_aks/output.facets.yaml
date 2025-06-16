@@ -8,7 +8,7 @@ out:
       type: object
       description: Attributes of the Azure AKS module outputs
       properties:
-        legacy_outputs:
+        legacy_attributes:
           type: object
           description: Legacy outputs for backward compatibility
           properties:
