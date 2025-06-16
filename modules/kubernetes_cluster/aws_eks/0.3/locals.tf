@@ -9,6 +9,22 @@ locals {
   namespace                 = lookup(var.cluster, "namespace", "default")
   user_supplied_helm_values = lookup(local.secret_copier, "values", {})
   secret_copier             = lookup(local.spec, "secret-copier", {})
+  facets_default_node_pool = {
+    name            = "default-node-pool"
+    node_class_name = "default"
+    labels = {
+      "managed-by"     = "facets"
+      facets-node-type = "facets-default"
+    }
+  }
+  facets_dedicated_node_pool = {
+    name            = "dedicated-node-pool"
+    node_class_name = "default"
+    labels = {
+      managed-by       = "facets"
+      facets-node-type = "facets-dedicated"
+    }
+  }
   cloud_tags = {
     facetscontrolplane = split(".", var.cc_metadata.cc_host)[0]
     cluster            = var.cluster.name
@@ -47,20 +63,18 @@ locals {
     apiVersion = "karpenter.sh/v1"
     kind       = "NodePool"
     metadata = {
-      name = "default-node-pool"
+      name = local.facets_default_node_pool.name
     }
     spec = {
       template = {
         metadata = {
-          labels = {
-            "managed-by" = "facets"
-          }
+          labels = local.facets_default_node_pool.labels
         }
         spec = {
           nodeClassRef = {
             group = "eks.amazonaws.com"
             kind  = "NodeClass"
-            name  = "default"
+            name  = local.facets_default_node_pool.node_class_name
           }
           requirements = [
             {
@@ -112,21 +126,18 @@ locals {
     apiVersion = "karpenter.sh/v1"
     kind       = "NodePool"
     metadata = {
-      name = "dedicated-node-pool"
+      name = local.facets_dedicated_node_pool.name
     }
     spec = {
       template = {
         metadata = {
-          labels = {
-            managed-by       = "facets"
-            facets-node-type = "facets-dedicated"
-          }
+          labels = local.facets_dedicated_node_pool.labels
         }
         spec = {
           nodeClassRef = {
             group = "eks.amazonaws.com"
             kind  = "NodeClass"
-            name  = "default"
+            name  = local.facets_dedicated_node_pool.node_class_name
           }
           taints = [
             {

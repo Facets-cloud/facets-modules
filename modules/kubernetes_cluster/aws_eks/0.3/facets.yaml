@@ -286,6 +286,8 @@ inputs:
 outputs:
   default:
     type: '@outputs/kubernetes'
+    title: Kubernetes Cluster Output
+    description: The output for the Kubernetes cluster
     providers:
       kubernetes:
         source: hashicorp/kubernetes
@@ -309,6 +311,14 @@ outputs:
           host: attributes.cluster.auth.host
           cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
           token: attributes.cluster.auth.token
+  default_node_pool:
+    type: '@outputs/aws_karpenter'
+    title: Default Node Pool
+    description: The default node pool for AWS Karpenter
+  dedicated_node_pool:
+    type: '@outputs/aws_karpenter'
+    title: Dedicated Node Pool
+    description: The dedicated node pool for AWS Karpenter
 sample:
   kind: kubernetes_cluster
   flavor: aws_eks-pa
