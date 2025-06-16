@@ -4,6 +4,9 @@ version: "0.1"
 description: Adds kubernetes cluster - aks flavor
 clouds:
 - azure
+outputs:
+  default:
+    type: "@outputs/azure_aks"
 inputs:
   network_details:
     type: "@outputs/azure_vpc"
