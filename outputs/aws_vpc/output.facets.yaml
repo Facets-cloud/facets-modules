@@ -5,88 +5,51 @@ out:
   description: Outputs from the AWS VPC module including VPC details and configurations
   properties:
     attributes:
-      vpc_details:
-        required: true
-        type: object
-        properties:
-          vpc_id:
-            type: string
-            description: The ID of the VPC
-          azs:
-            type: array
-            description: List of availability zones
-          private_subnets:
-            type: array
-            description: List of private subnet IDs
-          k8s_subnets:
-            type: array
-            description: List of Kubernetes subnet IDs
-          public_subnets:
-            type: array
-            description: List of public subnet IDs
-          public_route_table_ids:
-            type: array
-            description: List of public route table IDs
-          private_route_table_ids:
-            type: array
-            description: List of private route table IDs
-          default_subnet_id:
-            type: string
-            description: The ID of the default subnet
-          default_security_group_id:
-            type: string
-            description: The ID of the default security group
-          default_private_route_table_id:
-            type: string
-            description: The ID of the default private route table
-          private_route_table_ids_list:
-            type: string
-            description: Comma-separated list of private route table IDs
-          vpc_cidr:
-            type: string
-            description: The CIDR block of the VPC
-          az_subnets:
-            type: object
-            description: Mapping of availability zones to subnet IDs
-            additionalProperties:
-              type: array
-          az_private_subnets:
-            type: object
-            description: Mapping of availability zones to private subnet IDs
-            additionalProperties:
-              type: array
-          az_public_subnets:
-            type: object
-            description: Mapping of availability zones to public subnet IDs
-            additionalProperties:
-              type: array
-          private_subnet_objects:
-            type: object
-            description: Object containing private subnet IDs and CIDR blocks
-            properties:
-              id:
-                type: array
-              cidr:
-                type: array
-          nat_gateway_ips:
-            type: array
-            items:
-              type: string
-            description: List of NAT gateway public IPs
-          public_subnets_cidr_blocks:
-            type: array
-            description: List of public subnet CIDR blocks
-          nat_gateway_count:
-            type: integer
-            description: Number of NAT gateways
-          az_public_subnets_cidrs:
-            type: object
-            description: Mapping of availability zones to public subnet CIDR blocks
-            additionalProperties:
-              type: array
-          az_private_subnets_cidrs:
-            type: object
-            description: Mapping of availability zones to private subnet CIDR blocks
-            additionalProperties:
-              type: array
+      type: object
+      description: Attributes of the VPC module outputs
+      properties:
+        legacy_outputs:
+          type: object
+          description: Legacy outputs for backward compatibility
+          properties:
+            vpc_details:
+              type: object
+              description: Details of the VPC
+              properties:
+                vpc_id:
+                  type: string
+                  description: The ID of the VPC
+                azs:
+                  type: array
+                  description: List of availability zones in the VPC
+                private_subnets:
+                  type: array
+                  description: List of private subnet IDs in the VPC
+                k8s_subnets:
+                  type: array
+                  description: List of Kubernetes subnet IDs in the VPC
+                public_subnets:
+                  type: array
+                  description: List of public subnet IDs in the VPC
+                public_route_table_ids:
+                  type: array
+                  description: List of public route table IDs in the VPC
+                private_route_table_ids:
+                  type: array
+                  description: List of private route table IDs in the VPC
+                default_subnet_id:
+                  type: string
+                  description: The ID of the default subnet in the VPC
+                default_security_group_id:
+                  type: string
+                  description: The ID of the default security group in the VPC
+                default_private_route_table_id:
+                  type: string
+                  description: The ID of the default private route table in the VPC
+                private_route_table_ids_list:
+                  type: string
+                  description: Comma-separated list of private route table IDs in the VPC
+                vpc_cidr:
+                  type: string
+                  description: The CIDR block of the VPC
     interfaces:

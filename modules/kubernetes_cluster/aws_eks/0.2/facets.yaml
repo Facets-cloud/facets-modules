@@ -1,6 +1,5 @@
 intent: kubernetes_cluster
 flavor: aws_eks
-alias-flavors: ["default"]
 version: "0.2"
 description: Adds kubernetes cluster - eks flavor
 clouds:
@@ -11,6 +10,9 @@ inputs:
     default:
       resource_type: network
       resource_name: default
+outputs:
+  default:
+    type: "@outputs/aws_eks"
 spec:
   title: Kubernetes Cluster
   description: Specification of the kubernetes cluster for aws eks flavor
