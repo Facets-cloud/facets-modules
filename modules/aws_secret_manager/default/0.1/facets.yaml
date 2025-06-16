@@ -6,28 +6,71 @@ clouds:
 - aws
 spec:
   title: AWS Secret Manager
-  description: Specification of the aws secret manager resource intent
+  description: Specification of the AWS secret manager resource intent
   type: object
   properties:
     override_default_name:
       type: boolean
-      title: Override Default Name
-      description: Set it to true if secret is to be created with custom name
+      title: Override Default Secret Name
+      description: Set to true if you want to create the secret with a custom name
+        instead of auto-generated name
+      default: false
     override_name:
       type: string
-      title: Override Name
-      description: Custom name for secret. Applies only if override_default_name is
-        set to true.
+      title: Custom Secret Name
+      description: Custom name for the AWS secret. Must follow AWS naming conventions.
+        Required when override default name is enabled.
       pattern: ^[a-zA-Z0-9/_+=.@-]+$
-      x-ui-placeholder: Enter the custom name
-      x-ui-error-message: Value doesn't match the format eg. facets-secret
+      minLength: 1
+      maxLength: 512
+      x-ui-placeholder: e.g. my-application-secrets
+      x-ui-error-message: Secret name must contain only letters, numbers, and these
+        characters /_+=.@-
     secrets:
-      title: Secrets
+      title: Secret Data
       type: object
-      description: 'Enter a valid key-value pair for secrets in YAML format. Eg. key:
-        value (provide a space after '':'' as expected in the YAML format)'
-      x-ui-yaml-editor: true
-      x-ui-placeholder: 'Enter the value of the secret. Eg. key1: value1'
+      description: Key-value pairs to store as secret data in AWS Secrets Manager
+      minProperties: 1
+      patternProperties:
+        .*:
+          type: object
+          title: Secret entry containing key and value
+          properties:
+            key:
+              type: string
+              title: Secret Key
+              description: The key name for this secret value
+              pattern: ^[a-zA-Z0-9_.-]+$
+              minLength: 1
+              maxLength: 255
+              x-ui-placeholder: e.g. database_password
+              x-ui-error-message: Key must contain only letters, numbers, underscores,
+                dots, and hyphens
+            value:
+              type: string
+              title: Secret Value
+              description: The sensitive data to store for this key
+              minLength: 1
+              maxLength: 65536
+              x-ui-placeholder: Enter the secret value
+              x-ui-error-message: Secret value cannot be empty
+          required:
+          - key
+          - value
+  required:
+  - secrets
+  allOf:
+  - if:
+      properties:
+        override_default_name:
+          const: true
+    then:
+      required:
+      - override_name
+      - secrets
+    else:
+      required:
+      - secrets
 sample:
   kind: aws_secret_manager
   flavor: default
@@ -42,8 +85,12 @@ sample:
     override_default_name: false
     override_name: ''
     secrets:
-      key1: value1
-      key2: value2
+      data1:
+        key: key1
+        value: value1
+      data2:
+        key: key2
+        value: value2
   advanced:
     secret_manager: {}
   out: {}
