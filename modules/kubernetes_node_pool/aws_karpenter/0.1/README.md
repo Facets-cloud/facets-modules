@@ -1,239 +1,79 @@
-# EKS Auto Mode Karpenter NodePool Manager
+# AWS Karpenter Node Pool Module v0.1
 
-Creates and manages dynamic node pools for EKS Auto Mode clusters with intelligent scaling and cost optimization. This module provides a simplified, user-friendly interface that abstracts away Karpenter's technical complexity while providing full functionality.
+![AWS](https://img.shields.io/badge/AWS-Karpenter-orange.svg)
+![Terraform](https://img.shields.io/badge/Terraform-1.5.7-blue.svg)
+![Version](https://img.shields.io/badge/Version-0.1-green.svg)
 
-## Features
+## Overview
 
-- **Seamless User Experience**: Single, intuitive configuration without technical Karpenter details
-- **Automatic IAM Role Detection**: Uses EKS cluster's node IAM role automatically from cluster attributes
-- **Smart Defaults**: Intelligent subnet and security group selection
-- **Cost Optimization**: Built-in node consolidation and Spot instance support
-- **Rollback Capabilities**: Uses any-k8s-resource for reliable deployments
-- **Full EKS Auto Mode Support**: All AWS documentation features implemented
+Creates and manages dynamic node pools for EKS Auto Mode clusters using AWS Karpenter with intelligent scaling and cost optimization. This module provides a simplified interface that abstracts Karpenter's technical complexity while delivering full functionality for automatic node provisioning.
 
-## Usage
+The module is designed for developer self-service with intelligent defaults while supporting advanced configurations for diverse workload requirements.
 
-```hcl
-module "production_nodepool" {
-  source = "./modules/kubernetes_node_pool/aws_karpenter"
-  
-  name = "production-nodes"
-  
-  instance_requirements = {
-    instance_families = "c5,m5,r5"
-    cpu_range        = "4,8,16"
-    architectures    = "x86_64,arm64"
-    capacity_types   = "spot,on-demand"
-  }
-  
-  scaling = {
-    max_cpu              = "500"
-    max_memory          = "2000Gi"
-    consolidation_policy = "WhenEmptyOrUnderutilized"
-    consolidation_delay  = "30s"
-  }
-  
-  networking = {
-    subnet_type = "private"
-  }
-  
-  storage = {
-    disk_size = "100Gi"
-    disk_type = "gp3-standard"
-  }
-  
-  scheduling = {
-    node_labels = {
-      environment    = "production"
-      workload-type = "general"
-    }
-    dedicated_workloads = true
-    workload_isolation = {
-      production = {
-        key    = "environment"
-        value  = "production"
-        effect = "NoSchedule"
-      }
-    }
-  }
-  
-  tags = {
-    Environment = "production"
-    Team       = "platform"
-    CostCenter = "engineering"
-  }
-  
-  kubernetes_cluster = var.kubernetes_cluster
-  network_details   = var.network_details
-}
-```
+## Environment as Dimension
 
-## Configuration Sections
+This module is environment-aware and uses the `var.environment` variable to:
 
-### Instance Requirements
-Define what types of EC2 instances this node pool can use:
-- **instance_families**: EC2 instance families (e.g., c5,m5,r5)
-- **cpu_range**: vCPU counts to allow (e.g., 2,4,8,16)
-- **architectures**: CPU architectures (x86_64, arm64, or both)
-- **capacity_types**: Spot, On-Demand, or both for cost optimization
-- **availability_zones**: Specific AZs (optional, uses all VPC zones by default)
+- **Resource naming**: Generates unique node pool and node class names per environment
+- **Tagging strategy**: Applies environment-specific tags for cost allocation and resource tracking
+- **Network configuration**: Selects appropriate subnet types (private/public/database) that may vary between environments
+- **Resource limits**: Supports different CPU and memory limits per environment for cost control
+- **Availability zones**: Allows environment-specific AZ restrictions for compliance or latency requirements
+- **Consolidation policies**: Enables different cost optimization strategies per environment
 
-### Scaling Configuration
-Control how the node pool scales and manages resources:
-- **max_cpu**: Maximum total CPU cores for this node pool
-- **max_memory**: Maximum total memory (e.g., 1000Gi)
-- **consolidation_policy**: Cost optimization aggressiveness
-- **consolidation_delay**: Wait time before consolidating nodes
+Environment-specific configurations include proxy settings for restricted environments, storage encryption keys, and workload isolation policies that can be customized per deployment context.
 
-### Networking Configuration
-Advanced networking settings:
-- **subnet_type**: Type of subnets to use (private, public, database) - automatically uses the corresponding subnets from VPC network configuration
-- **proxy_configuration**: HTTP/HTTPS proxy settings for restricted environments
+## Resources Created
 
-### Storage Configuration
-Configure storage settings:
-- **disk_size**: Root disk size (e.g., 80Gi, 100Gi)
-- **disk_type**: Performance level (gp3-standard, gp3-high-performance, io2-ultra-performance)
-- **encryption_key**: KMS key for disk encryption (optional)
+The module creates the following Kubernetes and AWS resources:
 
-### Workload Scheduling
-Control which workloads can run on these nodes:
-- **node_labels**: Labels for workload targeting
-- **workload_isolation**: Multiple named taint configurations for advanced workload isolation
-- **dedicated_workloads**: Reserve nodes for specific workloads (legacy flag)
+### Kubernetes Resources
+- **Karpenter NodeClass**: Defines EC2 instance configuration, IAM roles, security groups, and storage settings
+- **Karpenter NodePool**: Manages node lifecycle, scaling policies, and workload placement rules
+- **Node Labels**: Applied to all nodes for workload targeting and organization
+- **Node Taints**: Configurable taints for workload isolation and dedicated node pools
 
-## Smart Defaults
+### AWS Integration
+- **EC2 Instance Selection**: Automatic instance type selection based on family, CPU, architecture, and capacity requirements
+- **Subnet Integration**: Smart subnet selection from VPC configuration (private, public, or database subnets)
+- **Security Group Association**: Automatic security group detection from EKS cluster configuration
+- **EBS Storage**: Configurable GP3 storage with custom IOPS, throughput, and encryption
+- **IAM Role Integration**: Automatic detection and usage of EKS cluster node IAM roles
 
-The module provides intelligent defaults that work out of the box:
+### Cost Optimization Features
+- **Spot Instance Support**: Mixed capacity types (Spot/On-Demand) for cost reduction
+- **Node Consolidation**: Automatic right-sizing and removal of underutilized nodes
+- **Multi-Architecture Support**: ARM64 and AMD64 instance types for optimal price-performance
+- **Intelligent Placement**: Cross-AZ distribution for availability and cost optimization
 
-- **IAM Role**: Automatically uses EKS cluster's node IAM role from `attributes.node_group.iam_role_arn`
-- **Subnets**: Uses subnet type selection (private/public/database) from VPC network configuration
-- **Security Groups**: Automatically uses EKS cluster node security group from `attributes.node_group.security_group_id`
-- **Instance Types**: Balanced mix of compute, memory, and storage optimized instances
-- **Cost Optimization**: Enables both Spot and On-Demand with smart consolidation
+## Security Considerations
 
-## Disk Performance Levels
+This module implements several security best practices:
 
-- **gp3-standard**: 3,000 IOPS, 125 MB/s throughput - Good for general workloads
-- **gp3-high-performance**: 10,000 IOPS, 500 MB/s throughput - High-performance applications
-- **io2-ultra-performance**: 16,000 IOPS, 1,000 MB/s throughput - Ultra-high performance databases
+### Network Security
+- **Private Subnet Deployment**: Nodes deployed in private subnets by default with controlled internet access
+- **Security Group Integration**: Automatic use of EKS cluster security groups with proper ingress/egress rules
+- **Proxy Support**: HTTP/HTTPS proxy configuration for environments with restricted internet access
+- **VPC Endpoint Integration**: Supports AWS service communication through VPC endpoints
 
-## Proxy Configuration
+### Access Control and Identity
+- **IAM Role Inheritance**: Automatically inherits and uses EKS cluster node IAM roles for consistent permissions
+- **Service Account Integration**: Supports IAM roles for service accounts (IRSA) for workload-level permissions
+- **Node Taints and Labels**: Workload isolation through Kubernetes native scheduling constraints
 
-For environments requiring HTTP/HTTPS proxies:
+### Storage Security
+- **Encryption at Rest**: EBS volumes encrypted by default with optional custom KMS keys
+- **Performance Optimization**: Configurable IOPS and throughput for security-sensitive workloads
+- **Ephemeral Storage**: Secure temporary storage configuration with automatic cleanup
 
-```hcl
-networking = {
-  proxy_configuration = {
-    https_proxy    = "http://proxy.company.com:8080"
-    bypass_domains = "localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com"
-  }
-}
-```
+### Workload Isolation
+- **Dedicated Node Pools**: Support for dedicated nodes with custom taints for sensitive workloads
+- **Multi-Tenant Safety**: Proper node labeling and tainting for secure multi-tenant deployments
+- **Network Policies**: Foundation for implementing Kubernetes network policies for traffic isolation
 
-## Multiple Taints Support
+### Operational Security
+- **Rollback Capabilities**: Built-in rollback support for failed deployments using any-k8s-resource module
+- **Resource Limits**: CPU and memory limits prevent resource exhaustion attacks
+- **Automatic Updates**: Integration with EKS managed node group update mechanisms
 
-You can define multiple named taint configurations for advanced workload isolation when `dedicated_workloads` is enabled:
-
-```hcl
-scheduling = {
-  dedicated_workloads = true
-  workload_isolation = {
-    gpu-workload = {
-      key    = "nvidia.com/gpu"
-      value  = "true"
-      effect = "NoSchedule"
-    }
-    dedicated = {
-      key    = "dedicated"
-      value  = "production"
-      effect = "NoSchedule"
-    }
-    high-memory = {
-      key    = "memory-optimized"
-      value  = "true"
-      effect = "PreferNoSchedule"
-    }
-  }
-  node_labels = {
-    workload-type = "gpu-analytics"
-    memory-type   = "high"
-  }
-}
-```
-
-## Workload Isolation
-
-### Multiple Named Taints (Recommended)
-For complex workload isolation with multiple named taint configurations:
-
-```hcl
-scheduling = {
-  dedicated_workloads = true
-  workload_isolation = {
-    gpu-workload = {
-      key    = "nvidia.com/gpu"
-      value  = "true"
-      effect = "NoSchedule"
-    }
-    dedicated = {
-      key    = "dedicated"
-      value  = "analytics"
-      effect = "NoSchedule"
-    }
-  }
-  node_labels = {
-    workload-type = "gpu-analytics"
-  }
-}
-```
-
-### Legacy Single Taint (Backward Compatibility)
-To dedicate nodes for specific workloads using the legacy method:
-
-```hcl
-scheduling = {
-  dedicated_workloads = true
-  workload_isolation = {
-    default = {
-      key    = "workload-type"
-      value  = "analytics"
-      effect = "NoSchedule"
-    }
-  }
-  node_labels = {
-    workload-type = "analytics"
-  }
-}
-```
-
-**Note**: The `workload_isolation` field is only visible and functional when `dedicated_workloads` is set to `true`. Each key in `workload_isolation` represents a named taint configuration.
-
-## Outputs
-
-- **node_class_name**: Name of the created NodeClass
-- **node_pool_name**: Name of the created NodePool
-- **manifests**: Complete Kubernetes manifests for both resources
-
-## Requirements
-
-- EKS cluster with Auto Mode enabled
-- Karpenter installed and configured
-- VPC with properly tagged subnets
-- IAM roles and policies for Karpenter
-
-## Dependencies
-
-- **kubernetes_cluster**: EKS cluster output with node group IAM role details
-- **network_details**: VPC network configuration
-
-## IAM Role Detection
-
-The module automatically detects and uses the EKS cluster's node IAM role from:
-```
-kubernetes_cluster.attributes.node_group.iam_role_arn
-```
-
-This ensures seamless integration with existing EKS clusters without requiring manual IAM role configuration.
-
-This module abstracts away Karpenter's complexity while providing full control over node provisioning, making it easy for users to configure dynamic node pools without deep Kubernetes knowledge.
+**Important**: Ensure proxy bypass domains include all necessary AWS services and internal endpoints to maintain secure communication paths while routing external traffic through corporate proxies.
