@@ -8,6 +8,7 @@ clouds:
 title: EKS Cluster with Auto Mode support
 description: A Kubernetes EKS cluster module with auto mode enabled by default and
   all necessary configurations preset.
+allow_skipping_module_on_selective_release: false
 spec:
   type: object
   x-ui-order:
@@ -312,11 +313,11 @@ outputs:
           cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
           token: attributes.cluster.auth.token
   default_node_pool:
-    type: '@outputs/aws_karpenter'
+    type: '@outputs/aws_karpenter_nodepool'
     title: Default Node Pool
     description: The default node pool for AWS Karpenter
   dedicated_node_pool:
-    type: '@outputs/aws_karpenter'
+    type: '@outputs/aws_karpenter_nodepool'
     title: Dedicated Node Pool
     description: The dedicated node pool for AWS Karpenter
 sample:

@@ -293,7 +293,7 @@ inputs:
     optional: false
 outputs:
   default:
-    type: '@outputs/aws_karpenter'
+    type: '@outputs/aws_karpenter_nodepool'
     title: AWS Karpenter NodePool
 sample:
   kind: kubernetes_node_pool
