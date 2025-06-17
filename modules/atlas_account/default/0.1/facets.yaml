@@ -4,7 +4,7 @@ version: '0.1'
 description: Adds atlas_account - default flavor
 outputs:
   default:
-    type: "@outputs/atlas_account_details"
+    type: "@outputs/atlas_account"
     providers:
       mongodbatlas:
         source: mongodb/mongodbatlas
