@@ -15,7 +15,6 @@ metadata:
       type: string
       title: Namespace 
       description: Namespace in which Elasticsearch should be deployed
-      default: default
 spec:
   title: K8s elasticsearch
   type: object

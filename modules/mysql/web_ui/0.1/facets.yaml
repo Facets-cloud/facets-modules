@@ -19,7 +19,6 @@ metadata:
       type: string
       title: Namespace 
       description: Namespace in which UI should be deployed
-      default: default
 spec:
   title: Mysql Web Ui
   type: object
