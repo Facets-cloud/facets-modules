@@ -19,7 +19,6 @@ metadata:
       type: string
       title: Namespace
       description: Namespace in which cronjob should be deployed
-      default: default
 spec:
   title: Cronjob flavor of service
   type: object
