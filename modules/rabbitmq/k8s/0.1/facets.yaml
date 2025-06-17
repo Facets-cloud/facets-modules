@@ -15,7 +15,6 @@ metadata:
       type: string
       title: Namespace
       description: Namespace in which Mongo should be deployed
-      default: default
 spec:
   title: K8s rabbitmq
   type: object

@@ -15,7 +15,6 @@ metadata:
       type: string
       title: Namespace 
       description: Namespace in which kafka should be deployed
-      default: default
 spec:
   title: Kafka Spec
   type: object
