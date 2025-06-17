@@ -2,6 +2,16 @@ intent: atlas_account
 flavor: default
 version: '0.1'
 description: Adds atlas_account - default flavor
+outputs:
+  default:
+    type: "@outputs/atlas_account_details"
+    providers:
+      mongodbatlas:
+        source: mongodb/mongodbatlas
+        version: 1.17.0
+        attributes:
+          public_key: attributes.public_key
+          private_key: attributes.private_key 
 clouds:
 - aws
 - gcp

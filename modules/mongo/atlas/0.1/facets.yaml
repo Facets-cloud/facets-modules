@@ -4,6 +4,12 @@ version: '0.1'
 description: Adds mongo - atlas flavor
 clouds:
 - azure
+inputs:
+  atlas_account_details:
+    type: '@outputs/atlas_account'
+    optional: false
+    providers:
+      - mongodbatlas
 spec:
   title: MongoDB Atlas Configuration
   type: object
