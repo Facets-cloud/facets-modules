@@ -25,6 +25,7 @@ spec:
       description: Specifies the Postgres version to use.
       minLength: 1
       x-ui-placeholder: "e.g., '13.3.0' or '15.3.0'"
+      x-ui-typeable: true
       enum:
       - "9.6.9"
       - "10.9.0"

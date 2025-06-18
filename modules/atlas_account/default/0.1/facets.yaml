@@ -2,11 +2,46 @@ intent: atlas_account
 flavor: default
 version: '0.1'
 description: Adds atlas_account - default flavor
+outputs:
+  default:
+    type: "@outputs/atlas_account"
+    providers:
+      mongodbatlas:
+        source: mongodb/mongodbatlas
+        version: 1.17.0
+        attributes:
+          public_key: attributes.public_key
+          private_key: attributes.private_key 
 clouds:
 - aws
 - gcp
 - azure
 - kubernetes
+spec:
+  title: Atlas Account Configuration
+  type: object
+  properties:
+    project_id:
+      type: string
+      title: Atlas Project ID
+      description: The ID of the MongoDB Atlas project.
+      x-ui-typeable: true
+      x-ui-placeholder: "e.g., '5f8d0c0b0f1a2b3c4d5e6f7g'"
+      x-ui-error-message: "Please enter a valid Atlas Project ID."
+    public_key:
+      type: string
+      title: Atlas Public Key
+      description: The public key for the MongoDB Atlas account.
+      x-ui-typeable: true
+      x-ui-placeholder: "e.g., 'abc123xyz456'"
+      x-ui-error-message: "Please enter a valid Atlas Public Key."
+    private_key:
+      type: string
+      title: Atlas Private Key
+      description: The private key for the MongoDB Atlas account.
+      x-ui-typeable: true
+      x-ui-placeholder: "e.g., 'privateKey123'"
+      x-ui-error-message: "Please enter a valid Atlas Private Key."
 sample:
   flavor: default
   lifecycle: ENVIRONMENT

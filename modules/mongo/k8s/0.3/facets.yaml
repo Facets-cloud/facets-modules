@@ -27,6 +27,7 @@ spec:
       type: string
       title: MongoDB Version
       description: Specifies the MongoDB version to use.
+      x-ui-typeable: true
       enum:
         - "4.4.15"
         - "5.0.24"
