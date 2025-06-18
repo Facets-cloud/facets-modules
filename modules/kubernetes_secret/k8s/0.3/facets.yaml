@@ -12,10 +12,7 @@ spec:
   properties:
     skip_base64_encode:
       title: Skip Base64 Encode
-      description: Set to `true` if the corresponding 'data' value is already Base64
-        encoded and should therefore bypass the module's automatic Base64 encoding
-        process. When `true`, the provided data will be used as-is. Set to `false`
-        (default) if the data is plain text and requires Base64 encoding by the module.
+      description: If true, the 'data' value is assumed pre-encoded (Base64) and will not be re-encoded. Defaults to false
       type: boolean
       default: false
     data:
