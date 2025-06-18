@@ -3,6 +3,9 @@ flavor: default
 version: '0.2'
 clouds:
 - gcp
+outputs:
+  default:
+    type: '@output/google_cloud_storage'
 description: Creates and manages a Google Cloud Storage bucket with configurable options.
 spec:
   title: Google Cloud Storage Bucket
