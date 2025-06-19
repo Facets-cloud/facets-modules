@@ -200,7 +200,7 @@ data "aws_internet_gateway" "default" {
 
 data "aws_nat_gateway" "nat_gw" {
   depends_on = [module.vpc]
-  count      = local.network_firewall_enabled && local.should_create_nat_gateways ? module.vpc.vpc_details.nat_gateway_count : 0
+  count      = local.should_create_nat_gateways ? module.vpc.vpc_details.nat_gateway_count : 0
   state      = "available"
   filter {
     name   = "vpc-id"
@@ -214,14 +214,14 @@ data "aws_nat_gateway" "nat_gw" {
 
 # Data source for existing NAT gateways provided by user
 data "aws_nat_gateway" "existing_nat_gw" {
-  count = local.network_firewall_enabled && local.use_existing_nat_gateways ? length(local.existing_nat_gateway_ids) : 0
+  count = local.use_existing_nat_gateways ? length(local.existing_nat_gateway_ids) : 0
   id    = local.existing_nat_gateway_ids[count.index]
 }
 
-# private subnets to route to nat gateway
+# private subnets to route to nat gateway (works for both firewall and non-firewall scenarios)
 resource "aws_route" "private_nat_gateway" {
   depends_on = [module.vpc]
-  count      = local.network_firewall_enabled ? (local.should_create_nat_gateways ? module.vpc.vpc_details.nat_gateway_count : length(local.existing_nat_gateway_ids)) : 0
+  count      = local.should_create_nat_gateways ? module.vpc.vpc_details.nat_gateway_count : length(local.existing_nat_gateway_ids)
 
   route_table_id         = element(module.vpc.vpc_details.private_route_table_ids, count.index)
   destination_cidr_block = "0.0.0.0/0"
