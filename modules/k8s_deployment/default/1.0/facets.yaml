@@ -1,0 +1,316 @@
+intent: k8s_deployment
+flavor: default
+version: '1.0'
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+title: Kubernetes Deployment
+description: A Terraform module that creates a Kubernetes deployment using the Kubernetes
+  provider
+spec:
+  type: object
+  x-ui-order:
+  - metadata
+  - spec
+  - strategy
+  properties:
+    metadata:
+      type: object
+      title: Metadata
+      description: Metadata for the deployment
+      x-ui-toggle: true
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Name of the deployment
+          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+          maxLength: 253
+        namespace:
+          type: string
+          title: Namespace
+          description: Namespace where the deployment will be created
+          default: default
+          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+          maxLength: 63
+        labels:
+          type: object
+          title: Labels
+          description: Labels to apply to the deployment
+          default: {}
+          x-ui-yaml-editor: true
+        annotations:
+          type: object
+          title: Annotations
+          description: Annotations to apply to the deployment
+          default: {}
+          x-ui-yaml-editor: true
+      required:
+      - name
+    spec:
+      type: object
+      title: Deployment Specification
+      description: Configuration for the deployment specification
+      x-ui-toggle: true
+      properties:
+        replicas:
+          type: integer
+          title: Replicas
+          description: Number of replicas for the deployment
+          minimum: 0
+          maximum: 1000
+          default: 1
+        selector:
+          type: object
+          title: Selector
+          description: Selector for the deployment pods
+          x-ui-yaml-editor: true
+          properties:
+            match_labels:
+              type: object
+              title: Match Labels
+              description: Labels that pods must match
+              default: {}
+        template:
+          type: object
+          title: Pod Template
+          description: Template for the pods created by the deployment
+          x-ui-toggle: true
+          properties:
+            metadata:
+              type: object
+              title: Pod Metadata
+              description: Metadata for the pod template
+              properties:
+                labels:
+                  type: object
+                  title: Pod Labels
+                  description: Labels to apply to pods
+                  default: {}
+                  x-ui-yaml-editor: true
+                annotations:
+                  type: object
+                  title: Pod Annotations
+                  description: Annotations to apply to pods
+                  default: {}
+                  x-ui-yaml-editor: true
+            spec:
+              type: object
+              title: Pod Specification
+              description: Specification for the pod template
+              properties:
+                containers:
+                  type: array
+                  title: Containers
+                  description: List of containers in the pod
+                  minItems: 1
+                  x-ui-overrides-only: true
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        title: Container Name
+                        description: Name of the container
+                        pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+                      image:
+                        type: string
+                        title: Container Image
+                        description: Docker image for the container
+                      ports:
+                        type: array
+                        title: Container Ports
+                        description: List of ports to expose from the container
+                        x-ui-overrides-only: true
+                        items:
+                          type: object
+                          properties:
+                            container_port:
+                              type: integer
+                              title: Container Port
+                              description: Port number on the container
+                              minimum: 1
+                              maximum: 65535
+                            name:
+                              type: string
+                              title: Port Name
+                              description: Name for the port
+                            protocol:
+                              type: string
+                              title: Protocol
+                              description: Protocol for the port
+                              default: TCP
+                              enum:
+                              - TCP
+                              - UDP
+                              - SCTP
+                          required:
+                          - container_port
+                      env:
+                        type: array
+                        title: Environment Variables
+                        description: List of environment variables
+                        x-ui-overrides-only: true
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              title: Variable Name
+                              description: Name of the environment variable
+                            value:
+                              type: string
+                              title: Variable Value
+                              description: Value of the environment variable
+                          required:
+                          - name
+                          - value
+                      resources:
+                        type: object
+                        title: Resource Requirements
+                        description: Resource requirements for the container
+                        properties:
+                          requests:
+                            type: object
+                            title: Resource Requests
+                            description: Minimum resource requirements
+                            properties:
+                              cpu:
+                                type: string
+                                title: CPU Request
+                                description: CPU resource request (e.g., 100m, 0.5)
+                                default: 100m
+                              memory:
+                                type: string
+                                title: Memory Request
+                                description: Memory resource request (e.g., 128Mi,
+                                  1Gi)
+                                default: 128Mi
+                          limits:
+                            type: object
+                            title: Resource Limits
+                            description: Maximum resource limits
+                            properties:
+                              cpu:
+                                type: string
+                                title: CPU Limit
+                                description: CPU resource limit (e.g., 500m, 1)
+                                default: 500m
+                              memory:
+                                type: string
+                                title: Memory Limit
+                                description: Memory resource limit (e.g., 256Mi, 2Gi)
+                                default: 256Mi
+                    required:
+                    - name
+                    - image
+                restart_policy:
+                  type: string
+                  title: Restart Policy
+                  description: Restart policy for the pod
+                  default: Always
+                  enum:
+                  - Always
+                  - OnFailure
+                  - Never
+              required:
+              - containers
+          required:
+          - spec
+      required:
+      - template
+    strategy:
+      type: object
+      title: Deployment Strategy
+      description: Strategy for updating the deployment
+      x-ui-toggle: true
+      properties:
+        type:
+          type: string
+          title: Strategy Type
+          description: Type of deployment strategy
+          default: RollingUpdate
+          enum:
+          - RollingUpdate
+          - Recreate
+        rolling_update:
+          type: object
+          title: Rolling Update Strategy
+          description: Configuration for rolling update strategy
+          x-ui-visible-if:
+            field: spec.strategy.type
+            values:
+            - RollingUpdate
+          properties:
+            max_surge:
+              type: string
+              title: Max Surge
+              description: Maximum number of pods that can be created above the desired
+                number
+              default: 25%
+            max_unavailable:
+              type: string
+              title: Max Unavailable
+              description: Maximum number of pods that can be unavailable during the
+                update
+              default: 25%
+  required:
+  - metadata
+  - spec
+inputs:
+  kubernetes_cluster:
+    type: '@outputs/aws_eks'
+    displayName: Kubernetes Cluster
+    description: The Kubernetes cluster where the deployment will be created
+    optional: false
+    providers:
+    - kubernetes
+outputs:
+  default:
+    type: '@outputs/kubernetes_deployment'
+    title: Kubernetes Deployment
+    description: The created Kubernetes deployment
+sample:
+  kind: k8s_deployment
+  flavor: default
+  version: '1.0'
+  metadata:
+    name: sample-deployment
+  spec:
+    metadata:
+      name: sample-app
+      namespace: default
+      labels:
+        app: sample-app
+    spec:
+      replicas: 2
+      selector:
+        match_labels:
+          app: sample-app
+      template:
+        metadata:
+          labels:
+            app: sample-app
+        spec:
+          containers:
+          - name: app
+            image: nginx:1.21
+            ports:
+            - container_port: 80
+              name: http
+              protocol: TCP
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 256Mi
+          restart_policy: Always
+    strategy:
+      type: RollingUpdate
+      rolling_update:
+        max_surge: 25%
+        max_unavailable: 25%
