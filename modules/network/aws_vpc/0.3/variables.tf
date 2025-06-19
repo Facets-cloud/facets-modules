@@ -1,14 +1,13 @@
 variable "instance" {
   type = object({
     spec = object({
-      choose_vpc_type                 = string
-      azs                             = list(string)
-      vpc_cidr                        = string
-      enable_multi_az                 = bool
-      existing_vpc_id                 = string
-      nat_gateway_strategy            = optional(string, "create_new_nat_gateways")
-      existing_nat_gateway_ids        = optional(string, "")
-      existing_public_route_table_ids = optional(string, "")
+      choose_vpc_type          = string
+      azs                      = list(string)
+      vpc_cidr                 = string
+      enable_multi_az          = bool
+      existing_vpc_id          = string
+      nat_gateway_strategy     = optional(string, "create_new_nat_gateways")
+      existing_nat_gateway_ids = optional(string, "")
     })
   })
   description = "Instance configuration containing spec and other metadata"
@@ -39,19 +38,8 @@ variable "instance" {
   }
 
   validation {
-    condition = (
-      var.instance.spec.choose_vpc_type == "use_existing_vpc" &&
-      var.instance.spec.nat_gateway_strategy == "use_existing_nat_gateways"
-    ) ? var.instance.spec.existing_nat_gateway_ids != "" : true
+    condition     = var.instance.spec.nat_gateway_strategy == "use_existing_nat_gateways" ? var.instance.spec.existing_nat_gateway_ids != "" : true
     error_message = "Existing NAT Gateway IDs must be provided when using existing NAT Gateways."
-  }
-
-  validation {
-    condition = (
-      var.instance.spec.choose_vpc_type == "use_existing_vpc" &&
-      var.instance.spec.nat_gateway_strategy == "use_existing_nat_gateways"
-    ) ? var.instance.spec.existing_public_route_table_ids != "" : true
-    error_message = "Existing public route table IDs must be provided when using existing NAT Gateways."
   }
 }
 

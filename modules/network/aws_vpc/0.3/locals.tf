@@ -113,7 +113,7 @@ locals {
     private_subnets                = slice(aws_subnet.private_subnets[*].id, 0, 2)
     k8s_subnets                    = slice(aws_subnet.private_subnets[*].id, 2, 8)
     public_subnets                 = aws_subnet.public_subnets[*].id
-    public_route_table_ids         = local.create_new_nat_gateways ? [aws_route_table.public[0].id] : data.aws_route_table.existing_public[*].id
+    public_route_table_ids         = [aws_route_table.public[0].id]
     private_route_table_ids        = aws_route_table.private[*].id
     default_subnet_id              = length(aws_subnet.private_subnets) > 0 ? aws_subnet.private_subnets[0].id : null
     default_security_group_id      = aws_security_group.allow_all_default.id

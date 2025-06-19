@@ -36,22 +36,40 @@ The module supports four comprehensive deployment scenarios:
 **Cost-optimized new VPC deployment**
 - Creates new VPC with custom subnets and Internet Gateway
 - Reuses existing NAT Gateways from other VPCs for outbound traffic
+- Creates dedicated public route tables for the new VPC's public subnets
 - Reduces NAT Gateway costs while maintaining VPC isolation
 - Ideal for: Cost optimization, centralized internet egress, multi-environment setups
 
 ### Scenario 3: Existing VPC + New NAT Gateways
 **Enhanced existing VPC with dedicated NAT Gateways**
 - Adds subnets and dedicated NAT Gateways to existing VPC
-- Creates new Internet Gateway and route tables
+- Intelligently manages Internet Gateway (creates if none exists, reuses if available)
+- Creates dedicated route tables for new subnets
 - Provides dedicated outbound internet access
 - Ideal for: Expanding existing VPCs, dedicated team resources, isolation requirements
 
 ### Scenario 4: Existing VPC + Existing NAT Gateways
 **Maximum resource reuse scenario**
 - Adds subnets to existing VPC
-- Reuses existing NAT Gateways and public route tables
+- Reuses existing NAT Gateways for outbound traffic
+- Automatically manages Internet Gateway (smart discovery and creation)
+- Creates dedicated public route tables for new public subnets
 - Minimal infrastructure creation for maximum cost savings
 - Ideal for: Cost optimization, shared infrastructure, temporary environments
+
+## Intelligent Infrastructure Management
+
+### **Smart Internet Gateway Handling**
+The module automatically discovers and manages Internet Gateways:
+- **Existing VPC scenarios**: Checks if an Internet Gateway already exists
+- **Auto-creation**: Creates new Internet Gateway only if none exists (AWS allows only one per VPC)
+- **Smart referencing**: Uses existing Internet Gateway when available
+
+### **Simplified Route Table Management**
+- **Always creates dedicated route tables** for new subnets
+- **No complex user input required** - eliminates the need to specify existing public route table IDs
+- **Clean separation** - manages routing for resources it creates
+- **Predictable routing** - ensures proper internet access for public subnets
 
 ## Resources Created
 
@@ -59,6 +77,7 @@ The module supports four comprehensive deployment scenarios:
 - **Security Groups** - Default security group allowing intra-VPC communication
 - **VPC Endpoints** - S3 Gateway endpoint and EC2 Interface endpoint for AWS service access
 - **Subnets** - Private subnets for workloads, additional K8s subnets, and public subnets
+- **Route Tables** - Dedicated route tables for proper traffic routing
 
 **Scenario-Specific Resources:**
 
@@ -71,29 +90,34 @@ The module supports four comprehensive deployment scenarios:
 - Private and public subnets
 - Internet Gateway for public subnets
 - Private route tables (pointing to existing NAT Gateways)
+- Public route tables for new public subnets
 
 **Existing VPC + New NAT Gateways:**
 - Additional subnets in existing VPC
-- Internet Gateway, NAT Gateways, Elastic IPs
-- New route tables for created subnets
+- Internet Gateway (if none exists), NAT Gateways, Elastic IPs
+- Dedicated route tables for created subnets
 
 **Existing VPC + Existing NAT Gateways:**
 - Additional subnets in existing VPC
+- Internet Gateway (if none exists)
 - Private route tables (pointing to existing NAT Gateways)
+- Public route tables for new public subnets
 
 ## Key Features
 
 - **Complete Flexibility**: Four deployment scenarios covering all infrastructure reuse combinations
 - **Cost Optimization**: Reuse existing NAT Gateways and VPCs to minimize infrastructure costs
+- **Smart Infrastructure Management**: Automatic Internet Gateway discovery and route table creation
+- **Simplified User Experience**: No need to specify existing public route table IDs
 - **Multi-AZ Support**: Optional multi-availability zone deployment for high availability
 - **Kubernetes Ready**: Pre-configured with tags and subnets optimized for Kubernetes workloads
 - **VPC Endpoints**: Built-in S3 and EC2 endpoints to reduce data transfer costs
 - **Subnet Segmentation**: Dedicated subnets for different workload types (private, K8s, public)
-- **Smart Routing**: Intelligent route table management based on chosen scenario
+- **Predictable Routing**: Clean separation between managed and external resources
 
 ## Configuration Strategy
 
-The module uses a two-tier selection approach:
+The module uses a streamlined two-tier selection approach:
 
 1. **VPC Type Selection** (`choose_vpc_type`):
    - `create_new_vpc`: Creates a new VPC
@@ -101,7 +125,13 @@ The module uses a two-tier selection approach:
 
 2. **NAT Gateway Strategy** (`nat_gateway_strategy`):
    - `create_new_nat_gateways`: Creates new NAT Gateways and associated resources
-   - `use_existing_nat_gateways`: References existing NAT Gateways and route tables
+   - `use_existing_nat_gateways`: References existing NAT Gateways for cost optimization
+
+**Simplified Fields:**
+- ✅ **VPC Type Selection** - Clear radio button control
+- ✅ **NAT Gateway Strategy** - Radio button for infrastructure reuse decisions  
+- ✅ **Existing NAT Gateway IDs** - Only when using existing NAT Gateways
+- ❌ **~~Existing Public Route Table IDs~~** - **Eliminated!** Module auto-manages route tables
 
 ## Cost Optimization Benefits
 
@@ -109,6 +139,7 @@ The module uses a two-tier selection approach:
 - **VPC Reuse**: Leverage existing VPC investments and reduce management overhead
 - **Cross-Environment Sharing**: Share expensive resources like NAT Gateways across environments
 - **Flexible Scaling**: Add capacity without duplicating expensive infrastructure components
+- **Reduced Complexity**: Fewer configuration parameters reduce errors and management overhead
 
 ## Security Considerations
 
@@ -117,8 +148,9 @@ The module uses a two-tier selection approach:
 - Default security group restricts access to VPC CIDR range only
 - VPC endpoints reduce traffic over public internet for AWS services
 - All resources are tagged for proper identification and compliance tracking
+- Dedicated route tables ensure clean traffic separation
+- Internet Gateway management prevents conflicts and unauthorized access
 - When using existing resources, ensure they have appropriate security configurations
-- Cross-VPC NAT Gateway usage requires careful network security planning
 
 ## UI Enhancements
 
@@ -126,13 +158,14 @@ The module uses modern `x-ui-type: radio` attributes for improved user experienc
 - **VPC Type Selection**: Clear radio button controls for VPC creation strategy
 - **NAT Gateway Strategy**: Radio button selection for NAT Gateway management approach
 - **Conditional Field Visibility**: Related fields appear/disappear based on user selections
-- **Clear Guidance**: Helpful placeholders and descriptions for complex configurations
+- **Simplified Configuration**: Eliminated complex route table ID requirements
+- **Clear Guidance**: Helpful placeholders and descriptions for remaining configurations
 
 ## Use Cases
 
-**Scenario 1** - Production environments requiring full isolation
+**Scenario 1** - Production environments requiring full isolation and control
 **Scenario 2** - Development environments with cost constraints but VPC isolation needs
 **Scenario 3** - Existing production VPCs requiring dedicated outbound internet access
-**Scenario 4** - Testing/staging environments with maximum cost optimization
+**Scenario 4** - Testing/staging environments with maximum cost optimization and minimal configuration
 
-This comprehensive approach provides organizations with the flexibility to optimize both costs and security based on their specific requirements and infrastructure maturity.
+This comprehensive approach provides organizations with the flexibility to optimize both costs and operational complexity while maintaining robust security and functionality.

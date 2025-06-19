@@ -77,18 +77,8 @@ spec:
         values: ["use_existing_nat_gateways"]
       x-ui-immutable: true
       x-ui-overrides-only: true
-    existing_public_route_table_ids:
-      title: Existing Public Route Table IDs
-      description: List of existing public route table IDs (comma-separated)
-      type: string
-      x-ui-placeholder: e.g. rtb-12345,rtb-67890
-      x-ui-visible-if:
-        field: spec.nat_gateway_strategy
-        values: ["use_existing_nat_gateways"]
-      x-ui-immutable: true
-      x-ui-overrides-only: true
   required: [azs, vpc_cidr, existing_vpc_id]
-  x-ui-order: [choose_vpc_type, existing_vpc_id, nat_gateway_strategy, existing_nat_gateway_ids, existing_public_route_table_ids, azs, vpc_cidr, enable_multi_az]
+  x-ui-order: [choose_vpc_type, existing_vpc_id, nat_gateway_strategy, existing_nat_gateway_ids, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
   flavor: aws_vpc
