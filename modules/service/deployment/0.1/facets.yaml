@@ -42,13 +42,13 @@ spec:
       type: boolean
       title: Enable Host Anti-Affinity
       description: Distribute instances across different physical hosts within cluster
-    
     cloud_permissions:
       type: object
       title: Cloud Permissions
       description: Assign roles, define access levels, and enforce conditions for
         managing resource security and compliance
       x-ui-toggle: true
+      x-ui-override-disable: true
       properties:
         aws:
           type: object
@@ -1661,8 +1661,8 @@ sample:
       command: []
       autoscaling:
         scaling_on: CPU
-        min: "1"
-        max: "1"
+        min: 1
+        max: 1
         cpu_threshold: "50"
       ports: {}
       size:
