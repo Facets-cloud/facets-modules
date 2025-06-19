@@ -6,11 +6,15 @@ data "aws_region" "current" {}
 
 # Calculate subnet CIDRs
 locals {
-  vpc_cidr        = var.instance.spec.vpc_cidr
-  azs             = var.instance.spec.azs
-  enable_multi_az = var.instance.spec.enable_multi_az
-  create_new_vpc  = var.instance.spec.choose_vpc_type == "create_new_vpc"
-  existing_vpc_id = var.instance.spec.existing_vpc_id
+  vpc_cidr                        = var.instance.spec.vpc_cidr
+  azs                             = var.instance.spec.azs
+  enable_multi_az                 = var.instance.spec.enable_multi_az
+  create_new_vpc                  = var.instance.spec.choose_vpc_type == "create_new_vpc"
+  existing_vpc_id                 = var.instance.spec.existing_vpc_id
+  nat_gateway_strategy            = var.instance.spec.nat_gateway_strategy
+  create_new_nat_gateways         = local.nat_gateway_strategy == "create_new_nat_gateways"
+  existing_nat_gateway_ids        = var.instance.spec.existing_nat_gateway_ids != "" ? split(",", trimspace(var.instance.spec.existing_nat_gateway_ids)) : []
+  existing_public_route_table_ids = var.instance.spec.existing_public_route_table_ids != "" ? split(",", trimspace(var.instance.spec.existing_public_route_table_ids)) : []
 
   # Subnet calculations
   additional_k8s_subnets = [
@@ -47,9 +51,9 @@ locals {
   }
 }
 
-# VPC Module for new VPC creation
+# VPC Module for new VPC creation (only when creating new NAT Gateways)
 module "vpc" {
-  count   = local.create_new_vpc ? 1 : 0
+  count   = local.create_new_vpc && local.create_new_nat_gateways ? 1 : 0
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.0.0"
 
@@ -82,10 +86,63 @@ module "vpc" {
   })
 }
 
+# VPC resource for new VPC creation (when using existing NAT Gateways)
+resource "aws_vpc" "new_vpc" {
+  count                = local.create_new_vpc && !local.create_new_nat_gateways ? 1 : 0
+  cidr_block           = local.vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = merge(local.common_tags, local.k8s_cluster_tags, {
+    Name      = "${var.instance_name}-vpc"
+    Terraform = "true"
+  })
+}
+
+# Subnets for new VPC with existing NAT Gateways
+resource "aws_subnet" "new_vpc_private_subnets" {
+  count = local.create_new_vpc && !local.create_new_nat_gateways ? length(concat(local.private_subnets, local.additional_k8s_subnets)) : 0
+
+  vpc_id            = aws_vpc.new_vpc[0].id
+  cidr_block        = concat(local.private_subnets, local.additional_k8s_subnets)[count.index]
+  availability_zone = local.actual_azs[count.index % length(local.actual_azs)]
+
+  tags = merge(local.common_tags, local.k8s_cluster_tags, {
+    Name                              = "${var.instance_name}-private-${count.index + 1}"
+    "kubernetes.io/role/internal-elb" = "1"
+  })
+}
+
+resource "aws_subnet" "new_vpc_public_subnets" {
+  count = local.create_new_vpc && !local.create_new_nat_gateways ? length(local.public_subnets) : 0
+
+  vpc_id                  = aws_vpc.new_vpc[0].id
+  cidr_block              = local.public_subnets[count.index]
+  availability_zone       = local.actual_azs[count.index % length(local.actual_azs)]
+  map_public_ip_on_launch = true
+
+  tags = merge(local.common_tags, local.k8s_cluster_tags, {
+    Name                     = "${var.instance_name}-public-${count.index + 1}"
+    "kubernetes.io/role/elb" = "1"
+  })
+}
+
 # Data source for existing VPC
 data "aws_vpc" "existing" {
   count = local.create_new_vpc ? 0 : 1
   id    = local.existing_vpc_id
+}
+
+# Data sources for existing NAT Gateways (works for both new and existing VPC scenarios)
+data "aws_nat_gateway" "existing" {
+  count = !local.create_new_nat_gateways ? length(local.existing_nat_gateway_ids) : 0
+  id    = local.existing_nat_gateway_ids[count.index]
+}
+
+# Data sources for existing public route tables (works for both new and existing VPC scenarios)
+data "aws_route_table" "existing_public" {
+  count          = !local.create_new_nat_gateways ? length(local.existing_public_route_table_ids) : 0
+  route_table_id = local.existing_public_route_table_ids[count.index]
 }
 
 # Subnets for existing VPC scenario
@@ -116,9 +173,9 @@ resource "aws_subnet" "public_subnets" {
   })
 }
 
-# Internet Gateway for existing VPC
+# Internet Gateway for existing VPC (only when creating new NAT Gateways)
 resource "aws_internet_gateway" "existing_vpc_igw" {
-  count  = local.create_new_vpc ? 0 : 1
+  count  = !local.create_new_vpc && local.create_new_nat_gateways ? 1 : 0
   vpc_id = data.aws_vpc.existing[0].id
 
   tags = merge(local.common_tags, {
@@ -126,9 +183,19 @@ resource "aws_internet_gateway" "existing_vpc_igw" {
   })
 }
 
-# NAT Gateway for existing VPC
+# Internet Gateway for new VPC with existing NAT Gateways
+resource "aws_internet_gateway" "new_vpc_igw" {
+  count  = local.create_new_vpc && !local.create_new_nat_gateways ? 1 : 0
+  vpc_id = aws_vpc.new_vpc[0].id
+
+  tags = merge(local.common_tags, {
+    Name = "${var.instance_name}-igw"
+  })
+}
+
+# NAT Gateway for existing VPC (only when creating new NAT Gateways)
 resource "aws_eip" "nat" {
-  count  = local.create_new_vpc ? 0 : (local.enable_multi_az ? length(local.actual_azs) : 1)
+  count  = !local.create_new_vpc && local.create_new_nat_gateways ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
   domain = "vpc"
 
   tags = merge(local.common_tags, {
@@ -139,7 +206,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "nat" {
-  count = local.create_new_vpc ? 0 : (local.enable_multi_az ? length(local.actual_azs) : 1)
+  count = !local.create_new_vpc && local.create_new_nat_gateways ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public_subnets[count.index].id
@@ -151,9 +218,9 @@ resource "aws_nat_gateway" "nat" {
   depends_on = [aws_internet_gateway.existing_vpc_igw]
 }
 
-# Route tables for existing VPC
+# Route tables for existing VPC (only when creating new NAT Gateways)
 resource "aws_route_table" "public" {
-  count  = local.create_new_vpc ? 0 : 1
+  count  = !local.create_new_vpc && local.create_new_nat_gateways ? 1 : 0
   vpc_id = data.aws_vpc.existing[0].id
 
   route {
@@ -166,13 +233,55 @@ resource "aws_route_table" "public" {
   })
 }
 
+# Route tables for new VPC with existing NAT Gateways
+resource "aws_route_table" "new_vpc_public" {
+  count  = local.create_new_vpc && !local.create_new_nat_gateways ? 1 : 0
+  vpc_id = aws_vpc.new_vpc[0].id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.new_vpc_igw[0].id
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${var.instance_name}-public-rt"
+  })
+}
+
+# Private route tables (for both new and existing VPC scenarios)
 resource "aws_route_table" "private" {
-  count  = local.create_new_vpc ? 0 : (local.enable_multi_az ? length(local.actual_azs) : 1)
+  count  = !local.create_new_vpc ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
   vpc_id = data.aws_vpc.existing[0].id
+
+  dynamic "route" {
+    for_each = local.create_new_nat_gateways ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = aws_nat_gateway.nat[count.index].id
+    }
+  }
+
+  dynamic "route" {
+    for_each = !local.create_new_nat_gateways ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = data.aws_nat_gateway.existing[count.index].id
+    }
+  }
+
+  tags = merge(local.common_tags, {
+    Name = "${var.instance_name}-private-rt-${count.index + 1}"
+  })
+}
+
+# Private route tables for new VPC with existing NAT Gateways
+resource "aws_route_table" "new_vpc_private" {
+  count  = local.create_new_vpc && !local.create_new_nat_gateways ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
+  vpc_id = aws_vpc.new_vpc[0].id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat[count.index].id
+    nat_gateway_id = data.aws_nat_gateway.existing[count.index].id
   }
 
   tags = merge(local.common_tags, {
@@ -182,23 +291,40 @@ resource "aws_route_table" "private" {
 
 # Route table associations for existing VPC
 resource "aws_route_table_association" "public" {
-  count = local.create_new_vpc ? 0 : length(aws_subnet.public_subnets)
+  count = !local.create_new_vpc ? length(aws_subnet.public_subnets) : 0
 
   subnet_id      = aws_subnet.public_subnets[count.index].id
-  route_table_id = aws_route_table.public[0].id
+  route_table_id = local.create_new_nat_gateways ? aws_route_table.public[0].id : data.aws_route_table.existing_public[0].id
 }
 
 resource "aws_route_table_association" "private" {
-  count = local.create_new_vpc ? 0 : length(aws_subnet.private_subnets)
+  count = !local.create_new_vpc ? length(aws_subnet.private_subnets) : 0
 
   subnet_id      = aws_subnet.private_subnets[count.index].id
   route_table_id = aws_route_table.private[count.index % length(aws_route_table.private)].id
 }
 
+# Route table associations for new VPC with existing NAT Gateways
+resource "aws_route_table_association" "new_vpc_public" {
+  count = local.create_new_vpc && !local.create_new_nat_gateways ? length(aws_subnet.new_vpc_public_subnets) : 0
+
+  subnet_id      = aws_subnet.new_vpc_public_subnets[count.index].id
+  route_table_id = aws_route_table.new_vpc_public[0].id
+}
+
+resource "aws_route_table_association" "new_vpc_private" {
+  count = local.create_new_vpc && !local.create_new_nat_gateways ? length(aws_subnet.new_vpc_private_subnets) : 0
+
+  subnet_id      = aws_subnet.new_vpc_private_subnets[count.index].id
+  route_table_id = aws_route_table.new_vpc_private[count.index % length(aws_route_table.new_vpc_private)].id
+}
+
 # Security Group
 resource "aws_security_group" "allow_all_default" {
-  name        = "allow_all_${var.instance_name}-default"
-  vpc_id      = local.create_new_vpc ? module.vpc[0].vpc_id : data.aws_vpc.existing[0].id
+  name = "allow_all_${var.instance_name}-default"
+  vpc_id = local.create_new_vpc ? (
+    local.create_new_nat_gateways ? module.vpc[0].vpc_id : aws_vpc.new_vpc[0].id
+  ) : data.aws_vpc.existing[0].id
   description = "Allowing connection from within vpc"
 
   ingress {
@@ -224,10 +350,14 @@ resource "aws_security_group" "allow_all_default" {
 
 # VPC Endpoints
 resource "aws_vpc_endpoint" "s3" {
-  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
-  vpc_id            = local.create_new_vpc ? module.vpc[0].vpc_id : data.aws_vpc.existing[0].id
+  service_name = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_id = local.create_new_vpc ? (
+    local.create_new_nat_gateways ? module.vpc[0].vpc_id : aws_vpc.new_vpc[0].id
+  ) : data.aws_vpc.existing[0].id
   vpc_endpoint_type = "Gateway"
-  route_table_ids   = local.create_new_vpc ? module.vpc[0].private_route_table_ids : aws_route_table.private[*].id
+  route_table_ids = local.create_new_vpc ? (
+    local.create_new_nat_gateways ? module.vpc[0].private_route_table_ids : aws_route_table.new_vpc_private[*].id
+  ) : aws_route_table.private[*].id
 
   tags = merge(local.common_tags, {
     Name = "${var.instance_name}-s3-endpoint"
@@ -235,10 +365,14 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 resource "aws_vpc_endpoint" "ec2" {
-  service_name        = "com.amazonaws.${data.aws_region.current.name}.ec2"
-  vpc_id              = local.create_new_vpc ? module.vpc[0].vpc_id : data.aws_vpc.existing[0].id
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = local.create_new_vpc ? slice(module.vpc[0].private_subnets, 2, 4) : slice(aws_subnet.private_subnets[*].id, 2, 4)
+  service_name = "com.amazonaws.${data.aws_region.current.name}.ec2"
+  vpc_id = local.create_new_vpc ? (
+    local.create_new_nat_gateways ? module.vpc[0].vpc_id : aws_vpc.new_vpc[0].id
+  ) : data.aws_vpc.existing[0].id
+  vpc_endpoint_type = "Interface"
+  subnet_ids = local.create_new_vpc ? (
+    local.create_new_nat_gateways ? slice(module.vpc[0].private_subnets, 2, 4) : slice(aws_subnet.new_vpc_private_subnets[*].id, 2, 4)
+  ) : slice(aws_subnet.private_subnets[*].id, 2, 4)
   private_dns_enabled = false
   security_group_ids  = [aws_security_group.allow_all_default.id]
 

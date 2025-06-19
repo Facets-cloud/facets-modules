@@ -1,6 +1,6 @@
 intent: network
-flavor: aws_vpc_ex_nat
-version: "0.3"
+flavor: aws_vpc
+version: "0.1"
 description: Adds network - aws vpc flavor
 clouds:
 - aws
@@ -28,6 +28,7 @@ spec:
       x-ui-placeholder: e.g. us-east-1a us-east-1b
       x-ui-immutable: true
       x-ui-overrides-only: true
+      x-ui-override-disable: true
       x-ui-fetch-az: true
       items:
         type: string
@@ -57,12 +58,41 @@ spec:
         values: ["use_existing_vpc"]
       x-ui-immutable: true
       x-ui-overrides-only: true
+    nat_gateway_strategy:
+      title: NAT Gateway Strategy
+      description: Choose how to handle NAT Gateways
+      type: string
+      enum: ["create_new_nat_gateways", "use_existing_nat_gateways"]
+      default: create_new_nat_gateways
+      x-ui-type: radio
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    existing_nat_gateway_ids:
+      title: Existing NAT Gateway IDs
+      description: List of existing NAT Gateway IDs to use (comma-separated)
+      type: string
+      x-ui-placeholder: e.g. nat-12345,nat-67890
+      x-ui-visible-if:
+        field: spec.nat_gateway_strategy
+        values: ["use_existing_nat_gateways"]
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    existing_public_route_table_ids:
+      title: Existing Public Route Table IDs
+      description: List of existing public route table IDs (comma-separated)
+      type: string
+      x-ui-placeholder: e.g. rtb-12345,rtb-67890
+      x-ui-visible-if:
+        field: spec.nat_gateway_strategy
+        values: ["use_existing_nat_gateways"]
+      x-ui-immutable: true
+      x-ui-overrides-only: true
   required: [azs, vpc_cidr, existing_vpc_id]
-  x-ui-order: [choose_vpc_type, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
+  x-ui-order: [choose_vpc_type, existing_vpc_id, nat_gateway_strategy, existing_nat_gateway_ids, existing_public_route_table_ids, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
-  flavor: aws_vpc_ex_nat
-  version: "0.3"
+  flavor: aws_vpc
+  version: "0.1"
   lifecycle: ENVIRONMENT_NO_DEPS
   disabled: true
   depends_on: []
