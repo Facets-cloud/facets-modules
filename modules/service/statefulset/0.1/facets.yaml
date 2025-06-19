@@ -81,6 +81,7 @@ spec:
       description: Assign roles, define access levels, and enforce conditions for
         managing resource security and compliance
       x-ui-toggle: true
+      x-ui-override-disable: true
       properties:
         aws:
           type: object
@@ -1617,8 +1618,8 @@ sample:
       command: []
       autoscaling:
         scaling_on: CPU
-        min: "1"
-        max: "1"
+        min: 1
+        max: 1
         cpu_threshold: "50"
       ports: {}
       size:
