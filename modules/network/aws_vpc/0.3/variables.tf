@@ -1,25 +1,52 @@
-variable "cluster" {
-  type = any
-}
-
 variable "instance" {
-  type = any
+  type = object({
+    spec = object({
+      choose_vpc_type = string
+      azs             = list(string)
+      vpc_cidr        = string
+      enable_multi_az = bool
+      existing_vpc_id = string
+    })
+  })
+  description = "Instance configuration containing spec and other metadata"
+
+  validation {
+    condition     = contains(["create_new_vpc", "use_existing_vpc"], var.instance.spec.choose_vpc_type)
+    error_message = "VPC type must be either 'create_new_vpc' or 'use_existing_vpc'."
+  }
+
+  validation {
+    condition     = can(regex("^(10\\.(\\d{1,3}\\.){2}\\d{1,3}/(2[0-8]|[89]|1[0-9])|172\\.(1[6-9]|2[0-9]|3[01])\\.(\\d{1,3}\\.){1}\\d{1,3}/(2[0-8]|[12][0-9])|192\\.168\\.(\\d{1,3}\\.){1}\\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$", var.instance.spec.vpc_cidr))
+    error_message = "The provided CIDR block is invalid. Please ensure it is a valid private IP range in CIDR notation."
+  }
+
+  validation {
+    condition     = length(var.instance.spec.azs) >= 1 && length(var.instance.spec.azs) <= 3
+    error_message = "At least 1 and at most 3 availability zones must be specified."
+  }
+
+  validation {
+    condition     = var.instance.spec.choose_vpc_type == "use_existing_vpc" ? var.instance.spec.existing_vpc_id != "" : true
+    error_message = "Existing VPC ID must be provided when using existing VPC."
+  }
 }
 
 variable "instance_name" {
-  type = any
+  type        = string
+  description = "Unique architectural name for the resource"
 }
 
-variable "cc_metadata" {
-  type = any
+variable "environment" {
+  type = object({
+    name        = string
+    unique_name = string
+    cloud_tags  = map(string)
+  })
+  description = "Environment metadata including name, unique identifier and cloud tags"
 }
 
-variable "settings" {
-  type    = any
-  default = {}
-}
-
-variable "include_cluster_code" {
-  type = bool
-  default = false
+variable "inputs" {
+  type        = any
+  default     = {}
+  description = "Inputs from other modules"
 }

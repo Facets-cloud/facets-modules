@@ -1,6 +1,6 @@
 intent: network
-flavor: aws_vpc
-version: "0.1"
+flavor: aws_vpc_ex_nat
+version: "0.3"
 description: Adds network - aws vpc flavor
 clouds:
 - aws
@@ -15,10 +15,10 @@ spec:
     choose_vpc_type:
       title: Choose VPC Type
       description: Choose the type of vpc to create
-      type: radio
-      enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
-            VPC, value: use_existing_vpc}]
+      type: string
+      enum: ["create_new_vpc", "use_existing_vpc"]
       default: create_new_vpc
+      x-ui-type: radio
       x-ui-immutable: true
       x-ui-overrides-only: true
     azs:
@@ -61,8 +61,8 @@ spec:
   x-ui-order: [choose_vpc_type, existing_vpc_id, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
-  flavor: aws_vpc
-  version: "0.1"
+  flavor: aws_vpc_ex_nat
+  version: "0.3"
   lifecycle: ENVIRONMENT_NO_DEPS
   disabled: true
   depends_on: []
