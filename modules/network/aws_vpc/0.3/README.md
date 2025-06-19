@@ -203,3 +203,127 @@ spec:
 **Scenario 4** - Testing/staging environments with maximum cost optimization and minimal configuration
 
 This comprehensive approach provides organizations with the flexibility to optimize both costs and operational complexity while maintaining robust security and functionality.
+
+## Features
+
+- Create new VPC or use existing VPC
+- Create new NAT gateways or use existing NAT gateways
+- Multi-AZ support
+- Network firewall integration
+- VPC endpoints
+- Comprehensive subnet management
+
+## NAT Gateway Support
+
+The module now supports using existing NAT gateways in both new and existing VPC scenarios:
+
+### Using Existing NAT Gateways
+
+To use existing NAT gateways, configure the following in your instance specification:
+
+```json
+{
+  "spec": {
+    "use_existing_nat_gateways": true,
+    "existing_nat_gateway_ids": ["nat-1234567890abcdef0", "nat-0987654321fedcba0"]
+  }
+}
+```
+
+### Configuration Options
+
+#### VPC Configuration
+- `choose_vpc_type`: 
+  - `"create_new_vpc"` (default) - Creates a new VPC
+  - `"use_existing_vpc"` - Uses an existing VPC
+- `existing_vpc_id`: VPC ID when using existing VPC
+- `vpc_cidr`: CIDR block for the VPC
+
+#### NAT Gateway Configuration
+- `use_existing_nat_gateways`: Boolean flag to use existing NAT gateways instead of creating new ones
+- `existing_nat_gateway_ids`: Array of existing NAT gateway IDs to use
+
+### Usage Scenarios
+
+#### 1. New VPC with New NAT Gateways (Default)
+```json
+{
+  "spec": {
+    "choose_vpc_type": "create_new_vpc",
+    "vpc_cidr": "10.0.0.0/16"
+  }
+}
+```
+
+#### 2. New VPC with Existing NAT Gateways
+```json
+{
+  "spec": {
+    "choose_vpc_type": "create_new_vpc",
+    "vpc_cidr": "10.0.0.0/16",
+    "use_existing_nat_gateways": true,
+    "existing_nat_gateway_ids": ["nat-1234567890abcdef0", "nat-0987654321fedcba0"]
+  }
+}
+```
+
+#### 3. Existing VPC with New NAT Gateways
+```json
+{
+  "spec": {
+    "choose_vpc_type": "use_existing_vpc",
+    "existing_vpc_id": "vpc-1234567890abcdef0"
+  }
+}
+```
+
+#### 4. Existing VPC with Existing NAT Gateways
+```json
+{
+  "spec": {
+    "choose_vpc_type": "use_existing_vpc",
+    "existing_vpc_id": "vpc-1234567890abcdef0",
+    "use_existing_nat_gateways": true,
+    "existing_nat_gateway_ids": ["nat-1234567890abcdef0", "nat-0987654321fedcba0"]
+  }
+}
+```
+
+### Multi-AZ Considerations
+
+When using existing NAT gateways:
+- For single AZ deployments: Provide 1 NAT gateway ID
+- For multi-AZ deployments: Provide 2 NAT gateway IDs (one per AZ)
+
+The number of NAT gateway IDs should match your multi-AZ configuration:
+- `settings.CLUSTER.MULTI_AZ = false`: Use 1 NAT gateway ID
+- `settings.CLUSTER.MULTI_AZ = true`: Use 2 NAT gateway IDs
+
+### Network Firewall Integration
+
+The module automatically handles network firewall integration with existing NAT gateways, ensuring proper routing and security group configurations.
+
+### Important Notes
+
+1. **NAT Gateway Validation**: Ensure provided NAT gateway IDs exist and are in the correct VPC/region
+2. **AZ Alignment**: NAT gateways should be in the same availability zones as your configuration
+3. **Routing**: The module automatically configures routing tables to use the specified NAT gateways
+4. **Backward Compatibility**: Existing configurations without NAT gateway specifications will continue to work unchanged
+
+### Variables
+
+| Variable | Type | Default | Description |
+|----------|------|---------|-------------|
+| `use_existing_nat_gateways` | bool | false | Whether to use existing NAT gateways |
+| `existing_nat_gateway_ids` | list(string) | [] | List of existing NAT gateway IDs |
+
+### Outputs
+
+The module outputs include NAT gateway information that adapts based on whether existing or new NAT gateways are used:
+
+- `vpc_details.nat_gateway_count`: Number of NAT gateways (from existing list or created)
+- `vpc_details.nat_gateway_ips`: Public IPs of NAT gateways (empty for existing NAT gateways)
+
+## Examples
+
+See the configuration examples above for common usage patterns. For more complex scenarios, consult the Facets documentation or contact support.

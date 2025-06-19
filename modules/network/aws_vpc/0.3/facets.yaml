@@ -60,28 +60,26 @@ spec:
         - use_existing_vpc
       x-ui-immutable: true
       x-ui-overrides-only: true
-    nat_gateway_strategy:
-      title: NAT Gateway Strategy
-      description: Choose how to handle NAT Gateways
-      type: string
-      enum:
-      - create_new_nat_gateways
-      - use_existing_nat_gateways
-      default: create_new_nat_gateways
-      x-ui-type: radio
+    use_existing_nat_gateways:
+      title: Use Existing NAT Gateways
+      description: Whether to use existing NAT gateways instead of creating new ones
+      type: boolean
+      default: false
       x-ui-immutable: true
       x-ui-overrides-only: true
     existing_nat_gateway_ids:
       title: Existing NAT Gateway IDs
-      description: List of existing NAT Gateway IDs to use (comma-separated)
-      type: string
-      x-ui-placeholder: e.g. nat-12345,nat-67890
+      description: List of existing NAT Gateway IDs to use
+      type: array
+      x-ui-placeholder: e.g. nat-12345, nat-67890
       x-ui-visible-if:
-        field: spec.nat_gateway_strategy
+        field: spec.use_existing_nat_gateways
         values:
-        - use_existing_nat_gateways
+        - true
       x-ui-immutable: true
       x-ui-overrides-only: true
+      items:
+        type: string
   required:
   - azs
   - vpc_cidr
@@ -89,7 +87,7 @@ spec:
   x-ui-order:
   - choose_vpc_type
   - existing_vpc_id
-  - nat_gateway_strategy
+  - use_existing_nat_gateways
   - existing_nat_gateway_ids
   - azs
   - vpc_cidr
