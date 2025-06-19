@@ -1,7 +1,7 @@
 intent: network
 flavor: aws_vpc_ex_nat
 version: '0.3'
-description: Adds network - aws vpc flavor with extended NAT gateway support
+description: Adds network - AWS VPC flavor with extended NAT gateway support
 clouds:
 - aws
 outputs:
@@ -31,7 +31,6 @@ spec:
       x-ui-placeholder: e.g. us-east-1a us-east-1b
       x-ui-immutable: true
       x-ui-overrides-only: true
-      x-ui-override-disable: true
       x-ui-fetch-az: true
       items:
         type: string

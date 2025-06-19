@@ -197,8 +197,7 @@ resource "aws_internet_gateway" "new_vpc_igw" {
 
 # NAT Gateway for existing VPC (only when creating new NAT Gateways)
 resource "aws_eip" "nat" {
-  count  = !local.create_new_vpc && local.create_new_nat_gateways ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
-  domain = "vpc"
+  count = !local.create_new_vpc && local.create_new_nat_gateways ? (local.enable_multi_az ? length(local.actual_azs) : 1) : 0
 
   tags = merge(local.common_tags, {
     Name = "${var.instance_name}-nat-eip-${count.index + 1}"
