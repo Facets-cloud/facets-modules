@@ -1,22 +1,25 @@
 intent: network
 flavor: aws_vpc_ex_nat
-version: "0.3"
+version: '0.3'
 description: Adds network - aws vpc flavor with extended NAT gateway support
 clouds:
 - aws
 outputs:
   default:
-    type: "@outputs/aws_vpc"
+    type: '@outputs/aws_vpc'
 spec:
   title: network
-  description: Specification of the network for aws vpc flavor with extended NAT gateway support
+  description: Specification of the network for aws vpc flavor with extended NAT gateway
+    support
   type: object
   properties:
     choose_vpc_type:
       title: Choose VPC Type
       description: Choose the type of vpc to create
       type: string
-      enum: ["create_new_vpc", "use_existing_vpc"]
+      enum:
+      - create_new_vpc
+      - use_existing_vpc
       default: create_new_vpc
       x-ui-type: radio
       x-ui-immutable: true
@@ -36,8 +39,7 @@ spec:
       title: VPC CIDR
       description: CIDR block for the vpc
       x-ui-placeholder: e.g. 10.45.0.0/16
-      pattern: 
-        ^(10.(\d{1,3}.){2}\d{1,3}/(2[0-8]|[89]|1[0-9])|172.(1[6-9]|2[0-9]|3[01]).(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9])|192.168.(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$
+      pattern: ^(10.(\d{1,3}.){2}\d{1,3}/(2[0-8]|[89]|1[0-9])|172.(1[6-9]|2[0-9]|3[01]).(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9])|192.168.(\d{1,3}.){1}\d{1,3}/(2[0-8]|[12][0-9]|1[6-9]))$
       x-ui-error-message: The provided CIDR block is invalid. Please ensure it is
         a valid private IP range in CIDR notation
       type: string
@@ -55,14 +57,17 @@ spec:
       type: string
       x-ui-visible-if:
         field: spec.choose_vpc_type
-        values: ["use_existing_vpc"]
+        values:
+        - use_existing_vpc
       x-ui-immutable: true
       x-ui-overrides-only: true
     nat_gateway_strategy:
       title: NAT Gateway Strategy
       description: Choose how to handle NAT Gateways
       type: string
-      enum: ["create_new_nat_gateways", "use_existing_nat_gateways"]
+      enum:
+      - create_new_nat_gateways
+      - use_existing_nat_gateways
       default: create_new_nat_gateways
       x-ui-type: radio
       x-ui-immutable: true
@@ -74,15 +79,26 @@ spec:
       x-ui-placeholder: e.g. nat-12345,nat-67890
       x-ui-visible-if:
         field: spec.nat_gateway_strategy
-        values: ["use_existing_nat_gateways"]
+        values:
+        - use_existing_nat_gateways
       x-ui-immutable: true
       x-ui-overrides-only: true
-  required: [azs, vpc_cidr, existing_vpc_id]
-  x-ui-order: [choose_vpc_type, existing_vpc_id, nat_gateway_strategy, existing_nat_gateway_ids, azs, vpc_cidr, enable_multi_az]
+  required:
+  - azs
+  - vpc_cidr
+  - existing_vpc_id
+  x-ui-order:
+  - choose_vpc_type
+  - existing_vpc_id
+  - nat_gateway_strategy
+  - existing_nat_gateway_ids
+  - azs
+  - vpc_cidr
+  - enable_multi_az
 sample:
   kind: network
   flavor: aws_vpc_ex_nat
-  version: "0.3"
+  version: '0.3'
   lifecycle: ENVIRONMENT_NO_DEPS
   disabled: true
   depends_on: []
