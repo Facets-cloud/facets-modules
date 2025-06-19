@@ -52,9 +52,8 @@ locals {
 
 # VPC Module for new VPC creation (only when creating new NAT Gateways)
 module "vpc" {
-  count   = local.create_new_vpc && local.create_new_nat_gateways ? 1 : 0
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.0.0"
+  count  = local.create_new_vpc && local.create_new_nat_gateways ? 1 : 0
+  source = "./terraform-aws-vpc-5.0.0"
 
   name = "${var.instance_name}-vpc"
   cidr = local.vpc_cidr
