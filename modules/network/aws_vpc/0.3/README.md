@@ -1,13 +1,23 @@
-# AWS VPC Network Module
+# AWS VPC Network Module (Extended NAT Gateway Support)
 
 [![Terraform](https://img.shields.io/badge/Terraform-v1.5.7-blue.svg)](https://terraform.io)
 [![AWS](https://img.shields.io/badge/AWS-Provider-orange.svg)](https://registry.terraform.io/providers/hashicorp/aws/latest)
+[![Version](https://img.shields.io/badge/version-0.3-blue.svg)](https://github.com/facets-cloud/facets-modules)
 
 ## Overview
 
-This module creates and manages AWS VPC infrastructure for Kubernetes workloads with comprehensive flexibility for both VPC creation and NAT Gateway management. It supports four distinct deployment scenarios, enabling maximum cost optimization and infrastructure reuse across different environments.
+This module (`aws_vpc_ex_nat`) creates and manages AWS VPC infrastructure for Kubernetes workloads with **comprehensive flexibility for both VPC creation and NAT Gateway management**. It supports four distinct deployment scenarios, enabling maximum cost optimization and infrastructure reuse across different environments.
 
 The module provides intelligent routing and subnet management optimized for container orchestration platforms with full support for both single and multi-availability zone deployments.
+
+### What's New in v0.3 (Extended NAT Gateway Support)
+
+- **🚀 Four Complete Deployment Scenarios** - Support for all combinations of new/existing VPC and NAT Gateways
+- **💰 Enhanced Cost Optimization** - Reuse existing NAT Gateways to save $45+/month per gateway
+- **🎯 Simplified User Experience** - Eliminated complex route table ID requirements  
+- **🧠 Smart Infrastructure Management** - Auto-discovery and creation of Internet Gateways
+- **🔧 Modern UI Controls** - Updated to use `x-ui-type: radio` for better user experience
+- **📦 Flattened Module Structure** - Removed complex nested module dependencies
 
 ## Environment as Dimension
 
@@ -160,6 +170,30 @@ The module uses modern `x-ui-type: radio` attributes for improved user experienc
 - **Conditional Field Visibility**: Related fields appear/disappear based on user selections
 - **Simplified Configuration**: Eliminated complex route table ID requirements
 - **Clear Guidance**: Helpful placeholders and descriptions for remaining configurations
+
+## Usage Example
+
+```yaml
+kind: network
+flavor: aws_vpc_ex_nat
+version: "0.3"
+lifecycle: ENVIRONMENT_NO_DEPS
+spec:
+  choose_vpc_type: create_new_vpc          # or use_existing_vpc
+  nat_gateway_strategy: use_existing_nat_gateways  # Cost optimization
+  existing_nat_gateway_ids: "nat-12345,nat-67890"
+  azs: ["us-east-1a", "us-east-1b"]
+  vpc_cidr: "10.45.0.0/16"
+  enable_multi_az: true
+```
+
+## Migration from Previous Versions
+
+**From aws_vpc v0.1/v0.2:**
+- Update `flavor` from `aws_vpc` to `aws_vpc_ex_nat`
+- Update `version` to `"0.3"`
+- Add `nat_gateway_strategy` field for cost optimization
+- Optionally add `existing_nat_gateway_ids` for NAT Gateway reuse
 
 ## Use Cases
 

@@ -1,7 +1,7 @@
 intent: network
-flavor: aws_vpc
-version: "0.1"
-description: Adds network - aws vpc flavor
+flavor: aws_vpc_ex_nat
+version: "0.3"
+description: Adds network - aws vpc flavor with extended NAT gateway support
 clouds:
 - aws
 outputs:
@@ -9,7 +9,7 @@ outputs:
     type: "@outputs/aws_vpc"
 spec:
   title: network
-  description: Specification of the network for aws vpc flavor
+  description: Specification of the network for aws vpc flavor with extended NAT gateway support
   type: object
   properties:
     choose_vpc_type:
@@ -81,8 +81,8 @@ spec:
   x-ui-order: [choose_vpc_type, existing_vpc_id, nat_gateway_strategy, existing_nat_gateway_ids, azs, vpc_cidr, enable_multi_az]
 sample:
   kind: network
-  flavor: aws_vpc
-  version: "0.1"
+  flavor: aws_vpc_ex_nat
+  version: "0.3"
   lifecycle: ENVIRONMENT_NO_DEPS
   disabled: true
   depends_on: []
