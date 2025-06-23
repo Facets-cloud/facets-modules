@@ -16,6 +16,7 @@ spec:
       type: string
       title: Kafka Version
       description: Version of kafka e.g. 3.2.3
+      x-ui-typeable: true
       enum:
       - 1.1.1
       - 2.1.0

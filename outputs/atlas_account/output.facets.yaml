@@ -1,0 +1,22 @@
+name: atlas_account
+out:
+  type: object
+  title: Atlas Account
+  description: Atlas Account Attributes
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the Atlas Account module outputs
+      properties:
+        project_id:
+          required: true
+          type: string
+          description: The ID of the Atlas project
+        public_key:
+          required: true
+          type: string
+          description: The public key for the Atlas account
+        private_key:
+          required: true
+          type: string
+          description: The private key for the Atlas account
