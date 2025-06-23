@@ -14,6 +14,7 @@ spec:
       description: Specifies the Postgres version to use.
       minLength: 1
       x-ui-placeholder: "Ex. 14"
+      x-ui-typeable: true
       enum:
       - "16"
       - "15"
