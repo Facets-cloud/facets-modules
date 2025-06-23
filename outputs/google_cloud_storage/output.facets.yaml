@@ -4,9 +4,15 @@ out:
   title: GCS Bucket Output
   description: Output attributes for a Google Cloud Storage bucket
   properties:
-    url:
-      type: string
-      description: Full URL of the GCS bucket in the format gs://bucket-name
-    name:
-      type: string
-      description: The name of the created GCS bucket
+    attributes:
+      type: object
+      description: Attributes of the GCS bucket
+      properties:
+        url:
+          type: string
+          description: Full URL of the GCS bucket in the format gs://bucket-name
+        name:
+          type: string
+          description: The name of the created GCS bucket
+    interfaces: {}
+      
