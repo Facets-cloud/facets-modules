@@ -4,6 +4,9 @@ version: "0.2"
 description: Adds S3 module
 clouds:
 - aws
+outputs:
+  default:
+    type: '@output/s3'
 spec:
   title: AWS S3
   type: object
