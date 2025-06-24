@@ -20,6 +20,23 @@ locals {
 
   from_artifactories      = lookup(lookup(lookup(var.inputs, "artifactories", {}), "attributes", {}), "registry_secrets_list", [])
   from_kubernetes_cluster = lookup(lookup(lookup(lookup(var.inputs, "kubernetes_details", {}), "attributes", {}), "legacy_outputs", {}), "registry_secret_objects", [])
+
+  # Transform taints from object format to string format for utility module compatibility
+  kubernetes_node_pool_details = lookup(var.inputs, "kubernetes_node_pool_details", {})
+  node_pool_taints            = lookup(local.kubernetes_node_pool_details, "taints", [])
+  
+  # Convert taints from {key: "key", value: "value", effect: "effect"} to "key=value:effect" format
+  transformed_taints = [
+    for taint_name, taint_config in local.node_pool_taints : 
+    "${taint_config.key}=${taint_config.value}:${taint_config.effect}"
+  ]
+
+  # Create modified inputs with transformed taints
+  modified_inputs = merge(var.inputs, {
+    kubernetes_node_pool_details = merge(local.kubernetes_node_pool_details, {
+      taints = local.transformed_taints
+    })
+  })
 }
 
 module "sr-name" {
@@ -58,7 +75,7 @@ module "app-helm-chart" {
   labels                  = local.labels
   cluster                 = var.cluster
   environment             = var.environment
-  inputs                  = var.inputs
+  inputs                  = local.modified_inputs
   vpa_release_id          = lookup(lookup(lookup(var.inputs, "vpa_details", {}), "attributes", {}), "helm_release_id", "")
 }
 
