@@ -1,0 +1,600 @@
+intent: ingress
+flavor: nginx_k8s_native-pa
+version: '0.2'
+description: Adds Ingress module
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+spec:
+  title: Nginx Ingress Controller
+  type: object
+  properties:
+    basic_auth:
+      type: boolean
+      title: Basic Authentication
+      description: Enable/disable basic auth
+    private:
+      type: boolean
+      title: Private
+      description: Set load balancer as private
+    disable_base_domain:
+      type: boolean
+      title: Disable Base Domain
+      description: Disable automatic creation of base domain for this ingress
+      default: false
+    resources:
+      type: object
+      title: Controller Resources
+      description: Configure resource limits and requests for the nginx ingress controller
+      x-ui-toggle: true
+      properties:
+        requests:
+          type: object
+          title: Resource Requests
+          description: Minimum resource requirements for the controller
+          properties:
+            cpu:
+              type: string
+              title: CPU Request
+              description: Minimum CPU requirement (e.g., 100m, 1, 500m)
+              pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+              x-ui-error-message: Value must be a valid CPU specification (e.g., 100m, 1, 500m)
+              x-ui-placeholder: "100m"
+            memory:
+              type: string
+              title: Memory Request
+              description: Minimum memory requirement (e.g., 200Mi, 1Gi, 512Mi)
+              pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+              x-ui-error-message: Value must be a valid memory specification (e.g., 200Mi, 1Gi)
+              x-ui-placeholder: "200Mi"
+        limits:
+          type: object
+          title: Resource Limits
+          description: Maximum resource limits for the controller
+          properties:
+            cpu:
+              type: string
+              title: CPU Limit
+              description: Maximum CPU allowed (e.g., 1, 2, 500m)
+              pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+              x-ui-error-message: Value must be a valid CPU specification (e.g., 1, 2, 500m)
+              x-ui-placeholder: "1"
+            memory:
+              type: string
+              title: Memory Limit
+              description: Maximum memory allowed (e.g., 1Gi, 2Gi, 512Mi)
+              pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+              x-ui-error-message: Value must be a valid memory specification (e.g., 1Gi, 2Gi)
+              x-ui-placeholder: "1Gi"
+    domains:
+      title: Domains
+      description: Map of domain key to rules
+      type: object
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Domain Object
+          description: Name of the domain object
+          type: object
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Host name of the domain
+              pattern: ^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z0-9-]{1,63})*\.[A-Za-z]{2,6}$
+              x-ui-unique: true
+              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com,
+                my-domain.co.uk'
+              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com,
+                my-domain.co.uk'
+            alias:
+              type: string
+              title: Alias
+              description: Alias for the domain
+            custom_tls:
+              type: object
+              title: Custom TLS Configuration
+              description: Provide custom SSL certificate and private key for this
+                domain
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Custom TLS
+                  description: Enable custom TLS certificate instead of cert-manager
+                    managed certificates
+                  default: false
+                certificate:
+                  type: string
+                  title: TLS Certificate
+                  description: TLS certificate (PEM format)
+                  x-ui-secret-ref: true
+                  x-ui-visible-if:
+                    field: spec.domains.{{this}}.custom_tls.enabled
+                    values:
+                    - true
+                private_key:
+                  type: string
+                  title: TLS Private Key
+                  description: TLS private key (PEM format)
+                  x-ui-secret-ref: true
+                  x-ui-visible-if:
+                    field: spec.domains.{{this}}.custom_tls.enabled
+                    values:
+                    - true
+              required:
+              - enabled
+          required:
+          - domain
+          - alias
+    more_set_headers:
+      type: object
+      title: Custom Response Headers
+      description: Common Custom response headers applied across rules
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Custom Response Header
+          description: Custom Response Header
+          type: object
+          properties:
+            header_name:
+              type: string
+              title: Header Key
+              description: The Header key
+              pattern: ^[A-Za-z0-9-]+$
+              x-ui-error-message: Header key must contain only alphanumeric characters
+                and hyphens
+              x-ui-typeable: true
+              enum:
+              - X-Frame-Options
+              - Content-Security-Policy
+              - Referrer-Policy
+              - X-Content-Type-Options
+              - X-Xss-Protection
+              - reflected-xss
+              - Cache-Control
+              - Cache-Control
+              - Vary
+              - Content-Disposition
+              - X-Tenant-ID
+            header_value:
+              type: string
+              title: Header Value
+              description: The Header value
+              x-ui-textarea: true
+    rules:
+      title: Ingress Rules
+      description: Objects of all ingress rules
+      type: object
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Ingress Object
+          description: Name of the ingress object
+          type: object
+          properties:
+            disable:
+              type: boolean
+              title: Disable Rule
+              description: Enable/Diaable Rule
+            domain_prefix:
+              type: string
+              title: Domain Prefix
+              description: Subdomain prefix
+              pattern: ^(?!-)[a-z0-9-]{1,36}(?<!-)$
+              x-ui-placeholder: Enter the subdomain you want to expose your application
+              x-ui-error-message: Value doesn't match pattern, max characters of 36,
+                only hyphen special characters is accepted with numbers and alphabets
+                and should not start or end with hyphen
+            service_name:
+              type: string
+              title: Service Name
+              description: Kubernetes service name
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                filterConditions:
+                - field: resourceType
+                  value: service
+              x-ui-typeable: true
+            namespace:
+              type: string
+              title: Service Namespace
+              description: Kubernetes service namespace
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                filterConditions:
+                - field: resourceType
+                  value: service
+              x-ui-typeable: true
+              x-ui-placeholder: Seelect the Service to set the namespace
+            port:
+              type: string
+              title: Port
+              description: Service port number
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview
+                dynamicProperties:
+                  serviceName:
+                    key: service_name
+                    lookup: regex
+                    x-ui-lookup-regex: \${[^.]+\.([^.]+).*
+                method: GET
+                labelKey: port
+                valueKey: port
+                path: ports
+              x-ui-disable-tooltip: No Ports Found or Service not selected
+              x-ui-typeable: true
+            path:
+              type: string
+              title: Path
+              description: Path of the application
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter path to which your application will be accessible
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /<path>
+                etc'
+              default: /
+            enable_rewrite_target:
+              type: boolean
+              title: Enable Rewrite Target
+              description: Toggle Rewrite Target
+            rewrite_target:
+              type: string
+              title: Rewrite Target
+              description: Target URI where the traffic must be redirected
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.enable_rewrite_target
+                values:
+                - true
+            enable_header_based_routing:
+              type: boolean
+              title: Enable Header-Based Routing
+              description: Toggle header-based conditional routing
+            header_based_routing:
+              type: object
+              title: Header-Based Routing Configuration
+              description: Set up routing rules based on specific header values
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.enable_header_based_routing
+                values:
+                - true
+              properties:
+                header_name:
+                  type: string
+                  title: Header Key
+                  description: The Header key for conditional routing
+                  pattern: ^[A-Za-z0-9-]+$
+                  x-ui-error-message: Header key must contain only alphanumeric characters
+                    and hyphens
+                  x-ui-typeable: true
+                  enum:
+                  - X-Frame-Options
+                  - Content-Security-Policy
+                  - Referrer-Policy
+                  - X-Content-Type-Options
+                  - X-Xss-Protection
+                  - reflected-xss
+                  - Cache-Control
+                  - Cache-Control
+                  - Vary
+                  - Content-Disposition
+                  - X-Tenant-ID
+                header_value:
+                  type: string
+                  title: Header Value
+                  description: The Header value to trigger conditional routing
+                  x-ui-textarea: true
+                default_backend:
+                  type: string
+                  title: Default Service
+                  description: Default service to route to if the header value doesn't
+                    match any conditions
+                  x-ui-api-source:
+                    endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                    method: GET
+                    params:
+                      includeContent: false
+                    labelKey: resourceName
+                    valueKey: resourceName
+                    valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                    filterConditions:
+                    - field: resourceType
+                      value: service
+                  x-ui-typeable: true
+                default_backend_namespace:
+                  type: string
+                  title: Default Service Namespace
+                  description: Kubernetes default service namespace
+                  x-ui-api-source:
+                    endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                    method: GET
+                    params:
+                      includeContent: false
+                    labelKey: resourceName
+                    valueKey: resourceName
+                    valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                    filterConditions:
+                    - field: resourceType
+                      value: service
+                  x-ui-typeable: true
+                  x-ui-placeholder: Seelect the Default Service to set the namespace
+                    to route to if the header value doesn't match any conditions
+              required:
+              - header_name
+              - header_value
+              - default_backend
+            more_set_headers:
+              type: object
+              title: Custom Response Headers
+              description: Custom response headers for the ingress resource
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  title: Custom Response Header
+                  description: Custom Response Header
+                  type: object
+                  properties:
+                    header_name:
+                      type: string
+                      title: Header Key
+                      description: The Header key
+                      pattern: ^[A-Za-z0-9-]+$
+                      x-ui-error-message: Header key must contain only alphanumeric
+                        characters and hyphens
+                      x-ui-typeable: true
+                      enum:
+                      - X-Frame-Options
+                      - Content-Security-Policy
+                      - Referrer-Policy
+                      - X-Content-Type-Options
+                      - X-Xss-Protection
+                      - reflected-xss
+                      - Cache-Control
+                      - Cache-Control
+                      - Vary
+                      - Content-Disposition
+                      - X-Tenant-ID
+                    header_value:
+                      type: string
+                      title: Header Value
+                      description: The Header value
+                      x-ui-textarea: true
+            session_affinity:
+              type: object
+              title: Session Affinity
+              description: Configure Session affinity settings
+              x-ui-toggle: true
+              properties:
+                session_cookie_name:
+                  type: string
+                  title: Session Cookie Name
+                  description: Name of the cookie that will be created
+                  pattern: ^[a-zA-Z0-9_-]+$
+                  x-ui-error-message: Cookie name must contain only alphanumeric characters,
+                    underscores, and hyphens
+                session_cookie_expires:
+                  type: integer
+                  title: Session Cookie Expires
+                  description: Legacy version of the previous annotation for compatibility
+                    with older browsers, generates an Expires cookie directive by
+                    adding the seconds to the current date
+                  minimum: 0
+                  x-ui-error-message: Expires value must be a non-negative integer
+                session_cookie_max_age:
+                  type: integer
+                  title: Session Cookie Max Age
+                  description: Time until the cookie expires, corresponds to the Max-Age
+                    cookie directive (in seconds)
+                  minimum: 0
+                  x-ui-error-message: Max Age value must be a non-negative integer
+            cors:
+              type: object
+              title: CORS
+              description: Configure Cross-Origin Resource Sharing (CORS) settings
+              x-ui-toggle: true
+              properties:
+                enable:
+                  type: boolean
+                  title: Enable CORS
+                  description: Enable Cross-Origin Resource Sharing (CORS) in an Ingress
+                    rule
+                allow_headers:
+                  title: Allow Headers
+                  description: Controls which headers are accepted for CORS. Enter each header on a new line.
+                  type: string
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enable
+                    values:
+                    - true
+                  x-ui-textarea: true
+                  x-ui-placeholder: |
+                    Accept
+                    Authorization
+                    Content-Type
+                    X-Requested-With
+                  default: ""
+            conditional_set_headers:
+              type: object
+              title: Conditional Set Headers
+              description: Set headers conditionally based on the path
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  title: Conditional Set Headers Object
+                  description: Name of the conditional set headers object
+                  type: object
+                  properties:
+                    left:
+                      type: string
+                      title: Left Operand
+                      description: Left side of the condition
+                      pattern: ^\$[a-zA-Z_][a-zA-Z0-9_]*$
+                    operator:
+                      type: string
+                      title: Operator
+                      description: Comparison operator
+                      enum:
+                      - '='
+                      - '~'
+                    right:
+                      type: string
+                      title: Right Operand
+                      description: Right side of the condition
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter path to which your application will
+                        be accessible
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / or
+                        /<path> etc'
+                    headers:
+                      type: object
+                      title: Headers
+                      description: Headers to be set when this condition satisfies
+                      patternProperties:
+                        ^[a-zA-Z0-9_.-]*$:
+                          title: Header
+                          description: Header name
+                          type: object
+                          properties:
+                            header_name:
+                              type: string
+                              title: Header Key
+                              description: The Header key
+                              pattern: ^[A-Za-z0-9-]+$
+                              x-ui-error-message: Header key must contain only alphanumeric
+                                characters and hyphens
+                              x-ui-typeable: true
+                              enum:
+                              - X-Frame-Options
+                              - Content-Security-Policy
+                              - Referrer-Policy
+                              - X-Content-Type-Options
+                              - X-Xss-Protection
+                              - reflected-xss
+                              - Cache-Control
+                              - Cache-Control
+                              - Vary
+                              - Content-Disposition
+                              - X-Tenant-ID
+                            header_value:
+                              type: string
+                              title: Header Value
+                              description: The Header value
+                              x-ui-textarea: true
+                      required:
+                      - left
+                      - operator
+                      - right
+            annotations:
+              type: object
+              title: Annotations (Optional)
+              description: Add key-value pairs for configuring ingress annotations.
+                Annotations allow you to customize the behavior of your ingress
+              x-ui-error-message: This is not a valid yaml
+              default: {}
+              x-ui-yaml-editor: true
+      required:
+      - service_name
+      - path
+      - port
+    custom_error_pages:
+      type: object
+      title: Custom Error Pages
+      description: Configure custom error pages
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Custom Error Page Object
+          description: Name of the Custom Error Page object
+          type: object
+          properties:
+            error_code:
+              type: string
+              title: Error Code
+              description: The error code for which the custom page is to be shown
+              x-ui-typeable: true
+              enum:
+              - '404'
+              - '503'
+            page_content:
+              type: string
+              title: Custom Error Page Content
+              description: The HTML content for the custom error page
+              x-ui-textarea: true
+    pdb:
+      type: object
+      title: Pod Disruption Budget
+      description: Configure Pod Disruption Budget for the ingress controller
+      x-ui-toggle: true
+      properties:
+        minAvailable:
+          type: string
+          title: Minimum Available
+          description: Minimum number of pods that must be available during a disruption
+          pattern: ^([1-9][0-9]*|([1-9][0-9]?|100)%)$
+          x-ui-error-message: Value must be a positive integer or a percentage between
+            1% and 100%
+        maxUnavailable:
+          type: string
+          title: Maximum Unavailable
+          description: Maximum number of pods that can be unavailable during a disruption
+          pattern: ^([1-9][0-9]*|([1-9][0-9]?|100)%)$
+          x-ui-error-message: Value must be a positive integer or a percentage between
+            1% and 100%
+    force_ssl_redirection:
+      type: boolean
+      title: Force SSL Redirection
+      description: Force HTTP to HTTPS redirection
+  required:
+  - private
+  - rules
+  - force_ssl_redirection
+  x-ui-order:
+  - basic_auth
+  - grpc
+  - private
+  - disable_base_domain
+  - domains
+  - more_set_headers
+  - rules
+  - resources
+  - pdb
+  - custom_error_pages
+  - force_ssl_redirection
+sample:
+  kind: ingress
+  flavor: nginx_k8s_native-pa
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
+  disabled: true
+  version: '0.2'
+  metadata:
+    annotations: {}
+  spec:
+    private: false
+    basic_auth: false
+    grpc: false
+    domains: {}
+    rules: {}
+    force_ssl_redirection: true
