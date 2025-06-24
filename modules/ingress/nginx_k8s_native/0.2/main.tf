@@ -13,7 +13,7 @@ locals {
   }
 
   # Merge user supplied values with PDB configuration
-  user_supplied_helm_values = merge(local.base_helm_values, local.chart_version_specified ? local.pdb_helm_values : {})
+  user_supplied_helm_values = merge(local.base_helm_values, local.pdb_helm_values)
   ingressRoutes             = { for x, y in lookup(var.instance.spec, "rules", {}) : x => y }
   record_type               = lookup(var.inputs.kubernetes_details.attributes, "lb_service_record_type", var.environment.cloud == "AWS" ? "CNAME" : "A")
   #If environment name and instance exceeds 33 , take md5
@@ -179,7 +179,6 @@ locals {
       key => value if can(regex("^cert-manager\\.io", key))
     }
   )
-  chart_version_specified = lookup(var.instance.spec, "ingress_chart_version", null) != "4.2.6"
 
   ingressObjectsFiltered = {
     # Iterate over each object in the ingressObjects map
@@ -272,9 +271,9 @@ resource "helm_release" "nginx_ingress_ctlr" {
 
   depends_on = [module.custom_error_pages_configmap]
 
-  repository  = local.chart_version_specified ? "https://kubernetes.github.io/ingress-nginx" : null
-  chart       = local.chart_version_specified ? "ingress-nginx" : "${path.module}/../../../charts/ingress-nginx/ingress-nginx-4.2.6.tgz"
-  version     = local.chart_version_specified ? lookup(var.instance.spec, "ingress_chart_version", "4.12.1") : null
+  repository  = "https://kubernetes.github.io/ingress-nginx"
+  chart       = "ingress-nginx"
+  version     = "4.12.3"
   namespace   = var.environment.namespace
   max_history = 10
   values = [
@@ -402,7 +401,7 @@ DEFAULTBACKEND
 VALUES
 , yamlencode(local.user_supplied_helm_values)
 , yamlencode(local.proxy_set_headers)
-, local.chart_version_specified ? yamlencode({ controller = { allowSnippetAnnotations = true } }) : yamlencode({})
+, yamlencode({ controller = { allowSnippetAnnotations = true } })
 , yamlencode(local.user_supplied_helm_values)]
 }
 
@@ -646,7 +645,7 @@ locals {
               "nginx.ingress.kubernetes.io/enable-cors" = "true"
             },
             # Add CORS allow_headers using textarea format (newline-separated headers)
-            lookup(lookup(value, "cors", {}), "allow_headers", null) != null && 
+            lookup(lookup(value, "cors", {}), "allow_headers", null) != null &&
             trimspace(tostring(lookup(lookup(value, "cors", {}), "allow_headers", ""))) != "" ? {
               "nginx.ingress.kubernetes.io/cors-allow-headers" = join(",", [
                 for header in split("\n", tostring(lookup(lookup(value, "cors", {}), "allow_headers", ""))) :
