@@ -1,12 +1,23 @@
 intent: k8s_resource
-flavor: k8s
-version: "0.3"
+flavor: k8s-pa-test
+version: '0.3'
 description: Adds kubernetes objects inside the cluster via yaml manifests
 clouds:
 - aws
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   title: K8s resource
   description: Specification of the K8s resource intent
@@ -26,7 +37,7 @@ spec:
       description: Additional resources that can be configured for k8s
       x-ui-title-replace: manifest
       patternProperties:
-        "^[0-9]+[m]?$":
+        ^[0-9]+[m]?$:
           type: object
           title: Additional resource name
           description: Define the k8s resource
@@ -43,12 +54,11 @@ spec:
   required:
   - resource
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
   kind: k8s_resource
   metadata: {}
-  flavor: k8s
-  version: "0.3"
+  flavor: k8s-pa-test
+  version: '0.3'
   disabled: true
   spec:
     additional_resources: {}
@@ -68,3 +78,6 @@ sample:
         - port: 80
           name: http
           targetPort: 80
+iac:
+  validated_files:
+  - variables.tf

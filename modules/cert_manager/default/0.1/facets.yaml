@@ -1,0 +1,79 @@
+intent: cert_manager
+flavor: default
+version: '0.1'
+description: Deploys Cert Manager for managing ssl certificates
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+inputs:
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: true
+    default:
+      resource_type: configuration
+      resource_name: prometheus
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+spec:
+  title: Cert Manager Configuration
+  description: Configuration options for Cert Manager deployment
+  type: object
+  properties:
+    cname_strategy:
+      type: string
+      title: CNAME Strategy
+      description: Strategy for handling CNAME records in DNS validation
+      default: Follow
+      enum:
+      - Follow
+      - None
+    disable_dns_validation:
+      type: boolean
+      title: Disable DNS Validation
+      description: Disable DNS validation and only use HTTP validation
+    use_gts:
+      type: boolean
+      title: Use Google Trust Services
+      description: Enable Google Trust Services (GTS) certificate issuer instead of Let's Encrypt
+      default: false
+    gts_private_key:
+      type: string
+      title: GTS Private Key
+      description: Private key for Google Trust Services authentication (required when GTS is enabled)
+      x-ui-secret-ref: true
+      x-ui-visible-if:
+        field: spec.use_gts
+        values: [true]
+    acme_email:
+      type: string
+      title: ACME Email
+      description: Email address for ACME registration (defaults to cluster creator if not specified)
+    cert_manager:
+      type: object
+      title: Cert Manager
+      description: Specification of the Cert Manager Helm chart values
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter values in YAML format
+  required:
+  - cname_strategy
+sample:
+  kind: cert_manager
+  flavor: default
+  disabled: true
+  metadata: {}
+  version: '0.1'
+  spec:
+    cname_strategy: Follow
+iac:
+  validated_files:
+  - variables.tf

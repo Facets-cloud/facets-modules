@@ -1,12 +1,23 @@
 intent: config_map
 flavor: k8s
 version: '0.3'
-description: "config_map - k8s"
+description: config_map - k8s
 clouds:
 - aws
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   type: object
   properties:
@@ -15,9 +26,9 @@ spec:
       type: object
       description: Data objects containing key, value pair
       patternProperties:
-        "^[a-zA-Z0-9_.-]*$":
+        ^[a-zA-Z0-9_.-]*$:
           title: Data Object Block
-          description: A block representing a key-value pair in the ConfigMap
+          description: something
           type: object
           properties:
             key:
@@ -30,8 +41,7 @@ spec:
               type: string
               x-ui-textarea: true
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
   kind: config_map
   flavor: k8s
   version: '0.3'
@@ -39,3 +49,6 @@ sample:
   disabled: true
   spec:
     data: {}
+iac:
+  validated_files:
+  - variables.tf
