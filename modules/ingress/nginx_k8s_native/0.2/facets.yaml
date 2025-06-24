@@ -18,6 +18,9 @@ inputs:
     - kubernetes
     - kubernetes-alpha
     - helm
+  kubernetes_node_pool_details:
+    type: '@outputs/aws_karpenter_nodepool'
+    optional: true
 spec:
   title: Nginx Ingress Controller
   type: object

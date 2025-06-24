@@ -244,6 +244,22 @@ locals {
       )
     }
   }
+
+  # Nodepool configuration from inputs
+  nodepool_config      = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {}
+  nodepool_tolerations = lookup(local.nodepool_config, "tolerations", [])
+  nodepool_labels      = lookup(local.nodepool_config, "labels", {})
+
+  # Combine default tolerations with nodepool tolerations
+  ingress_tolerations = concat([
+    {
+      effect   = "NoSchedule"
+      key      = "kubernetes.azure.com/scalesetpriority"
+      operator = "Equal"
+      value    = "spot"
+    }
+  ], local.nodepool_tolerations)
+
   name                        = lower(var.environment.namespace == "default" ? "${var.instance_name}" : "${var.environment.namespace}-${var.instance_name}")
   disable_endpoint_validation = lookup(local.advanced_config, "disable_endpoint_validation", false) || lookup(var.instance.spec, "private", false)
   external_services = {
@@ -312,11 +328,6 @@ resource "helm_release" "nginx_ingress_ctlr" {
 controller:
   scope:
     enabled: true
-  tolerations:
-  - effect: NoSchedule
-    key: kubernetes.azure.com/scalesetpriority
-    operator: Equal
-    value: spot
   electionID: ${var.instance_name}
   ingressClassResource:
     name: ${local.name}
@@ -367,12 +378,6 @@ LIMITS
       enabled: false
   admissionWebhooks:
     enabled: false
-    patch:
-      tolerations:
-      - effect: NoSchedule
-        key: kubernetes.azure.com/scalesetpriority
-        operator: Equal
-        value: spot
 ${length(keys(local.error_pages_data)) > 0 ? <<DEFAULTBACKEND
 defaultBackend:
   enabled: true
@@ -402,6 +407,18 @@ VALUES
 , yamlencode(local.user_supplied_helm_values)
 , yamlencode(local.proxy_set_headers)
 , yamlencode({ controller = { allowSnippetAnnotations = true } })
+, yamlencode({
+  controller = {
+    tolerations  = local.ingress_tolerations
+    nodeSelector = length(local.nodepool_labels) > 0 ? local.nodepool_labels : {}
+  }
+  admissionWebhooks = {
+    patch = {
+      tolerations  = local.ingress_tolerations
+      nodeSelector = length(local.nodepool_labels) > 0 ? local.nodepool_labels : {}
+    }
+  }
+})
 , yamlencode(local.user_supplied_helm_values)]
 }
 
