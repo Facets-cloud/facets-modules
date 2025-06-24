@@ -20,51 +20,7 @@ variable "inputs" {
 
 variable "instance" {
   description = "Instance configuration"
-  type = object({
-    spec = object({
-      vpc_cidr           = string
-      region             = string
-      availability_zones = list(string)
-
-      public_subnets = object({
-        count_per_az = number
-        subnet_size  = string
-      })
-
-      private_subnets = object({
-        count_per_az = number
-        subnet_size  = string
-      })
-
-      database_subnets = object({
-        count_per_az = number
-        subnet_size  = string
-      })
-
-      nat_gateway = object({
-        strategy = string
-      })
-
-      vpc_endpoints = optional(object({
-        enable_s3           = optional(bool, true)
-        enable_dynamodb     = optional(bool, true)
-        enable_ecr_api      = optional(bool, true)
-        enable_ecr_dkr      = optional(bool, true)
-        enable_eks          = optional(bool, false)
-        enable_ec2          = optional(bool, false)
-        enable_ssm          = optional(bool, true)
-        enable_ssm_messages = optional(bool, true)
-        enable_ec2_messages = optional(bool, true)
-        enable_kms          = optional(bool, false)
-        enable_logs         = optional(bool, false)
-        enable_monitoring   = optional(bool, false)
-        enable_sts          = optional(bool, false)
-        enable_lambda       = optional(bool, false)
-      }), {})
-
-      tags = optional(map(string), {})
-    })
-  })
+  type = object
 
   validation {
     condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", var.instance.spec.vpc_cidr))

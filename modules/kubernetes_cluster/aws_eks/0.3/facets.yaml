@@ -21,7 +21,7 @@ spec:
       type: object
       title: Secret Copier
       description: Configuration for the Secret Copier.
-      x-ui-toggle: true
+      x-ui-toggle: false
       properties:
         enabled:
           type: boolean
@@ -38,7 +38,7 @@ spec:
       type: object
       title: Cluster
       description: Configuration for the EKS cluster.
-      x-ui-toggle: true
+      x-ui-toggle: false
       properties:
         kubernetes_version:
           type: string
@@ -105,7 +105,8 @@ spec:
           type: object
           title: KMS
           description: Configuration for the KMS key.
-          x-ui-toggle: true
+          x-ui-toggle: false
+          x-ui-overrides-only: true
           properties:
             deletion_window_in_days:
               title: Deletion Window
@@ -115,13 +116,11 @@ spec:
               maximum: 30
               default: 7
               x-ui-error-message: Deletion window must be between 7 and 30
-              x-ui-overrides-only: true
             enable_rotation:
               title: Enable Rotation for KMS
               description: Specifies whether key rotation is enabled
               type: boolean
               default: false
-              x-ui-overrides-only: true
             rotation_period_in_days:
               title: Rotation Period for KMS in days
               description: Specifies Rotation Period for KMS in days
@@ -129,7 +128,6 @@ spec:
               default: 90
               minimum: 1
               maximum: 365
-              x-ui-overrides-only: true
               x-ui-visible-if:
                 field: spec.cluster.kms_keys.enable_rotation
                 values:
@@ -140,19 +138,19 @@ spec:
       type: object
       title: Tags
       description: Tags to apply to the EKS cluster.
-      x-ui-toggle: true
+      x-ui-toggle: false
       x-ui-yaml-editor: true
     node_pools:
       type: object
       title: Node Pools
       description: Configuration for managed node pools, that are created by facets
-      x-ui-toggle: true
+      x-ui-toggle: false
       properties:
         dedicated:
           type: object
           title: Dedicated Node Pool
           description: Configuration for dedicated managed node pool.
-          x-ui-toggle: true
+          x-ui-toggle: false
           properties:
             enabled:
               type: boolean
@@ -211,7 +209,7 @@ spec:
           type: object
           title: Default Node Pool
           description: Configuration for default managed node pool.
-          x-ui-toggle: true
+          x-ui-toggle: false
           properties:
             enabled:
               type: boolean

@@ -15,35 +15,12 @@ spec:
       pattern: ^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$
       x-ui-overrides-only: true
       x-ui-error-message: CIDR must be a valid IP block (e.g., 10.0.0.0/16)
-    region:
-      type: string
-      title: AWS Region
-      description: AWS region where the VPC will be created
-      x-ui-api-source:
-        endpoint: /cc-ui/v1/dropdown/aws/regions-v2
-        method: GET
-        labelKey: region
-        valueKey: region
-        path: regions
+      x-ui-placeholder: "10.0.0.0/16"
     availability_zones:
       type: array
       title: Availability Zones
-      description: List of availability zones to use for subnets
-      x-ui-api-source:
-        endpoint: /cc-ui/v1/dropdown/aws/region/{{region}}/availability-zones
-        dynamicProperties:
-          region:
-            key: region
-            lookup: label
-        method: GET
-      items:
-        type: string
-        pattern: ^[a-z]{2}-[a-z]+-[0-9][a-z]$
-        x-ui-error-message: Availability zone must be in format like 'us-east-1a'
-      x-ui-select-max: 4
-      x-ui-select-min: 2
+      description: List of availability zones to use for subnets (space separated)
       x-ui-overrides-only: true
-      x-ui-multi-select: true
     public_subnets:
       type: object
       title: Public Subnets Configuration
