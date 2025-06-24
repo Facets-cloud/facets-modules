@@ -7,7 +7,7 @@ description: Workload Identity is the recommended way to access GCP services fro
 inputs:
   kubernetes_details:
     optional: false
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     description: Details of Kubernetes where the kubernetes service account will be
       created.

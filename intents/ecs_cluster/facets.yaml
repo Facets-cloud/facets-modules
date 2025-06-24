@@ -5,4 +5,4 @@ description: A logical grouping of tasks or services that allows you to manage, 
 iconUrl: https://icon.icepanel.io/AWS/svg/Containers/Elastic-Container-Service.svg
 outputs:
   - name: default
-    type: "@output/ecs_cluster"
+    type: "@outputs/ecs_cluster"

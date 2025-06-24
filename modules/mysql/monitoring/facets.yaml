@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Mysql
 inputs:
   default:
-    type: "@output/mysql"
+    type: "@outputs/mysql"
     adds_capability: true
 spec:
   title: Mysql Monitoring

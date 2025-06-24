@@ -4,4 +4,4 @@ displayName: Database Operator
 description: Kubernetes Operator to simplify the management of users and permissions for PostgreSQL databases
 outputs:
 - name: default
-  type: "@output/database_operator"
+  type: "@outputs/database_operator"

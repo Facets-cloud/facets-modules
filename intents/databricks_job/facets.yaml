@@ -4,4 +4,4 @@ displayName: Databricks Job
 description: Create and manage Databricks Jobs to automate the deployment and scheduling of data processing and machine learning tasks.
 outputs:
   - name: default
-    type: "@output/databricks_job"
+    type: "@outputs/databricks_job"

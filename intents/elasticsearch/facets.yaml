@@ -5,4 +5,4 @@ description: A distributed, RESTful search and analytics engine capable of handl
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc4c40114947ab87e5_elasticsearch.svg
 outputs:
   - name: default
-    type: "@output/elasticsearch"
+    type: "@outputs/elasticsearch"

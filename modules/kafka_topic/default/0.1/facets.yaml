@@ -51,7 +51,7 @@ spec:
           - partitions
 inputs:
   crossplane_details:
-    type: "@output/crossplane"
+    type: "@outputs/crossplane"
     displayName: Crossplane
     description: Details of crossplane which will be responsible to create mysql users
     optional: false

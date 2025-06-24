@@ -12,7 +12,7 @@ input_type: instance
 composition: {}
 inputs:
   kubernetes_details:
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     description: The details of kubernetes cluster where the image pull secret injector will be installed
     optional: false
@@ -20,7 +20,7 @@ inputs:
       resource_type: kubernetes_cluster
       resource_name: default
   artifactories:
-    type: "@output/artifactories"
+    type: "@outputs/artifactories"
     displayName: Artifactories
     description: The details of container registries associated with this Artifactory.
     optional: false

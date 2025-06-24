@@ -5,4 +5,4 @@ description: A high-performance, in-memory data structure store used as a databa
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0ccca3fd7fa61df140c_redis.svg
 outputs:
   - name: default
-    type: "@output/redis"
+    type: "@outputs/redis"

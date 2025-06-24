@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Redis
 inputs:
   default:
-    type: "@output/redis"
+    type: "@outputs/redis"
     adds_capability: true
 spec:
   title: Redis Monitoring

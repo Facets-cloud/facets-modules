@@ -5,7 +5,7 @@ description: Fully managed AWS notification service provider
 outputs:
   - name: attributes.consumer_policy_arn
     title: "SNS Consumer Permission"
-    type: "@output/iam_policy_arn"
+    type: "@outputs/iam_policy_arn"
   - name: attributes.producer_policy_arn
     title: "SNS Producer Permission"
-    type: "@output/iam_policy_arn"
+    type: "@outputs/iam_policy_arn"

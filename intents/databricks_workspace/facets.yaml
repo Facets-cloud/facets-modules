@@ -4,4 +4,4 @@ displayName: Databricks Workspace
 description: Set up a Databricks Workspace to automate the configuration and management of interactive environments for collaborative data exploration and analysis.
 outputs:
   - name: default
-    type: "@output/databricks_workspace"
+    type: "@outputs/databricks_workspace"

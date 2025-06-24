@@ -9,7 +9,7 @@ clouds:
   - kubernetes
 inputs:
   kubernetes_details:
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     description: The details of kubernetes cluster where the loki standalone will be installed
     optional: false

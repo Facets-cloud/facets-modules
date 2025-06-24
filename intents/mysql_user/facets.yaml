@@ -4,4 +4,4 @@ displayName: MySQL User
 description: User account in MySQL database, specifying roles and access privileges.
 outputs:
   - name: default
-    type: "@output/mysql_user"
+    type: "@outputs/mysql_user"

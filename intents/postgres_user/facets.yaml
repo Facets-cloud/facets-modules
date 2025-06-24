@@ -4,4 +4,4 @@ displayName: Postgres User
 description: User account in PostgreSQL, controlling access to databases and managing privileges.
 outputs:
   - name: default
-    type: "@output/postgres_user"
+    type: "@outputs/postgres_user"

@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Postgres
 inputs:
   postgres_outputs:
-    type: "@output/postgres"
+    type: "@outputs/postgres"
     adds_capability: true
 spec:
   title: Postgres Monitoring
