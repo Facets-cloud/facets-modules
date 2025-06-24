@@ -32,7 +32,7 @@ spec:
       description: Key-value pairs to store as secret data in AWS Secrets Manager
       minProperties: 1
       patternProperties:
-        .*:
+        ^[a-zA-Z0-9_.-]+$:
           type: object
           title: Secret entry containing key and value
           properties:
