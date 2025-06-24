@@ -7,155 +7,32 @@ clouds:
 - gcp
 - azure
 - kubernetes
-spec:
-  type: object
-  properties:
-    http:
-      type: object
-      title: HTTP Health Checks
-      description: Configure HTTP endpoint health checks
-      x-ui-toggle: true
-      patternProperties:
-        ^[a-zA-Z0-9_-]+$:
-          type: object
-          properties:
-            url:
-              type: string
-              title: URL
-              description: The HTTP endpoint URL to check
-              pattern: ^https?://.+
-            method:
-              type: string
-              title: HTTP Method
-              description: The HTTP method to use
-              enum:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - HEAD
-              default: GET
-            expected_status_code:
-              type: string
-              title: Expected Status Code
-              description: Expected HTTP status code or range (e.g., 200, 200-299)
-              default: 200-299
-            count:
-              type: string
-              title: Check Count
-              description: Number of checks to perform
-              default: '10'
-            seconds:
-              type: string
-              title: Check Interval
-              description: Interval between checks in seconds
-              default: '1'
-            passing_percent:
-              type: string
-              title: Passing Percentage
-              description: Percentage of checks that must pass
-              default: '100'
-            body:
-              type: string
-              title: Request Body
-              description: Optional request body for POST/PUT requests
-            expected_response:
-              type: string
-              title: Expected Response
-              description: Expected response content
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable this health check
-              default: false
-          required:
-          - url
-    mongo:
-      type: object
-      title: MongoDB Health Checks
-      description: Configure MongoDB connection health checks
-      x-ui-toggle: true
-      patternProperties:
-        ^[a-zA-Z0-9_-]+$:
-          type: object
-          properties:
-            url:
-              type: string
-              title: MongoDB URL
-              description: MongoDB connection URL
-              pattern: ^mongodb://.+
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable this health check
-              default: false
-          required:
-          - url
-    redis:
-      type: object
-      title: Redis Health Checks
-      description: Configure Redis connection health checks
-      x-ui-toggle: true
-      patternProperties:
-        ^[a-zA-Z0-9_-]+$:
-          type: object
-          properties:
-            url:
-              type: string
-              title: Redis URL
-              description: Redis connection URL
-              pattern: ^redis://.+
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable this health check
-              default: false
-          required:
-          - url
-    tcp:
-      type: object
-      title: TCP Health Checks
-      description: Configure TCP connection health checks
-      x-ui-toggle: true
-      patternProperties:
-        ^[a-zA-Z0-9_-]+$:
-          type: object
-          properties:
-            url:
-              type: string
-              title: TCP Endpoint
-              description: TCP endpoint to check (host:port)
-              pattern: ^[^:]+:[0-9]+$
-            disabled:
-              type: boolean
-              title: Disabled
-              description: Disable this health check
-              default: false
-          required:
-          - url
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/status_check/status_check.schema.json
   kind: status_check
   flavor: default
   version: '0.1'
-  disabled: false
+  disabled: true
   metadata: {}
   spec:
     http:
-      example-api:
-        url: https://api.example.com/health
+      http-check:
+        url: https://www.google.com
         method: GET
         expected_status_code: '200'
         disabled: false
     mongo:
-      database-check:
+      mongo-check:
+        disabled: false
         url: mongodb://localhost:27017
+      mongo-check2:
         disabled: false
+        url: mongodb://localhost:27017
     redis:
-      cache-check:
+      redis-check:
+        disabled: false
         url: redis://localhost:6379
-        disabled: false
     tcp:
-      service-check:
-        url: example.com:443
+      tcp-check:
         disabled: false
+        url: google.com:443
