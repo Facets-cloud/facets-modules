@@ -40,7 +40,7 @@ locals {
 }
 
 module "sr-name" {
-  source          = "../../3_utility/name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   is_k8s          = false
   globally_unique = true
   resource_name   = local.resource_name
@@ -51,7 +51,7 @@ module "sr-name" {
 
 module "irsa" {
   count                 = local.enable_irsa ? 1 : 0
-  source                = "../../3_utility/aws_irsa"
+  source                = "github.com/Facets-cloud/facets-utility-modules//aws_irsa"
   iam_arns              = local.iam_arns
   iam_role_name         = "${module.sr-name.name}-sr"
   namespace             = local.namespace
@@ -64,7 +64,7 @@ module "app-helm-chart" {
     module.irsa, aws_iam_role.application-role,
     aws_iam_role_policy_attachment.policy-attach
   ]
-  source                  = "../../3_utility/application"
+  source                  = "github.com/Facets-cloud/facets-utility-modules//application"
   namespace               = local.namespace
   chart_name              = lower(var.instance_name)
   values                  = var.instance
