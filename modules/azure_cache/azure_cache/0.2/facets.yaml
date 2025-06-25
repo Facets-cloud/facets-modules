@@ -1,0 +1,80 @@
+intent: azure_cache
+flavor: azure_cache
+version: '0.1'
+description: Azure Cache module
+clouds:
+- azure
+spec:
+  title: Azure Cache
+  type: object
+  properties:
+    authenticated:
+      type: boolean
+      title: Authenticated
+      description: Indicates if the Azure Cache is authenticated
+      default: false
+    redis_version:
+      type: integer
+      title: Redis Version
+      description: The version of Redis used in the Azure Cache
+      default: 6
+      enum:
+      - 4
+      - 6
+    persistence_enabled:
+      type: boolean
+      title: Persistence
+      description: Enable Redis persistence
+      default: false
+    size:
+      type: object
+      title: Size
+      description: Size configuration for the Redis cache
+      properties:
+        instance:
+          type: string
+          title: Instance Size
+          description: The capacity of the Redis cache
+          default: '1'
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+        replica_count:
+          type: integer
+          title: Replica Count
+          description: Number of replicas per primary
+          default: 1
+          minimum: 1
+          maximum: 3
+      required:
+      - instance
+  required:
+  - size
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/azure_vpc'
+    default:
+      resource_type: network
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/redis'
+sample:
+  flavor: azure_cache
+  kind: azure_cache
+  disabled: false
+  metadata: {}
+  version: '0.1'
+  spec:
+    authenticated: true
+    redis_version: 6
+    persistence_enabled: false
+    size:
+      instance: '1'
+      replica_count: 1
