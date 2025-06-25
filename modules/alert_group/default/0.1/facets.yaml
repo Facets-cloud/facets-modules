@@ -61,10 +61,6 @@ spec:
                   includeContent: false
                 labelKey: resourceType
                 valueKey: resourceType
-                filterConditions:
-                - field: resourceType
-                  value: UNKNOWN
-                  type: negation
               x-ui-typeable: true
               x-ui-error-message: Please enter a valid Kubernetes resource type
             resource_name:
@@ -81,9 +77,21 @@ spec:
               type: string
               title: Alert Type
               description: Type of alert supported by Facets monitoring system
+              enum:
+              - performance
+              - availability
+              - security
+              - capacity
+              - network
+              - database
+              - application
+              - infrastructure
+              - custom
               minLength: 1
               maxLength: 100
-              x-ui-error-message: Enter a custom alert type
+              x-ui-typeable: true
+              x-ui-error-message: Select from predefined alert types or enter a custom
+                alert type
             severity:
               type: string
               title: Severity Level
@@ -236,4 +244,36 @@ sample:
   flavor: default
   version: '0.1'
   spec:
-    rules: {}
+    rules:
+      high_cpu_usage:
+        expr: cpu_usage_percent > 80
+        for: 5m
+        message: CPU usage is above 80% for more than 5 minutes
+        summary: High CPU usage detected
+        resource_type: pod
+        resource_name: my-application
+        alert_type: performance
+        severity: normal
+        thresholds:
+          warning: 70
+          critical: 90
+          unit: percent
+        notification_channels:
+          email: true
+          slack: false
+      memory_usage_critical:
+        expr: memory_usage_percent > 95
+        for: 2m
+        message: Memory usage is critically high
+        summary: Critical memory usage detected
+        resource_type: container
+        resource_name: my-app-container
+        alert_type: critical
+        severity: high
+        escalation_policy: immediate
+        thresholds:
+          critical: 95
+          unit: percent
+        notification_channels:
+          email: true
+          pagerduty: true
