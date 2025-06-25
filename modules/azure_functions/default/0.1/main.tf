@@ -69,6 +69,7 @@ data "aws_s3_bucket_object" "customer-bucket-object" {
 }
 
 resource "null_resource" "download_s3_zips" {
+  provider = "azurerm3"
   count = local.zip_file_key != null && local.zip_file_key != "" ? 1 : 0
   triggers = {
     functions_zip = data.aws_s3_bucket_object.customer-bucket-object.0.version_id
@@ -84,6 +85,7 @@ resource "null_resource" "download_s3_zips" {
 
 
 resource "azurerm_storage_account" "az_func_storage_account" {
+  provider = "azurerm3"
   name                     = local.adjusted_generated_name
   resource_group_name      = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
   location                 = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.location
@@ -93,6 +95,7 @@ resource "azurerm_storage_account" "az_func_storage_account" {
 }
 
 resource "azurerm_service_plan" "service_plan" {
+  provider = "azurerm3"
   name = local.name
   #spec
   sku_name = lookup(local.spec, "sku", "Y1")
@@ -108,6 +111,7 @@ resource "azurerm_service_plan" "service_plan" {
 }
 
 resource "azurerm_linux_function_app" "linux_function_app" {
+  provider = "azurerm3"
   depends_on = [data.aws_s3_bucket.customer-bucket, null_resource.download_s3_zips]
   #  depends_on = [azurerm_service_plan.service_plan]
   count = local.os == "Linux" ? 1 : 0
@@ -254,6 +258,7 @@ resource "azurerm_linux_function_app" "linux_function_app" {
 #}
 
 resource "azurerm_linux_function_app_slot" "linux_function_app_slot" {
+  provider = "azurerm3"
   depends_on = [azurerm_linux_function_app.linux_function_app[0]]
   for_each   = local.os == "Linux" && length(local.linux_deployment_slots) > 0 ? local.linux_deployment_slots : {}
 
