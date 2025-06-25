@@ -306,7 +306,7 @@ resource "helm_release" "nginx_ingress_ctlr" {
           annotations = var.environment.cloud == "GCP" ? merge(local.gcp_annotations, local.service_annotations) : local.service_annotations
         }
       }
-      imagePullSecrets : var.inputs.kubernetes_details.attributes.legacy_outputs.registry_secret_objects
+      imagePullSecrets : lookup(var.inputs, "artifactories", null) != null ? var.inputs.artifactories.attributes.registry_secrets_list : []
     }),
     yamlencode({
       controller = {

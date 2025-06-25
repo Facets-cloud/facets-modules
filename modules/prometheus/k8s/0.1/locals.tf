@@ -86,7 +86,7 @@ locals {
   valuesSpec = lookup(local.spec, "values", {})
 
   prometheus_retention = lookup(local.spec, "retention", "100d")
-  
+
   # Nodepool configuration from inputs
   nodepool_config      = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {}
   nodepool_tolerations = lookup(local.nodepool_config, "tolerations", [])
@@ -95,7 +95,7 @@ locals {
   # Use only nodepool configuration (no fallbacks)
   tolerations  = local.nodepool_tolerations
   nodeSelector = local.nodepool_labels
-  namespace = lookup(local.spec, "namespace", var.environment.namespace)
+  namespace    = lookup(local.spec, "namespace", var.environment.namespace)
 
   # Default values for the helm chart
   default_values = {

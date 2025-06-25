@@ -21,6 +21,12 @@ inputs:
   kubernetes_node_pool_details:
     type: '@outputs/aws_karpenter_nodepool'
     optional: true
+  artifactories:
+    type: '@outputs/artifactories'
+    optional: true
+    default:
+      resource_type: artifactories
+      resource_name: default
 spec:
   title: Nginx Ingress Controller
   type: object
