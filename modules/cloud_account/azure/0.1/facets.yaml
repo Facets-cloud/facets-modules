@@ -10,6 +10,7 @@ composition: {}
 conditional_on_intent: ""
 clouds:
 - azure
+spec: {}
 outputs:
   default:
     type: "@outputs/cloud_account"
