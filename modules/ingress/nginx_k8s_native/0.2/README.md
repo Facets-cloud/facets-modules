@@ -20,11 +20,11 @@ The module automatically detects the cloud provider from `var.environment.cloud`
 
 The module supports integration with Kubernetes node pools through the optional `kubernetes_node_pool_details` input:
 
-- **Tolerations**: Automatically applies nodepool tolerations to ensure ingress pods can be scheduled on dedicated nodes
+- **Tolerations**: Uses only nodepool tolerations when provided (no default tolerations)
 - **Node Selector**: Uses nodepool labels as node selectors to target specific node groups
-- **Default Tolerations**: Includes Azure spot instance tolerations by default, combined with any nodepool-specific tolerations
+- **Dedicated Scheduling**: When a nodepool is provided, both the main controller and admission webhook pods are scheduled exclusively on those nodes
 
-When a nodepool is provided, the module configures both the main controller and admission webhook pods with the appropriate scheduling constraints.
+When no nodepool is provided, the ingress controller will be scheduled based on Kubernetes' default scheduling behavior without any specific tolerations or node selectors.
 
 ## Resources Created
 

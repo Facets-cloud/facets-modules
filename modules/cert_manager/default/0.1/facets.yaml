@@ -24,6 +24,9 @@ inputs:
     - kubernetes
     - kubernetes-alpha
     - helm
+  kubernetes_node_pool_details:
+    type: '@outputs/aws_karpenter_nodepool'
+    optional: true
 spec:
   title: Cert Manager Configuration
   description: Configuration options for Cert Manager deployment
@@ -44,20 +47,24 @@ spec:
     use_gts:
       type: boolean
       title: Use Google Trust Services
-      description: Enable Google Trust Services (GTS) certificate issuer instead of Let's Encrypt
+      description: Enable Google Trust Services (GTS) certificate issuer instead of
+        Let's Encrypt
       default: false
     gts_private_key:
       type: string
       title: GTS Private Key
-      description: Private key for Google Trust Services authentication (required when GTS is enabled)
+      description: Private key for Google Trust Services authentication (required
+        when GTS is enabled)
       x-ui-secret-ref: true
       x-ui-visible-if:
         field: spec.use_gts
-        values: [true]
+        values:
+        - true
     acme_email:
       type: string
       title: ACME Email
-      description: Email address for ACME registration (defaults to cluster creator if not specified)
+      description: Email address for ACME registration (defaults to cluster creator
+        if not specified)
     cert_manager:
       type: object
       title: Cert Manager

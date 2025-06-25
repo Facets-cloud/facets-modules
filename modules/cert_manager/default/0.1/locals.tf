@@ -68,8 +68,8 @@ locals {
             ingress = {
               podTemplate = {
                 spec = {
-                  nodeSelector = var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_node_selectors
-                  tolerations  = concat(var.environment.default_tolerations, var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_tolerations)
+                  nodeSelector = local.nodepool_labels
+                  tolerations  = local.nodepool_tolerations
                 }
               }
             }
@@ -86,8 +86,8 @@ locals {
             ingress = {
               podTemplate = {
                 spec = {
-                  nodeSelector = var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_node_selectors
-                  tolerations  = concat(var.environment.default_tolerations, var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_tolerations)
+                  nodeSelector = local.nodepool_labels
+                  tolerations  = local.nodepool_tolerations
                 }
               }
             }
@@ -97,8 +97,15 @@ locals {
     }
   }
   environments = merge(local.http_validations, local.disable_dns_validation ? {} : local.dns01_validations)
-  tolerations  = concat(var.environment.default_tolerations, var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_tolerations)
-  nodeSelector = var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_node_selectors
+
+  # Nodepool configuration from inputs
+  nodepool_config      = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {}
+  nodepool_tolerations = lookup(local.nodepool_config, "tolerations", [])
+  nodepool_labels      = lookup(local.nodepool_config, "labels", {})
+
+  # Use only nodepool configuration (no fallback to default tolerations)
+  tolerations  = local.nodepool_tolerations
+  nodeSelector = local.nodepool_labels
 
   # GTS and ACME configuration
   use_gts         = lookup(local.spec, "use_gts", false)

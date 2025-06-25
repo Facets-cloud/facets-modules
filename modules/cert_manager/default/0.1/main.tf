@@ -246,8 +246,8 @@ module "cluster-issuer-gts-prod-http01" {
               ingress = {
                 podTemplate = {
                   spec = {
-                    nodeSelector = var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_node_selectors
-                    tolerations  = concat(var.environment.default_tolerations, var.inputs.kubernetes_details.attributes.legacy_outputs.facets_dedicated_tolerations)
+                    nodeSelector = local.nodeSelector
+                    tolerations  = local.tolerations
                   }
                 }
               }

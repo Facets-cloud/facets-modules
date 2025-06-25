@@ -250,15 +250,8 @@ locals {
   nodepool_tolerations = lookup(local.nodepool_config, "tolerations", [])
   nodepool_labels      = lookup(local.nodepool_config, "labels", {})
 
-  # Combine default tolerations with nodepool tolerations
-  ingress_tolerations = concat([
-    {
-      effect   = "NoSchedule"
-      key      = "kubernetes.azure.com/scalesetpriority"
-      operator = "Equal"
-      value    = "spot"
-    }
-  ], local.nodepool_tolerations)
+  # Use only nodepool tolerations (no fallback to default)
+  ingress_tolerations = local.nodepool_tolerations
 
   name                        = lower(var.environment.namespace == "default" ? "${var.instance_name}" : "${var.environment.namespace}-${var.instance_name}")
   disable_endpoint_validation = lookup(local.advanced_config, "disable_endpoint_validation", false) || lookup(var.instance.spec, "private", false)
@@ -410,12 +403,12 @@ VALUES
 , yamlencode({
   controller = {
     tolerations  = local.ingress_tolerations
-    nodeSelector = length(local.nodepool_labels) > 0 ? local.nodepool_labels : {}
+    nodeSelector = local.nodepool_labels
   }
   admissionWebhooks = {
     patch = {
       tolerations  = local.ingress_tolerations
-      nodeSelector = length(local.nodepool_labels) > 0 ? local.nodepool_labels : {}
+      nodeSelector = local.nodepool_labels
     }
   }
 })
