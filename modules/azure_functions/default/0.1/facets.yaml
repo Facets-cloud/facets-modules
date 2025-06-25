@@ -4,6 +4,12 @@ version: '0.1'
 description: Adds azure_functions - default flavor
 clouds:
 - azure
+inputs:
+  network_details:
+    type: "@outputs/azure_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   type: object
   properties:
