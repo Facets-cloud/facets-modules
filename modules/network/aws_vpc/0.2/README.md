@@ -12,7 +12,7 @@ This module creates a comprehensive AWS VPC with configurable public subnets, pr
 The module is environment-aware and adapts configurations based on the deployment environment:
 
 - **VPC CIDR blocks** can be customized per environment to avoid conflicts
-- **Availability zones** selection varies by region and environment requirements  
+- **Availability zones** can be manually specified or automatically selected (any 3 AZs from the region)
 - **Subnet count and sizing** can be adjusted based on environment scale (dev vs prod)
 - **NAT Gateway strategy** can differ (single for dev, per-AZ for prod)
 - **VPC endpoints** can be selectively enabled based on environment needs and cost considerations
@@ -31,6 +31,13 @@ The module is environment-aware and adapts configurations based on the deploymen
 - **Security Groups** for VPC endpoint access
 
 ## Key Features
+
+### Automatic Availability Zone Selection
+The module offers flexible availability zone configuration:
+- **Manual Selection**: Specify exact availability zones (2-4 zones supported)
+- **Auto Selection**: Enable `auto_select_azs` to automatically use any 3 available zones from the region
+- **Cloud Account Integration**: Automatically detects available zones in the target region
+- **Simplified Configuration**: No need to research available zones for new regions
 
 ### Three-Tier Architecture
 - **Public Tier**: Internet-facing resources like load balancers and bastion hosts

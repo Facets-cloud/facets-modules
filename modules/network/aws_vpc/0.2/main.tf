@@ -1,5 +1,17 @@
+# Data source to get all available AZs in the region
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 # Local values for calculations
 locals {
+  # Determine which availability zones to use - ensure we have enough AZs for auto selection
+  selected_azs = lookup(var.instance.spec, "auto_select_azs", false) ? (
+    length(data.aws_availability_zones.available.names) >= 3 ?
+    slice(data.aws_availability_zones.available.names, 0, 3) :
+    data.aws_availability_zones.available.names
+  ) : lookup(var.instance.spec, "availability_zones", [])
+
   # Calculate subnet mask from IP count
   subnet_mask_map = {
     "256"  = 24 # /24 = 256 IPs
@@ -17,9 +29,9 @@ locals {
   database_subnet_newbits = local.subnet_mask_map[var.instance.spec.database_subnets.subnet_size] - local.vpc_prefix_length
 
   # Calculate total number of subnets needed
-  public_total_subnets   = length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az
-  private_total_subnets  = length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az
-  database_total_subnets = length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az
+  public_total_subnets   = length(local.selected_azs) * var.instance.spec.public_subnets.count_per_az
+  private_total_subnets  = length(local.selected_azs) * var.instance.spec.private_subnets.count_per_az
+  database_total_subnets = length(local.selected_azs) * var.instance.spec.database_subnets.count_per_az
 
   # Create list of newbits for cidrsubnets function
   # Order: public subnets, private subnets, database subnets
@@ -55,7 +67,7 @@ locals {
 
   # Create subnet mappings with AZ and CIDR
   public_subnets = var.instance.spec.public_subnets.count_per_az > 0 ? flatten([
-    for az_index, az in var.instance.spec.availability_zones : [
+    for az_index, az in local.selected_azs : [
       for subnet_index in range(var.instance.spec.public_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index
@@ -66,7 +78,7 @@ locals {
   ]) : []
 
   private_subnets = flatten([
-    for az_index, az in var.instance.spec.availability_zones : [
+    for az_index, az in local.selected_azs : [
       for subnet_index in range(var.instance.spec.private_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index
@@ -77,7 +89,7 @@ locals {
   ])
 
   database_subnets = flatten([
-    for az_index, az in var.instance.spec.availability_zones : [
+    for az_index, az in local.selected_azs : [
       for subnet_index in range(var.instance.spec.database_subnets.count_per_az) : {
         az_index     = az_index
         subnet_index = subnet_index

@@ -20,7 +20,7 @@ variable "inputs" {
 
 variable "instance" {
   description = "Instance configuration"
-  type = object
+  type        = object
 
   validation {
     condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", var.instance.spec.vpc_cidr))
@@ -38,16 +38,23 @@ variable "instance" {
   }
 
   validation {
-    condition     = length(var.instance.spec.availability_zones) >= 2 && length(var.instance.spec.availability_zones) <= 4
-    error_message = "You must specify between 2 and 4 availability zones."
+    condition = lookup(var.instance.spec, "auto_select_azs", false) || (
+      lookup(var.instance.spec, "availability_zones", null) != null &&
+      length(var.instance.spec.availability_zones) >= 2 &&
+      length(var.instance.spec.availability_zones) <= 4
+    )
+    error_message = "When auto_select_azs is false, you must specify between 2 and 4 availability zones."
   }
 
   validation {
-    condition = alltrue([
-      for az in var.instance.spec.availability_zones :
-      can(regex("^[a-z]{2}-[a-z]+-[0-9][a-z]$", az))
-    ])
-    error_message = "Availability zones must be in format like 'us-east-1a'."
+    condition = lookup(var.instance.spec, "auto_select_azs", false) || (
+      lookup(var.instance.spec, "availability_zones", null) != null &&
+      alltrue([
+        for az in var.instance.spec.availability_zones :
+        can(regex("^[a-z]{2}-[a-z]+-[0-9][a-z]$", az))
+      ])
+    )
+    error_message = "When specified, availability zones must be in format like 'us-east-1a'."
   }
 
   validation {
@@ -88,11 +95,11 @@ variable "instance" {
   # Enhanced validation: VPC CIDR capacity check
   validation {
     condition = (
-      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) +
-      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) +
-      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)
     ) <= pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
-    error_message = "Total IP allocation exceeds VPC capacity. For your VPC CIDR ${var.instance.spec.vpc_cidr}, you have ${pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} total IPs available, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) + length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) + length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)} IPs across all subnets."
+    error_message = "Total IP allocation exceeds VPC capacity. For your VPC CIDR ${var.instance.spec.vpc_cidr}, you have ${pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} total IPs available."
   }
 
   # Enhanced validation: Subnet size compatibility with VPC CIDR
@@ -131,7 +138,7 @@ variable "instance" {
   # Enhanced validation: Individual subnet type feasibility  
   validation {
     condition = var.instance.spec.public_subnets.count_per_az == 0 || (
-      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -140,12 +147,12 @@ variable "instance" {
         "4096" = 20
       }, var.instance.spec.public_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
     )
-    error_message = "Too many public subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.public_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az}."
+    error_message = "Too many public subnets requested for VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.public_subnets.subnet_size}."
   }
 
   validation {
     condition = (
-      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -155,12 +162,12 @@ variable "instance" {
         "8192" = 19
       }, var.instance.spec.private_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
     )
-    error_message = "Too many private subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.private_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az}."
+    error_message = "Too many private subnets requested for VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.private_subnets.subnet_size}."
   }
 
   validation {
     condition = (
-      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -168,17 +175,17 @@ variable "instance" {
         "2048" = 21
       }, var.instance.spec.database_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
     )
-    error_message = "Too many database subnets requested. For VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.database_subnets.subnet_size}, you can create at most ${pow(2, lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 32) - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} subnets, but you're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az}."
+    error_message = "Too many database subnets requested for VPC CIDR ${var.instance.spec.vpc_cidr} and subnet size ${var.instance.spec.database_subnets.subnet_size}."
   }
 
   # Enhanced validation: Reasonable total subnet limits for practical usage
   validation {
     condition = (
-      length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az +
-      length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az +
-      length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az
     ) <= 50
-    error_message = "Total number of subnets across all types exceeds practical limit of 50. You're requesting ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az + length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az + length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az} subnets. Consider reducing subnet counts or using larger subnet sizes."
+    error_message = "Total number of subnets across all types exceeds practical limit of 50. Consider reducing subnet counts or using larger subnet sizes."
   }
 
   # Enhanced validation: Ensure at least one private subnet for best practices

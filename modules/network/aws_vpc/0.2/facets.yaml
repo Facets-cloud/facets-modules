@@ -15,12 +15,22 @@ spec:
       pattern: ^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$
       x-ui-overrides-only: true
       x-ui-error-message: CIDR must be a valid IP block (e.g., 10.0.0.0/16)
-      x-ui-placeholder: "10.0.0.0/16"
+      x-ui-placeholder: 10.0.0.0/16
+    auto_select_azs:
+      type: boolean
+      title: Auto Select Availability Zones
+      description: Automatically select any 3 availability zones from the region
+      default: false
     availability_zones:
       type: array
       title: Availability Zones
-      description: List of availability zones to use for subnets (space separated)
+      description: List of availability zones to use for subnets (space separated).
+        Only used when auto_select_azs is false
       x-ui-overrides-only: true
+      x-ui-visible-if:
+        field: spec.auto_select_azs
+        values:
+        - false
     public_subnets:
       type: object
       title: Public Subnets Configuration
@@ -205,7 +215,6 @@ spec:
   required:
   - vpc_cidr
   - region
-  - availability_zones
   - public_subnets
   - private_subnets
   - database_subnets
@@ -229,6 +238,9 @@ sample:
   flavor: aws_vpc-pa
   version: '0.2'
   spec:
+    vpc_cidr: 10.0.0.0/16
+    region: us-east-1
+    auto_select_azs: true
     public_subnets:
       count_per_az: 1
       subnet_size: '256'
