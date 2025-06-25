@@ -9,6 +9,9 @@ inputs:
     - kubernetes
     - kubernetes-alpha
     - helm
+  kubernetes_node_pool_details:
+    optional: true
+    type: '@outputs/aws_karpenter_nodepool'
 outputs:
   default:
     type: '@outputs/prometheus'
