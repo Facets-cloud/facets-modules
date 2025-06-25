@@ -1,16 +1,5 @@
 variable "instance" {
-  type = object({
-    spec = object({
-      cname_strategy         = string
-      disable_dns_validation = optional(bool, false)
-      use_gts                = optional(bool, false)
-      gts_private_key        = optional(string, "")
-      acme_email             = optional(string, "")
-      cert_manager = optional(object({
-        values = optional(any, {})
-      }), {})
-    })
-  })
+  type = any
   default = {
     spec = {
       cname_strategy         = "Follow"
