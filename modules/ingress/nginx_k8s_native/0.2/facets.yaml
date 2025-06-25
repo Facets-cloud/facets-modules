@@ -54,15 +54,17 @@ spec:
               title: CPU Request
               description: Minimum CPU requirement (e.g., 100m, 1, 500m)
               pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
-              x-ui-error-message: Value must be a valid CPU specification (e.g., 100m, 1, 500m)
-              x-ui-placeholder: "100m"
+              x-ui-error-message: Value must be a valid CPU specification (e.g., 100m,
+                1, 500m)
+              x-ui-placeholder: 100m
             memory:
               type: string
               title: Memory Request
               description: Minimum memory requirement (e.g., 200Mi, 1Gi, 512Mi)
               pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
-              x-ui-error-message: Value must be a valid memory specification (e.g., 200Mi, 1Gi)
-              x-ui-placeholder: "200Mi"
+              x-ui-error-message: Value must be a valid memory specification (e.g.,
+                200Mi, 1Gi)
+              x-ui-placeholder: 200Mi
         limits:
           type: object
           title: Resource Limits
@@ -73,15 +75,17 @@ spec:
               title: CPU Limit
               description: Maximum CPU allowed (e.g., 1, 2, 500m)
               pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
-              x-ui-error-message: Value must be a valid CPU specification (e.g., 1, 2, 500m)
-              x-ui-placeholder: "1"
+              x-ui-error-message: Value must be a valid CPU specification (e.g., 1,
+                2, 500m)
+              x-ui-placeholder: '1'
             memory:
               type: string
               title: Memory Limit
               description: Maximum memory allowed (e.g., 1Gi, 2Gi, 512Mi)
               pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
-              x-ui-error-message: Value must be a valid memory specification (e.g., 1Gi, 2Gi)
-              x-ui-placeholder: "1Gi"
+              x-ui-error-message: Value must be a valid memory specification (e.g.,
+                1Gi, 2Gi)
+              x-ui-placeholder: 1Gi
     domains:
       title: Domains
       description: Map of domain key to rules
@@ -426,19 +430,24 @@ spec:
                     rule
                 allow_headers:
                   title: Allow Headers
-                  description: Controls which headers are accepted for CORS. Enter each header on a new line.
+                  description: Controls which headers are accepted for CORS. Enter
+                    each header on a new line.
                   type: string
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enable
                     values:
                     - true
                   x-ui-textarea: true
-                  x-ui-placeholder: |
-                    Accept
+                  x-ui-placeholder: 'Accept
+
                     Authorization
+
                     Content-Type
+
                     X-Requested-With
-                  default: ""
+
+                    '
+                  default: ''
             conditional_set_headers:
               type: object
               title: Conditional Set Headers
