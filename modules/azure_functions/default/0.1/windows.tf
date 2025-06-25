@@ -8,7 +8,7 @@ locals {
   windows_app_service_logs_config = lookup(local.windows_app_site_config, "app_service_logs", null)
 }
 resource "azurerm_windows_function_app" "windows_function_app" {
-  provider = "azurerm3"
+  provider   = "azurerm3"
   depends_on = [data.aws_s3_bucket.customer-bucket, null_resource.download_s3_zips]
   count      = local.os == "Windows" ? 1 : 0
 
@@ -95,7 +95,7 @@ resource "azurerm_windows_function_app" "windows_function_app" {
 }
 
 resource "azurerm_windows_function_app_slot" "windows_function_app_slot" {
-  provider = "azurerm3"
+  provider   = "azurerm3"
   depends_on = [azurerm_windows_function_app.windows_function_app[0]]
   for_each   = local.os == "Windows" && length(local.windows_deployment_slots) > 0 ? local.windows_deployment_slots : {}
 
