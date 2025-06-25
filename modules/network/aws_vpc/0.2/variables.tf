@@ -20,7 +20,7 @@ variable "inputs" {
 
 variable "instance" {
   description = "Instance configuration"
-  type        = object
+  type        = any
 
   validation {
     condition     = can(regex("^([0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", var.instance.spec.vpc_cidr))
