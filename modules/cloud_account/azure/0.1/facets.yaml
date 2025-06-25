@@ -19,6 +19,7 @@ outputs:
         source: hashicorp/azurerm
         version: 2.99.0
         attributes:
+          skip_provider_registration: attributes.skip_provider_registration
           features: {}
           subscription_id: attributes.subscription_id
           client_id: attributes.client_id
@@ -28,6 +29,7 @@ outputs:
         source: hashicorp/azurerm3
         version: 3.52.0
         attributes:
+          skip_provider_registration: attributes.skip_provider_registration
           features: {}
           subscription_id: attributes.subscription_id
           client_id: attributes.client_id
@@ -37,6 +39,7 @@ outputs:
         source: hashicorp/azurerm3-105-0
         version: 3.105.0
         attributes:
+          skip_provider_registration: attributes.skip_provider_registration
           features: {}
           subscription_id: attributes.subscription_id
           client_id: attributes.client_id
@@ -46,6 +49,7 @@ outputs:
         source: hashicorp/azurerm3-116-0
         version: 3.116.0
         attributes:
+          skip_provider_registration: attributes.skip_provider_registration
           features: {}
           subscription_id: attributes.subscription_id
           client_id: attributes.client_id
