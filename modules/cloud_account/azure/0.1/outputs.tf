@@ -1,6 +1,7 @@
 locals {
   output_interfaces = {}
   output_attributes = {
+    skip_provider_registration = true
     subscription_id = sensitive(lookup(local.cluster, "subscriptionId", ""))
     client_id       = sensitive(lookup(local.cluster, "clientId", ""))
     client_secret   = sensitive(lookup(local.cluster, "clientSecret", ""))
