@@ -1,15 +1,5 @@
 variable "instance" {
   type = any
-  default = {
-    spec = {
-      cname_strategy         = "Follow"
-      disable_dns_validation = false
-      use_gts                = false
-      gts_private_key        = ""
-      acme_email             = ""
-      cert_manager           = {}
-    }
-  }
 
   validation {
     condition     = contains(["Follow", "None"], var.instance.spec.cname_strategy)
@@ -20,8 +10,6 @@ variable "instance" {
     condition     = var.instance.spec.use_gts ? var.instance.spec.gts_private_key != "" : true
     error_message = "gts_private_key is required when use_gts is enabled."
   }
-
-
 }
 
 variable "instance_name" {

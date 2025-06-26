@@ -1,7 +1,7 @@
 inputs:
   kubernetes_details:
     optional: false
-    type: '@output/kubernetes'
+    type: '@outputs/kubernetes'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
