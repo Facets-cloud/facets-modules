@@ -2,13 +2,13 @@
 locals {
   tenant_provider           = lower(try(var.cc_metadata.cc_tenant_provider, "aws"))
   spec                      = lookup(var.instance, "spec", {})
-  user_supplied_helm_values = lookup(lookup(local.spec, "cert_manager", {}), "values", try(var.instance.advanced.cert_manager.values, {}))
+  user_supplied_helm_values = try(local.spec.cert_manager.values, try(var.instance.advanced.cert_manager.values, {}))
   cert_manager              = lookup(local.spec, "cert_manager", try(var.instance.advanced.cert_manager, {}))
   cert_mgr_namespace        = "cert-manager"
   advanced                  = lookup(lookup(var.instance, "advanced", {}), "cert_manager", {})
   cnameStrategy             = lookup(local.spec, "cname_strategy", "Follow")
   disable_dns_validation    = lookup(local.spec, "disable_dns_validation", lookup(local.advanced, "disable_dns_validation", false))
-  user_defined_tags         = lookup(local.cert_manager, "tags", {})
+  user_defined_tags         = try(local.cert_manager.tags, {})
   deploy_aws_resources      = local.tenant_provider == "aws" ? local.disable_dns_validation ? false : true : false
   dns_providers = {
     aws = {
