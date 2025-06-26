@@ -128,7 +128,8 @@ spec:
             max_skew:
               type: integer
               title: Max Skew
-              description: Maximum difference between the number of matching pods in any two topology domains
+              description: Maximum difference between the number of matching pods
+                in any two topology domains
               default: 1
               minimum: 1
               maximum: 100
