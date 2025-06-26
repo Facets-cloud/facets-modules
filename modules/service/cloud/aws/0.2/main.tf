@@ -19,7 +19,7 @@ locals {
   resource_name = var.instance_name
 
   from_artifactories      = lookup(lookup(lookup(var.inputs, "artifactories", {}), "attributes", {}), "registry_secrets_list", [])
-  from_kubernetes_cluster = lookup(lookup(lookup(lookup(var.inputs, "kubernetes_details", {}), "attributes", {}), "legacy_outputs", {}), "registry_secret_objects", [])
+  from_kubernetes_cluster = []
 
   # Transform taints from object format to string format for utility module compatibility
   kubernetes_node_pool_details = lookup(var.inputs, "kubernetes_node_pool_details", {})
@@ -56,7 +56,7 @@ module "irsa" {
   iam_role_name         = "${module.sr-name.name}-sr"
   namespace             = local.namespace
   sa_name               = "${local.sa_name}-sa"
-  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.oidc_provider_arn
+  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.k8s_details.cluster.oidc_provider_arn
 }
 
 module "app-helm-chart" {
@@ -99,7 +99,7 @@ resource "aws_iam_role" "application-role" {
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "${var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.node_group_iam_role_arn}"
+        "AWS": "${var.inputs.kubernetes_details.attributes.k8s_details.node_group.iam_role_arn}"
       },
       "Action": "sts:AssumeRole"
     }
