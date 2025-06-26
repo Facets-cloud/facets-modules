@@ -1,6 +1,6 @@
 variable "instance" {
   description = "The JSON representation of the resource in the Facets blueprint."
-  type = any
+  type        = any
 }
 
 variable "instance_name" {
@@ -10,10 +10,10 @@ variable "instance_name" {
 
 variable "environment" {
   description = "An object containing details about the environment."
-  type = any
+  type        = any
 }
 
 variable "inputs" {
   description = "A map of inputs requested by the module developer."
-  type        = map(any)
+  type        = any
 }
