@@ -161,9 +161,10 @@ spec:
               type: string
               title: Maximum CPU
               description: Maximum total CPU cores for this node pool.
-              default: "1000"
+              default: '1000'
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-              x-ui-error-message: Maximum CPU must be a valid Kubernetes resource quantity (e.g., 1000, 1000m, 1k)
+              x-ui-error-message: Maximum CPU must be a valid Kubernetes resource
+                quantity (e.g., 1000, 1000m, 1k)
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enabled
                 values:
@@ -174,7 +175,8 @@ spec:
               description: Maximum total memory for this node pool.
               default: 1000Gi
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-              x-ui-error-message: Maximum memory must be a valid Kubernetes resource quantity (e.g., 1000Gi, 1Ti, 1000000Mi)
+              x-ui-error-message: Maximum memory must be a valid Kubernetes resource
+                quantity (e.g., 1000Gi, 1Ti, 1000000Mi)
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enabled
                 values:
@@ -247,9 +249,10 @@ spec:
               type: string
               title: Maximum CPU
               description: Maximum total CPU cores for this node pool.
-              default: "1000"
+              default: '1000'
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-              x-ui-error-message: Maximum CPU must be a valid Kubernetes resource quantity (e.g., 1000, 1000m, 1k)
+              x-ui-error-message: Maximum CPU must be a valid Kubernetes resource
+                quantity (e.g., 1000, 1000m, 1k)
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
@@ -260,7 +263,8 @@ spec:
               description: Maximum total memory for this node pool.
               default: 1000Gi
               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-              x-ui-error-message: Maximum memory must be a valid Kubernetes resource quantity (e.g., 1000Gi, 1Ti, 1000000Mi)
+              x-ui-error-message: Maximum memory must be a valid Kubernetes resource
+                quantity (e.g., 1000Gi, 1Ti, 1000000Mi)
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
@@ -385,7 +389,7 @@ sample:
     cluster:
       kubernetes_version: '1.31'
       cluster_endpoint_public_access: true
-      cluster_endpoint_private_access: true
+      cluster_endpoint_private_access: false
       cluster_endpoint_public_access_cidrs:
       - 0.0.0.0/0
       cluster_endpoint_private_access_cidrs:
@@ -400,14 +404,14 @@ sample:
     node_pools:
       dedicated:
         enabled: false
-        max_cpu: "1000"
+        max_cpu: '1000'
         max_memory: 1000Gi
         use_instance_family: false
         instance_types: t3.medium,t3.large
         capacity_types: spot
       default:
         enabled: false
-        max_cpu: "1000"
+        max_cpu: '1000'
         max_memory: 1000Gi
         use_instance_family: false
         instance_types: t3.medium,t3.large

@@ -112,14 +112,16 @@ spec:
           description: Maximum total CPU cores for this node pool.
           default: '1000'
           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-          x-ui-error-message: Maximum CPU must be a valid Kubernetes resource quantity (e.g., 1000, 1000m, 1k)
+          x-ui-error-message: Maximum CPU must be a valid Kubernetes resource quantity
+            (e.g., 1000, 1000m, 1k)
         max_memory:
           type: string
           title: Maximum Memory
           description: Maximum total memory for this node pool (e.g., 1000Gi).
           default: 1000Gi
           pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
-          x-ui-error-message: Maximum memory must be a valid Kubernetes resource quantity (e.g., 1000Gi, 1Ti, 1000000Mi)
+          x-ui-error-message: Maximum memory must be a valid Kubernetes resource quantity
+            (e.g., 1000Gi, 1Ti, 1000000Mi)
         consolidation_policy:
           type: string
           title: Cost Optimization
