@@ -33,8 +33,8 @@ inputs:
     optional: true
     type: '@outputs/vpa'
     default:
-      resource_type: configuration
-      resource_name: vpa
+      resource_type: vpa
+      resource_name: default
 outputs:
   default:
     type: '@outputs/service'

@@ -1,0 +1,219 @@
+intent: vpa
+flavor: default
+version: '0.1'
+description: Deploys Vertical Pod Autoscaler (VPA) for automatic resource recommendations and right-sizing
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+inputs:
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: true
+    default:
+      resource_type: prometheus
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+  kubernetes_node_pool_details:
+    type: '@outputs/aws_karpenter_nodepool'
+    optional: true
+spec:
+  title: VPA Configuration
+  description: Configuration options for Vertical Pod Autoscaler deployment
+  type: object
+  properties:
+    version:
+      type: string
+      title: VPA Chart Version
+      description: Version of the VPA Helm chart to deploy
+      default: "2.5.1"
+    namespace:
+      type: string
+      title: Namespace
+      description: Kubernetes namespace for VPA deployment
+      default: "vpa-system"
+    create_namespace:
+      type: boolean
+      title: Create Namespace
+      description: Whether to create the namespace if it doesn't exist
+      default: true
+    deployment:
+      type: object
+      title: Deployment Configuration
+      description: Helm deployment configuration options
+      x-ui-toggle: true
+      properties:
+        cleanup_on_fail:
+          type: boolean
+          title: Cleanup on Fail
+          description: Delete resources if installation fails
+          default: true
+        wait:
+          type: boolean
+          title: Wait for Ready
+          description: Wait for all resources to be ready before marking release as successful
+          default: false
+        atomic:
+          type: boolean
+          title: Atomic Installation
+          description: If set, installation process purges chart on fail
+          default: false
+        timeout:
+          type: integer
+          title: Timeout (seconds)
+          description: Time in seconds to wait for any individual Kubernetes operation
+          default: 600
+          minimum: 60
+          maximum: 3600
+        recreate_pods:
+          type: boolean
+          title: Recreate Pods
+          description: Perform pods restart during upgrade/rollback
+          default: false
+      required:
+      - cleanup_on_fail
+      - wait
+      - atomic
+      - timeout
+      - recreate_pods
+    recommender:
+      type: object
+      title: Recommender Configuration
+      description: Configuration for VPA recommender component
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Recommender
+          description: Enable the VPA recommender component
+          default: true
+        storage:
+          type: string
+          title: Storage Backend
+          description: Storage backend for historical metrics
+          default: "prometheus"
+          enum:
+          - prometheus
+          - memory
+        size:
+          type: object
+          title: Resource Requirements
+          description: CPU and memory resource requirements for the recommender
+          properties:
+            cpu:
+              type: string
+              title: CPU Request
+              description: CPU resource request for recommender pod
+              default: "500m"
+            memory:
+              type: string
+              title: Memory Request
+              description: Memory resource request for recommender pod
+              default: "500Mi"
+            cpu_limits:
+              type: string
+              title: CPU Limit
+              description: CPU resource limit for recommender pod
+              default: "1500m"
+            memory_limits:
+              type: string
+              title: Memory Limit
+              description: Memory resource limit for recommender pod
+              default: "1500Mi"
+          required:
+          - cpu
+          - memory
+          - cpu_limits
+          - memory_limits
+        configuration:
+          type: object
+          title: Additional Configuration
+          description: Additional configuration options for the recommender
+          x-ui-yaml-editor: true
+          x-ui-placeholder: Enter additional recommender arguments in YAML format
+      required:
+      - enabled
+    updater:
+      type: object
+      title: Updater Configuration
+      description: Configuration for VPA updater component
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Updater
+          description: Enable the VPA updater component
+          default: false
+      required:
+      - enabled
+    admission_controller:
+      type: object
+      title: Admission Controller Configuration
+      description: Configuration for VPA admission controller component
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Admission Controller
+          description: Enable the VPA admission controller component
+          default: false
+      required:
+      - enabled
+    helm_values:
+      type: object
+      title: Custom Helm Values
+      description: Additional Helm values to override defaults
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter custom Helm values in YAML format
+  required:
+  - version
+  - namespace
+  - create_namespace
+  - deployment
+  - recommender
+  - updater
+  - admission_controller
+outputs:
+  default:
+    type: '@outputs/vpa'
+    title: VPA Details
+sample:
+  kind: vpa
+  flavor: default
+  disabled: false
+  metadata: {}
+  version: '0.1'
+  spec:
+    version: "2.5.1"
+    namespace: "vpa-system"
+    create_namespace: true
+    deployment:
+      cleanup_on_fail: true
+      wait: false
+      atomic: false
+      timeout: 600
+      recreate_pods: false
+    recommender:
+      enabled: true
+      storage: "prometheus"
+      size:
+        cpu: "500m"
+        memory: "500Mi"
+        cpu_limits: "1500m"
+        memory_limits: "1500Mi"
+      configuration: {}
+    updater:
+      enabled: false
+    admission_controller:
+      enabled: false
+    helm_values: {}
+iac:
+  validated_files:
+  - variables.tf

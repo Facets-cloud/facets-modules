@@ -12,8 +12,8 @@ inputs:
     type: '@outputs/prometheus'
     optional: true
     default:
-      resource_type: configuration
-      resource_name: prometheus
+      resource_type: prometheus
+      resource_name: default
   kubernetes_details:
     optional: false
     type: '@outputs/kubernetes'
