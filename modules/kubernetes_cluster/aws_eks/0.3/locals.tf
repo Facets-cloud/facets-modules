@@ -119,8 +119,8 @@ locals {
       }
       # Limits should ideally be derived from local.default_node_pool configuration
       limits = {
-        cpu    = lookup(local.default_node_pool, "max_cpu", 1000)
-        memory = "${lookup(local.default_node_pool, "max_memory", 1000)}Gi"
+        cpu    = lookup(local.default_node_pool, "max_cpu", "1000")
+        memory = lookup(local.default_node_pool, "max_memory", "1000Gi")
       }
       # Consider adding disruption configuration if needed
       disruption = {
@@ -195,8 +195,8 @@ locals {
         }
       }
       limits = {
-        cpu    = lookup(local.dedicated_node_pool, "max_cpu", 1000)
-        memory = "${lookup(local.dedicated_node_pool, "max_memory", 1000)}Gi"
+        cpu    = lookup(local.dedicated_node_pool, "max_cpu", "1000")
+        memory = lookup(local.dedicated_node_pool, "max_memory", "1000Gi")
       }
       disruption = {
         consolidateAfter    = "1m"
