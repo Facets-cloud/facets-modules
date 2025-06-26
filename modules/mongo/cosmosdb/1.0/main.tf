@@ -53,17 +53,15 @@ locals {
   default_tags = merge(
     var.environment.cloud_tags,
     {
-      Environment  = var.environment.name
-      InstanceName = var.instance_name
-      ManagedBy    = "Facets"
-      Intent       = "mongo"
-      Flavor       = "cosmosdb"
+      resourceType = "mongo"
+      resourceType = "cosmosdb"
     }
   )
 }
 
 # CosmosDB Account
 resource "azurerm_cosmosdb_account" "main" {
+  provider            = "azurerm3-116-0"
   name                = local.cosmosdb_account_name
   location            = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.location
   resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.name

@@ -1,6 +1,7 @@
 # Private endpoint for CosmosDB
 resource "azurerm_private_endpoint" "cosmosdb" {
-  count = var.instance.spec.networking.private_endpoint.enabled ? 1 : 0
+  provider = "azurerm3-116-0"
+  count    = var.instance.spec.networking.private_endpoint.enabled ? 1 : 0
 
   name                = "${local.cosmosdb_account_name}-pe"
   location            = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.location

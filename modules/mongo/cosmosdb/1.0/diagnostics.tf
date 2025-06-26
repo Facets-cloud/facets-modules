@@ -1,6 +1,7 @@
 # Diagnostic settings for CosmosDB
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb" {
-  count = var.instance.spec.monitoring.diagnostic_setting.enabled ? 1 : 0
+  provider = "azurerm3-116-0"
+  count    = var.instance.spec.monitoring.diagnostic_setting.enabled ? 1 : 0
 
   name               = "${local.cosmosdb_account_name}-diagnostics"
   target_resource_id = azurerm_cosmosdb_account.main.id
