@@ -81,6 +81,7 @@ sample:
   version: '0.1'
   spec:
     cname_strategy: Follow
+    cert_manager: {}
 iac:
   validated_files:
   - variables.tf
