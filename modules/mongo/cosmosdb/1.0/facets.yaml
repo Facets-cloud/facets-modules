@@ -16,7 +16,7 @@ inputs:
       resource_type: network
       resource_name: default
     providers:
-    - azurerm
+    - azurerm3-116-0
 spec:
   title: Azure CosmosDB MongoDB
   description: Creates and manages Azure CosmosDB account with MongoDB API, including
