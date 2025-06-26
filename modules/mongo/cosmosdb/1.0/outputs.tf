@@ -24,8 +24,8 @@ locals {
   }
   output_interfaces = {
     cluster = {
-      endpoint          = azurerm_cosmosdb_account.main.endpoint
-      username          = azurerm_cosmosdb_account.main.primary_mongodb_username
+      endpoint = azurerm_cosmosdb_account.main.endpoint
+
       password          = azurerm_cosmosdb_account.main.primary_mongodb_password
       connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
 
