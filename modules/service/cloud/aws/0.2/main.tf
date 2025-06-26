@@ -56,7 +56,7 @@ module "irsa" {
   iam_role_name         = "${module.sr-name.name}-sr"
   namespace             = local.namespace
   sa_name               = "${local.sa_name}-sa"
-  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.k8s_details.cluster.oidc_provider_arn
+  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.cluster.oidc_provider_arn
 }
 
 module "app-helm-chart" {
@@ -99,7 +99,7 @@ resource "aws_iam_role" "application-role" {
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "${var.inputs.kubernetes_details.attributes.k8s_details.node_group.iam_role_arn}"
+        "AWS": "${var.inputs.kubernetes_details.attributes.node_group.iam_role_arn}"
       },
       "Action": "sts:AssumeRole"
     }
