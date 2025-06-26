@@ -27,6 +27,10 @@ inputs:
   kubernetes_node_pool_details:
     type: '@outputs/aws_karpenter_nodepool'
     optional: true
+outputs:
+  default:
+    type: '@outputs/cert_manager'
+    title: Certificate Manager Details
 spec:
   title: Cert Manager Configuration
   description: Configuration options for Cert Manager deployment

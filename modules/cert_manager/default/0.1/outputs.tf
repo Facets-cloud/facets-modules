@@ -1,7 +1,10 @@
-# Define your outputs here
 locals {
-  output_interfaces = {}
   output_attributes = {
-    "issuers" = [for i in local.environments : i.name]
+    cluster_issuer_dns = local.use_gts ? "gts-production" : "letsencrypt-prod"
+    cluster_issuer_http = local.use_gts ? "gts-production-http01" : "letsencrypt-prod-http01"
+    use_gts = local.use_gts
+    namespace = local.cert_mgr_namespace
+  }
+  output_interfaces = {
   }
 }

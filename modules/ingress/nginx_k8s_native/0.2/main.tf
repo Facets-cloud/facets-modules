@@ -168,9 +168,13 @@ locals {
     for key, value in local.annotations :
     key => value if can(regex("^service\\.", key))
   }
+  # Get ClusterIssuer names from cert-manager output or fall back to defaults
+  cluster_issuer_dns  = lookup(var.inputs, "cert_manager_details", null) != null ? var.inputs.cert_manager_details.attributes.cluster_issuer_dns : "letsencrypt-prod"
+  cluster_issuer_http = lookup(var.inputs, "cert_manager_details", null) != null ? var.inputs.cert_manager_details.attributes.cluster_issuer_http : "letsencrypt-prod-http01"
+
   cert_manager_common_annotations = merge(
     { // default cert manager annotations
-      "cert-manager.io/cluster-issuer" : local.disable_endpoint_validation ? "gts-production" : "gts-production-http01",
+      "cert-manager.io/cluster-issuer" : local.disable_endpoint_validation ? local.cluster_issuer_dns : local.cluster_issuer_http,
       "acme.cert-manager.io/http01-ingress-class" : local.name,
       "cert-manager.io/renew-before" : lookup(local.advanced_config, "renew_cert_before", "720h") // 30days; value must be parsable by https://pkg.go.dev/time#ParseDuration
     },

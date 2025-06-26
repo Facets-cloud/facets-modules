@@ -27,6 +27,14 @@ inputs:
     default:
       resource_type: artifactories
       resource_name: default
+  cert_manager_details:
+    type: '@outputs/cert_manager'
+    optional: true
+    default:
+      resource_type: cert_manager
+      resource_name: default
+    displayName: Certificate Manager
+    description: Certificate Manager configuration for TLS certificate management
 spec:
   title: Nginx Ingress Controller
   type: object
