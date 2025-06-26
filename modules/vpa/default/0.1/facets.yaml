@@ -1,7 +1,8 @@
 intent: vpa
 flavor: default
 version: '0.1'
-description: Deploys Vertical Pod Autoscaler (VPA) for automatic resource recommendations and right-sizing
+description: Deploys Vertical Pod Autoscaler (VPA) for automatic resource recommendations
+  and right-sizing
 clouds:
 - aws
 - azure
@@ -36,12 +37,12 @@ spec:
       type: string
       title: VPA Chart Version
       description: Version of the VPA Helm chart to deploy
-      default: "2.5.1"
+      default: 2.5.1
     namespace:
       type: string
       title: Namespace
       description: Kubernetes namespace for VPA deployment
-      default: "vpa-system"
+      default: vpa-system
     create_namespace:
       type: boolean
       title: Create Namespace
@@ -61,7 +62,8 @@ spec:
         wait:
           type: boolean
           title: Wait for Ready
-          description: Wait for all resources to be ready before marking release as successful
+          description: Wait for all resources to be ready before marking release as
+            successful
           default: false
         atomic:
           type: boolean
@@ -100,7 +102,7 @@ spec:
           type: string
           title: Storage Backend
           description: Storage backend for historical metrics
-          default: "prometheus"
+          default: prometheus
           enum:
           - prometheus
           - memory
@@ -113,22 +115,22 @@ spec:
               type: string
               title: CPU Request
               description: CPU resource request for recommender pod
-              default: "500m"
+              default: 500m
             memory:
               type: string
               title: Memory Request
               description: Memory resource request for recommender pod
-              default: "500Mi"
+              default: 500Mi
             cpu_limits:
               type: string
               title: CPU Limit
               description: CPU resource limit for recommender pod
-              default: "1500m"
+              default: 1500m
             memory_limits:
               type: string
               title: Memory Limit
               description: Memory resource limit for recommender pod
-              default: "1500Mi"
+              default: 1500Mi
           required:
           - cpu
           - memory
@@ -191,8 +193,8 @@ sample:
   metadata: {}
   version: '0.1'
   spec:
-    version: "2.5.1"
-    namespace: "vpa-system"
+    version: 2.5.1
+    namespace: vpa-system
     create_namespace: true
     deployment:
       cleanup_on_fail: true
@@ -202,12 +204,12 @@ sample:
       recreate_pods: false
     recommender:
       enabled: true
-      storage: "prometheus"
+      storage: prometheus
       size:
-        cpu: "500m"
-        memory: "500Mi"
-        cpu_limits: "1500m"
-        memory_limits: "1500Mi"
+        cpu: 500m
+        memory: 500Mi
+        cpu_limits: 1500m
+        memory_limits: 1500Mi
       configuration: {}
     updater:
       enabled: false

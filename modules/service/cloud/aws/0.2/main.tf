@@ -1,4 +1,5 @@
 locals {
+  spec                  = lookup(var.instance, "spec", {})
   aws_advanced_config   = lookup(lookup(var.instance, "advanced", {}), "aws", {})
   aws_cloud_permissions = lookup(lookup(local.spec, "cloud_permissions", {}), "aws", {})
   enable_irsa           = lookup(local.aws_cloud_permissions, "enable_irsa", lookup(local.aws_advanced_config, "enable_irsa", false))
@@ -37,6 +38,34 @@ locals {
       taints = local.transformed_taints
     })
   })
+
+  # Check if VPA is available and configure accordingly
+  vpa_available = lookup(var.inputs, "vpa_details", null) != null
+
+  # Create instance configuration with VPA settings
+  instance_with_vpa_config = merge(var.instance, {
+    advanced = merge(
+      lookup(var.instance, "advanced", {}),
+      {
+        common = merge(
+          lookup(lookup(var.instance, "advanced", {}), "common", {}),
+          {
+            app_chart = merge(
+              lookup(lookup(lookup(var.instance, "advanced", {}), "common", {}), "app_chart", {}),
+              {
+                values = merge(
+                  lookup(lookup(lookup(lookup(var.instance, "advanced", {}), "common", {}), "app_chart", {}), "values", {}),
+                  {
+                    enable_vpa = local.vpa_available
+                  }
+                )
+              }
+            )
+          }
+        )
+      }
+    )
+  })
 }
 
 module "sr-name" {
@@ -67,7 +96,7 @@ module "app-helm-chart" {
   source                  = "github.com/Facets-cloud/facets-utility-modules//application"
   namespace               = local.namespace
   chart_name              = lower(var.instance_name)
-  values                  = var.instance
+  values                  = local.instance_with_vpa_config
   annotations             = local.annotations
   registry_secret_objects = length(local.from_artifactories) > 0 ? local.from_artifactories : local.from_kubernetes_cluster
   cc_metadata             = var.cc_metadata
