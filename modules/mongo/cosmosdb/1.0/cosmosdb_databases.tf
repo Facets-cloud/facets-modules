@@ -1,6 +1,6 @@
 # Create MongoDB databases
 resource "azurerm_cosmosdb_mongo_database" "databases" {
-  provider = "azurerm3-116-0"
+  provider = "azurerm4-8-0"
   for_each = var.instance.spec.databases.database_configs
 
   name                = each.key
@@ -42,7 +42,7 @@ locals {
 
 # Create MongoDB collections
 resource "azurerm_cosmosdb_mongo_collection" "collections" {
-  provider = "azurerm3-116-0"
+  provider = "azurerm4-8-0"
   for_each = local.collections_map
 
   name                = each.value.collection_name

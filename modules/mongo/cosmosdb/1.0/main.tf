@@ -56,7 +56,7 @@ locals {
 
 # CosmosDB Account
 resource "azurerm_cosmosdb_account" "main" {
-  provider            = "azurerm3-116-0"
+  provider            = "azurerm4-8-0"
   name                = local.cosmosdb_account_name
   location            = var.cluster.region
   resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
