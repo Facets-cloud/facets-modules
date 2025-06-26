@@ -21,6 +21,13 @@ locals {
     collections            = { for collection_key, collection in azurerm_cosmosdb_mongo_collection.collections : collection_key => { name = collection.name, database_name = collection.database_name, shard_key = collection.shard_key, default_ttl_seconds = collection.default_ttl_seconds, id = collection.id } }
     private_endpoint       = var.instance.spec.networking.private_endpoint.enabled ? { id = azurerm_private_endpoint.cosmosdb[0].id, private_service_connection = azurerm_private_endpoint.cosmosdb[0].private_service_connection, network_interface = azurerm_private_endpoint.cosmosdb[0].network_interface } : null
     diagnostic_setting     = var.instance.spec.monitoring.diagnostic_setting.enabled ? { id = azurerm_monitor_diagnostic_setting.cosmosdb[0].id, name = azurerm_monitor_diagnostic_setting.cosmosdb[0].name } : null
+    secrets = [
+      "primary_key",
+      "secondary_key",
+      "primary_readonly_key",
+      "secondary_readonly_key",
+      "connection_strings"
+    ]
   }
   output_interfaces = {
     cluster = {
@@ -28,7 +35,7 @@ locals {
       username          = azurerm_cosmosdb_account.main.name
       password          = azurerm_cosmosdb_account.main.primary_key
       connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
-
+      secrets           = ["password", "connection_string"]
     }
     writer = {
       host              = azurerm_cosmosdb_account.main.write_endpoints
