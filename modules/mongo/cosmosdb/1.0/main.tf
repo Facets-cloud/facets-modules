@@ -13,7 +13,7 @@ locals {
   cosmosdb_account_name = module.unique_name.name
 
   # Parse IP ranges if provided
-  ip_range_filter = var.instance.spec.networking.ip_range_filter.enabled && var.instance.spec.networking.ip_range_filter.allowed_ips != "" ? split(",", replace(var.instance.spec.networking.ip_range_filter.allowed_ips, " ", "")) : []
+  ip_range_filter = var.instance.spec.networking.ip_range_filter.enabled && var.instance.spec.networking.ip_range_filter.allowed_ips != "" ? var.instance.spec.networking.ip_range_filter.allowed_ips : null
 
   # Parse subnet IDs if provided
   virtual_network_subnet_ids = var.instance.spec.networking.virtual_network_rules.enabled && var.instance.spec.networking.virtual_network_rules.subnet_ids != "" ? split(",", replace(var.instance.spec.networking.virtual_network_rules.subnet_ids, " ", "")) : []
@@ -54,7 +54,7 @@ locals {
     var.environment.cloud_tags,
     {
       resourceType = "mongo"
-      resourceType = "cosmosdb"
+      resourceName = local.cosmosdb_account_name
     }
   )
 }
@@ -76,7 +76,7 @@ resource "azurerm_cosmosdb_account" "main" {
   mongo_server_version              = var.instance.spec.mongo_server_version
 
   # IP range filter for firewall
-  ip_range_filter = length(local.ip_range_filter) > 0 ? toset(local.ip_range_filter) : null
+  ip_range_filter = local.ip_range_filter
 
   # Capabilities
   dynamic "capabilities" {
