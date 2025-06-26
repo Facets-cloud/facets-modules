@@ -177,33 +177,51 @@ spec:
                 field: spec.node_pools.dedicated.enabled
                 values:
                 - true
+            use_instance_family:
+              type: boolean
+              title: Use Instance Family
+              description: Toggle to select by instance family (category) or by specific instance type.
+              default: false
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.enabled
+                values:
+                - true
+            instance_family:
+              type: string
+              title: Instance Family (Category)
+              description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+              default: c
+              pattern: ^[a-z][0-9]*[a-z]*$
+              x-ui-error-message: Instance family must be a valid EC2 family (e.g., c, m, r, g, t, x, z)
+              x-ui-visible-if:
+                field: spec.node_pools.dedicated.use_instance_family
+                values:
+                - true
             instance_types:
               type: string
               title: Instance Types
               description: EC2 instance types for the worker nodes.
               default: t3.medium
               x-ui-visible-if:
-                field: spec.node_pools.dedicated.enabled
+                field: spec.node_pools.dedicated.use_instance_family
                 values:
-                - true
+                - false
             capacity_type:
               type: string
               title: Capacity Type
-              description: Type of capacity associated with the EKS Node Group. Valid
-                values are on-demand and spot.
+              description: Type of capacity associated with the EKS Node Group. Valid values are on-demand and spot.
               default: spot
               enum:
               - on-demand
               - spot
               x-ui-visible-if:
-                field: spec.cluster.dedicated.enabled
+                field: spec.node_pools.dedicated.enabled
                 values:
                 - true
           required:
           - enabled
           - max_size_cpu
           - max_size_memory
-          - instance_types
           - capacity_type
         default:
           type: object
@@ -236,21 +254,40 @@ spec:
                 field: spec.node_pools.default.enabled
                 values:
                 - true
+            use_instance_family:
+              type: boolean
+              title: Use Instance Family
+              description: Toggle to select by instance family (category) or by specific instance type.
+              default: false
+              x-ui-visible-if:
+                field: spec.node_pools.default.enabled
+                values:
+                - true
+            instance_family:
+              type: string
+              title: Instance Family (Category)
+              description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+              default: c
+              pattern: ^[a-z][0-9]*[a-z]*$
+              x-ui-error-message: Instance family must be a valid EC2 family (e.g., c, m, r, g, t, x, z)
+              x-ui-visible-if:
+                field: spec.node_pools.default.use_instance_family
+                values:
+                - true
             instance_types:
               type: array
               title: Instance Types
               description: EC2 instance types for the worker nodes.
               default: t3.medium
               x-ui-visible-if:
-                field: spec.node_pools.default.enabled
+                field: spec.node_pools.default.use_instance_family
                 values:
-                - true
+                - false
               x-ui-overrides-only: true
             capacity_type:
               type: array
               title: Capacity Type
-              description: Type of capacity associated with the EKS Node Group. Valid
-                values are on-demand and spot.
+              description: Type of capacity associated with the EKS Node Group. Valid values are on-demand and spot.
               default: spot
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
@@ -261,7 +298,6 @@ spec:
           - enabled
           - max_size_cpu
           - max_size_memory
-          - instance_types
           - capacity_type
   required:
   - cluster
@@ -345,18 +381,16 @@ sample:
     node_pools:
       dedicated:
         enabled: false
-        desired_size: 2
-        min_size: 1
-        max_size: 3
+        max_size_cpu: 1000
+        max_size_memory: 1000
+        use_instance_family: false
         instance_types: t3.medium
-        disk_size: 50
         capacity_type: spot
       default:
         enabled: false
-        desired_size: 2
-        min_size: 1
-        max_size: 3
+        max_size_cpu: 1000
+        max_size_memory: 1000
+        use_instance_family: false
         instance_types: t3.medium
-        disk_size: 50
         capacity_type: spot
     tags: {}

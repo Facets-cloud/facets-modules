@@ -76,38 +76,45 @@ locals {
             kind  = "NodeClass"
             name  = local.facets_default_node_pool.node_class_name
           }
-          requirements = [
-            {
-              key      = "eks.amazonaws.com/instance-category"
-              operator = "In"
-              values   = ["c", "m", "r"]
-            },
-            {
-              key      = "eks.amazonaws.com/instance-cpu"
-              operator = "In"
-              values   = ["4", "8", "16"]
-            },
-            {
-              key      = "topology.kubernetes.io/zone"
-              operator = "In"
-              values   = [var.inputs.network_details.attributes.availability_zones[0]]
-            },
-            {
-              key      = "kubernetes.io/arch"
-              operator = "In"
-              values   = ["arm64", "amd64"]
-            },
-            {
-              key      = "node.kubernetes.io/instance-type"
-              operator = "In"
-              values   = lookup(local.default_node_pool, "instance_types", ["t3a.medium", "t3a.xlarge", "m5a.xlarge"])
-            },
-            {
-              key      = "karpenter.sh/capacity-type"
-              operator = "In"
-              values   = lookup(local.default_node_pool, "capacity_type", ["on-demand", "spot"])
-            }
-          ]
+          requirements = concat(
+            # Conditional instance type or family requirement
+            lookup(local.default_node_pool, "use_instance_family", false) ? [
+              {
+                key      = "eks.amazonaws.com/instance-category"
+                operator = "In"
+                values   = [lookup(local.default_node_pool, "instance_family", "c")]
+              }
+            ] : [
+              {
+                key      = "node.kubernetes.io/instance-type"
+                operator = "In"
+                values   = split(",", lookup(local.default_node_pool, "instance_types", "t3.medium"))
+              }
+            ],
+            # Common requirements
+            [
+              {
+                key      = "eks.amazonaws.com/instance-cpu"
+                operator = "In"
+                values   = ["4", "8", "16"]
+              },
+              {
+                key      = "topology.kubernetes.io/zone"
+                operator = "In"
+                values   = [var.inputs.network_details.attributes.availability_zones[0]]
+              },
+              {
+                key      = "kubernetes.io/arch"
+                operator = "In"
+                values   = ["arm64", "amd64"]
+              },
+              {
+                key      = "karpenter.sh/capacity-type"
+                operator = "In"
+                values   = split(",", lookup(local.default_node_pool, "capacity_type", "spot"))
+              }
+            ]
+          )
         }
       }
       # Limits should ideally be derived from local.default_node_pool configuration
@@ -146,38 +153,45 @@ locals {
               effect = "NoSchedule"
             }
           ]
-          requirements = [
-            {
-              key      = "eks.amazonaws.com/instance-category"
-              operator = "In"
-              values   = ["c", "m", "r"]
-            },
-            {
-              key      = "eks.amazonaws.com/instance-cpu"
-              operator = "In"
-              values   = ["4", "8", "16"]
-            },
-            {
-              key      = "topology.kubernetes.io/zone"
-              operator = "In"
-              values   = [var.inputs.network_details.attributes.availability_zones[0]]
-            },
-            {
-              key      = "kubernetes.io/arch"
-              operator = "In"
-              values   = ["arm64", "amd64"]
-            },
-            {
-              key      = "node.kubernetes.io/instance-type"
-              operator = "In"
-              values   = lookup(local.dedicated_node_pool, "instance_types", ["t3a.medium", "t3a.xlarge", "m5a.xlarge"])
-            },
-            {
-              key      = "karpenter.sh/capacity-type"
-              operator = "In"
-              values   = lookup(local.dedicated_node_pool, "capacity_type", ["on-demand", "spot"])
-            }
-          ]
+          requirements = concat(
+            # Conditional instance type or family requirement
+            lookup(local.dedicated_node_pool, "use_instance_family", false) ? [
+              {
+                key      = "eks.amazonaws.com/instance-category"
+                operator = "In"
+                values   = [lookup(local.dedicated_node_pool, "instance_family", "c")]
+              }
+            ] : [
+              {
+                key      = "node.kubernetes.io/instance-type"
+                operator = "In"
+                values   = split(",", lookup(local.dedicated_node_pool, "instance_types", "t3.medium"))
+              }
+            ],
+            # Common requirements
+            [
+              {
+                key      = "eks.amazonaws.com/instance-cpu"
+                operator = "In"
+                values   = ["4", "8", "16"]
+              },
+              {
+                key      = "topology.kubernetes.io/zone"
+                operator = "In"
+                values   = [var.inputs.network_details.attributes.availability_zones[0]]
+              },
+              {
+                key      = "kubernetes.io/arch"
+                operator = "In"
+                values   = ["arm64", "amd64"]
+              },
+              {
+                key      = "karpenter.sh/capacity-type"
+                operator = "In"
+                values   = split(",", lookup(local.dedicated_node_pool, "capacity_type", "spot"))
+              }
+            ]
+          )
         }
       }
       limits = {
