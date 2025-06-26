@@ -23,9 +23,26 @@ locals {
     diagnostic_setting     = var.instance.spec.monitoring.diagnostic_setting.enabled ? { id = azurerm_monitor_diagnostic_setting.cosmosdb[0].id, name = azurerm_monitor_diagnostic_setting.cosmosdb[0].name } : null
   }
   output_interfaces = {
-    endpoint           = azurerm_cosmosdb_account.main.endpoint
-    primary_key        = azurerm_cosmosdb_account.main.primary_key
-    secondary_key      = azurerm_cosmosdb_account.main.secondary_key
-    connection_strings = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
+    cluster = {
+      endpoint          = azurerm_cosmosdb_account.main.endpoint
+      username          = azurerm_cosmosdb_account.main.primary_mongodb_username
+      password          = azurerm_cosmosdb_account.main.primary_mongodb_password
+      connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
+
+    }
+    writer = {
+      host              = azurerm_cosmosdb_account.main.read_endpoints
+      port              = "10255"
+      username          = azurerm_cosmosdb_account.main.primary_mongodb_username
+      password          = azurerm_cosmosdb_account.main.primary_mongodb_password
+      connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
+    }
+    reader = {
+      host              = azurerm_cosmosdb_account.main.read_endpoints
+      port              = "10255"
+      username          = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_username
+      password          = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_password
+      connection_string = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_connection_string
+    }
   }
 }
