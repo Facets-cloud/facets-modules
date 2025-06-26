@@ -13,7 +13,7 @@ locals {
   cosmosdb_account_name = module.unique_name.name
 
   # Parse IP ranges if provided
-  ip_range_filter = var.instance.spec.networking.ip_range_filter.enabled && var.instance.spec.networking.ip_range_filter.allowed_ips != "" ? var.instance.spec.networking.ip_range_filter.allowed_ips : null
+  ip_range_filter = var.instance.spec.networking.ip_range_filter.enabled && var.instance.spec.networking.ip_range_filter.allowed_ips != "" ? split(",", replace(var.instance.spec.networking.ip_range_filter.allowed_ips, " ", "")) : []
 
   # Parse subnet IDs if provided
   virtual_network_subnet_ids = var.instance.spec.networking.virtual_network_rules.enabled && lookup(var.instance.spec.networking.virtual_network_rules, "subnet_ids", "") != "" ? split(",", replace(var.instance.spec.networking.virtual_network_rules.subnet_ids, " ", "")) : []
