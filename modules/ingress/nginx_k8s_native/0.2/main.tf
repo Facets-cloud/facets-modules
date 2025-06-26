@@ -246,9 +246,14 @@ locals {
   }
 
   # Nodepool configuration from inputs
-  nodepool_config      = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {}
-  nodepool_tolerations = lookup(local.nodepool_config, "tolerations", [])
-  nodepool_labels      = lookup(local.nodepool_config, "labels", {})
+  nodepool_config      = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {
+    node_class_name = ""
+    node_pool_name  = ""
+    taints          = []
+    node_selector   = {}
+  }
+  nodepool_tolerations = lookup(local.nodepool_config, "taints", [])
+  nodepool_labels      = lookup(local.nodepool_config, "node_selector", {})
 
   # Use only nodepool tolerations (no fallback to default)
   ingress_tolerations = local.nodepool_tolerations
@@ -267,9 +272,9 @@ locals {
     if lookup(v, "namespace", var.environment.namespace) != var.environment.namespace
   }
   custom_tls_domains = {
-    for domain_name, domain in var.instance.spec.domains :
+    for domain_name, domain in lookup(var.instance.spec, "domains", {}) :
     domain_name => domain
-    if lookup(domain.custom_tls, "enabled", false) == true
+    if lookup(lookup(domain, "custom_tls", {}), "enabled", false) == true
   }
 }
 
