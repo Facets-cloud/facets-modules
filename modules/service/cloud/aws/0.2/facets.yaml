@@ -83,6 +83,73 @@ spec:
         values:
         - application
         - statefulset
+    pod_distribution_enabled:
+      type: boolean
+      title: Enable Pod Distribution
+      description: Enable topology spread constraints for pod distribution
+      default: false
+      x-ui-visible-if:
+        field: spec.type
+        values:
+        - application
+        - statefulset
+    pod_distribution:
+      type: object
+      title: Pod Distribution
+      description: Configure how pods are distributed across the cluster topology
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.pod_distribution_enabled
+        values:
+        - true
+      patternProperties:
+        ^[a-zA-Z0-9_-]*$:
+          type: object
+          title: Topology Configuration
+          properties:
+            topology_key:
+              type: string
+              title: Topology Key
+              description: The key of node labels used for grouping nodes
+              default: kubernetes.io/hostname
+              enum:
+              - kubernetes.io/hostname
+              - topology.kubernetes.io/zone
+              - kubernetes.io/arch
+              - lifecycle
+            when_unsatisfiable:
+              type: string
+              title: When Unsatisfiable
+              description: How to deal with pods that don't satisfy the spread constraints
+              default: DoNotSchedule
+              enum:
+              - DoNotSchedule
+              - ScheduleAnyway
+            max_skew:
+              type: integer
+              title: Max Skew
+              description: Maximum difference between the number of matching pods in any two topology domains
+              default: 1
+              minimum: 1
+              maximum: 100
+            node_taints_policy:
+              type: string
+              title: Node Taints Policy
+              description: How to handle node taints when scheduling pods
+              enum:
+              - Honor
+              - Ignore
+            node_affinity_policy:
+              type: string
+              title: Node Affinity Policy
+              description: How to handle node affinity when scheduling pods
+              enum:
+              - Honor
+              - Ignore
+          required:
+          - topology_key
+          - when_unsatisfiable
+          - max_skew
     cronjob:
       type: object
       title: Cronjob
@@ -450,6 +517,8 @@ spec:
   - type
   - restart_policy
   - enable_host_anti_affinity
+  - pod_distribution_enabled
+  - pod_distribution
   - cronjob
   - job
   - persistent_volume_claims
@@ -469,6 +538,8 @@ sample:
     type: application
     enable_host_anti_affinity: false
     restart_policy: Always
+    pod_distribution_enabled: false
+    pod_distribution: {}
     cloud_permissions:
       aws:
         enable_irsa: false

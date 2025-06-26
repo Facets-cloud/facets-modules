@@ -42,7 +42,34 @@ locals {
   # Check if VPA is available and configure accordingly
   vpa_available = lookup(var.inputs, "vpa_details", null) != null
 
-  # Create instance configuration with VPA settings
+  # Configure pod distribution directly from spec
+  enable_host_anti_affinity = lookup(local.spec, "enable_host_anti_affinity", false)
+  pod_distribution_enabled = lookup(local.spec, "pod_distribution_enabled", false)
+  pod_distribution_spec = lookup(local.spec, "pod_distribution", {})
+  
+  # Convert pod_distribution object to array format expected by helm chart
+  pod_distribution_array = [
+    for key, config in local.pod_distribution_spec : {
+      topology_key = config.topology_key
+      when_unsatisfiable = config.when_unsatisfiable
+      max_skew = config.max_skew
+      node_taints_policy = lookup(config, "node_taints_policy", null)
+      node_affinity_policy = lookup(config, "node_affinity_policy", null)
+    }
+  ]
+  
+  # Determine final pod_distribution configuration
+  pod_distribution = local.pod_distribution_enabled ? (
+    length(local.pod_distribution_spec) > 0 ? local.pod_distribution_array : (
+      local.enable_host_anti_affinity ? [{
+        topology_key = "kubernetes.io/hostname"
+        when_unsatisfiable = "DoNotSchedule"
+        max_skew = 1
+      }] : []
+    )
+  ) : []
+
+  # Create instance configuration with VPA settings and topology spread constraints
   instance_with_vpa_config = merge(var.instance, {
     advanced = merge(
       lookup(var.instance, "advanced", {}),
@@ -57,6 +84,9 @@ locals {
                   lookup(lookup(lookup(lookup(var.instance, "advanced", {}), "common", {}), "app_chart", {}), "values", {}),
                   {
                     enable_vpa = local.vpa_available
+                    # Configure pod distribution for the application chart
+                    pod_distribution_enabled = local.pod_distribution_enabled
+                    pod_distribution = local.pod_distribution
                   }
                 )
               }
