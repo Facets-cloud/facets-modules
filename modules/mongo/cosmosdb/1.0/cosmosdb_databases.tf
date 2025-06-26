@@ -50,12 +50,7 @@ resource "azurerm_cosmosdb_mongo_collection" "collections" {
   account_name        = azurerm_cosmosdb_account.main.name
   database_name       = azurerm_cosmosdb_mongo_database.databases[each.value.db_name].name
 
-  dynamic "shard_key" {
-    for_each = each.value.shard_key != "" ? [1] : []
-    content {
-      value = shard_key.value
-    }
-  }
+  shard_key = each.value.shard_key != "" ? each.value.shard_key : null
 
   # TTL configuration
   default_ttl_seconds = each.value.default_ttl_seconds
