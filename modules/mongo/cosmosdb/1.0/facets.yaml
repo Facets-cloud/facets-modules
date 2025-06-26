@@ -1,0 +1,494 @@
+intent: mongo
+flavor: cosmosdb
+version: '1.0'
+clouds:
+- azure
+description: Creates and manages Azure CosmosDB account with MongoDB API, including
+  databases, collections, and comprehensive configuration options
+inputs:
+  network_details:
+    type: '@outputs/azure_vpc'
+    optional: false
+    displayName: Network Details
+    description: The Azure VPC network details providing resource group and networking
+      configuration
+    default:
+      resource_type: network
+      resource_name: default
+    providers:
+    - azurerm
+spec:
+  title: Azure CosmosDB MongoDB
+  description: Creates and manages Azure CosmosDB account with MongoDB API, including
+    databases, collections, and comprehensive configuration options
+  type: object
+  properties:
+    mongo_server_version:
+      type: string
+      title: MongoDB Server Version
+      description: The MongoDB server version to use
+      default: '4.2'
+      enum:
+      - '3.2'
+      - '3.6'
+      - '4.0'
+      - '4.2'
+      - '5.0'
+      - '6.0'
+      - '7.0'
+    account_config:
+      type: object
+      title: Account Configuration
+      description: Basic account settings and capabilities
+      properties:
+        enable_automatic_failover:
+          type: boolean
+          title: Enable Automatic Failover
+          description: Enable automatic failover for high availability
+          default: true
+        enable_multiple_write_locations:
+          type: boolean
+          title: Enable Multiple Write Locations
+          description: Enable multi-region writes
+          default: false
+        is_virtual_network_filter_enabled:
+          type: boolean
+          title: Enable Virtual Network Filter
+          description: Enable virtual network filtering
+          default: false
+        analytical_storage_enabled:
+          type: boolean
+          title: Enable Analytical Storage
+          description: Enable analytical storage for real-time analytics
+          default: false
+        public_network_access_enabled:
+          type: boolean
+          title: Enable Public Network Access
+          description: Allow public network access to the account
+          default: true
+        capabilities:
+          type: object
+          title: MongoDB Capabilities
+          description: Enable specific MongoDB capabilities
+          properties:
+            enable_aggregation_pipeline:
+              type: boolean
+              title: Enable Aggregation Pipeline
+              description: Enable MongoDB aggregation pipeline
+              default: true
+            enable_doc_level_ttl:
+              type: boolean
+              title: Enable Document Level TTL
+              description: Enable document-level time-to-live
+              default: true
+            disable_rate_limiting_responses:
+              type: boolean
+              title: Disable Rate Limiting Responses
+              description: Disable rate limiting responses
+              default: false
+      required:
+      - enable_automatic_failover
+    consistency_policy:
+      type: object
+      title: Consistency Policy
+      description: Configure consistency levels and staleness settings
+      properties:
+        consistency_level:
+          type: string
+          title: Consistency Level
+          description: The consistency level for the CosmosDB account
+          default: Session
+          enum:
+          - Eventual
+          - Session
+          - BoundedStaleness
+          - Strong
+          - ConsistentPrefix
+        max_interval_in_seconds:
+          type: number
+          title: Max Interval (seconds)
+          description: Maximum staleness interval in seconds (only for BoundedStaleness)
+          default: 300
+          minimum: 5
+          maximum: 86400
+          x-ui-visible-if:
+            field: spec.consistency_policy.consistency_level
+            values:
+            - BoundedStaleness
+        max_staleness_prefix:
+          type: number
+          title: Max Staleness Prefix
+          description: Maximum staleness prefix (only for BoundedStaleness)
+          default: 100000
+          minimum: 10
+          maximum: 2147483647
+          x-ui-visible-if:
+            field: spec.consistency_policy.consistency_level
+            values:
+            - BoundedStaleness
+      required:
+      - consistency_level
+    geo_locations:
+      type: object
+      title: Geo Locations
+      description: Configure geographic locations and failover priorities
+      properties:
+        primary_location:
+          type: string
+          title: Primary Location
+          description: Primary Azure region for the CosmosDB account
+          default: East US
+        secondary_locations:
+          type: object
+          title: Secondary Locations
+          description: Additional regions for geo-replication
+          x-ui-toggle: true
+          properties:
+            enabled:
+              type: boolean
+              title: Enable Secondary Locations
+              description: Add secondary regions for geo-replication
+              default: false
+            regions:
+              type: object
+              title: Secondary Regions
+              description: Map of secondary regions with their failover priorities
+              x-ui-yaml-editor: true
+              x-ui-visible-if:
+                field: spec.geo_locations.secondary_locations.enabled
+                values:
+                - true
+              default: {}
+      required:
+      - primary_location
+    networking:
+      type: object
+      title: Networking Configuration
+      description: Configure network access, firewalls, and private endpoints
+      x-ui-toggle: true
+      properties:
+        ip_range_filter:
+          type: object
+          title: IP Range Filter
+          description: Configure IP-based firewall rules
+          properties:
+            enabled:
+              type: boolean
+              title: Enable IP Filtering
+              description: Enable IP-based access control
+              default: false
+            allowed_ips:
+              type: string
+              title: Allowed IP Ranges
+              description: Comma-separated list of IP addresses or CIDR ranges
+              x-ui-visible-if:
+                field: spec.networking.ip_range_filter.enabled
+                values:
+                - true
+        virtual_network_rules:
+          type: object
+          title: Virtual Network Rules
+          description: Configure virtual network subnet access
+          properties:
+            enabled:
+              type: boolean
+              title: Enable VNet Rules
+              description: Enable virtual network-based access control
+              default: false
+            subnet_ids:
+              type: string
+              title: Subnet IDs
+              description: Comma-separated list of subnet resource IDs
+              x-ui-visible-if:
+                field: spec.networking.virtual_network_rules.enabled
+                values:
+                - true
+        private_endpoint:
+          type: object
+          title: Private Endpoint
+          description: Configure private endpoint connectivity
+          properties:
+            enabled:
+              type: boolean
+              title: Enable Private Endpoint
+              description: Create private endpoint for secure connectivity
+              default: false
+    backup:
+      type: object
+      title: Backup Configuration
+      description: Configure backup policies and retention
+      x-ui-toggle: true
+      properties:
+        type:
+          type: string
+          title: Backup Type
+          description: Type of backup to configure
+          default: Periodic
+          enum:
+          - Periodic
+          - Continuous
+        periodic_config:
+          type: object
+          title: Periodic Backup Settings
+          description: Configuration for periodic backups
+          x-ui-visible-if:
+            field: spec.backup.type
+            values:
+            - Periodic
+          properties:
+            interval_in_minutes:
+              type: number
+              title: Backup Interval (minutes)
+              description: Backup interval in minutes
+              default: 240
+              minimum: 60
+              maximum: 1440
+            retention_in_hours:
+              type: number
+              title: Retention Period (hours)
+              description: Backup retention period in hours
+              default: 720
+              minimum: 8
+              maximum: 87600
+            storage_redundancy:
+              type: string
+              title: Storage Redundancy
+              description: Backup storage redundancy type
+              default: Geo
+              enum:
+              - Geo
+              - Local
+              - Zone
+        continuous_config:
+          type: object
+          title: Continuous Backup Settings
+          description: Configuration for continuous backup (Point-in-time restore)
+          x-ui-visible-if:
+            field: spec.backup.type
+            values:
+            - Continuous
+          properties:
+            tier:
+              type: string
+              title: Continuous Backup Tier
+              description: Continuous backup tier
+              default: Continuous7Days
+              enum:
+              - Continuous7Days
+              - Continuous30Days
+      required:
+      - type
+    databases:
+      type: object
+      title: Database Configuration
+      description: Configure MongoDB databases and collections
+      properties:
+        database_throughput:
+          type: object
+          title: Default Database Throughput
+          description: Default throughput settings for databases
+          properties:
+            type:
+              type: string
+              title: Throughput Type
+              description: Type of throughput provisioning
+              default: autoscale
+              enum:
+              - standard
+              - autoscale
+            standard_ru:
+              type: number
+              title: Standard Throughput (RU/s)
+              description: Fixed throughput in Request Units per second
+              default: 400
+              minimum: 400
+              maximum: 1000000
+              x-ui-visible-if:
+                field: spec.databases.database_throughput.type
+                values:
+                - standard
+            max_autoscale_ru:
+              type: number
+              title: Max Autoscale Throughput (RU/s)
+              description: Maximum throughput for autoscale in Request Units per second
+              default: 4000
+              minimum: 4000
+              maximum: 1000000
+              x-ui-visible-if:
+                field: spec.databases.database_throughput.type
+                values:
+                - autoscale
+        database_configs:
+          type: object
+          title: Database Configurations
+          description: Individual database configurations
+          x-ui-yaml-editor: true
+          default:
+            default_db:
+              collections:
+                default_collection:
+                  shard_key: _id
+                  default_ttl_seconds: -1
+    security:
+      type: object
+      title: Security Configuration
+      description: Configure encryption and security settings
+      x-ui-toggle: true
+      properties:
+        customer_managed_key:
+          type: object
+          title: Customer Managed Key
+          description: Configure customer-managed encryption keys
+          properties:
+            enabled:
+              type: boolean
+              title: Enable Customer Managed Key
+              description: Use customer-managed keys for encryption
+              default: false
+            key_vault_key_id:
+              type: string
+              title: Key Vault Key ID
+              description: Azure Key Vault key ID for encryption
+              x-ui-visible-if:
+                field: spec.security.customer_managed_key.enabled
+                values:
+                - true
+        identity:
+          type: object
+          title: Managed Identity
+          description: Configure managed identity for the CosmosDB account
+          properties:
+            type:
+              type: string
+              title: Identity Type
+              description: Type of managed identity
+              default: SystemAssigned
+              enum:
+              - SystemAssigned
+              - UserAssigned
+              - SystemAssigned,UserAssigned
+            identity_ids:
+              type: string
+              title: User Assigned Identity IDs
+              description: Comma-separated list of user-assigned identity IDs
+              x-ui-visible-if:
+                field: spec.security.identity.type
+                values:
+                - UserAssigned
+                - SystemAssigned,UserAssigned
+    monitoring:
+      type: object
+      title: Monitoring Configuration
+      description: Configure diagnostic settings and monitoring
+      x-ui-toggle: true
+      properties:
+        diagnostic_setting:
+          type: object
+          title: Diagnostic Settings
+          description: Configure diagnostic logs and metrics
+          properties:
+            enabled:
+              type: boolean
+              title: Enable Diagnostic Settings
+              description: Enable diagnostic logging and metrics
+              default: false
+            log_analytics_workspace_id:
+              type: string
+              title: Log Analytics Workspace ID
+              description: Resource ID of Log Analytics workspace
+              x-ui-visible-if:
+                field: spec.monitoring.diagnostic_setting.enabled
+                values:
+                - true
+            storage_account_id:
+              type: string
+              title: Storage Account ID
+              description: Resource ID of storage account for diagnostic logs
+              x-ui-visible-if:
+                field: spec.monitoring.diagnostic_setting.enabled
+                values:
+                - true
+            eventhub_authorization_rule_id:
+              type: string
+              title: Event Hub Authorization Rule ID
+              description: Resource ID of Event Hub authorization rule
+              x-ui-visible-if:
+                field: spec.monitoring.diagnostic_setting.enabled
+                values:
+                - true
+            log_categories:
+              type: object
+              title: Log Categories
+              description: Enable specific log categories
+              x-ui-visible-if:
+                field: spec.monitoring.diagnostic_setting.enabled
+                values:
+                - true
+              properties:
+                data_plane_requests:
+                  type: boolean
+                  title: Data Plane Requests
+                  description: Log data plane requests
+                  default: true
+                mongo_requests:
+                  type: boolean
+                  title: Mongo Requests
+                  description: Log MongoDB API requests
+                  default: true
+                query_runtime_statistics:
+                  type: boolean
+                  title: Query Runtime Statistics
+                  description: Log query runtime statistics
+                  default: false
+                control_plane_requests:
+                  type: boolean
+                  title: Control Plane Requests
+                  description: Log control plane requests
+                  default: false
+            enable_metrics:
+              type: boolean
+              title: Enable Metrics
+              description: Enable metrics collection
+              default: true
+              x-ui-visible-if:
+                field: spec.monitoring.diagnostic_setting.enabled
+                values:
+                - true
+  required:
+  - account_config
+  - consistency_policy
+  - geo_locations
+  - databases
+outputs:
+  default:
+    type: '@outputs/azure_cosmosdb'
+    title: Azure CosmosDB MongoDB Account
+sample:
+  kind: mongo
+  flavor: cosmosdb
+  version: '1.0'
+  disabled: false
+  spec:
+    mongo_server_version: '5.0'
+    account_config:
+      enable_automatic_failover: true
+      enable_multiple_write_locations: false
+      capabilities:
+        enable_aggregation_pipeline: true
+        enable_doc_level_ttl: true
+    consistency_policy:
+      consistency_level: Session
+    geo_locations:
+      primary_location: East US
+      secondary_locations:
+        enabled: false
+    databases:
+      database_throughput:
+        type: autoscale
+        max_autoscale_ru: 4000
+      database_configs:
+        default_db:
+          collections:
+            default_collection:
+              shard_key: _id
+              default_ttl_seconds: -1
