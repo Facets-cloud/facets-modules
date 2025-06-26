@@ -28,12 +28,7 @@ locals {
     var.instance.spec.account_config.capabilities.enable_doc_level_ttl ? ["mongoEnableDocLevelTTL"] : [],
     var.instance.spec.account_config.capabilities.disable_rate_limiting_responses ? ["DisableRateLimitingResponses"] : [],
     # Add MongoDB version capability based on server version
-    var.instance.spec.mongo_server_version == "3.6" ? ["MongoDBv3.4"] :
-    var.instance.spec.mongo_server_version == "4.0" ? ["MongoDBv4.0"] :
-    var.instance.spec.mongo_server_version == "4.2" ? ["MongoDBv4.2"] :
-    var.instance.spec.mongo_server_version == "5.0" ? ["MongoDBv5.0"] :
-    var.instance.spec.mongo_server_version == "6.0" ? ["MongoDBv6.0"] :
-    var.instance.spec.mongo_server_version == "7.0" ? ["MongoDBv7.0"] : []
+    ["MongoDBv3.4"]
   )
 
   # Determine geo locations

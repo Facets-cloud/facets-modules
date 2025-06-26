@@ -3,24 +3,21 @@ flavor: cosmosdb
 version: '1.0'
 clouds:
 - azure
-description: Creates and manages Azure CosmosDB account with MongoDB API, including
-  databases, collections, and comprehensive configuration options
+description: Creates and manages Azure CosmosDB account with MongoDB API, including databases, collections, and comprehensive configuration options
 inputs:
   network_details:
     type: '@outputs/azure_vpc'
     optional: false
     displayName: Network Details
-    description: The Azure VPC network details providing resource group and networking
-      configuration
+    description: The Azure VPC network details providing resource group and networking configuration
     default:
       resource_type: network
       resource_name: default
     providers:
-    - azurerm3-116-0
+    - azurerm4-8-0
 spec:
   title: Azure CosmosDB MongoDB
-  description: Creates and manages Azure CosmosDB account with MongoDB API, including
-    databases, collections, and comprehensive configuration options
+  description: Creates and manages Azure CosmosDB account with MongoDB API, including databases, collections, and comprehensive configuration options
   type: object
   properties:
     mongo_server_version:
@@ -469,7 +466,7 @@ sample:
   version: '1.0'
   disabled: false
   spec:
-    mongo_server_version: '5.0'
+    mongo_server_version: '4.2'
     account_config:
       enable_automatic_failover: true
       enable_multiple_write_locations: false
