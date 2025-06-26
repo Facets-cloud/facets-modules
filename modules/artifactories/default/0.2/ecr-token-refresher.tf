@@ -190,7 +190,7 @@ resource "null_resource" "patch_admin_sa" {
   }
   depends_on = [null_resource.wait-for-ecr-token-patch]
   provisioner "local-exec" {
-    command = "/bin/bash ../tfmain/scripts/run_with_kubeconfig.sh kubectl patch sa capillary-cloud-admin -p '${jsonencode({ "imagePullSecrets" = local.registry_secrets_list })}'"
+    command = "/bin/bash ../tfmain/scripts/run_with_kubeconfig.sh kubectl patch sa facets-admin -p '${jsonencode({ "imagePullSecrets" = local.registry_secrets_list })}'"
     environment = {
       SERVER = local.host
       CA     = local.cluster_ca_certificate
