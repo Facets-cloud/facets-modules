@@ -5,7 +5,7 @@ resource "azurerm_private_endpoint" "cosmosdb" {
 
   name                = "${local.cosmosdb_account_name}-pe"
   location            = var.cluster.region
-  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.name
+  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
   subnet_id           = var.inputs.network_details.attributes.legacy_outputs.vpc_details.private_link_service_subnets[0]
 
   private_service_connection {

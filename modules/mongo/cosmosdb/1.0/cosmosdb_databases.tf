@@ -4,7 +4,7 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
   for_each = var.instance.spec.databases.database_configs
 
   name                = each.key
-  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.name
+  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
   account_name        = azurerm_cosmosdb_account.main.name
 
   # Database-level throughput configuration
@@ -46,7 +46,7 @@ resource "azurerm_cosmosdb_mongo_collection" "collections" {
   for_each = local.collections_map
 
   name                = each.value.collection_name
-  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.name
+  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
   account_name        = azurerm_cosmosdb_account.main.name
   database_name       = azurerm_cosmosdb_mongo_database.databases[each.value.db_name].name
 
