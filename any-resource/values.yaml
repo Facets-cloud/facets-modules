@@ -1,8 +1,0 @@
-anyResources: {}
-#  exampleResource: |-
-#    apiVersion: v1
-#    kind: ConfigMap
-#    metadata:
-#      name: example-resource
-#    data:
-#      foo: bar
