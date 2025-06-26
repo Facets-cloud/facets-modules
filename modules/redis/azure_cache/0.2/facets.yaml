@@ -1,6 +1,6 @@
 intent: redis
 flavor: azure_cache
-version: '0.1'
+version: '0.2'
 description: Azure Cache module
 clouds:
 - azure
@@ -70,7 +70,7 @@ sample:
   kind: azure_cache
   disabled: false
   metadata: {}
-  version: '0.1'
+  version: '0.2'
   spec:
     authenticated: true
     redis_version: 6
