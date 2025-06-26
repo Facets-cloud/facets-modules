@@ -69,12 +69,24 @@ spec:
               x-ui-error-message: Please enter a valid Kubernetes resource type
             resource_name:
               type: string
+              resource_name: null
               title: Resource Name
               description: Name of the resource being monitored (must follow Kubernetes
                 naming conventions)
               pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
               minLength: 1
               maxLength: 63
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                filterConditions:
+                - field: resourceType
+                  value: spec.rules.{{this}}.resource_type
+                  type: dynamic
               x-ui-error-message: Resource name must be valid Kubernetes name (lowercase,
                 alphanumeric, hyphens, 1-63 chars)
             alert_type:
