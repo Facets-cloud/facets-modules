@@ -239,11 +239,7 @@ variable "inputs" {
       attributes = object({
         legacy_outputs = object({
           azure_cloud = object({
-            resource_group = object({
-              name     = string
-              location = string
-              id       = string
-            })
+            resource_group = string
           })
           vpc_details = object({
             private_link_service_subnets = list(string)
@@ -252,4 +248,8 @@ variable "inputs" {
       })
     })
   })
+}
+
+variable "cluster" {
+  type = any
 }

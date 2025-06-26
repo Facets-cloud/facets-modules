@@ -63,8 +63,8 @@ locals {
 resource "azurerm_cosmosdb_account" "main" {
   provider            = "azurerm3-116-0"
   name                = local.cosmosdb_account_name
-  location            = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.location
-  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group.name
+  location            = var.cluster.region
+  resource_group_name = var.inputs.network_details.attributes.legacy_outputs.azure_cloud.resource_group
   offer_type          = "Standard"
   kind                = "MongoDB"
 
@@ -116,7 +116,7 @@ resource "azurerm_cosmosdb_account" "main" {
     interval_in_minutes = var.instance.spec.backup.type == "Periodic" && var.instance.spec.backup.periodic_config != null ? var.instance.spec.backup.periodic_config.interval_in_minutes : null
     retention_in_hours  = var.instance.spec.backup.type == "Periodic" && var.instance.spec.backup.periodic_config != null ? var.instance.spec.backup.periodic_config.retention_in_hours : null
     storage_redundancy  = var.instance.spec.backup.type == "Periodic" && var.instance.spec.backup.periodic_config != null ? var.instance.spec.backup.periodic_config.storage_redundancy : null
-    tier                = var.instance.spec.backup.type == "Continuous" && var.instance.spec.backup.continuous_config != null ? var.instance.spec.backup.continuous_config.tier : null
+    tier                = var.instance.spec.backup.type == "Continuous" && lookup(var.instance.spec.backup, "continuous_config", null) != null ? lookup(var.instance.spec.backup.continuous_config, "tier", null) : null
   }
 
   # Identity configuration
