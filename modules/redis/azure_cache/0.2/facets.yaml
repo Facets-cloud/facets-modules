@@ -1,4 +1,4 @@
-intent: azure_cache
+intent: redis
 flavor: azure_cache
 version: '0.1'
 description: Azure Cache module
