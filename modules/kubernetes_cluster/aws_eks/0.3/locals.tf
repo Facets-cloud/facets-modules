@@ -84,11 +84,11 @@ locals {
                 operator = "In"
                 values   = [lookup(local.default_node_pool, "instance_family", "c")]
               }
-            ] : [
+              ] : [
               {
                 key      = "node.kubernetes.io/instance-type"
                 operator = "In"
-                values   = split(",", lookup(local.default_node_pool, "instance_types", "t3.medium"))
+                values   = lookup(local.default_node_pool, "instance_types", ["t3.medium"])
               }
             ],
             # Common requirements
@@ -108,11 +108,11 @@ locals {
                 operator = "In"
                 values   = ["arm64", "amd64"]
               },
-              {
-                key      = "karpenter.sh/capacity-type"
-                operator = "In"
-                values   = split(",", lookup(local.default_node_pool, "capacity_type", "spot"))
-              }
+                              {
+                  key      = "karpenter.sh/capacity-type"
+                  operator = "In"
+                  values   = lookup(local.default_node_pool, "capacity_type", ["spot"])
+                }
             ]
           )
         }
@@ -161,11 +161,11 @@ locals {
                 operator = "In"
                 values   = [lookup(local.dedicated_node_pool, "instance_family", "c")]
               }
-            ] : [
+              ] : [
               {
                 key      = "node.kubernetes.io/instance-type"
                 operator = "In"
-                values   = split(",", lookup(local.dedicated_node_pool, "instance_types", "t3.medium"))
+                values   = lookup(local.dedicated_node_pool, "instance_types", ["t3.medium"])
               }
             ],
             # Common requirements
@@ -185,11 +185,11 @@ locals {
                 operator = "In"
                 values   = ["arm64", "amd64"]
               },
-              {
-                key      = "karpenter.sh/capacity-type"
-                operator = "In"
-                values   = split(",", lookup(local.dedicated_node_pool, "capacity_type", "spot"))
-              }
+                              {
+                  key      = "karpenter.sh/capacity-type"
+                  operator = "In"
+                  values   = lookup(local.dedicated_node_pool, "capacity_type", ["spot"])
+                }
             ]
           )
         }
