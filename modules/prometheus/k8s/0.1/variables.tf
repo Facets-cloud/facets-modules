@@ -1,11 +1,6 @@
 variable "instance" {
   description = "The JSON representation of the resource in the Facets blueprint."
-  type = object({
-    kind    = string
-    flavor  = string
-    version = string
-    spec    = any
-  })
+  type = any
 }
 
 variable "instance_name" {
@@ -15,10 +10,7 @@ variable "instance_name" {
 
 variable "environment" {
   description = "An object containing details about the environment."
-  type = object({
-    name        = string
-    unique_name = string
-  })
+  type = any
 }
 
 variable "inputs" {
