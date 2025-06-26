@@ -24,24 +24,24 @@ locals {
   }
   output_interfaces = {
     cluster = {
-      endpoint = azurerm_cosmosdb_account.main.endpoint
-
-      password          = azurerm_cosmosdb_account.main.primary_mongodb_password
+      endpoint          = azurerm_cosmosdb_account.main.endpoint
+      username          = azurerm_cosmosdb_account.main.name
+      password          = azurerm_cosmosdb_account.main.primary_key
       connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
 
     }
     writer = {
-      host              = azurerm_cosmosdb_account.main.read_endpoints
+      host              = azurerm_cosmosdb_account.main.write_endpoints
       port              = "10255"
-      username          = azurerm_cosmosdb_account.main.primary_mongodb_username
-      password          = azurerm_cosmosdb_account.main.primary_mongodb_password
+      username          = azurerm_cosmosdb_account.main.name
+      password          = azurerm_cosmosdb_account.main.primary_key
       connection_string = azurerm_cosmosdb_account.main.primary_mongodb_connection_string
     }
     reader = {
       host              = azurerm_cosmosdb_account.main.read_endpoints
       port              = "10255"
-      username          = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_username
-      password          = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_password
+      username          = azurerm_cosmosdb_account.main.name
+      password          = azurerm_cosmosdb_account.main.secondary_key
       connection_string = azurerm_cosmosdb_account.main.secondary_readonly_mongodb_connection_string
     }
   }
