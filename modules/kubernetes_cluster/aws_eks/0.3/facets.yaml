@@ -190,8 +190,8 @@ spec:
               type: string
               title: Capacity Type
               description: Type of capacity associated with the EKS Node Group. Valid
-                values are ON_DEMAND and SPOT.
-              default: SPOT
+                values are on-demand and spot.
+              default: spot
               enum:
               - on-demand
               - spot
@@ -250,8 +250,8 @@ spec:
               type: array
               title: Capacity Type
               description: Type of capacity associated with the EKS Node Group. Valid
-                values are ON_DEMAND and SPOT.
-              default: SPOT
+                values are on-demand and spot.
+              default: spot
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
@@ -350,7 +350,7 @@ sample:
         max_size: 3
         instance_types: t3.medium
         disk_size: 50
-        capacity_type: SPOT
+        capacity_type: spot
       default:
         enabled: false
         desired_size: 2
@@ -358,5 +358,5 @@ sample:
         max_size: 3
         instance_types: t3.medium
         disk_size: 50
-        capacity_type: SPOT
+        capacity_type: spot
     tags: {}

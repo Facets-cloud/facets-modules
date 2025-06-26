@@ -142,7 +142,7 @@ EOF
 
 module "cluster-issuer" {
   depends_on = [helm_release.cert_manager]
-  for_each   = local.use_gts ? {} : local.environments
+  for_each   = [{}, local.environments][local.use_gts ? 0 : 1]
 
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = each.value.name
