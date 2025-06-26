@@ -210,13 +210,13 @@ locals {
                 {
                   key      = "eks.amazonaws.com/instance-category"
                   operator = "In"
-                  values   = [local.instance_family]
+                  values   = split(",", local.instance_family)
                 }
                 ] : [
                 {
                   key      = "node.kubernetes.io/instance-type"
                   operator = "In"
-                  values   = [local.instance_type]
+                  values   = split(",", local.instance_types)
                 }
               ],
               # CPU requirements
@@ -273,7 +273,7 @@ locals {
     }
   }
 
-  use_instance_family = try(local.instance_requirements.use_instance_family, true)
+  use_instance_family = try(local.instance_requirements.use_instance_family, false)
   instance_family     = try(local.instance_requirements.instance_family, "c")
-  instance_type       = try(local.instance_requirements.instance_type, "m6i.large")
+  instance_types      = try(local.instance_requirements.instance_types, "m6i.large")
 }

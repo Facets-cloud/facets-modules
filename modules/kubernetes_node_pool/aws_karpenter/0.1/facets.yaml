@@ -43,23 +43,21 @@ spec:
         instance_family:
           type: string
           title: Instance Family (Category)
-          description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+          description: Comma-separated EC2 instance families/categories (e.g., c,m,r,g)
           default: c
-          pattern: ^[a-z][0-9]*[a-z]*$
-          x-ui-error-message: Instance family must be a valid EC2 family (e.g., c,
-            m, r, g, t, x, z)
+          pattern: ^[a-z][0-9]*[a-z]*(,[a-z][0-9]*[a-z]*)*$
+          x-ui-error-message: Instance families must be comma-separated valid EC2 families (e.g., c,m,r,g)
           x-ui-visible-if:
             field: spec.instance_requirements.use_instance_family
             values:
             - true
-        instance_type:
+        instance_types:
           type: string
-          title: Instance Type
-          description: Specific EC2 instance type (e.g., m6i.large, c5.xlarge)
+          title: Instance Types
+          description: Comma-separated EC2 instance types (e.g., m6i.large,c5.xlarge)
           default: m6i.large
-          pattern: ^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)$
-          x-ui-error-message: Instance type must be a valid EC2 instance type (e.g.,
-            m6i.large, c5.xlarge)
+          pattern: ^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)(,[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge))*$
+          x-ui-error-message: Instance types must be comma-separated valid EC2 instance types (e.g., m6i.large,c5.xlarge)
           x-ui-visible-if:
             field: spec.instance_requirements.use_instance_family
             values:
@@ -305,7 +303,10 @@ sample:
     name: production-nodes
     instance_requirements:
       use_instance_family: false
-      instance_type: m6i.large
+      instance_types: m6i.large,m6i.xlarge
+      # Alternative: use instance families instead
+      # use_instance_family: true
+      # instance_family: c,m,r
       cpu_range: 4,8,16
       architectures: amd64,arm64
       capacity_types: spot,on-demand

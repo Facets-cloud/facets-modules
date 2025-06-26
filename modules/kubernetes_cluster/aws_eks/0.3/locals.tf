@@ -82,13 +82,13 @@ locals {
               {
                 key      = "eks.amazonaws.com/instance-category"
                 operator = "In"
-                values   = [lookup(local.default_node_pool, "instance_family", "c")]
+                values   = split(",", lookup(local.default_node_pool, "instance_family", "c"))
               }
               ] : [
               {
                 key      = "node.kubernetes.io/instance-type"
                 operator = "In"
-                values   = lookup(local.default_node_pool, "instance_types", ["t3.medium"])
+                values   = split(",", lookup(local.default_node_pool, "instance_types", "t3.medium"))
               }
             ],
             # Common requirements
@@ -108,19 +108,19 @@ locals {
                 operator = "In"
                 values   = ["arm64", "amd64"]
               },
-                              {
-                  key      = "karpenter.sh/capacity-type"
-                  operator = "In"
-                  values   = lookup(local.default_node_pool, "capacity_type", ["spot"])
-                }
+              {
+                key      = "karpenter.sh/capacity-type"
+                operator = "In"
+                values   = split(",", lookup(local.default_node_pool, "capacity_types", "spot"))
+              }
             ]
           )
         }
       }
       # Limits should ideally be derived from local.default_node_pool configuration
       limits = {
-        cpu    = lookup(local.default_node_pool, "max_size_cpu", 1000)
-        memory = "${lookup(local.default_node_pool, "max_size_memory", 1000)}Gi"
+        cpu    = lookup(local.default_node_pool, "max_cpu", 1000)
+        memory = "${lookup(local.default_node_pool, "max_memory", 1000)}Gi"
       }
       # Consider adding disruption configuration if needed
       disruption = {
@@ -159,13 +159,13 @@ locals {
               {
                 key      = "eks.amazonaws.com/instance-category"
                 operator = "In"
-                values   = [lookup(local.dedicated_node_pool, "instance_family", "c")]
+                values   = split(",", lookup(local.dedicated_node_pool, "instance_family", "c"))
               }
               ] : [
               {
                 key      = "node.kubernetes.io/instance-type"
                 operator = "In"
-                values   = lookup(local.dedicated_node_pool, "instance_types", ["t3.medium"])
+                values   = split(",", lookup(local.dedicated_node_pool, "instance_types", "t3.medium"))
               }
             ],
             # Common requirements
@@ -185,18 +185,18 @@ locals {
                 operator = "In"
                 values   = ["arm64", "amd64"]
               },
-                              {
-                  key      = "karpenter.sh/capacity-type"
-                  operator = "In"
-                  values   = lookup(local.dedicated_node_pool, "capacity_type", ["spot"])
-                }
+              {
+                key      = "karpenter.sh/capacity-type"
+                operator = "In"
+                values   = split(",", lookup(local.dedicated_node_pool, "capacity_types", "spot"))
+              }
             ]
           )
         }
       }
       limits = {
-        cpu    = lookup(local.dedicated_node_pool, "max_size_cpu", 1000)
-        memory = "${lookup(local.dedicated_node_pool, "max_size_memory", 1000)}Gi"
+        cpu    = lookup(local.dedicated_node_pool, "max_cpu", 1000)
+        memory = "${lookup(local.dedicated_node_pool, "max_memory", 1000)}Gi"
       }
       disruption = {
         consolidateAfter    = "1m"

@@ -157,22 +157,22 @@ spec:
               title: Enabled
               description: Enable dedicated managed node pool.
               default: false
-            max_size_cpu:
+            max_cpu:
               type: number
-              title: Maximum Size (CPU)
-              description: Maximum number of worker nodes.
+              title: Maximum CPU
+              description: Maximum total CPU cores for this node pool.
               default: 1000
-              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
+              x-ui-error-message: Maximum CPU must be between 1 and 1000
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enabled
                 values:
                 - true
-            max_size_memory:
+            max_memory:
               type: number
-              title: Maximum Size (Memory)
-              description: Maximum number of worker nodes.
+              title: Maximum Memory
+              description: Maximum total memory for this node pool.
               default: 1000
-              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
+              x-ui-error-message: Maximum memory must be between 1 and 1000
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enabled
                 values:
@@ -190,50 +190,41 @@ spec:
             instance_family:
               type: string
               title: Instance Family (Category)
-              description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+              description: Comma-separated EC2 instance families/categories (e.g., c,m,r,g)
               default: c
-              pattern: ^[a-z][0-9]*[a-z]*$
-              x-ui-error-message: Instance family must be a valid EC2 family (e.g.,
-                c, m, r, g, t, x, z)
+              pattern: ^[a-z][0-9]*[a-z]*(,[a-z][0-9]*[a-z]*)*$
+              x-ui-error-message: Instance families must be comma-separated valid EC2 families (e.g., c,m,r,g)
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.use_instance_family
                 values:
                 - true
             instance_types:
-              type: array
+              type: string
               title: Instance Types
-              description: EC2 instance types for the worker nodes.
-              default: 
-              - t3.medium
-              items:
-                type: string
+              description: Comma-separated EC2 instance types for the worker nodes (e.g., t3.medium,t3.large)
+              default: t3.medium
+              pattern: ^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)(,[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge))*$
+              x-ui-error-message: Instance types must be comma-separated valid EC2 instance types (e.g., t3.medium,t3.large)
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.use_instance_family
                 values:
                 - false
-              x-ui-overrides-only: true
-            capacity_type:
-              type: array
-              title: Capacity Type
-              description: Type of capacity associated with the EKS Node Group. Valid
-                values are on-demand and spot.
-              default: 
-              - spot
-              items:
-                type: string
-                enum:
-                - on-demand
-                - spot
+            capacity_types:
+              type: string
+              title: Capacity Types
+              description: Comma-separated capacity types (e.g., spot,on-demand)
+              default: spot
+              pattern: ^(on-demand|spot)(,(on-demand|spot))*$
+              x-ui-error-message: Capacity types must be comma-separated values from on-demand,spot
               x-ui-visible-if:
                 field: spec.node_pools.dedicated.enabled
                 values:
                 - true
-              x-ui-overrides-only: true
           required:
           - enabled
-          - max_size_cpu
-          - max_size_memory
-          - capacity_type
+          - max_cpu
+          - max_memory
+          - capacity_types
         default:
           type: object
           title: Default Node Pool
@@ -245,22 +236,22 @@ spec:
               title: Enabled
               description: Enable default managed node pool.
               default: true
-            max_size_cpu:
+            max_cpu:
               type: number
-              title: Maximum Size (CPU)
-              description: Maximum number of worker nodes.
+              title: Maximum CPU
+              description: Maximum total CPU cores for this node pool.
               default: 1000
-              x-ui-error-message: Maximum size (CPU)must be between 1 and 1000
+              x-ui-error-message: Maximum CPU must be between 1 and 1000
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
                 - true
-            max_size_memory:
+            max_memory:
               type: number
-              title: Maximum Size (Memory)
-              description: Maximum number of worker nodes.
+              title: Maximum Memory
+              description: Maximum total memory for this node pool.
               default: 1000
-              x-ui-error-message: Maximum size (Memory) must be between 1 and 1000
+              x-ui-error-message: Maximum memory must be between 1 and 1000
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
@@ -278,41 +269,41 @@ spec:
             instance_family:
               type: string
               title: Instance Family (Category)
-              description: EC2 instance family/category (e.g., c, m, r, g, etc.)
+              description: Comma-separated EC2 instance families/categories (e.g., c,m,r,g)
               default: c
-              pattern: ^[a-z][0-9]*[a-z]*$
-              x-ui-error-message: Instance family must be a valid EC2 family (e.g.,
-                c, m, r, g, t, x, z)
+              pattern: ^[a-z][0-9]*[a-z]*(,[a-z][0-9]*[a-z]*)*$
+              x-ui-error-message: Instance families must be comma-separated valid EC2 families (e.g., c,m,r,g)
               x-ui-visible-if:
                 field: spec.node_pools.default.use_instance_family
                 values:
                 - true
             instance_types:
-              type: array
+              type: string
               title: Instance Types
-              description: EC2 instance types for the worker nodes.
+              description: Comma-separated EC2 instance types for the worker nodes (e.g., t3.medium,t3.large)
               default: t3.medium
+              pattern: ^[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge)(,[a-z][0-9]+[a-z]*\.(nano|micro|small|medium|large|xlarge|[0-9]+xlarge))*$
+              x-ui-error-message: Instance types must be comma-separated valid EC2 instance types (e.g., t3.medium,t3.large)
               x-ui-visible-if:
                 field: spec.node_pools.default.use_instance_family
                 values:
                 - false
-              x-ui-overrides-only: true
-            capacity_type:
-              type: array
-              title: Capacity Type
-              description: Type of capacity associated with the EKS Node Group. Valid
-                values are on-demand and spot.
+            capacity_types:
+              type: string
+              title: Capacity Types
+              description: Comma-separated capacity types (e.g., spot,on-demand)
               default: spot
+              pattern: ^(on-demand|spot)(,(on-demand|spot))*$
+              x-ui-error-message: Capacity types must be comma-separated values from on-demand,spot
               x-ui-visible-if:
                 field: spec.node_pools.default.enabled
                 values:
                 - true
-              x-ui-overrides-only: true
           required:
           - enabled
-          - max_size_cpu
-          - max_size_memory
-          - capacity_type
+          - max_cpu
+          - max_memory
+          - capacity_types
   required:
   - cluster
 inputs:
@@ -395,20 +386,16 @@ sample:
     node_pools:
       dedicated:
         enabled: false
-        max_size_cpu: 1000
-        max_size_memory: 1000
+        max_cpu: 1000
+        max_memory: 1000
         use_instance_family: false
-        instance_types: 
-        - t3.medium
-        capacity_type: 
-        - spot
+        instance_types: t3.medium,t3.large
+        capacity_types: spot
       default:
         enabled: false
-        max_size_cpu: 1000
-        max_size_memory: 1000
+        max_cpu: 1000
+        max_memory: 1000
         use_instance_family: false
-        instance_types: 
-        - t3.medium
-        capacity_type: 
-        - spot
+        instance_types: t3.medium,t3.large
+        capacity_types: spot
     tags: {}
