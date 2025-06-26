@@ -211,6 +211,7 @@ spec:
                 field: spec.node_pools.dedicated.use_instance_family
                 values:
                 - false
+              x-ui-overrides-only: true
             capacity_type:
               type: array
               title: Capacity Type
@@ -227,6 +228,7 @@ spec:
                 field: spec.node_pools.dedicated.enabled
                 values:
                 - true
+              x-ui-overrides-only: true
           required:
           - enabled
           - max_size_cpu
