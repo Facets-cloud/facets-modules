@@ -15,6 +15,10 @@ inputs:
     default:
       resource_type: kubernetes_cluster
       resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   title: Artifactories
   type: object
