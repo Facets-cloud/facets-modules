@@ -29,7 +29,7 @@ locals {
         collection_name     = collection_name
         shard_key           = collection_config.shard_key
         default_ttl_seconds = collection_config.default_ttl_seconds
-        indexes             = collection_config.indexes
+        indexes             = lookup(collection_config, "indexes", [])
         key                 = "${db_name}-${collection_name}"
       }
     ]
@@ -50,8 +50,12 @@ resource "azurerm_cosmosdb_mongo_collection" "collections" {
   account_name        = azurerm_cosmosdb_account.main.name
   database_name       = azurerm_cosmosdb_mongo_database.databases[each.value.db_name].name
 
-  # Shard key configuration
-  shard_key = each.value.shard_key
+  dynamic "shard_key" {
+    for_each = each.value.shard_key != "" ? [1] : []
+    content {
+      value = shard_key.value
+    }
+  }
 
   # TTL configuration
   default_ttl_seconds = each.value.default_ttl_seconds

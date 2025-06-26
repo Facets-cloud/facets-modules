@@ -16,10 +16,10 @@ locals {
   ip_range_filter = var.instance.spec.networking.ip_range_filter.enabled && var.instance.spec.networking.ip_range_filter.allowed_ips != "" ? var.instance.spec.networking.ip_range_filter.allowed_ips : null
 
   # Parse subnet IDs if provided
-  virtual_network_subnet_ids = var.instance.spec.networking.virtual_network_rules.enabled && var.instance.spec.networking.virtual_network_rules.subnet_ids != "" ? split(",", replace(var.instance.spec.networking.virtual_network_rules.subnet_ids, " ", "")) : []
+  virtual_network_subnet_ids = var.instance.spec.networking.virtual_network_rules.enabled && lookup(var.instance.spec.networking.virtual_network_rules, "subnet_ids", "") != "" ? split(",", replace(var.instance.spec.networking.virtual_network_rules.subnet_ids, " ", "")) : []
 
   # Parse identity IDs if provided
-  identity_ids = var.instance.spec.security.identity.identity_ids != "" ? split(",", replace(var.instance.spec.security.identity.identity_ids, " ", "")) : []
+  identity_ids = lookup(var.instance.spec.security.identity, "identity_ids", "") != "" ? split(",", replace(var.instance.spec.security.identity.identity_ids, " ", "")) : []
 
   # Build capabilities list based on configuration
   capabilities = concat(
