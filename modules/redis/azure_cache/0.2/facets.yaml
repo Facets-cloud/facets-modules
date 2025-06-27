@@ -37,7 +37,6 @@ spec:
           description: The capacity of the Redis cache
           default: '1'
           enum:
-          - '0'
           - '1'
           - '2'
           - '3'
