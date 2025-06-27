@@ -154,7 +154,7 @@ module "broker_pvc" {
 
 
 resource "helm_release" "kafka-lag-exporter" {
-  chart       = "${path.module}/../kafka-lag-exporter-0.8.0.tgz"
+  chart       = "${path.module}/kafka-lag-exporter-0.8.0.tgz"
   name        = "${local.name}-kafka-lag-exporter"
   namespace   = local.namespace
   max_history = 10
