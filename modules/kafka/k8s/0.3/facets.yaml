@@ -1,19 +1,19 @@
 intent: kafka
 flavor: k8s
-version: "0.3"
+version: '0.3'
 description: Adds Kafka module of kubernetes flavor
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 metadata:
   title: Metadata of Kafka
   type: object
   properties:
     namespace:
       type: string
-      title: Namespace 
+      title: Namespace
       description: Namespace in which kafka should be deployed
 spec:
   title: Kafka Spec
@@ -29,13 +29,13 @@ spec:
       description: Version of kafka e.g. 3.8.0
       x-ui-typeable: true
       enum:
-        - 3.8.0
+      - 3.8.0
     mode:
       type: string
       title: Kafka mode
       description: Mode in which kafka to be run e.g. kraft
       enum:
-        - kraft
+      - kraft
     controller:
       title: Controller Spec
       type: object
@@ -57,66 +57,78 @@ spec:
               type: string
               title: CPU
               description: Number of CPU cores required
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-compare: 
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+              x-ui-compare:
                 field: spec.controller.size.cpu_limit
-                comparator: '<='
-                x-ui-error-message: 'CPU cannot be more than CPU limit'
-              x-ui-placeholder: "Enter CPU requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
+                comparator: <=
+                x-ui-error-message: CPU cannot be more than CPU limit
+              x-ui-placeholder: Enter CPU requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory:
               type: string
               title: Memory
               description: Amount of memory required.
-              pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-              x-ui-compare: 
+              pattern: ^(0\.[1-9]|[1-9](\.[0-9]+)?|[1-5][0-9](\.[0-9]+)?|6[0-4])Gi$|^([1-9](\.[0-9]+)?|[1-9][0-9]{1,3}(\.[0-9]+)?|[1-5][0-9]{4}(\.[0-9]+)?|6[0-3][0-9]{3}(\.[0-9]+)?|64000)Mi$
+              x-ui-compare:
                 field: spec.controller.size.memory_limit
-                comparator: '<='
-                x-ui-error-message: 'Memory cannot be more than memory limit'
-              x-ui-placeholder: "Enter Memory requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                comparator: <=
+                x-ui-error-message: Memory cannot be more than memory limit
+              x-ui-placeholder: Enter Memory requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             cpu_limit:
               type: string
               title: CPU Limit
               description: Set a maximum limit on CPU utilization.
               minLength: 1
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-compare: 
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+              x-ui-compare:
                 field: spec.controller.size.cpu
                 comparator: '>='
-                x-ui-error-message: 'CPU limit cannot be less than CPU'
-              x-ui-placeholder: "e.g., '500m' or '1'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
+                x-ui-error-message: CPU limit cannot be less than CPU
+              x-ui-placeholder: e.g., '500m' or '1'
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory_limit:
               type: string
               title: Memory Limit
               description: Set a maximum limit on memory utilization.
               minLength: 1
-              pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-              x-ui-compare: 
+              pattern: ^(0\.[1-9]|[1-9](\.[0-9]+)?|[1-5][0-9](\.[0-9]+)?|6[0-4])Gi$|^([1-9](\.[0-9]+)?|[1-9][0-9]{1,3}(\.[0-9]+)?|[1-5][0-9]{4}(\.[0-9]+)?|6[0-3][0-9]{3}(\.[0-9]+)?|64000)Mi$
+              x-ui-compare:
                 field: spec.controller.size.memory
                 comparator: '>='
-                x-ui-error-message: 'Memory limit cannot be less than memory'
-              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                x-ui-error-message: Memory limit cannot be less than memory
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             volume:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[G]i?$"
-              x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
-              x-ui-visible-if: 
+              pattern: ^[0-9]+[G]i?$
+              x-ui-placeholder: Enter volume size
+              x-ui-error-message: Volume must be specified in the correct format (e.g.,
+                '10Gi' or '50Gi').
+              x-ui-visible-if:
                 field: spec.controller.persistence_enabled
-                values: [ true ]
+                values:
+                - true
             instance_count:
               type: integer
               title: Instance Count
               description: Number of controller instances needs to be deployed
               minimum: 0
               maximum: 100
-          required: ["cpu", "memory", "instance_count"]
-      required: ["controller_only", "persistence_enabled", "size"]
+          required:
+          - cpu
+          - memory
+          - instance_count
+      required:
+      - controller_only
+      - persistence_enabled
+      - size
     broker:
       title: Broker Spec
       type: object
@@ -134,67 +146,83 @@ spec:
               type: string
               title: CPU
               description: Number of CPU cores required
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-compare: 
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+              x-ui-compare:
                 field: spec.broker.size.cpu_limit
-                comparator: '<='
-                x-ui-error-message: 'CPU cannot be more than CPU limit'
-              x-ui-placeholder: "Enter CPU requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
+                comparator: <=
+                x-ui-error-message: CPU cannot be more than CPU limit
+              x-ui-placeholder: Enter CPU requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory:
               type: string
               title: Memory
               description: Amount of memory required.
-              pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-              x-ui-compare: 
+              pattern: ^(0\.[1-9]|[1-9](\.[0-9]+)?|[1-5][0-9](\.[0-9]+)?|6[0-4])Gi$|^([1-9](\.[0-9]+)?|[1-9][0-9]{1,3}(\.[0-9]+)?|[1-5][0-9]{4}(\.[0-9]+)?|6[0-3][0-9]{3}(\.[0-9]+)?|64000)Mi$
+              x-ui-compare:
                 field: spec.broker.size.memory_limit
-                comparator: '<='
-                x-ui-error-message: 'Memory cannot be more than memory limit'
-              x-ui-placeholder: "Enter Memory requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                comparator: <=
+                x-ui-error-message: Memory cannot be more than memory limit
+              x-ui-placeholder: Enter Memory requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             cpu_limit:
               type: string
               title: CPU Limit
               description: Set a maximum limit on CPU utilization.
               minLength: 1
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-              x-ui-compare: 
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+              x-ui-compare:
                 field: spec.broker.size.cpu
                 comparator: '>='
-                x-ui-error-message: 'CPU limit cannot be less than CPU'
-              x-ui-placeholder: "e.g., '500m' or '1'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1 to 32 or 1m to 32000m"
+                x-ui-error-message: CPU limit cannot be less than CPU
+              x-ui-placeholder: e.g., '500m' or '1'
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory_limit:
               type: string
               title: Memory Limit
               description: Set a maximum limit on memory utilization.
               minLength: 1
-              pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\.[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\.[0-9]+)?|64000)Mi$"
-              x-ui-compare: 
+              pattern: ^(0\.[1-9]|[1-9](\.[0-9]+)?|[1-5][0-9](\.[0-9]+)?|6[0-4])Gi$|^([1-9](\.[0-9]+)?|[1-9][0-9]{1,3}(\.[0-9]+)?|[1-5][0-9]{4}(\.[0-9]+)?|6[0-3][0-9]{3}(\.[0-9]+)?|64000)Mi$
+              x-ui-compare:
                 field: spec.broker.size.memory
                 comparator: '>='
-                x-ui-error-message: 'Memory limit cannot be less than memory'
-              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                x-ui-error-message: Memory limit cannot be less than memory
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             volume:
               type: string
               title: Volume
               description: Volume request in kubernetes persistent volumes
-              pattern: "^[0-9]+[G]i?$"
-              x-ui-placeholder: "Enter volume size"
-              x-ui-error-message: "Volume must be specified in the correct format (e.g., '10Gi' or '50Gi')."
-              x-ui-visible-if: 
+              pattern: ^[0-9]+[G]i?$
+              x-ui-placeholder: Enter volume size
+              x-ui-error-message: Volume must be specified in the correct format (e.g.,
+                '10Gi' or '50Gi').
+              x-ui-visible-if:
                 field: spec.broker.persistence_enabled
-                values: [ true ]
+                values:
+                - true
             instance_count:
               type: integer
               title: Instance Count
               description: Number of broker instances needs to be deployed
               minimum: 0
               maximum: 100
-          required: ["cpu", "memory", "instance_count"]
-      required: ["persistence_enabled", "size"]
-  required: ["authenticated", "mode", "kafka_version", "controller", "broker"]
+          required:
+          - cpu
+          - memory
+          - instance_count
+      required:
+      - persistence_enabled
+      - size
+  required:
+  - authenticated
+  - mode
+  - kafka_version
+  - controller
+  - broker
 sample:
   flavor: k8s
   lifecycle: ENVIRONMENT
@@ -202,7 +230,7 @@ sample:
   depends_on: []
   kind: kafka
   disabled: false
-  version: "0.3"
+  version: '0.3'
   spec:
     authenticated: true
     kafka_version: 3.8.0
@@ -211,14 +239,14 @@ sample:
       controller_only: true
       persistence_enabled: true
       size:
-        cpu: "1"
+        cpu: '1'
         memory: 1Gi
         instance_count: 1
         volume: 8Gi
     broker:
       persistence_enabled: true
       size:
-        cpu: "1"
+        cpu: '1'
         memory: 1Gi
         instance_count: 1
         volume: 8Gi
