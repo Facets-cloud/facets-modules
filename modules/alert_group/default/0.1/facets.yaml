@@ -8,7 +8,6 @@ clouds:
   - gcp
   - azure
   - kubernetes
-
 spec:
   type: object
   properties:
