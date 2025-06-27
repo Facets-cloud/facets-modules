@@ -231,14 +231,6 @@ spec:
   required:
   - rules
 inputs:
-  prometheus_details:
-    type: '@outputs/prometheus'
-    optional: false
-    displayName: Prometheus Configuration
-    description: Prometheus instance details for alert rule configuration and deployment
-    default:
-      resource_type: configuration
-      resource_name: prometheus
   kubernetes_details:
     type: '@outputs/kubernetes'
     optional: false
@@ -251,6 +243,14 @@ inputs:
     - kubernetes
     - kubernetes-alpha
     - helm
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: true
+    displayName: Prometheus Configuration
+    description: Prometheus instance details for alert rule configuration and deployment
+    default:
+      resource_type: configuration
+      resource_name: prometheus
 outputs:
   default:
     type: '@outputs/prometheus'
