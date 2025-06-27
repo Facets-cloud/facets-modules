@@ -4,8 +4,33 @@ version: '0.1'
 description: Adds aws_lambda_permission - default flavor
 clouds:
 - aws
+spec:
+  type: object
+  properties:
+    lambda_name:
+      type: string
+      title: Lambda name
+      description: The name of the Lambda function to which the permission is being
+        granted.
+      x-ui-placeholder: 'Eg: my_lambda_function'
+      pattern: ^[a-zA-Z0-9-_]{1,64}$
+      x-ui-error-message: 'Lambda name must be 1-64 characters: letters, numbers,
+        hyphens, or underscores.'
+    lambda_version:
+      type: string
+      title: Lambda version
+      description: The version of the Lambda function to which the permission is being
+        granted.
+      x-ui-placeholder: 'Eg: 1'
+    allowed_triggers:
+      type: object
+      title: Allowed Triggers
+      description: Defines the Triggers that are allowed to invoke the lambda function.
+      x-ui-yaml-editor: true
+  required:
+  - allowed_triggers
+  - lambda_name
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/aws_lambda_permission/aws_lambda_permission.schema.json
   kind: aws_lambda_permission
   flavor: default
   disabled: true
@@ -13,6 +38,7 @@ sample:
   version: '0.1'
   spec:
     allowed_triggers:
-      allowedVPC: {}
+      myTrigger1:
+        action: lambda:InvokeFunction
+        principal: events.amazonaws.com
     lambda_name: ''
-    lambda_version: ''
