@@ -4,4 +4,4 @@ displayName: Vault
 description: Vault is a tool for securely accessing secrets.
 outputs:
   - name: default
-    type: "@output/vault"
+    type: "@outputs/vault"

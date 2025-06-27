@@ -9,7 +9,7 @@ clouds:
 description: Provides Gui For Mysql Users to login
 inputs:
   default:
-    type: "@output/mysql"
+    type: "@outputs/mysql"
     adds_capability: true
 metadata:
   title: Metadata of Mysql Web UI

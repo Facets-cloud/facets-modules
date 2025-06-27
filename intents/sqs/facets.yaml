@@ -6,7 +6,7 @@ iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0cd417
 outputs:
   - name: attributes.consumer_policy_arn
     title: "SQS Consumer Permission"
-    type: "@output/iam_policy_arn"
+    type: "@outputs/iam_policy_arn"
   - name: attributes.producer_policy_arn
     title: "SQS Producer Permission"
-    type: "@output/iam_policy_arn"
+    type: "@outputs/iam_policy_arn"

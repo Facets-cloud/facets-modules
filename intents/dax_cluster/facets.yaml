@@ -4,4 +4,4 @@ displayName: DAX Cluster
 description: In-memory caching service for DynamoDB, accelerating read-heavy workloads.
 outputs:
 - name: default
-  type: "@output/dax_cluster"
+  type: "@outputs/dax_cluster"

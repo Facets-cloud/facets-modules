@@ -5,4 +5,4 @@ description: Event-driven service that enables integration across AWS services a
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e2522e5be67941b5c_Default-aws_eventbridge.svg
 outputs:
 - name: default
-  type: "@output/aws_eventbridge"
+  type: "@outputs/aws_eventbridge"

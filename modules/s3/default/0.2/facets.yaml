@@ -6,7 +6,7 @@ clouds:
 - aws
 outputs:
   default:
-    type: '@output/s3'
+    type: '@outputs/s3'
 spec:
   title: AWS S3
   type: object

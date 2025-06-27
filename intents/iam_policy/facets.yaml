@@ -6,4 +6,4 @@ iconUrl: https://w7.pngwing.com/pngs/918/167/png-transparent-aws-iam-hd-logo.png
 outputs:
   - name: attributes.arn
     title: "Custom IAM Policy"
-    type: "@output/iam_policy_arn"
+    type: "@outputs/iam_policy_arn"

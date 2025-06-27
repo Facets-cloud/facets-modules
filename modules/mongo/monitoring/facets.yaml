@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Mongodb
 inputs:
   default:
-    type: "@output/mongo"
+    type: "@outputs/mongo"
     adds_capability: true
 spec:
   title: Mongo Monitoring

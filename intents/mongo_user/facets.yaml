@@ -4,4 +4,4 @@ displayName: Mongo User
 description: Database user for MongoDB instances, defining access permissions and authentication.
 outputs:
   - name: default
-    type: "@output/mongo_user"
+    type: "@outputs/mongo_user"

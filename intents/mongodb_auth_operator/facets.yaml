@@ -4,4 +4,4 @@ displayName: Mongodb Auth Operator
 description: Kubernetes Operator for managing users in MongoDB, defining access permissions and authentication.
 outputs:
 - name: default
-  type: "@output/mongodb_auth_operator"
+  type: "@outputs/mongodb_auth_operator"

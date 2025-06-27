@@ -5,4 +5,4 @@ description: Event routing service that connects applications with event produce
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/67a3333e08611346d019ddff_Default-aws_event_bus.svg
 outputs:
   - name: default
-    type: "@output/aws_event_bus"
+    type: "@outputs/aws_event_bus"

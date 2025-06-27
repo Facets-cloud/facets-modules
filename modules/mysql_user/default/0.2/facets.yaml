@@ -12,7 +12,7 @@ input_type: instance
 composition: {}
 inputs:
   kubernetes_details:
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     description: The details of Kubernetes where CRD for managing mysql user will
       be created
@@ -21,12 +21,12 @@ inputs:
       resource_type: kubernetes_cluster
       resource_name: default
   crossplane_details:
-    type: "@output/crossplane"
+    type: "@outputs/crossplane"
     displayName: Crossplane
     description: Details of crossplane which will be responsible to create mysql users
     optional: false
   mysql_details:
-    type: "@output/mysql"
+    type: "@outputs/mysql"
     displayName: MySQL
     description: The details of MySQL where the user needs to be created
     optional: false

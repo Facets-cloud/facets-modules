@@ -12,7 +12,7 @@ input_type: instance
 composition: {}
 inputs:
   kubernetes_details:
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     description: Details of Kubernetes where the CRD for managing postgresql user
       will be created
@@ -21,13 +21,13 @@ inputs:
       resource_type: kubernetes_cluster
       resource_name: default
   database_operator_details:
-    type: "@output/database_operator"
+    type: "@outputs/database_operator"
     displayName: Database Operator
     description: Details of database operator which will be responsible to create
       postgres users
     optional: false
   postgres_details:
-    type: "@output/postgres"
+    type: "@outputs/postgres"
     displayName: Postgres
     description: Details of Postgres where the user needs to be created
     optional: false

@@ -5,4 +5,4 @@ description: A powerful, open-source relational database system known for its st
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc3d63db8a5c63f958_postgres.svg
 outputs:
   - name: default
-    type: "@output/postgres"
+    type: "@outputs/postgres"
