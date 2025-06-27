@@ -3,7 +3,10 @@ flavor: atlas
 version: '0.1'
 description: Adds mongo - atlas flavor
 clouds:
+- aws
+- gcp
 - azure
+- kubernetes
 inputs:
   atlas_account:
     type: '@outputs/atlas_account'
