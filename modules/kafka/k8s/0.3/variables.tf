@@ -1,3 +1,5 @@
+
+
 variable "instance" {
   type    = any
   default = {}
@@ -14,4 +16,8 @@ variable "environment" {
   default = {
     namespace = "default"
   }
+}
+
+variable "inputs" {
+  type = any
 }
