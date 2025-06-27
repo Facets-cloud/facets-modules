@@ -4,4 +4,4 @@ displayName: Crossplane
 description: Kubernetes Operator to simplify the management of users and permissions for Mysql databases
 outputs:
 - name: default
-  type: "@output/crossplane"
+  type: "@outputs/crossplane"

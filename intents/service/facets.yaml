@@ -5,4 +5,4 @@ description: Modular unit of an application that provides a specific functionali
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cce781e7a423b632c1_service.svg
 outputs:
   - name: default
-    type: "@output/service"
+    type: "@outputs/service"

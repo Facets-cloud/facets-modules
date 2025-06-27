@@ -7,6 +7,96 @@ clouds:
 - gcp
 - azure
 - kubernetes
+inputs:
+  atlas_account:
+    type: '@outputs/atlas_account'
+    optional: false
+    providers:
+      - mongodbatlas
+spec:
+  title: MongoDB Atlas Configuration
+  type: object
+  properties:
+    mongodb_version:
+      type: string
+      title: MongoDB Version
+      description: Specifies the MongoDB major version to use.
+      x-ui-typeable: true
+      enum:
+        - "4.4"
+        - "5.0"
+        - "6.0"
+        - "7.0"
+        - "8.0"
+      x-ui-placeholder: "e.g., '6.0'"
+      x-ui-error-message: "Please select a valid MongoDB version."
+    region:
+      type: string
+      title: Region
+      description: The cloud region where the cluster will be deployed.
+      x-ui-placeholder: "e.g., 'US_EAST_1'"
+      x-ui-error-message: "Please specify a valid region."
+    size:
+      type: object
+      title: Size Configuration
+      description: Size and capacity configuration for the MongoDB Atlas cluster.
+      properties:
+        instance:
+          type: string
+          title: Instance Size
+          description: The compute and memory capacity of the cluster instances.
+          enum:
+            - "M0"
+            - "M2"
+            - "M5"
+            - "M10"
+            - "M20"
+            - "M30"
+            - "M40"
+            - "M50"
+            - "M60"
+            - "M80"
+            - "M100"
+            - "M140"
+            - "M200"
+            - "M300"
+            - "M400"
+            - "M700"
+          x-ui-placeholder: "e.g., 'M10'"
+          x-ui-error-message: "Please select a valid instance size."
+        instance_count:
+          type: integer
+          title: Instance Count
+          description: Number of instances in the cluster.
+          minimum: 1
+          maximum: 50
+          default: 3
+          x-ui-placeholder: "e.g., 3"
+          x-ui-error-message: "Instance count must be between 1 and 50."
+        volume:
+          type: integer
+          title: Disk Size (GB)
+          description: The disk size in GB for the cluster.
+          minimum: 8
+          maximum: 4096
+          default: 8
+          x-ui-placeholder: "e.g., 20"
+          x-ui-error-message: "Disk size must be between 8 and 4096 GB."
+    replication_specs:
+      type: object
+      title: Replication Specifications
+      description: Configuration for cluster replication and regions.
+      x-ui-yaml-editor: true
+  required:
+    - mongodb_version
+    - region
+    - size
+    - replication_specs
+  x-ui-order:
+    - mongodb_version
+    - region
+    - size
+    - replication_specs
 sample:
   flavor: atlas
   lifecycle: ENVIRONMENT

@@ -3,6 +3,9 @@ flavor: default
 version: '0.2'
 clouds:
 - gcp
+outputs:
+  default:
+    type: '@outputs/google_cloud_storage'
 description: Creates and manages a Google Cloud Storage bucket with configurable options.
 spec:
   title: Google Cloud Storage Bucket
@@ -143,22 +146,22 @@ spec:
   - uniform_bucket_level_access
 inputs:
   cloud_account:
-    type: '@output/cloud_account'
+    type: '@outputs/cloud_account'
     providers:
     - google
 outputs:
   default:
-    type: '@output/google_cloud_storage_bucket'
+    type: '@outputs/google_cloud_storage_bucket'
   attributes.read_only_role:
-    type: '@output/gcp_iam_role_name'
+    type: '@outputs/gcp_iam_role_name'
     title: Read-Only IAM Role
     description: The predefined IAM role for read-only access to the bucket
   attributes.read_write_role:
-    type: '@output/gcp_iam_role_name'
+    type: '@outputs/gcp_iam_role_name'
     title: Read-Write IAM Role
     description: The predefined IAM role for read-write access to the bucket
   attributes.bucket_iam_condition_expression:
-    type: '@output/gcp_iam_condition_expression'
+    type: '@outputs/gcp_iam_condition_expression'
     title: Bucket IAM Condition Expression
     description: An IAM condition expression using startsWith to match this specific
       bucket

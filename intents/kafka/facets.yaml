@@ -5,4 +5,4 @@ description: A distributed streaming platform designed for building real-time da
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cce7d0e1166a2f16f6_kafka.svg
 outputs:
   - name: default
-    type: "@output/kafka"
+    type: "@outputs/kafka"

@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Elasticsearch
 inputs:
   default:
-    type: "@output/elasticsearch"
+    type: "@outputs/elasticsearch"
     adds_capability: true
 spec:
   title: Elasticsearch Monitoring

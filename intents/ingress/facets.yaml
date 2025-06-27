@@ -5,4 +5,4 @@ description: A Kubernetes resource that manages external access to services with
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc6167dec0b41123f1_ingress.svg
 outputs:
   - name: default
-    type: "@output/ingress"
+    type: "@outputs/ingress"

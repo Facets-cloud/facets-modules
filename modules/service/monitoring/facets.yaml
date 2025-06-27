@@ -9,7 +9,7 @@ clouds:
 description: Adds Monitoring to Service
 inputs:
   service_attributes:
-    type: "@output/service"
+    type: "@outputs/service"
     adds_capability: true
 spec:
   title: Service Monitoring

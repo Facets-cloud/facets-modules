@@ -1,0 +1,26 @@
+name: 
+out:
+  type: object
+  title: S3 Storage
+  description: S3 Storage Bucket
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the S3 bucket
+      properties:
+        bucket_name:
+          type: string
+          description: The name of the S3 bucket
+        bucket_arn:
+          type: string
+          description: The ARN of the S3 bucket
+        read_only_iam_policy_arn:
+          type: string
+          description: The ARN of the IAM policy that grants read-only access to the S3 bucket
+        read_write_iam_policy_arn:
+          type: string
+          description: The ARN of the IAM policy that grants read-write access to the S3 bucket
+        bucket_region:
+          type: string
+          description: The AWS region where the S3 bucket is located
+    interfaces: {}

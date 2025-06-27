@@ -10,7 +10,7 @@ clouds:
 inputs:
   kubernetes_details:
     optional: false
-    type: "@output/kubernetes"
+    type: "@outputs/kubernetes"
     displayName: Kubernetes Cluster
     default:
       resource_type: kubernetes_cluster
