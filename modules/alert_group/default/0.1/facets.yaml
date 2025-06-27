@@ -4,7 +4,7 @@ version: '0.1'
 description: Creates Prometheus alert rules for monitoring and alerting with comprehensive
   validation and enhanced UI features
 clouds:
- - aws
+  - aws
   - gcp
   - azure
   - kubernetes
