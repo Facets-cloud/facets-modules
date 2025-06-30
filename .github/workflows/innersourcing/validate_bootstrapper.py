@@ -15,7 +15,8 @@ def post(url, username, password, payload):
             print(f"Error: Received status code {response.status_code}.")
             print("Response message:", response.text)  # Print the error message from the response
             return None
-        
+
+        print("POST request successful. Status code:", response.status_code)
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error during API call: {e}")
@@ -45,5 +46,7 @@ if __name__ == "__main__":
     }
     
     data = post(url, USERNAME, PASSWORD, payload)
+    print("Response data:", data)  # Print the response data for debugging
     if data:
+        print("Reached check_for_errors")
         check_for_errors(data)
