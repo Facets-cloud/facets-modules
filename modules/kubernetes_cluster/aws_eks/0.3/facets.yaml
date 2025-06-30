@@ -1,5 +1,5 @@
 intent: kubernetes_cluster
-flavor: aws_eks-pa
+flavor: aws_eks
 alias-flavors:
 - default
 version: '0.3'
@@ -379,7 +379,7 @@ outputs:
     description: The dedicated node pool for AWS Karpenter
 sample:
   kind: kubernetes_cluster
-  flavor: aws_eks-pa
+  flavor: aws_eks
   alias-flavors:
   - default
   version: '0.3'
