@@ -26,14 +26,26 @@ def post(url, username, password, payload):
 def check_for_errors(data):
     """Checks for errors in the data and prints the full response body if errors exist."""
     error_found = False
+    error_messages = []
+    
     for key, value in data.items():
         if isinstance(value, list) and value:
-            print("Errors found in bootstrap modules:")
-            print(data)  # Print the full response body
             error_found = True
-            break  # Break the loop after printing the response
-
-    if not error_found:
+            print(f"Errors found in {key}:")
+            for error in value:
+                print(f"  - {error}")
+                error_messages.append(f"• {error}")
+    
+    if error_found:
+        # Print a summary for Slack
+        print("\n--- SLACK_MESSAGE_START ---")
+        print(f"Bootstrap validation failed with {sum(len(v) for v in data.values() if isinstance(v, list))} errors:")
+        for msg in error_messages[:10]:  # Limit to first 10 errors to avoid message length issues
+            print(msg)
+        if sum(len(v) for v in data.values() if isinstance(v, list)) > 10:
+            print(f"... and {sum(len(v) for v in data.values() if isinstance(v, list)) - 10} more errors")
+        print("--- SLACK_MESSAGE_END ---")
+    else:
         print("No errors found.")
     
     return error_found
