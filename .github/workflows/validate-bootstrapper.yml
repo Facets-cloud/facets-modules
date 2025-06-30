@@ -28,12 +28,20 @@ jobs:
           ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
         run: |
           set +e
-          output=$(python .github/workflows/innersourcing/validate_bootstrapper.py)
-          exit_status=${PIPESTATUS[0]}
+          python -u .github/workflows/innersourcing/validate_bootstrapper.py > script_output.txt 2>&1
+          exit_status=$?
+          output=$(cat script_output.txt)
           echo "script_output<<EOF" >> $GITHUB_OUTPUT
           echo "$output" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           echo "exit_status=$exit_status" >> $GITHUB_OUTPUT
+          
+          # Debug information
+          echo "Exit status: $exit_status"
+          echo "Output length: ${#output}"
+          
+          # Clean up
+          rm -f script_output.txt
   on-failure:
     needs: validate-bootstrapper
     runs-on: iac-arc

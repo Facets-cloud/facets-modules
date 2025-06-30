@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 from requests.auth import HTTPBasicAuth
 
 # Configuration
@@ -34,11 +35,20 @@ def check_for_errors(data):
 
     if not error_found:
         print("No errors found.")
+    
+    return error_found
 
 if __name__ == "__main__":
     # Take username and password from environment variables
     USERNAME = os.getenv('ROOT_USER')  # Get the username from environment variable
     PASSWORD = os.getenv('ROOT_TOKEN')  # Get the password from environment variable
+    
+    # Validate environment variables
+    if not USERNAME or not PASSWORD:
+        print("Error: ROOT_USER and ROOT_TOKEN environment variables must be set")
+        sys.exit(1)
+    
+    print(f"Starting bootstrap validation for user: {USERNAME}")
     
     # Define the payload you want to send with the POST request
     payload = {
@@ -49,4 +59,13 @@ if __name__ == "__main__":
     print("Response data:", data)  # Print the response data for debugging
     if data:
         print("Reached check_for_errors")
-        check_for_errors(data)
+        has_errors = check_for_errors(data)
+        if has_errors:
+            print("Bootstrap validation failed - errors found")
+            sys.exit(1)
+        else:
+            print("Bootstrap validation passed - no errors found")
+            sys.exit(0)
+    else:
+        print("Bootstrap validation failed - unable to get response")
+        sys.exit(1)
