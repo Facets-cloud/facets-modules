@@ -124,6 +124,14 @@ spec:
               x-ui-visible-if:
                 field: spec.grpc
                 values: [false]
+            namespace:
+              type: string
+              title: Namespace (Optional)
+              description:
+                Kubernetes namespace where the service is located
+                <br />
+                <br />
+                Optional, only needed if the service is in a different namespace
           required: ["service_name", "path", "port"]
           type: object
     force_ssl_redirection:
