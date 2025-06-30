@@ -130,7 +130,6 @@ spec:
               description:
                 Kubernetes namespace where the service is located
                 <br />
-                <br />
                 Optional, only needed if the service is in a different namespace
           required: ["service_name", "path", "port"]
           type: object
