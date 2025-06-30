@@ -1,20 +1,296 @@
 intent: network
 flavor: azure_network
 version: "1.0"
-clouds: [ azure ]
-description: This is Network Module for Azure
+description: Creates an Azure Virtual Network with configurable public subnets, private subnets, database subnets, and specialized subnets across availability zones
+clouds:
+- azure
 spec:
-  title: Network Module for Azure
-  description: This is Network Module for Azure
   type: object
+  properties:
+    vnet_cidr:
+      type: string
+      title: VNet CIDR Block
+      description: CIDR block for the Virtual Network (e.g., 10.0.0.0/16)
+      pattern: ^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$
+      x-ui-overrides-only: true
+      x-ui-error-message: CIDR must be a valid IP block (e.g., 10.0.0.0/16)
+      x-ui-placeholder: 10.0.0.0/16
+
+    region:
+      type: string
+      title: Azure Region
+      description: Azure region where the VNet will be created
+      x-ui-overrides-only: true
+
+    availability_zones:
+      type: array
+      title: Availability Zones
+      description: List of availability zones to use for subnets (e.g., ["1", "2", "3"])
+      x-ui-overrides-only: true
+      items:
+        type: string
+      minItems: 1
+      maxItems: 3
+
+    use_fixed_cidr_allocation:
+      type: boolean
+      title: Use Fixed CIDR Allocation
+      description: Use predefined CIDR ranges instead of dynamic allocation
+      default: false
+
+    public_subnets:
+      type: object
+      title: Public Subnets Configuration
+      properties:
+        count_per_az:
+          type: number
+          title: Public Subnets per AZ
+          description: Number of public subnets to create in each availability zone
+          minimum: 0
+          maximum: 3
+          default: 1
+        subnet_size:
+          type: string
+          title: Public Subnet Size
+          description: Number of IP addresses in each public subnet
+          enum:
+          - '256'
+          - '512'
+          - '1024'
+          - '2048'
+          - '4096'
+          - '8192'
+          default: '256'
+      required:
+      - count_per_az
+      - subnet_size
+
+    private_subnets:
+      type: object
+      title: Private Subnets Configuration
+      properties:
+        count_per_az:
+          type: number
+          title: Private Subnets per AZ
+          description: Number of private subnets to create in each availability zone
+          minimum: 1
+          maximum: 3
+          default: 1
+        subnet_size:
+          type: string
+          title: Private Subnet Size
+          description: Number of IP addresses in each private subnet
+          enum:
+          - '256'
+          - '512'
+          - '1024'
+          - '2048'
+          - '4096'
+          - '8192'
+          default: '1024'
+      required:
+      - count_per_az
+      - subnet_size
+
+    database_subnets:
+      type: object
+      title: Database Subnets Configuration
+      description: Configure dedicated subnets for database resources
+      properties:
+        count_per_az:
+          type: number
+          title: Database Subnets per AZ
+          description: Number of database subnets to create in each availability zone
+          minimum: 0
+          maximum: 3
+          default: 1
+        subnet_size:
+          type: string
+          title: Database Subnet Size
+          description: Number of IP addresses in each database subnet
+          enum:
+          - '256'
+          - '512'
+          - '1024'
+          - '2048'
+          - '4096'
+          - '8192'
+          default: '256'
+      required:
+      - count_per_az
+      - subnet_size
+
+    # Specialized Subnets
+    enable_gateway_subnet:
+      type: boolean
+      title: Enable Gateway Subnet
+      description: Create subnet for VPN/ExpressRoute gateways
+      default: false
+
+    enable_cache_subnet:
+      type: boolean
+      title: Enable Cache Subnet
+      description: Create subnet for Redis and other caching services
+      default: false
+
+    enable_functions_subnet:
+      type: boolean
+      title: Enable Functions Subnet
+      description: Create subnet for Azure Functions with VNet integration
+      default: false
+
+    enable_private_link_service_subnet:
+      type: boolean
+      title: Enable Private Link Service Subnet
+      description: Create subnet for hosting Private Link Services
+      default: false
+
+    # AKS Integration
+    enable_aks:
+      type: boolean
+      title: Enable AKS Integration
+      description: Configure subnets for Azure Kubernetes Service integration
+      default: false
+
+    nat_gateway:
+      type: object
+      title: NAT Gateway Configuration
+      properties:
+        strategy:
+          type: string
+          title: NAT Gateway Strategy
+          description: Choose whether to create one NAT Gateway or one per availability zone
+          enum:
+          - single
+          - per_az
+          default: single
+      required:
+      - strategy
+
+    private_endpoints:
+      type: object
+      title: Private Endpoints Configuration
+      description: Configure private endpoints for Azure services to improve security and reduce data transfer costs
+      x-ui-toggle: true
+      properties:
+        enable_storage:
+          type: boolean
+          title: Enable Storage Private Endpoint
+          description: Create private endpoint for Azure Storage (Blob)
+          default: true
+        enable_sql:
+          type: boolean
+          title: Enable SQL Private Endpoint
+          description: Create private endpoint for Azure SQL Database
+          default: true
+        enable_keyvault:
+          type: boolean
+          title: Enable Key Vault Private Endpoint
+          description: Create private endpoint for Azure Key Vault
+          default: true
+        enable_acr:
+          type: boolean
+          title: Enable ACR Private Endpoint
+          description: Create private endpoint for Azure Container Registry
+          default: true
+        enable_aks:
+          type: boolean
+          title: Enable AKS Private Endpoint
+          description: Create private endpoint for Azure Kubernetes Service
+          default: false
+        enable_cosmos:
+          type: boolean
+          title: Enable Cosmos DB Private Endpoint
+          description: Create private endpoint for Azure Cosmos DB
+          default: false
+        enable_servicebus:
+          type: boolean
+          title: Enable Service Bus Private Endpoint
+          description: Create private endpoint for Azure Service Bus
+          default: false
+        enable_eventhub:
+          type: boolean
+          title: Enable Event Hub Private Endpoint
+          description: Create private endpoint for Azure Event Hub
+          default: false
+        enable_monitor:
+          type: boolean
+          title: Enable Monitor Private Endpoint
+          description: Create private endpoint for Azure Monitor
+          default: false
+        enable_cognitive:
+          type: boolean
+          title: Enable Cognitive Services Private Endpoint
+          description: Create private endpoint for Azure Cognitive Services
+          default: false
+
+    tags:
+      type: object
+      title: Additional Tags
+      description: Optional additional tags to apply to all VNet resources. These will be merged with the standard environment tags.
+      x-ui-yaml-editor: true
+
+  required:
+  - vnet_cidr
+  - region
+  - availability_zones
+  - public_subnets
+  - private_subnets
+  - database_subnets
+  - nat_gateway
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The Azure Cloud Account where the VNet will be created
+    optional: false
+    providers:
+    - azure
+    - azurerm
 outputs:
   default:
-     type: "@outputs/network"
+    type: '@facets/azure-vnet-details'
+
 sample:
   kind: network
   flavor: azure_network
   version: "1.0"
-  disabled: true
   spec:
-    type: object
-    properties:
+    vnet_cidr: 10.0.0.0/16
+    region: centralindia
+    availability_zones: ["1", "2", "3"]
+    use_fixed_cidr_allocation: false
+    public_subnets:
+      count_per_az: 1
+      subnet_size: '256'
+    private_subnets:
+      count_per_az: 1
+      subnet_size: '1024'
+    database_subnets:
+      count_per_az: 1
+      subnet_size: '256'
+    enable_gateway_subnet: false
+    enable_cache_subnet: false
+    enable_functions_subnet: false
+    enable_private_link_service_subnet: false
+    enable_aks: false
+    nat_gateway:
+      strategy: single
+    private_endpoints:
+      enable_storage: true
+      enable_sql: true
+      enable_keyvault: true
+      enable_acr: true
+      enable_aks: false
+      enable_cosmos: false
+      enable_servicebus: false
+      enable_eventhub: false
+      enable_monitor: false
+      enable_cognitive: false
+    tags:
+      Environment: production
+      Project: main-infrastructure
+
+iac:
+  validated_files:
+  - variables.tf
