@@ -1,5 +1,5 @@
 intent: network
-flavor: aws_vpc-pa
+flavor: aws_vpc
 version: '0.2'
 description: Creates an AWS VPC with configurable public subnets, private subnets,
   and database subnets across availability zones
@@ -235,7 +235,7 @@ outputs:
     type: '@facets/aws-vpc-details'
 sample:
   kind: network
-  flavor: aws_vpc-pa
+  flavor: aws_vpc
   version: '0.2'
   spec:
     vpc_cidr: 10.0.0.0/16
