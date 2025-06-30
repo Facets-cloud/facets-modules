@@ -1,3 +1,4 @@
+
 resource "helm_release" "alert_group_helm" {
   name            = "alert-group-${var.instance_name}"
   chart           = "${path.module}/any-resource-0.1.0.tgz"
@@ -10,8 +11,8 @@ resource "helm_release" "alert_group_helm" {
 
   values = [
     <<EOF
-prometheusId: ${var.inputs.prometheus_details.attributes.helm_release_id}
+prometheusId: ${try(var.inputs.prometheus_details.attributes.helm_release_id, "")}
 EOF
-    , local.helm_values_yaml
+   , local.helm_values_yaml
   ]
 }
