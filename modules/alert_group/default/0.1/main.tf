@@ -13,6 +13,6 @@ resource "helm_release" "alert_group_helm" {
     <<EOF
 prometheusId: ${try(var.inputs.prometheus_details.attributes.helm_release_id, "")}
 EOF
-   , local.helm_values_yaml
+    , local.helm_values_yaml
   ]
 }
