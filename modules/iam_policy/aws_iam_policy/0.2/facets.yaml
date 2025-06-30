@@ -3,7 +3,7 @@ flavor: aws_iam_policy
 version: '0.2'
 description: Adds AWS IAM Policy
 clouds:
-  - aws
+- aws
 spec:
   title: AWS IAM Policy
   description: Specification of the aws iam policy resource intent
@@ -18,23 +18,22 @@ spec:
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter the policy document in YAML.
   required:
-    - name
-    - policy
+  - name
+  - policy
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
   kind: iam_policy
   flavor: aws_iam_policy
   version: '0.2'
   disabled: true
   metadata:
-    annotations: { }
+    annotations: {}
   spec:
     name: test_aws_iam_policy
     policy:
       Version: '2012-10-17'
       Statement:
-        - Sid: ListYourObjects
-          Effect: Allow
-          Action: s3:ListBucket
-          Resource: []
+      - Sid: ListYourObjects
+        Effect: Allow
+        Action: s3:ListBucket
+        Resource: []
