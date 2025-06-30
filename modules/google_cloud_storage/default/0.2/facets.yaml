@@ -149,22 +149,6 @@ inputs:
     type: '@outputs/cloud_account'
     providers:
     - google
-outputs:
-  default:
-    type: '@outputs/google_cloud_storage_bucket'
-  attributes.read_only_role:
-    type: '@outputs/gcp_iam_role_name'
-    title: Read-Only IAM Role
-    description: The predefined IAM role for read-only access to the bucket
-  attributes.read_write_role:
-    type: '@outputs/gcp_iam_role_name'
-    title: Read-Write IAM Role
-    description: The predefined IAM role for read-write access to the bucket
-  attributes.bucket_iam_condition_expression:
-    type: '@outputs/gcp_iam_condition_expression'
-    title: Bucket IAM Condition Expression
-    description: An IAM condition expression using startsWith to match this specific
-      bucket
 sample:
   kind: google_cloud_storage
   flavor: default
