@@ -288,7 +288,7 @@ inputs:
     - kubernetes
     - kubernetes-alpha
   network_details:
-    type: '@outputs/aws_vpc'
+    type: '@facets/aws-vpc-details'
     displayName: VPC Network
     description: VPC network details for node placement
     optional: false
