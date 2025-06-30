@@ -1,0 +1,20 @@
+intent: network
+flavor: azure_network
+version: "1.0"
+clouds: [ azure ]
+description: This is Network Module for Azure
+spec:
+  title: Network Module for Azure
+  description: This is Network Module for Azure
+  type: object
+outputs:
+  default:
+     type: "@outputs/network"
+sample:
+  kind: network
+  flavor: azure_network
+  version: "1.0"
+  disabled: true
+  spec:
+    type: object
+    properties:
