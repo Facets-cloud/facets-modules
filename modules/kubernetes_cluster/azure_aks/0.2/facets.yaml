@@ -477,14 +477,6 @@ outputs:
           host: attributes.cluster.auth.host
           cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
           token: attributes.cluster.auth.token
-  default_node_pool:
-    type: '@outputs/azure_aks_nodepool'
-    title: Default Node Pool
-    description: The default node pool for Azure AKS
-  dedicated_node_pool:
-    type: '@outputs/azure_aks_nodepool'
-    title: Dedicated Node Pool
-    description: The dedicated node pool for Azure AKS
 sample:
   kind: kubernetes_cluster
   flavor: azure_aks
