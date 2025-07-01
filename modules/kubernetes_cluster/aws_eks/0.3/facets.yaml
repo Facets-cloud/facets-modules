@@ -343,7 +343,7 @@ inputs:
     - aws593
 outputs:
   default:
-    type: '@outputs/kubernetes'
+    type: '@outputs/aws_vpc'
     title: Kubernetes Cluster Output
     description: The output for the Kubernetes cluster
     providers:
