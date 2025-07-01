@@ -5,7 +5,7 @@ locals {
     vnet_id                             = azurerm_virtual_network.main.id
     vnet_name                           = azurerm_virtual_network.main.name
     vnet_cidr_block                     = var.instance.spec.vnet_cidr
-    location                            = azurerm_resource_group.main.location
+    region                              = azurerm_resource_group.main.location
     availability_zones                  = var.instance.spec.availability_zones
     nat_gateway_ids                     = values(azurerm_nat_gateway.main)[*].id
     nat_gateway_public_ip_ids           = values(azurerm_public_ip.nat_gateway)[*].id
