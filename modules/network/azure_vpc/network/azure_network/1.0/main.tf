@@ -36,13 +36,13 @@ locals {
   use_fixed_cidrs = lookup(var.instance.spec, "use_fixed_cidr_allocation", false)
 
   # Fixed CIDR allocation (similar to original logic)
-  fixed_private_subnets      = local.use_fixed_cidrs ? [for i in range(4) : cidrsubnet(var.instance.spec.vnet_cidr, 4, i)] : []
-  fixed_public_subnets       = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 12), cidrsubnet(var.instance.spec.vnet_cidr, 4, 14), cidrsubnet(var.instance.spec.vnet_cidr, 4, 15)] : []
-  fixed_database_subnets     = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 4), cidrsubnet(var.instance.spec.vnet_cidr, 4, 5)] : []
-  fixed_gateway_subnet       = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 6)] : []
-  fixed_cache_subnet         = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 112)] : []
-  fixed_functions_subnets    = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 113)] : []
-  fixed_private_link_subnet  = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 114)] : []
+  fixed_private_subnets     = local.use_fixed_cidrs ? [for i in range(4) : cidrsubnet(var.instance.spec.vnet_cidr, 4, i)] : []
+  fixed_public_subnets      = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 12), cidrsubnet(var.instance.spec.vnet_cidr, 4, 14), cidrsubnet(var.instance.spec.vnet_cidr, 4, 15)] : []
+  fixed_database_subnets    = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 4), cidrsubnet(var.instance.spec.vnet_cidr, 4, 5)] : []
+  fixed_gateway_subnet      = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 4, 6)] : []
+  fixed_cache_subnet        = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 112)] : []
+  fixed_functions_subnets   = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 113)] : []
+  fixed_private_link_subnet = local.use_fixed_cidrs ? [cidrsubnet(var.instance.spec.vnet_cidr, 8, 114)] : []
 
   vnet_prefix_length = tonumber(split("/", var.instance.spec.vnet_cidr)[1])
 
@@ -56,10 +56,10 @@ locals {
   database_total_subnets = !local.use_fixed_cidrs ? length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az : 0
 
   # Specialized subnets (always use fixed allocation for these)
-  gateway_subnets_enabled     = lookup(var.instance.spec, "enable_gateway_subnet", false)
-  cache_subnets_enabled       = lookup(var.instance.spec, "enable_cache_subnet", false)
-  functions_subnets_enabled   = lookup(var.instance.spec, "enable_functions_subnet", false)
-  private_link_svc_enabled    = lookup(var.instance.spec, "enable_private_link_service_subnet", false)
+  gateway_subnets_enabled   = lookup(var.instance.spec, "enable_gateway_subnet", false)
+  cache_subnets_enabled     = lookup(var.instance.spec, "enable_cache_subnet", false)
+  functions_subnets_enabled = lookup(var.instance.spec, "enable_functions_subnet", false)
+  private_link_svc_enabled  = lookup(var.instance.spec, "enable_private_link_service_subnet", false)
 
   # Create list of newbits for cidrsubnets function (dynamic allocation only)
   subnet_newbits = !local.use_fixed_cidrs ? concat(
@@ -101,15 +101,15 @@ locals {
         az           = var.instance.spec.availability_zones[i % length(var.instance.spec.availability_zones)]
         cidr_block   = cidr
       }
-    ] : flatten([
-      for az_index, az in var.instance.spec.availability_zones : [
-        for subnet_index in range(var.instance.spec.public_subnets.count_per_az) : {
-          az_index     = az_index
-          subnet_index = subnet_index
-          az           = az
-          cidr_block   = local.public_subnet_cidrs[az_index * var.instance.spec.public_subnets.count_per_az + subnet_index]
-        }
-      ]
+      ] : flatten([
+        for az_index, az in var.instance.spec.availability_zones : [
+          for subnet_index in range(var.instance.spec.public_subnets.count_per_az) : {
+            az_index     = az_index
+            subnet_index = subnet_index
+            az           = az
+            cidr_block   = local.public_subnet_cidrs[az_index * var.instance.spec.public_subnets.count_per_az + subnet_index]
+          }
+        ]
     ])
   ) : []
 
@@ -120,15 +120,15 @@ locals {
       az           = var.instance.spec.availability_zones[i % length(var.instance.spec.availability_zones)]
       cidr_block   = cidr
     }
-  ] : flatten([
-    for az_index, az in var.instance.spec.availability_zones : [
-      for subnet_index in range(var.instance.spec.private_subnets.count_per_az) : {
-        az_index     = az_index
-        subnet_index = subnet_index
-        az           = az
-        cidr_block   = local.private_subnet_cidrs[az_index * var.instance.spec.private_subnets.count_per_az + subnet_index]
-      }
-    ]
+    ] : flatten([
+      for az_index, az in var.instance.spec.availability_zones : [
+        for subnet_index in range(var.instance.spec.private_subnets.count_per_az) : {
+          az_index     = az_index
+          subnet_index = subnet_index
+          az           = az
+          cidr_block   = local.private_subnet_cidrs[az_index * var.instance.spec.private_subnets.count_per_az + subnet_index]
+        }
+      ]
   ])
 
   database_subnets = local.use_fixed_cidrs ? [
@@ -138,15 +138,15 @@ locals {
       az           = var.instance.spec.availability_zones[i % length(var.instance.spec.availability_zones)]
       cidr_block   = cidr
     }
-  ] : flatten([
-    for az_index, az in var.instance.spec.availability_zones : [
-      for subnet_index in range(var.instance.spec.database_subnets.count_per_az) : {
-        az_index     = az_index
-        subnet_index = subnet_index
-        az           = az
-        cidr_block   = local.database_subnet_cidrs[az_index * var.instance.spec.database_subnets.count_per_az + subnet_index]
-      }
-    ]
+    ] : flatten([
+      for az_index, az in var.instance.spec.availability_zones : [
+        for subnet_index in range(var.instance.spec.database_subnets.count_per_az) : {
+          az_index     = az_index
+          subnet_index = subnet_index
+          az           = az
+          cidr_block   = local.database_subnet_cidrs[az_index * var.instance.spec.database_subnets.count_per_az + subnet_index]
+        }
+      ]
   ])
 
   # Specialized subnets (always use fixed allocation)
@@ -180,16 +180,16 @@ locals {
 
   # Private endpoints configuration with defaults
   private_endpoints = var.instance.spec.private_endpoints != null ? var.instance.spec.private_endpoints : {
-    enable_storage      = true
-    enable_sql          = true
-    enable_keyvault     = true
-    enable_acr          = true
-    enable_aks          = false
-    enable_cosmos       = false
-    enable_servicebus   = false
-    enable_eventhub     = false
-    enable_monitor      = false
-    enable_cognitive    = false
+    enable_storage    = true
+    enable_sql        = true
+    enable_keyvault   = true
+    enable_acr        = true
+    enable_aks        = false
+    enable_cosmos     = false
+    enable_servicebus = false
+    enable_eventhub   = false
+    enable_monitor    = false
+    enable_cognitive  = false
   }
 
   # Resource naming prefix
@@ -294,7 +294,7 @@ resource "azurerm_subnet" "database" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
-  
+
   # Enable private link endpoint policies
   enforce_private_link_endpoint_network_policies = true
 
@@ -364,7 +364,7 @@ resource "azurerm_subnet" "functions" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
-  
+
   # Enable private link endpoint policies
   enforce_private_link_endpoint_network_policies = true
 
@@ -394,7 +394,7 @@ resource "azurerm_subnet" "private_link_service" {
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
-  
+
   # Enable private link service policies (this is why we need a dedicated subnet)
   enforce_private_link_service_network_policies = true
 
@@ -436,9 +436,9 @@ resource "azurerm_nat_gateway" "main" {
   name                    = var.instance.spec.nat_gateway.strategy == "per_az" ? "${local.name_prefix}-natgw-${each.key}" : "${local.name_prefix}-natgw"
   location                = azurerm_resource_group.main.location
   resource_group_name     = azurerm_resource_group.main.name
-  sku_name               = "Standard"
+  sku_name                = "Standard"
   idle_timeout_in_minutes = 10
-  zones                  = [each.key]
+  zones                   = [each.key]
 
   tags = local.common_tags
 
@@ -537,7 +537,7 @@ resource "azurerm_subnet_nat_gateway_association" "functions" {
   }
 
   subnet_id      = each.value.id
-  nat_gateway_id = azurerm_nat_gateway.main["single"].id  # Functions typically use single NAT Gateway
+  nat_gateway_id = azurerm_nat_gateway.main["single"].id # Functions typically use single NAT Gateway
 }
 
 # Network Security Group - Allow all within VNet (similar to original logic)
@@ -706,7 +706,7 @@ resource "azurerm_storage_account" "example" {
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  
+
   # Disable public access
   public_network_access_enabled = false
 
