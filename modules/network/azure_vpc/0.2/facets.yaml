@@ -1,0 +1,95 @@
+intent: network
+flavor: azure_vpc
+alias-flavors: ["default"]
+version: "0.2"
+description: Adds network - azure vpc flavor with extended NAT gateway support
+clouds:
+- azure
+outputs:
+  default:
+    type: "@outputs/azure_vpc"
+spec:
+  title: network
+  description: Specification of the network for azure vpc flavor with extended NAT gateway support
+  type: object
+  properties:
+    choose_vpc_type:
+      title: Choose VPC Type
+      description: Choose the type of VPC
+      type: radio
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      enum: [{label: Create New VPC, value: create_new_vpc}, {label: Use Existing
+            VPC, value: use_existing_vpc}]
+      default: create_new_vpc
+    azs:
+      title: Availability Zones
+      description: Availability zones for the vpc
+      type: array
+      x-ui-placeholder: e.g. 1 2
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      x-ui-fetch-az: true
+      items:
+        type: string
+    vpc_cidr:
+      title: VPC CIDR
+      description: CIDR block for the vpc
+      x-ui-placeholder: e.g. 10.45.0.0/16
+      pattern: 
+        ^(?!10\.0\.0\.0\/16$)(10\.(\d{1,3}\.){2}\d{1,3}\/(2[0-8]|[89]|1[0-9])|172\.(1[6-9]|2[0-9]|3[01])\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9])|192\.168\.(\d{1,3}\.){1}\d{1,3}\/(2[0-8]|[12][0-9]|1[6-9]))$
+      x-ui-error-message: "The provided CIDR block is invalid. Ensure it is a valid
+        private IP range in CIDR notation and note that the CIDR block 10.0.0.0/16
+        is not allowed."
+      type: string
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    vnet_name:
+      title: Existing VPC Name
+      description: To setup network components in an existing vpc
+      type: string
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: [use_existing_vpc]
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    resource_group_name:
+      title: Existing Resource Group Name
+      description: To setup network components in an existing vpc
+      type: string
+      x-ui-visible-if:
+        field: spec.choose_vpc_type
+        values: [use_existing_vpc]
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    use_existing_nat_gateways:
+      title: Use Existing NAT Gateways
+      description: Whether to use existing NAT gateways instead of creating new ones
+      type: boolean
+      default: false
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+    existing_nat_gateway_ids:
+      title: Existing NAT Gateway IDs
+      description: List of existing NAT Gateway IDs to use
+      type: array
+      x-ui-placeholder: e.g. /subscriptions/.../resourceGroups/.../providers/Microsoft.Network/natGateways/nat-gw-1
+      x-ui-visible-if:
+        field: spec.use_existing_nat_gateways
+        values:
+        - true
+      x-ui-immutable: true
+      x-ui-overrides-only: true
+      items:
+        type: string
+  required: [azs, vpc_cidr, vnet_name, resource_group_name]
+  x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, use_existing_nat_gateways, existing_nat_gateway_ids, azs, vpc_cidr]
+sample:
+  kind: network
+  flavor: azure_vpc
+  version: "0.2"
+  lifecycle: ENVIRONMENT_NO_DEPS
+  disabled: true
+  depends_on: []
+  metadata: {}
+  spec: {}
