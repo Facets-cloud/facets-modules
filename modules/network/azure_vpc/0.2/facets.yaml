@@ -1,5 +1,5 @@
 intent: network
-flavor: azure_vpc
+flavor: azure_vpc_ex_nat
 alias-flavors: ["default"]
 version: "0.2"
 description: Adds network - azure vpc flavor with extended NAT gateway support
@@ -86,7 +86,7 @@ spec:
   x-ui-order: [choose_vpc_type, vnet_name, resource_group_name, use_existing_nat_gateways, existing_nat_gateway_ids, azs, vpc_cidr]
 sample:
   kind: network
-  flavor: azure_vpc
+  flavor: azure_vpc_ex_nat
   version: "0.2"
   lifecycle: ENVIRONMENT_NO_DEPS
   disabled: true
