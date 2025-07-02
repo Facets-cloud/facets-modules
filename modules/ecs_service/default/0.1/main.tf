@@ -196,7 +196,7 @@ module "ecs" {
   task_definition_arn                     = lookup(local.advanced_ecs, "task_definition_arn", null)
   task_exec_iam_role_description          = "Task Exec role created through terraform for ECS ${module.name.name}"
   task_exec_iam_role_max_session_duration = lookup(local.advanced_ecs, "task_exec_iam_role_max_session_duration", null)
-  task_exec_iam_role_name                 = module.iam_role_name.name
+  task_exec_iam_role_name                 = length(module.iam_role_name.name) > 38 ? substr(replace(module.iam_role_name.name, "-", ""), 0, 38) : module.iam_role_name.name
   task_exec_iam_role_path                 = lookup(local.advanced_ecs, "task_exec_iam_role_path", null)
   task_exec_iam_role_permissions_boundary = lookup(local.advanced_ecs, "task_exec_iam_role_permissions_boundary", null)
   task_exec_iam_role_policies             = lookup(local.advanced_ecs, "task_exec_iam_role_policies", {})
