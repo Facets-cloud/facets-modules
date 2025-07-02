@@ -8,6 +8,6 @@ locals {
     { "resourceGroupName" : lookup(local.spec, "choose_vpc_type", "create_new_vpc") == "use_existing_vpc" ? lookup(local.spec, "resource_group_name", lookup(var.cluster, "resourceGroupName", "")) : lookup(var.cluster, "resourceGroupName", "") },
     { "vnetName" : lookup(local.spec, "choose_vpc_type", "create_new_vpc") == "use_existing_vpc" ? lookup(local.spec, "vnet_name", lookup(var.cluster, "vnetName", "")) : lookup(var.cluster, "vnetName", "") },
     { "azs" : lookup(local.spec, "azs", lookup(var.cluster, "azs", null)) },
-    { "region": lookup(local.spec, "region", lookup(var.cluster, "region", null)) }
+    { "region" : lookup(local.spec, "region", lookup(var.cluster, "region", null)) }
   )
 }

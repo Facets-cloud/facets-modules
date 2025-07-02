@@ -9,8 +9,8 @@ output "vpc_details" {
     }), 0, length(azurerm_subnet.private_subnet)) : null
     #default_subnet_id = try(module.vnet.vnet_subnets[0], null)
     default_security_group_id    = azurerm_network_security_group.allow_all_default.id
-    cluster_azresource_group     = azurerm_resource_group.res_grp.name
-    cluster_azresource_group_id  = azurerm_resource_group.res_grp.id
+    cluster_azresource_group     = local.resource_group_name
+    cluster_azresource_group_id  = local.resource_group_id
     existing_azresource_group    = local.is_existing_resource ? data.azurerm_resource_group.existing_rg[0].name : ""
     existing_azresource_group_id = local.is_existing_resource ? data.azurerm_resource_group.existing_rg[0].id : ""
     #picking private subnets with index 0 and 1.
@@ -52,10 +52,10 @@ output "vpc_details" {
 }
 
 output "resource_group" {
-  value = azurerm_resource_group.res_grp.name
+  value = local.resource_group_name
 }
 
 output "resource_group_id" {
-  value = azurerm_resource_group.res_grp.id
+  value = local.resource_group_id
 }
 
