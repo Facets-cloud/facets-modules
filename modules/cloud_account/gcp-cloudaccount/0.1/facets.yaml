@@ -1,0 +1,68 @@
+intent: cloud_account
+flavor: gcp-cloudaccount
+version: '0.1'
+description: Module to configure and provision resources within a cloud account
+clouds:
+- gcp
+spec:
+  description: Module to configure and provision resources within a cloud account
+    (AWS, GCP, Azure)
+  properties:
+    cloud_account:
+      description: Select the cloud account to use (must be previously linked)
+      title: Cloud Account
+      type: string
+      x-ui-typeable: true
+      x-ui-overrides-only: true
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/accounts/
+        method: GET
+        labelKey: name
+        valueKey: id
+        filterConditions:
+        - field: accountType
+          value: CLOUD
+        - field: provider
+          value: GCP
+        params:
+          includeContent: false
+  required:
+  - cloud_account
+  title: Cloud Account Manager
+  type: object
+  x-ui-order:
+  - cloud_account
+outputs:
+  default:
+    type: '@outputs/cloud_account'
+    providers:
+      google-beta:
+        source: hashicorp/google-beta
+        version: 6.23.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      google:
+        source: hashicorp/google
+        version: 6.23.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+      google5:
+        source: hashicorp/google5
+        version: 5.32.0
+        attributes:
+          project: attributes.project
+          region: attributes.region
+          credentials: attributes.credentials
+sample:
+  version: '0.1'
+  flavor: gcp-cloudaccount
+  kind: cloud_account
+  disabled: false
+  spec: {}
+iac:
+  validated_files:
+  - variables.tf

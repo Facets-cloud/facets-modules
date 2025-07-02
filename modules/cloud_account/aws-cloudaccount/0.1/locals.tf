@@ -3,7 +3,8 @@ data "external" "aws_fetch_cloud_secret" {
     "python3",
     "/sources/primary/capillary-cloud-tf/tfmain/scripts/cloudaccount-fetch-secret/secret-fetcher.py",
     # "${path.module}/fetch-aws-secret-v2.py",
-    var.instance.spec.cloud_account
+    var.instance.spec.cloud_account,
+    "AWS"
   ] # Path to Python script
 }
 
