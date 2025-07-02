@@ -1,125 +1,53 @@
-
 locals {
-  spec         = var.instance.spec
-  aws_dynamodb = lookup(lookup(var.instance, "advanced", {}), "aws_dynamodb", {})
-
-  attributes = [
-    for attribute in local.spec.attributes :
-    {
-      name = attribute.name
-      type = attribute.type
-    }
-  ]
-
-  tags = merge(var.environment.cloud_tags, lookup(local.aws_dynamodb, "tags", {}))
+  kafka_advanced            = lookup(lookup(lookup(var.instance, "advanced", {}), "kafka", {}), "msk", {})
+  cloudwatch_config         = lookup(local.kafka_advanced, "cloudwatch_config", {})
+  scaling_config            = lookup(local.kafka_advanced, "scaling_config", {})
+  spec                      = var.instance.spec
+  size                      = lookup(local.spec, "size", {})
+  kafka_size                = lookup(local.size, "kafka", {})
+  persistence_enabled       = lookup(local.spec, "persistence_enabled", false)
+  user_defined_labels       = lookup(local.kafka_advanced, "tags", {})
+  facets_defined_cloud_tags = lookup(var.environment, "cloud_tags", {})
+  authentication_enabled    = lookup(local.spec, "authenticated", null)
+  encryption_type           = lookup(local.kafka_advanced, "encryption_in_transit_client_broker", "TLS")
+}
+module "msk-kafka-name" {
+  source          = "../../3_utility/name"
+  is_k8s          = false
+  globally_unique = true
+  resource_name   = var.instance_name
+  resource_type   = "kafka_msk"
+  limit           = 40
+  environment     = var.environment
 }
 
-module "dynamodb" {
-  source = "./terraform-aws-dynamodb-table-2.0.0"
+module "kafka_msk" {
+  source = "./terraform-aws-msk-kafka-cluster-1.2.0"
 
-  name                               = "${var.instance_name}-${var.environment.name}"
-  attributes                         = local.attributes
-  hash_key                           = local.spec.hash_key
-  autoscaling_defaults               = lookup(local.aws_dynamodb, "autoscaling_defaults", { "scale_in_cooldown" : 0, "scale_out_cooldown" : 0, "target_value" : 70 })
-  autoscaling_enabled                = lookup(local.aws_dynamodb, "autoscaling_enabled", false)
-  autoscaling_indexes                = lookup(local.aws_dynamodb, "autoscaling_indexes", {})
-  autoscaling_read                   = lookup(local.aws_dynamodb, "autoscaling_read", {})
-  autoscaling_write                  = lookup(local.aws_dynamodb, "autoscaling_write", {})
-  billing_mode                       = lookup(local.aws_dynamodb, "billing_mode", "PAY_PER_REQUEST")
-  create_table                       = lookup(local.aws_dynamodb, "create_table", true)
-  global_secondary_indexes           = lookup(local.aws_dynamodb, "global_secondary_indexes", [])
-  local_secondary_indexes            = lookup(local.aws_dynamodb, "local_secondary_indexes", [])
-  point_in_time_recovery_enabled     = lookup(local.aws_dynamodb, "point_in_time_recovery_enabled", false)
-  range_key                          = lookup(local.aws_dynamodb, "range_key", null)
-  read_capacity                      = lookup(local.aws_dynamodb, "read_capacity", null)
-  replica_regions                    = lookup(local.aws_dynamodb, "replica_regions", [])
-  server_side_encryption_enabled     = lookup(local.aws_dynamodb, "server_side_encryption_enabled", false)
-  server_side_encryption_kms_key_arn = lookup(local.aws_dynamodb, "server_side_encryption_kms_key_arn", null)
-  stream_enabled                     = lookup(local.aws_dynamodb, "stream_enabled", false)
-  stream_view_type                   = lookup(local.aws_dynamodb, "stream_view_type", null)
-  table_class                        = lookup(local.aws_dynamodb, "table_class", null)
-  tags                               = local.tags
-  timeouts                           = lookup(local.aws_dynamodb, "timeouts", { "create" : "10m", "delete" : "10m", "update" : "60m" })
-  ttl_attribute_name                 = lookup(local.aws_dynamodb, "ttl_attribute_name", "")
-  ttl_enabled                        = lookup(local.aws_dynamodb, "ttl_enabled", false)
-  write_capacity                     = lookup(local.aws_dynamodb, "write_capacity", null)
+  name                                   = lookup(local.kafka_advanced, "name", module.msk-kafka-name.name)
+  kafka_version                          = var.instance.spec.kafka_version
+  number_of_broker_nodes                 = lookup(local.kafka_size, "replica_count", lookup(local.kafka_size, "instance_count", 1))
+  broker_node_instance_type              = lookup(local.kafka_size, "instance", "kafka.t3.small")
+  broker_node_ebs_volume_size            = local.persistence_enabled ? tonumber(trim(lookup(local.kafka_size, "volume", "50Gi"), "GBi")) : 50
+  broker_node_client_subnets             = concat(var.inputs.network_details.attributes.legacy_outputs.vpc_details.private_subnet_objects.id, lookup(local.kafka_advanced, "broker_node_client_subnets", []))
+  broker_node_security_groups            = concat([var.inputs.network_details.attributes.legacy_outputs.vpc_details.default_security_group_id], lookup(local.kafka_advanced, "broker_node_security_groups", []))
+  encryption_in_transit_client_broker    = local.encryption_type
+  encryption_in_transit_in_cluster       = lookup(local.kafka_advanced, "encryption_in_transit_in_cluster", true)
+  configuration_name                     = lookup(local.kafka_advanced, "configuration_name", null)
+  configuration_description              = lookup(local.kafka_advanced, "configuration_description", null)
+  configuration_server_properties        = lookup(local.kafka_advanced, "configuration_server_properties", {})
+  client_authentication_sasl_iam         = lookup(local.kafka_advanced, "client_authentication_sasl_iam", false)
+  client_authentication_sasl_scram       = lookup(local.kafka_advanced, "client_authentication_sasl_scram", false)
+  create_scram_secret_association        = lookup(local.kafka_advanced, "create_scram_secret_association", false)
+  jmx_exporter_enabled                   = lookup(local.kafka_advanced, "jmx_exporter_enabled", false)
+  node_exporter_enabled                  = lookup(local.kafka_advanced, "node_exporter_enabled", false)
+  cloudwatch_logs_enabled                = lookup(local.cloudwatch_config, "cloudwatch_logs_enabled", false)
+  cloudwatch_log_group_name              = lookup(local.cloudwatch_config, "cloudwatch_log_group_name", null)
+  cloudwatch_log_group_kms_key_id        = lookup(local.cloudwatch_config, "cloudwatch_log_group_name", null)
+  cloudwatch_log_group_retention_in_days = lookup(local.cloudwatch_config, "cloudwatch_log_group_retention_in_days", 0)
+  enhanced_monitoring                    = lookup(local.kafka_advanced, "enhanced_monitoring", "DEFAULT") // Values to be passsed enhanced_monitoring for : DEFAULT, PER_BROKER, PER_TOPIC_PER_BROKER, PER_TOPIC_PER_PARTITION
+  scaling_role_arn                       = lookup(local.scaling_config, "scaling_role_arn", null)
+  scaling_max_capacity                   = lookup(local.scaling_config, "scaling_max", 250)
+  scaling_target_value                   = lookup(local.scaling_config, "scaling_target_value", 80)
+  tags                                   = merge(local.facets_defined_cloud_tags, local.user_defined_labels)
 }
-
-resource "aws_iam_policy" "read_only_policy" {
-  name   = "${var.environment.name}-${module.dynamodb.dynamodb_table_id}_ro"
-  tags   = var.environment.cloud_tags
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "ListAndDescribe",
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:List*",
-                "dynamodb:DescribeReservedCapacity*",
-                "dynamodb:DescribeLimits",
-                "dynamodb:DescribeTimeToLive"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Sid": "SpecificTable",
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:BatchGet*",
-                "dynamodb:DescribeStream",
-                "dynamodb:DescribeTable",
-                "dynamodb:Get*",
-                "dynamodb:Query",
-                "dynamodb:Scan"
-            ],
-            "Resource": ["${module.dynamodb.dynamodb_table_arn}", "${module.dynamodb.dynamodb_table_arn}/index/*"]
-        }
-    ]
-}
-EOF
-}
-
-resource "aws_iam_policy" "read_write_policy" {
-  name   = "${var.environment.name}-${module.dynamodb.dynamodb_table_id}_rw"
-  tags   = var.environment.cloud_tags
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "ListAndDescribe",
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:List*",
-                "dynamodb:DescribeReservedCapacity*",
-                "dynamodb:DescribeLimits",
-                "dynamodb:DescribeTimeToLive"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Sid": "SpecificTable",
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:BatchGet*",
-                "dynamodb:DescribeStream",
-                "dynamodb:DescribeTable",
-                "dynamodb:Get*",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:BatchWrite*",
-                "dynamodb:CreateTable",
-                "dynamodb:Delete*",
-                "dynamodb:Update*",
-                "dynamodb:PutItem"
-            ],
-            "Resource": ["${module.dynamodb.dynamodb_table_arn}", "${module.dynamodb.dynamodb_table_arn}/index/*"]
-        }
-    ]
-}
-EOF
-
-}
- 
