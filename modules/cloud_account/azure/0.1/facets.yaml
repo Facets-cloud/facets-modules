@@ -1,5 +1,4 @@
 intent: "cloud_account"
-alias-flavors: [ "default" ]
 flavor: azure
 lifecycle: ENVIRONMENT
 version: "0.1"
