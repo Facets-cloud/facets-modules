@@ -12,6 +12,9 @@ locals {
   advanced_ecs             = lookup(local.advanced, "aws_ecs", {})
   advanced_lb              = lookup(local.advanced, "aws_alb", {})
   advanced_common          = lookup(local.advanced, "common", {})
+  launch_type              = lookup(local.spec, "launch_type", "FARGATE")
+  requires_compatibilities = lookup(local.spec, "requires_compatibilities", [local.launch_type])
+
   autoscaling_policies = {
     cpu = {
       policy_type = "TargetTrackingScaling"
@@ -182,7 +185,8 @@ module "ecs" {
   ignore_task_definition_changes     = lookup(local.advanced_ecs, "ignore_task_definition_changes", false)
   inference_accelerator              = lookup(local.advanced_ecs, "inference_accelerator", {})
   ipc_mode                           = lookup(local.advanced_ecs, "ipc_mode", null)
-  launch_type                        = "FARGATE"
+  # launch_type                        = "FARGATE"
+  launch_type                        = local.launch_type
   load_balancer                      = local.load_balancers
   memory                             = tonumber(lookup(lookup(local.runtime, "size", {}), "memory", null)) * 1024
   name                               = module.name.name
@@ -191,9 +195,11 @@ module "ecs" {
   pid_mode                           = lookup(local.advanced_ecs, "pid_mode", null)
   placement_constraints              = lookup(local.advanced_ecs, "placement_constraints", {})
   platform_version                   = lookup(local.advanced_ecs, "platform_version", null)
-  propagate_tags                     = "SERVICE"
+  # propagate_tags                     = "SERVICE"
+  propagate_tags                     = lookup(local.spec, "propagate_tags", "SERVICE")
   proxy_configuration                = {}
-  requires_compatibilities           = ["FARGATE"]
+  # requires_compatibilities           = ["FARGATE"]
+  requires_compatibilities           = local.requires_compatibilities
   runtime_platform                   = lookup(local.advanced_ecs, "runtime_platform", { "cpu_architecture" : "X86_64", "operating_system_family" : "LINUX" })
   scale                              = lookup(local.advanced_ecs, "scale", {})
   scheduling_strategy                = lookup(local.advanced_ecs, "scheduling_strategy", null)
