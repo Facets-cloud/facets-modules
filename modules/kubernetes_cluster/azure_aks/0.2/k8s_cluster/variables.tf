@@ -1,3 +1,10 @@
+variable "vpc_details" {
+  description = "VPC details including region and other network information"
+  type = object({
+    region = string
+  })
+}
+
 variable "instance" {
   description = "A Kubernetes EKS cluster module with auto mode enabled by default and all necessary configurations preset."
   type = any

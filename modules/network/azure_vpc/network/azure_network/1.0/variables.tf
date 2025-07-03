@@ -1,12 +1,6 @@
 variable "instance" {
-  description = "This is Network Module for Azure"
-  type = object({
-    kind    = string
-    flavor  = string
-    version = string
-    spec = object({
-    })
-  })
+  description = "The resource instance"
+  type        = any
 }
 variable "instance_name" {
   description = "The architectural name for the resource as added in the Facets blueprint designer."
@@ -14,13 +8,9 @@ variable "instance_name" {
 }
 variable "environment" {
   description = "An object containing details about the environment."
-  type = object({
-    name        = string
-    unique_name = string
-  })
+  type        = any
 }
 variable "inputs" {
   description = "A map of inputs requested by the module developer."
-  type = object({
-  })
+  type        = any
 }
