@@ -94,7 +94,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
       name,
       dns_prefix,
       node_resource_group,
-      public_network_access_enabled,
+    
       image_cleaner_enabled,
       image_cleaner_interval_hours,
       private_cluster_public_fqdn_enabled,
@@ -258,12 +258,12 @@ resource "azurerm_storage_account" "storageacct" {
       infrastructure_encryption_enabled,
       queue_encryption_key_type,
       table_encryption_key_type,
-      cross_tenant_replication_enabled,
-      default_to_oauth_authentication,
-      public_network_access_enabled,
-      sftp_enabled,
+    
+    
+    
+    
       shared_access_key_enabled,
-      allow_nested_items_to_be_public
+    
     ]
   }
 }

@@ -1,13 +1,13 @@
 intent: kubernetes_cluster
-flavor: azure_aks
+flavor: azure_aks_cluster
 alias-flavors:
 - default
-version: '0.3'
+version: '0.2'
 clouds:
 - azure
 title: AKS Cluster with Auto-Upgrade Support
-description: A Kubernetes AKS cluster module with auto-upgrade enabled by default and
-  all necessary configurations preset.
+description: A Kubernetes AKS cluster module with auto-upgrade enabled by default
+  and all necessary configurations preset.
 allow_skipping_module_on_selective_release: false
 spec:
   type: object
@@ -62,16 +62,16 @@ spec:
         cluster_endpoint_public_access_cidrs:
           type: array
           title: Cluster Endpoint Public Access CIDRs
-          description: List of CIDR blocks which can access the AKS public
-            API server endpoint.
+          description: List of CIDR blocks which can access the AKS public API server
+            endpoint.
           default:
           - 0.0.0.0/0
           x-ui-overrides-only: true
         cluster_endpoint_private_access_cidrs:
           type: array
           title: Cluster Endpoint Private Access CIDRs
-          description: List of CIDR blocks which can access the AKS private
-            API server endpoint.
+          description: List of CIDR blocks which can access the AKS private API server
+            endpoint.
           default: []
           x-ui-overrides-only: true
         cluster_enabled_log_types:
@@ -143,7 +143,8 @@ spec:
         max_surge:
           type: string
           title: Max Surge
-          description: Maximum number of nodes that can be added during upgrade (number or percentage).
+          description: Maximum number of nodes that can be added during upgrade (number
+            or percentage).
           default: '1'
           pattern: ^([0-9]+%?|[0-9]+)$
           x-ui-error-message: Max surge must be a number or percentage (e.g., 1, 33%)
@@ -479,10 +480,10 @@ outputs:
           token: attributes.cluster.auth.token
 sample:
   kind: kubernetes_cluster
-  flavor: azure_aks
+  flavor: azure_aks_cluster
   alias-flavors:
   - default
-  version: '0.3'
+  version: '0.2'
   metadata:
     name: aks-cluster
   spec:

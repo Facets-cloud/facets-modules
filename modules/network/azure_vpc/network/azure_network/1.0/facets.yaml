@@ -5,6 +5,17 @@ description: Creates an Azure Virtual Network with configurable public subnets, 
   subnets, database subnets, and specialized subnets across availability zones
 clouds:
 - azure
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The Azure Cloud Account where the AKS cluster will be created
+    optional: false
+    providers:
+    - azurerm
+    - azurerm3
+    - azurerm3-105-0
+    - azurerm3-116-0
 spec:
   type: object
   properties:
@@ -228,7 +239,7 @@ spec:
   - nat_gateway
 outputs:
   default:
-    type: '@facets/azure-vnet-details'
+    type: '@facets/azure-network-details'
 sample:
   kind: network
   flavor: azure_network
