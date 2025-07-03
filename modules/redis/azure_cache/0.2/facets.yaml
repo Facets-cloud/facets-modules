@@ -66,7 +66,7 @@ outputs:
     type: '@outputs/redis'
 sample:
   flavor: azure_cache
-  kind: azure_cache
+  kind: redis
   disabled: false
   metadata: {}
   version: '0.2'
