@@ -921,7 +921,7 @@ spec:
               description: Map of environment variables passed to init container.
               type: object
               patternProperties:
-                "^[a-zA-Z][a-zA-Z0-9_-.]*$":
+                "^[a-zA-Z][a-zA-Z0-9_.-]*$":
                   title: Evironment Variable
                   description: Environment Variable
                   type: string
@@ -1190,7 +1190,7 @@ spec:
               description: Map of environment variables passed to init container
               type: object
               patternProperties:
-                "^[a-zA-Z][a-zA-Z0-9_-.]*$":
+                "^[a-zA-Z][a-zA-Z0-9_.-]*$":
                   title: Evironment Variable
                   description: Environment Variable
                   type: string
