@@ -8,19 +8,19 @@ module "name" {
 }
 
 module "k8s_cluster" {
-  source        = "./k8s_cluster"
-  instance      = var.instance
-  vpc_id        = var.inputs.network_details.attributes.vpc_id
-  cc_metadata   = var.cc_metadata
-  environment   = var.environment
-  cluster       = var.cluster
-  k8s_subnets   = var.inputs.network_details.attributes.private_subnet_ids
-  instance_name = var.instance_name
-  region        = var.inputs.network_details.attributes.region
-  azs           = var.inputs.network_details.attributes.availability_zones
+  source              = "./k8s_cluster"
+  instance            = var.instance
+  vpc_id              = var.inputs.network_details.attributes.vpc_id
+  cc_metadata         = var.cc_metadata
+  environment         = var.environment
+  cluster             = var.cluster
+  k8s_subnets         = var.inputs.network_details.attributes.private_subnet_ids
+  instance_name       = var.instance_name
+  region              = var.inputs.network_details.attributes.region
+  azs                 = var.inputs.network_details.attributes.availability_zones
   resource_group_name = var.inputs.network_details.attributes.resource_group_name
-  public_subnets = var.inputs.network_details.attributes.public_subnet_ids
-  private_subnets = var.inputs.network_details.attributes.private_subnet_ids
+  public_subnets      = var.inputs.network_details.attributes.public_subnet_ids
+  private_subnets     = var.inputs.network_details.attributes.private_subnet_ids
 
 }
 
@@ -84,7 +84,7 @@ resource "helm_release" "secret-copier" {
   name       = lookup(local.secret_copier, "name", "facets-secret-copier")
   repository = lookup(local.secret_copier, "repository", "https://facets-cloud.github.io/helm-charts")
   version    = lookup(local.secret_copier, "version", "1.0.2")
-  
+
   values = [
     yamlencode(
       {
@@ -113,7 +113,7 @@ resource "helm_release" "cluster-overprovisioner" {
   version         = "0.7.10"
   wait            = false
   cleanup_on_fail = true
-  
+
   values = [
     <<DEPLOYMENTS
 priorityClassOverprovision:

@@ -23,7 +23,17 @@ output "k8s_details" {
   }
 }
 output "registry_secret_objects" {
-  value = module.ecr-token-registry.registry_secret_objects
+  value = []
+}
+
+output "legacy_outputs" {
+  description = "Legacy outputs for backward compatibility" 
+  value = {
+    cluster_name         = azurerm_kubernetes_cluster.k8s.name
+    cluster_endpoint     = azurerm_kubernetes_cluster.k8s.kube_config.0.host
+    cluster_ca_certificate = azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate
+    node_resource_group  = azurerm_kubernetes_cluster.k8s.node_resource_group
+  }
 }
 
 output "node_resource_group" {

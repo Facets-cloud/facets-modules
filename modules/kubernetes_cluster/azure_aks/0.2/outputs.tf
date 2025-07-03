@@ -55,9 +55,9 @@ output "auth_details" {
 output "storage_details" {
   description = "Storage account details"
   value = {
-    storage_account_name         = module.k8s_cluster.k8s_details.storage_account.name
+    storage_account_name           = module.k8s_cluster.k8s_details.storage_account.name
     storage_account_resource_group = module.k8s_cluster.k8s_details.storage_account.resource_group_name
-    primary_blob_endpoint        = module.k8s_cluster.k8s_details.storage_account.primary_blob_endpoint
+    primary_blob_endpoint          = module.k8s_cluster.k8s_details.storage_account.primary_blob_endpoint
   }
 }
 

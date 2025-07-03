@@ -22,6 +22,23 @@
 
 # Local values for calculations
 locals {
+  # Private endpoint DNS zone mappings
+  private_dns_zones = {
+    enable_storage    = "privatelink.blob.core.windows.net"
+    enable_sql        = "privatelink.database.windows.net"
+    enable_keyvault   = "privatelink.vaultcore.azure.net"
+    enable_acr        = "privatelink.azurecr.io"
+    enable_aks        = "privatelink.${var.instance.spec.region}.azmk8s.io"
+    enable_cosmos     = "privatelink.documents.azure.com"
+    enable_servicebus = "privatelink.servicebus.windows.net"
+    enable_eventhub   = "privatelink.servicebus.windows.net"
+    enable_monitor    = "privatelink.monitor.azure.com"
+    enable_cognitive  = "privatelink.cognitiveservices.azure.com"
+  }
+
+  private_endpoints_enabled = {
+    for k, v in var.instance.spec.private_endpoints : k => lookup(local.private_dns_zones, k, "privatelink.${k}.azure.com") if v == true
+  }
   # Calculate subnet mask from IP count
   subnet_mask_map = {
     "256"  = 24 # /24 = 256 IPs
@@ -479,7 +496,7 @@ resource "azurerm_route_table" "private" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
     for az in var.instance.spec.availability_zones : az => az
     } : var.instance.spec.public_subnets.count_per_az > 0 ? {
-    single = "single"
+    single = "1"
   } : {}
 
   name                = var.instance.spec.nat_gateway.strategy == "per_az" ? "${local.name_prefix}-private-rt-${each.key}" : "${local.name_prefix}-private-rt"
@@ -494,7 +511,7 @@ resource "azurerm_subnet_route_table_association" "private" {
   for_each = azurerm_subnet.private
 
   subnet_id      = each.value.id
-  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_route_table.private[split("-", each.key)[0]].id : azurerm_route_table.private["single"].id
+  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_route_table.private[split("-", each.key)[0]].id : azurerm_route_table.private["1"].id
 }
 
 # Route Table for Database Subnets (isolated)
@@ -526,7 +543,7 @@ resource "azurerm_subnet_nat_gateway_association" "private" {
   }
 
   subnet_id      = each.value.id
-  nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_nat_gateway.main[split("-", each.key)[0]].id : azurerm_nat_gateway.main["single"].id
+  nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_nat_gateway.main[split("-", each.key)[0]].id : azurerm_nat_gateway.main["1"].id
 }
 
 # Associate NAT Gateway with Functions Subnets
@@ -537,7 +554,7 @@ resource "azurerm_subnet_nat_gateway_association" "functions" {
   }
 
   subnet_id      = each.value.id
-  nat_gateway_id = azurerm_nat_gateway.main["single"].id # Functions typically use single NAT Gateway
+  nat_gateway_id = azurerm_nat_gateway.main["1"].id # Functions typically use single NAT Gateway
 }
 
 # Network Security Group - Allow all within VNet (similar to original logic)
@@ -667,21 +684,13 @@ resource "azurerm_subnet_network_security_group_association" "private_link_servi
 # Private DNS Zone for Private Endpoints
 resource "azurerm_private_dns_zone" "private_endpoints" {
   for_each = {
-    storage    = try(local.private_endpoints.enable_storage, false) ? "privatelink.blob.core.windows.net" : null
-    sql        = try(local.private_endpoints.enable_sql, false) ? "privatelink.database.windows.net" : null
-    keyvault   = try(local.private_endpoints.enable_keyvault, false) ? "privatelink.vaultcore.azure.net" : null
-    acr        = try(local.private_endpoints.enable_acr, false) ? "privatelink.azurecr.io" : null
-    cosmos     = try(local.private_endpoints.enable_cosmos, false) ? "privatelink.documents.azure.com" : null
-    servicebus = try(local.private_endpoints.enable_servicebus, false) ? "privatelink.servicebus.windows.net" : null
-    eventhub   = try(local.private_endpoints.enable_eventhub, false) ? "privatelink.servicebus.windows.net" : null
-    monitor    = try(local.private_endpoints.enable_monitor, false) ? "privatelink.monitor.azure.com" : null
-    cognitive  = try(local.private_endpoints.enable_cognitive, false) ? "privatelink.cognitiveservices.azure.com" : null
+    for k, v in var.instance.spec.private_endpoints : k => lookup(local.private_dns_zones, k, "privatelink.${k}.azure.com") if v == true
   }
 
   name                = each.value
   resource_group_name = azurerm_resource_group.main.name
 
-  tags = local.common_tags
+  tags = var.instance.spec.tags
 }
 
 # Link Private DNS Zone to VNet
@@ -701,14 +710,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_endpoints" {
 resource "azurerm_storage_account" "example" {
   count = try(local.private_endpoints.enable_storage, false) ? 1 : 0
 
-  name                     = "${replace(local.name_prefix, "-", "")}stor"
+  name                     = substr(replace(replace(lower(local.name_prefix), "-", ""), "_", ""), 0, 20)
   resource_group_name      = azurerm_resource_group.main.name
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
   # Disable public access
-  public_network_access_enabled = false
+
 
   tags = local.common_tags
 }
@@ -731,7 +740,7 @@ resource "azurerm_private_endpoint" "storage" {
 
   private_dns_zone_group {
     name                 = "storage-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.private_endpoints["storage"].id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.private_endpoints["enable_storage"].id]
   }
 
   tags = local.common_tags
