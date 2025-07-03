@@ -1,4 +1,4 @@
-name: google_cloud_storage
+name: google_cloud_storage_bucket
 out:
   type: object
   title: GCS Bucket Output
