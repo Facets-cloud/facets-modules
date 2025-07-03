@@ -148,7 +148,7 @@ inputs:
     - google
 outputs:
   default:
-    type: '@outputs/google_cloud_storage''
+    type: '@outputs/google_cloud_storage_bucket'
   attributes.read_only_role:
     type: '@outputs/gcp_iam_role_name'
     title: Read-Only IAM Role

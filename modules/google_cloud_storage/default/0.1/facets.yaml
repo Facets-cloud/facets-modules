@@ -4,7 +4,7 @@ version: '0.1'
 description: Adds Storage module of flavor Google Cloud Storage
 outputs:
   default:
-    type: '@outputs/google_cloud_storage'
+    type: '@outputs/google_cloud_storage_bucket'
 clouds:
   - gcp
 spec:
