@@ -2,3 +2,6 @@ name: kubernetes_cluster
 type: K8s
 displayName: Kubernetes Cluster
 description: A group of computing nodes, or worker machines, that run containerized applications.
+outputs:
+  - name: default1
+    type: "@output/kubernetes"
