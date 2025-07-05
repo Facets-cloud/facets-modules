@@ -294,10 +294,8 @@ spec:
               type: array
               title: Readiness Exec Command
               pattern: ^([^,]+)(,\s*[^,]+)*$
-              x-ui-placeholder: Enter readiness exec for the Pod, commands are separated
-                by commas
-              x-ui-error-message: Value doesn't match pattern, commands needs to be
-                comma separated
+              x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
+              x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values:
@@ -393,10 +391,8 @@ spec:
               type: array
               title: Liveness Exec Command
               pattern: ^([^,]+)(,\s*[^,]+)*$
-              x-ui-placeholder: Enter readiness exec for the Pod, commands are separated
-                by commas
-              x-ui-error-message: Value doesn't match pattern, commands needs to be
-                comma separated
+              x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
+              x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.liveness_check_type
                 values:
@@ -1610,10 +1606,8 @@ spec:
                       type: array
                       title: Readiness Exec Command
                       pattern: ^([^,]+)(,\s*[^,]+)*$
-                      x-ui-placeholder: Enter readiness exec for the Pod, commands
-                        are separated by commas
-                      x-ui-error-message: Value doesn't match pattern, commands needs
-                        to be comma separated
+                      x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
+                      x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
                         values:
@@ -1695,10 +1689,8 @@ spec:
                       type: array
                       title: Liveness Exec Command
                       pattern: ^([^,]+)(,\s*[^,]+)*$
-                      x-ui-placeholder: Enter readiness exec for the Pod, commands
-                        are separated by commas
-                      x-ui-error-message: Value doesn't match pattern, commands needs
-                        to be comma separated
+                      x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
+                      x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
                         values:
