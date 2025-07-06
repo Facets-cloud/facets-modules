@@ -33,7 +33,7 @@ variable "instance" {
       "eu-west-1", "eu-west-2", "eu-west-3", "eu-central-1", "eu-north-1",
       "ap-southeast-1", "ap-southeast-2", "ap-northeast-1", "ap-northeast-2", "ap-south-1",
       "ca-central-1", "sa-east-1"
-    ], var.instance.spec.region)
+    ], var.inputs.cloud_account.attributes.aws_region)
     error_message = "Region must be a valid AWS region from the supported list."
   }
 

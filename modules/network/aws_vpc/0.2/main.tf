@@ -379,7 +379,7 @@ resource "aws_vpc_endpoint" "s3" {
   count = try(local.vpc_endpoints.enable_s3, false) ? 1 : 0
 
   vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.${var.instance.spec.region}.s3"
+  service_name      = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = concat(
@@ -398,7 +398,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
   count = try(local.vpc_endpoints.enable_dynamodb, false) ? 1 : 0
 
   vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.${var.instance.spec.region}.dynamodb"
+  service_name      = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.dynamodb"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = concat(
@@ -417,7 +417,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   count = try(local.vpc_endpoints.enable_ecr_api, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ecr.api"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ecr.api"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -433,7 +433,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   count = try(local.vpc_endpoints.enable_ecr_dkr, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ecr.dkr"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ecr.dkr"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -449,7 +449,7 @@ resource "aws_vpc_endpoint" "eks" {
   count = try(local.vpc_endpoints.enable_eks, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.eks"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.eks"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -465,7 +465,7 @@ resource "aws_vpc_endpoint" "ec2" {
   count = try(local.vpc_endpoints.enable_ec2, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ec2"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ec2"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -481,7 +481,7 @@ resource "aws_vpc_endpoint" "ssm" {
   count = try(local.vpc_endpoints.enable_ssm, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ssm"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ssm"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -497,7 +497,7 @@ resource "aws_vpc_endpoint" "ssm_messages" {
   count = try(local.vpc_endpoints.enable_ssm_messages, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ssmmessages"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ssmmessages"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -513,7 +513,7 @@ resource "aws_vpc_endpoint" "ec2_messages" {
   count = try(local.vpc_endpoints.enable_ec2_messages, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.ec2messages"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.ec2messages"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -529,7 +529,7 @@ resource "aws_vpc_endpoint" "kms" {
   count = try(local.vpc_endpoints.enable_kms, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.kms"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.kms"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -545,7 +545,7 @@ resource "aws_vpc_endpoint" "logs" {
   count = try(local.vpc_endpoints.enable_logs, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.logs"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.logs"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -561,7 +561,7 @@ resource "aws_vpc_endpoint" "monitoring" {
   count = try(local.vpc_endpoints.enable_monitoring, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.monitoring"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.monitoring"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -577,7 +577,7 @@ resource "aws_vpc_endpoint" "sts" {
   count = try(local.vpc_endpoints.enable_sts, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.sts"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.sts"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
@@ -593,7 +593,7 @@ resource "aws_vpc_endpoint" "lambda" {
   count = try(local.vpc_endpoints.enable_lambda, false) ? 1 : 0
 
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.instance.spec.region}.lambda"
+  service_name        = "com.amazonaws.${var.inputs.cloud_account.attributes.aws_region}.lambda"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = values(aws_subnet.private)[*].id
   security_group_ids  = [aws_security_group.vpc_endpoints[0].id]
