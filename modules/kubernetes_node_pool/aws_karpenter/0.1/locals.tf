@@ -250,7 +250,15 @@ locals {
                   operator = "In"
                   values   = local.availability_zones_list
                 }
-              ] : []
+              ] : [],
+              # Dynamic label requirements (using Exists operator for workload-driven labeling)
+              [
+                for label_key, label_value in local.labels : {
+                  key      = label_key
+                  operator = "In"
+                  values   = [label_value]
+                }
+              ]
             )
           },
           length(local.node_taints) > 0 ? {
