@@ -1,5 +1,5 @@
 intent: kubernetes_node_pool
-flavor: aws_karpenter
+flavor: aws_karpenter_demo
 version: '0.1'
 clouds:
 - aws
@@ -279,7 +279,7 @@ spec:
   - name
 inputs:
   kubernetes_cluster:
-    type: '@outputs/kubernetes'
+    type: '@outputs/aws_eks'
     displayName: EKS Cluster
     description: The EKS cluster where the node pool will be created
     optional: false
@@ -298,7 +298,7 @@ outputs:
     title: AWS Karpenter NodePool
 sample:
   kind: kubernetes_node_pool
-  flavor: aws_karpenter
+  flavor: aws_karpenter_demo
   version: '0.1'
   metadata:
     name: production-nodepool
