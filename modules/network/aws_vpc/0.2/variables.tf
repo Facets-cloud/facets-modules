@@ -30,8 +30,8 @@ variable "instance" {
   validation {
     condition = lookup(var.instance.spec, "auto_select_azs", false) || (
       lookup(var.instance.spec, "availability_zones", null) != null &&
-      length(var.instance.spec.availability_zones) >= 2 &&
-      length(var.instance.spec.availability_zones) <= 4
+      length(lookup(var.instance.spec, "availability_zones", [])) >= 2 &&
+      length(lookup(var.instance.spec, "availability_zones", [])) <= 4
     )
     error_message = "When auto_select_azs is false, you must specify between 2 and 4 availability zones."
   }
@@ -40,7 +40,7 @@ variable "instance" {
     condition = lookup(var.instance.spec, "auto_select_azs", false) || (
       lookup(var.instance.spec, "availability_zones", null) != null &&
       alltrue([
-        for az in var.instance.spec.availability_zones :
+        for az in lookup(var.instance.spec, "availability_zones", []) :
         can(regex("^[a-z]{2}-[a-z]+-[0-9][a-z]$", az))
       ])
     )
