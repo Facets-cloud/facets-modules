@@ -1,5 +1,5 @@
 intent: cert_manager
-flavor: default
+flavor: default_demo
 version: '0.1'
 description: Deploys Cert Manager for managing ssl certificates
 clouds:
@@ -79,7 +79,7 @@ spec:
   - cname_strategy
 sample:
   kind: cert_manager
-  flavor: default
+  flavor: default_demo
   disabled: true
   metadata: {}
   version: '0.1'

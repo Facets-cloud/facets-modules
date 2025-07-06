@@ -17,7 +17,7 @@ outputs:
     type: '@outputs/prometheus'
 intent: prometheus
 version: '0.1'
-flavor: k8s
+flavor: k8s_demo
 description: Prometheus monitoring stack for Kubernetes with Grafana, Alertmanager,
   and kube-state-metrics
 clouds:
@@ -445,7 +445,7 @@ spec:
   - values
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/prometheus/prometheus.schema.json
-  flavor: k8s
+  flavor: k8s_demo
   metadata:
     namespace: default
   kind: prometheus

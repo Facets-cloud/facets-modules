@@ -278,7 +278,7 @@ spec:
   required:
   - name
 inputs:
-  kubernetes_cluster:
+  kubernetes_details:
     type: '@outputs/aws_eks'
     displayName: EKS Cluster
     description: The EKS cluster where the node pool will be created

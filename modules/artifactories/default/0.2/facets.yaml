@@ -1,5 +1,5 @@
 intent: artifactories
-flavor: default
+flavor: default_demo
 version: '0.2'
 description: Adds artifactories - default flavor
 clouds:
@@ -55,7 +55,7 @@ spec:
                 valueKey: name
 sample:
   version: '0.2'
-  flavor: default
+  flavor: default_demo
   kind: artifactories
   disabled: true
   spec:

@@ -1,5 +1,5 @@
 intent: service
-flavor: k8s-pa
+flavor: k8s_demo
 version: '0.2'
 description: Unified AWS cloud service module supporting deployment, cronjob, job,
   and statefulset workloads
@@ -12,7 +12,7 @@ artifact_inputs:
 inputs:
   kubernetes_details:
     optional: false
-    type: '@outputs/kubernetes'
+    type: '@outputs/aws_eks'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
@@ -528,7 +528,7 @@ spec:
   - env
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
-  flavor: k8s-pa
+  flavor: k8s_demo
   metadata:
     labels:
       deliveryType: MANUAL
