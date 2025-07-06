@@ -1,6 +1,6 @@
 intent: cloud_account
 flavor: aws_account_demo
-version: 0.1
+version: '0.1'
 description: Module to configure and provision resources within a cloud account
 clouds:
 - aws
@@ -52,7 +52,7 @@ outputs:
     providers:
       aws:
         source: hashicorp/aws
-        version: = 3.74.0
+        version: = 6.2.0
         attributes:
           region: attributes.aws_region
           skip_region_validation: true
@@ -95,7 +95,7 @@ outputs:
               session_name: attributes.session_name
               external_id: attributes.external_id
 sample:
-  version: 0.1
+  version: '0.1'
   flavor: aws_account_demo
   kind: cloud_account
   disabled: false
