@@ -184,13 +184,7 @@ locals {
       # Reference to NodeClass
       template = {
         metadata = {
-          labels = merge(
-            try(local.scheduling.node_labels, {}),
-            {
-              "facets.cloud/nodepool"    = local.name
-              "facets.cloud/environment" = var.environment.name
-            }
-          )
+          labels = local.labels
           annotations = {
             "facets.cloud/managed-by" = "facets"
           }
@@ -255,8 +249,7 @@ locals {
               [
                 for label_key, label_value in local.labels : {
                   key      = label_key
-                  operator = "In"
-                  values   = [label_value]
+                  operator = "Exists"
                 }
               ]
             )
