@@ -56,33 +56,12 @@ resource "kubernetes_storage_class" "eks-auto-mode-gp3" {
   volume_binding_mode    = "Immediate"
 }
 
-module "default_node_pool" {
-  depends_on      = [module.k8s_cluster]
-  count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-default-np"
-  namespace       = var.environment.namespace
-  release_name    = "${local.name}-fc-default-np"
-  data            = local.default_node_pool_data
-  advanced_config = {}
-}
-
-module "dedicated_node_pool" {
-  depends_on      = [module.k8s_cluster]
-  count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-dedicated-np"
-  namespace       = var.environment.namespace
-  release_name    = "${local.name}-fc-dedicated-np"
-  data            = local.dedicated_node_pool_data
-  advanced_config = {}
-}
-
 provider "kubernetes" {
   host                   = module.k8s_cluster.k8s_details.cluster.auth.host
   cluster_ca_certificate = module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate
   token                  = module.k8s_cluster.k8s_details.cluster.auth.token
 }
+
 provider "helm" {
   kubernetes {
     host                   = module.k8s_cluster.k8s_details.cluster.auth.host
@@ -90,6 +69,7 @@ provider "helm" {
     token                  = module.k8s_cluster.k8s_details.cluster.auth.token
   }
 }
+
 resource "helm_release" "secret-copier" {
   depends_on = [module.k8s_cluster]
   count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1
