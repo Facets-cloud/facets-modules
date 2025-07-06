@@ -226,9 +226,9 @@ resource "aws_db_subnet_group" "database" {
 # Elastic IPs for NAT Gateways
 resource "aws_eip" "nat" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
-    for az in var.instance.spec.availability_zones : az => az
+    for az in local.selected_azs : az => az
     } : var.instance.spec.public_subnets.count_per_az > 0 ? {
-    single = var.instance.spec.availability_zones[0]
+    single = local.selected_azs[0]
   } : {}
 
   tags = merge(local.common_tags, {
@@ -241,13 +241,13 @@ resource "aws_eip" "nat" {
 # NAT Gateways
 resource "aws_nat_gateway" "main" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
-    for az in var.instance.spec.availability_zones : az => az
+    for az in local.selected_azs : az => az
     } : var.instance.spec.public_subnets.count_per_az > 0 ? {
-    single = var.instance.spec.availability_zones[0]
+    single = local.selected_azs[0]
   } : {}
 
   allocation_id = aws_eip.nat[each.key].id
-  subnet_id     = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_subnet.public["${each.key}-0"].id : aws_subnet.public["${var.instance.spec.availability_zones[0]}-0"].id
+  subnet_id     = var.instance.spec.nat_gateway.strategy == "per_az" ? aws_subnet.public["${each.key}-0"].id : aws_subnet.public["${local.selected_azs[0]}-0"].id
 
   tags = merge(local.common_tags, {
     Name = var.instance.spec.nat_gateway.strategy == "per_az" ? "${local.name_prefix}-nat-${each.key}" : "${local.name_prefix}-nat"
@@ -283,7 +283,7 @@ resource "aws_route_table_association" "public" {
 # Private Route Tables
 resource "aws_route_table" "private" {
   for_each = var.instance.spec.nat_gateway.strategy == "per_az" ? {
-    for az in var.instance.spec.availability_zones : az => az
+    for az in local.selected_azs : az => az
     } : var.instance.spec.public_subnets.count_per_az > 0 ? {
     single = "single"
   } : {}
@@ -314,7 +314,7 @@ resource "aws_route_table_association" "private" {
 # Database Route Tables (isolated - no internet access)
 resource "aws_route_table" "database" {
   for_each = {
-    for az in var.instance.spec.availability_zones : az => az
+    for az in local.selected_azs : az => az
   }
 
   vpc_id = aws_vpc.main.id

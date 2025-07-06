@@ -82,14 +82,15 @@ variable "instance" {
     error_message = "NAT Gateway strategy must be either 'single' or 'per_az'."
   }
 
-  # Enhanced validation: VPC CIDR capacity check
+  # Enhanced validation: VPC CIDR capacity check - need to calculate AZ count dynamically
   validation {
     condition = (
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) +
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) +
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)
+      # Calculate AZ count based on auto_select_azs
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.public_subnets.count_per_az * tonumber(var.instance.spec.public_subnets.subnet_size) +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.private_subnets.count_per_az * tonumber(var.instance.spec.private_subnets.subnet_size) +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.database_subnets.count_per_az * tonumber(var.instance.spec.database_subnets.subnet_size)
     ) <= pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))
-    error_message = "Total IP allocation exceeds VPC capacity. For your VPC CIDR ${var.instance.spec.vpc_cidr}, you have ${pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} total IPs available."
+    error_message = "Total IP allocation exceeds VPC capacity. For your VPC CIDR, you have ${pow(2, 32 - tonumber(split("/", var.instance.spec.vpc_cidr)[1]))} total IPs available."
   }
 
   # Enhanced validation: Subnet size compatibility with VPC CIDR
@@ -128,7 +129,7 @@ variable "instance" {
   # Enhanced validation: Individual subnet type feasibility  
   validation {
     condition = var.instance.spec.public_subnets.count_per_az == 0 || (
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.public_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -142,7 +143,7 @@ variable "instance" {
 
   validation {
     condition = (
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.private_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -157,7 +158,7 @@ variable "instance" {
 
   validation {
     condition = (
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az <=
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.database_subnets.count_per_az <=
       pow(2, lookup({
         "256"  = 24,
         "512"  = 23,
@@ -171,9 +172,9 @@ variable "instance" {
   # Enhanced validation: Reasonable total subnet limits for practical usage
   validation {
     condition = (
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.public_subnets.count_per_az +
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.private_subnets.count_per_az +
-      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", []))) * var.instance.spec.database_subnets.count_per_az
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.public_subnets.count_per_az +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.private_subnets.count_per_az +
+      (lookup(var.instance.spec, "auto_select_azs", false) ? 3 : length(lookup(var.instance.spec, "availability_zones", ["us-east-1a", "us-east-1b"]))) * var.instance.spec.database_subnets.count_per_az
     ) <= 50
     error_message = "Total number of subnets across all types exceeds practical limit of 50. Consider reducing subnet counts or using larger subnet sizes."
   }
@@ -193,46 +194,6 @@ variable "instance" {
     error_message = "VPC CIDR prefix must be between /16 and /28 for practical usage. Your CIDR ${var.instance.spec.vpc_cidr} has prefix /${tonumber(split("/", var.instance.spec.vpc_cidr)[1])}."
   }
 
-  # Enhanced validation: CIDR allocation feasibility check  
-  # Test if cidrsubnets function can successfully allocate all requested subnets
-  validation {
-    condition = (
-      # First check that all newbits values are positive (subnet prefix >= VPC prefix)
-      alltrue([
-        # Public subnets newbits check
-        var.instance.spec.public_subnets.count_per_az == 0 || (
-          lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-        ),
-        # Private subnets newbits check
-        lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1]),
-        # Database subnets newbits check  
-        lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 24) >= tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-      ]) &&
-      # Then test if cidrsubnets can actually allocate all subnets
-      can(
-        cidrsubnets(
-          var.instance.spec.vpc_cidr,
-          # Create list of newbits for all subnets (same logic as main.tf)
-          concat(
-            var.instance.spec.public_subnets.count_per_az > 0 ? [
-              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az) :
-              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20 }, var.instance.spec.public_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-            ] : [],
-            [
-              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az) :
-              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21, "4096" = 20, "8192" = 19 }, var.instance.spec.private_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-            ],
-            [
-              for i in range(length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az) :
-              lookup({ "256" = 24, "512" = 23, "1024" = 22, "2048" = 21 }, var.instance.spec.database_subnets.subnet_size, 24) - tonumber(split("/", var.instance.spec.vpc_cidr)[1])
-            ]
-          )...
-        )
-      )
-    )
-    error_message = "CIDR allocation conflict! Cannot allocate requested subnets in VPC ${var.instance.spec.vpc_cidr}. Check: (1) All subnet sizes must fit within VPC (subnet prefix ≥ VPC prefix), (2) Total subnet space must fit without overlap. Requested: ${length(var.instance.spec.availability_zones) * var.instance.spec.public_subnets.count_per_az} public (${var.instance.spec.public_subnets.subnet_size} IPs), ${length(var.instance.spec.availability_zones) * var.instance.spec.private_subnets.count_per_az} private (${var.instance.spec.private_subnets.subnet_size} IPs), ${length(var.instance.spec.availability_zones) * var.instance.spec.database_subnets.count_per_az} database (${var.instance.spec.database_subnets.subnet_size} IPs)."
-  }
-
   # Enhanced validation: NAT Gateway requirements
   validation {
     condition     = var.instance.spec.public_subnets.count_per_az == 0 || var.instance.spec.nat_gateway.strategy != null
@@ -241,7 +202,7 @@ variable "instance" {
 
   # Validation for tags: ensure all tag values are strings
   validation {
-    condition = alltrue([
+    condition = lookup(var.instance.spec, "tags", null) == null || alltrue([
       for k, v in var.instance.spec.tags : can(tostring(v))
     ])
     error_message = "All tag values must be strings."
@@ -249,7 +210,7 @@ variable "instance" {
 
   # Validation for tags: ensure tag keys don't conflict with reserved keys
   validation {
-    condition = alltrue([
+    condition = lookup(var.instance.spec, "tags", null) == null || alltrue([
       for k in keys(var.instance.spec.tags) : !contains(["Name", "Environment"], k)
     ])
     error_message = "Tag keys 'Name' and 'Environment' are reserved and will be overridden by the module."

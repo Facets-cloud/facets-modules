@@ -214,7 +214,6 @@ spec:
       x-ui-yaml-editor: true
   required:
   - vpc_cidr
-  - region
   - public_subnets
   - private_subnets
   - database_subnets
@@ -223,7 +222,7 @@ inputs:
   cloud_account:
     type: '@outputs/cloud_account'
     displayName: Cloud Account
-    description: The AWS Cloud Account where the EKS cluster will be created
+    description: The AWS Cloud Account where the VPC will be created
     optional: false
     providers:
     - aws
@@ -239,7 +238,6 @@ sample:
   version: '0.2'
   spec:
     vpc_cidr: 10.0.0.0/16
-    region: us-east-1
     auto_select_azs: true
     public_subnets:
       count_per_az: 1
