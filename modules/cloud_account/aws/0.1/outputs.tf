@@ -1,12 +1,12 @@
 locals {
   output_interfaces = {}
   output_attributes = {
-    aws_iam_role = sensitive(lookup(local.cluster, "roleARN", ""))
+    aws_iam_role = sensitive(local.script_output.aws_iam_role)
     session_name = "capillary-cloud-tf-${uuid()}"
-    external_id  = sensitive(lookup(local.cluster, "externalId", ""))
-    aws_region   = lookup(local.cluster, "awsRegion", "")
+    external_id  = sensitive(local.script_output.external_id)
+    aws_region   = local.script_output.aws_region
     secrets = [
-      "aws_iam_role", 
+      "aws_iam_role",
       "session_name",
       "external_id",
     ]

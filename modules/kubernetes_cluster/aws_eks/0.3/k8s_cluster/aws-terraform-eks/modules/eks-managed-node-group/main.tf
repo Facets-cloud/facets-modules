@@ -33,7 +33,6 @@ module "user_data" {
 ################################################################################
 
 data "aws_ec2_instance_type" "this" {
-  provider = "aws593"
   count = var.create && var.enable_efa_support ? 1 : 0
 
   instance_type = local.efa_instance_type
@@ -71,7 +70,6 @@ locals {
 }
 
 resource "aws_launch_template" "this" {
-  provider = "aws593"
   count = var.create && var.create_launch_template && var.use_custom_launch_template ? 1 : 0
 
   dynamic "block_device_mappings" {
@@ -394,7 +392,6 @@ locals {
 }
 
 resource "aws_eks_node_group" "this" {
-  provider = "aws593"
   count = var.create ? 1 : 0
 
   # Required

@@ -1,0 +1,15 @@
+{
+    "out": {
+        "attributes": {
+            "aws_iam_role": {},
+            "session_name": {},
+            "external_id": {},
+            "aws_region": {},
+            "secrets": {
+                "type": "array",
+                "items": {}
+            }
+        },
+        "interfaces": {}
+    }
+}

@@ -33,7 +33,6 @@ locals {
 ################################################################################
 
 resource "aws_eks_cluster" "this" {
-  provider = "aws593"
   count = local.create ? 1 : 0
 
   name                          = var.cluster_name
@@ -202,7 +201,6 @@ resource "aws_ec2_tag" "cluster_primary_security_group" {
 }
 
 resource "aws_cloudwatch_log_group" "this" {
-  provider = "aws593"
   count = local.create && var.create_cloudwatch_log_group ? 1 : 0
 
   name              = "/aws/eks/${var.cluster_name}/cluster"
@@ -268,7 +266,6 @@ locals {
 }
 
 resource "aws_eks_access_entry" "this" {
-  provider = "aws593"
   for_each = { for k, v in local.merged_access_entries : k => v if local.create }
 
   cluster_name      = aws_eks_cluster.this[0].id
@@ -281,7 +278,6 @@ resource "aws_eks_access_entry" "this" {
 }
 
 resource "aws_eks_access_policy_association" "this" {
-  provider = "aws593"
   for_each = { for k, v in local.flattened_access_entries : "${v.entry_key}_${v.pol_key}" => v if local.create }
 
   access_scope {
@@ -730,7 +726,6 @@ locals {
 }
 
 data "aws_eks_addon_version" "this" {
-  provider = "aws593"
   for_each = { for k, v in var.cluster_addons : k => v if local.create && !local.create_outposts_local_cluster }
 
   addon_name         = try(each.value.name, each.key)
@@ -740,7 +735,6 @@ data "aws_eks_addon_version" "this" {
 }
 
 resource "aws_eks_addon" "this" {
-  provider = "aws593"
   # Not supported on outposts
   for_each = { for k, v in var.cluster_addons : k => v if !try(v.before_compute, false) && local.create && !local.create_outposts_local_cluster }
 
@@ -781,7 +775,6 @@ resource "aws_eks_addon" "this" {
 }
 
 resource "aws_eks_addon" "before_compute" {
-  provider = "aws593"
   # Not supported on outposts
   for_each = { for k, v in var.cluster_addons : k => v if try(v.before_compute, false) && local.create && !local.create_outposts_local_cluster }
 

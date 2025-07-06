@@ -94,7 +94,6 @@ module "user_data" {
 ################################################################################
 
 data "aws_ec2_instance_type" "this" {
-  provider = "aws593"
   count = var.create && var.enable_efa_support ? 1 : 0
 
   instance_type = var.instance_type
@@ -132,7 +131,6 @@ locals {
 }
 
 resource "aws_launch_template" "this" {
-  provider = "aws593"
   count = var.create && var.create_launch_template ? 1 : 0
 
   dynamic "block_device_mappings" {
@@ -501,7 +499,6 @@ locals {
 }
 
 resource "aws_autoscaling_group" "this" {
-  provider = "aws593"
   count = var.create && var.create_autoscaling_group ? 1 : 0
 
   availability_zones        = var.availability_zones
@@ -1016,7 +1013,6 @@ data "aws_subnets" "placement_group" {
 ################################################################################
 
 resource "aws_eks_access_entry" "this" {
-  provider = "aws593"
   count = var.create && var.create_access_entry ? 1 : 0
 
   cluster_name  = var.cluster_name
