@@ -7,6 +7,17 @@ clouds:
 - gcp
 - azure
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 spec:
   type: object
   title: Grafana Dashboard Configuration
