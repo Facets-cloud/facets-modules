@@ -317,9 +317,8 @@ spec:
             readiness_exec_command:
               type: array
               title: Readiness Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder:  "Add each command or argument separately, e.g. /bin/sh"
-              x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+              x-ui-placeholder:  "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["ExecCheck"]
@@ -399,9 +398,8 @@ spec:
             liveness_exec_command:
               type: array
               title: Liveness Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
-              x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+              x-ui-placeholder: "Add each command argument as a new entry" 
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: "spec.runtime.health_checks.liveness_check_type"
                 values: ["ExecCheck"]
@@ -489,9 +487,8 @@ spec:
             startup_exec_command:
               type: array
               title: Startup Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
-              x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+              x-ui-placeholder: "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
                 values: ["ExecCheck"]
@@ -1594,9 +1591,8 @@ spec:
                     readiness_exec_command:
                       type: array
                       title: Readiness Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
-                      x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
                         values: ["ExecCheck"]
@@ -1664,9 +1660,8 @@ spec:
                     liveness_exec_command:
                       type: array
                       title: Liveness Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
-                      x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
                         field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
                         values: ["ExecCheck"]
@@ -1734,9 +1729,8 @@ spec:
                     startup_exec_command:
                       type: array
                       title: Startup Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Add each command or argument separately, e.g. /bin/sh"
-                      x-ui-error-message: "Enter each command/argument in a separate line (e.g., /bin/sh, -c, echo ok)"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
                         values: ["ExecCheck"]
