@@ -1,12 +1,36 @@
 intent: kafka_topic
 flavor: default
-version: '0.1'
+version: 0.1-test
 description: Adds kafka_topic - default flavor
 clouds:
 - aws
 - gcp
 - azure
 - kubernetes
+inputs:
+  crossplane_details:
+    type: '@outputs/crossplane'
+    displayName: Crossplane
+    description: Details of crossplane which will be responsible to create kafka topics
+    optional: false
+  kafka_details:
+    type: '@outputs/kafka'
+    optional: false
+    displayName: Kafka
+    description: Kafka instance to create the topic in
+  kubernetes_details:
+    displayName: Kubernetes Cluster
+    description: Kubernetes Cluster where crossplane is installed
+    optional: false
+    type: '@outputs/kubernetes'
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+outputs:
+  default:
+    type: '@outputs/kafka_topic'
+    title: Kafka Topic Details
 spec:
   title: Kafka Topic
   type: object
@@ -18,7 +42,7 @@ spec:
       description: Contains a map of configurations for multiple Kafka Topics
       minProperties: 1
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
+        ^[a-zA-Z0-9_.-]*$:
           title: Topics
           description: The name of the Kafka Topic to be created
           type: object
@@ -27,58 +51,50 @@ spec:
               title: Topic Name
               description: The name of the topic.
               type: string
-              pattern: '^[a-zA-Z0-9_.-]*$'
+              pattern: ^[a-zA-Z0-9_.-]*$
             replication_factor:
               title: Replication Factor
               description: The replication factor for each partition in the topic
                 being created.
               type: integer
+              minimum: 1
+              default: 3
             partitions:
               title: Partitions
-              description: "The number of partitions for the topic being created or
-                altered."
+              description: The number of partitions for the topic being created or
+                altered.
               type: integer
+              minimum: 1
+              default: 1
             configs:
               title: Configs
               description: A topic configuration override for the topic
               type: object
               x-ui-yaml-editor: true
-              x-ui-placeholder: "Enter the configs key/value pair. Eg. segment.ms:
-                20000"
+              x-ui-placeholder: 'Enter the configs key/value pair. Eg. segment.ms:
+                20000'
+              default: {}
           required:
           - topic_name
           - replication_factor
           - partitions
-inputs:
-  crossplane_details:
-    type: "@outputs/crossplane"
-    displayName: Crossplane
-    description: Details of crossplane which will be responsible to create mysql users
-    optional: false
-  kafka_details:
-    type: "@outputs/kafka"
-    optional: false
-    displayName: Kafka
-    description: Kafka instance to create the topic in
-  kubernetes_details:
-    displayName: Kubernetes Cluster
-    description: Kubernetes Cluster where crossplane is installed
-    optional: false
-    type: "@outputs/kubernetes"
-    default:
-      resource_type: kubernetes_cluster
-      resource_name: default
-    providers:
-      - kubernetes
-      - kubernetes-alpha
-      - helm
+  required:
+  - topics
 sample:
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
   kind: kafka_topic
   flavor: default
-  version: '0.1'
-  disabled: false
+  version: 0.1-test
+  disabled: true
   metadata: {}
   out: {}
-  spec: {}
+  spec:
+    topics:
+      example-topic:
+        topic_name: example-topic
+        replication_factor: 3
+        partitions: 1
+        configs: {}
+iac:
+  validated_files:
+  - variables.tf
