@@ -1,0 +1,18 @@
+{
+    "provides": "kafka",
+    "flavors": [
+        "external"
+    ],
+    "supported_clouds": [
+        "aws",
+        "gcp",
+        "azure",
+        "kubernetes"
+    ],
+    "inputs": {},
+    "lifecycle": "ENVIRONMENT",
+    "version": "0.1",
+    "depends_on": [],
+    "input_type": "instance",
+    "composition": {}
+}
