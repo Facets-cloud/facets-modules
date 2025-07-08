@@ -5,5 +5,3 @@ description: A group of computing nodes, or worker machines, that run containeri
 outputs:
   - name: default
     type: "@outputs/kubernetes"
-  - name: default
-    type: "@outputs/aws_eks"
