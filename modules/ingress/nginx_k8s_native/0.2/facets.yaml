@@ -1,5 +1,5 @@
 intent: ingress
-flavor: nginx_k8s_native-pa
+flavor: nginx_k8s_native_demo
 version: '0.2'
 description: Adds Ingress module
 clouds:
@@ -611,7 +611,7 @@ spec:
   - force_ssl_redirection
 sample:
   kind: ingress
-  flavor: nginx_k8s_native-pa
+  flavor: nginx_k8s_native_demo
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
   disabled: true
   version: '0.2'

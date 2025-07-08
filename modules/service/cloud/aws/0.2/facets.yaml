@@ -10,6 +10,18 @@ artifact_inputs:
     attribute_path: spec.release.image
     artifact_type: docker_image
 inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    description: The AWS Cloud Account where the IAM Role will be created
+    optional: false
+    default:
+      resource_type: cloud_account
+      resource_name: default
+    providers:
+    - aws
+    - aws4
+    - aws5
+    - aws593
   kubernetes_details:
     optional: false
     type: '@outputs/aws_eks'
@@ -504,8 +516,191 @@ spec:
                 field: spec.runtime.autoscaling.scaling_on
                 values:
                 - RAM
+        metrics:
+          type: object
+          title: Metrics
+          x-ui-override-disable: true
+          x-ui-toggle: true
+          description: Metrics port mappings
+          patternProperties:
+            ^[a-zA-Z0-9_.-]*$:
+              type: object
+              title: Metrics Name
+              description: Track and analyze performance metrics to monitor service
+                health and efficiency
+              properties:
+                path:
+                  type: string
+                  title: Path
+                  description: Metrics path
+                  pattern: ^(/[^/]+)*(/)?$
+                port_name:
+                  type: string
+                  title: Port Name
+                  description: Port name for metrics
+                  x-ui-dynamic-enum: spec.runtime.ports.*
+                  x-ui-disable-tooltip: No Ports Available
+              required:
+              - path
+              - port_name
+        volumes:
+          type: object
+          title: Volumes
+          x-ui-override-disable: true
+          x-ui-toggle: true
+          description: Manage data storage volumes to ensure access and persistence
+          properties:
+            config_maps:
+              type: object
+              title: Config Maps
+              description: Config map mounts
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Config Map Name
+                  properties:
+                    name:
+                      type: string
+                      title: Name
+                      description: Config map name
+                      x-ui-typeable: true
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                        method: GET
+                        params:
+                          includeContent: false
+                        labelKey: resourceName
+                        valueKey: resourceName
+                        valueTemplate: ${config_map.{{value}}.out.attributes.name}
+                        filterConditions:
+                        - field: resourceType
+                          value: config_map
+                    mount_path:
+                      type: string
+                      title: Mount Path
+                      pattern: ^/.*
+                      description: Mount path for config maps
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
+                    sub_path:
+                      type: string
+                      title: Sub Path
+                      description: Path within the ConfigMap to mount a specific key
+                        or file
+                  required:
+                  - name
+                  - mount_path
+            secrets:
+              type: object
+              title: Secrets
+              description: Secret mounts
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Secret name
+                  properties:
+                    name:
+                      type: string
+                      title: Name
+                      description: Secret name
+                      x-ui-typeable: true
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                        method: GET
+                        params:
+                          includeContent: false
+                        labelKey: resourceName
+                        valueKey: resourceName
+                        valueTemplate: ${kubernetes_secret.{{value}}.out.attributes.name}
+                        filterConditions:
+                        - field: resourceType
+                          value: kubernetes_secret
+                    mount_path:
+                      type: string
+                      title: Mount Path
+                      pattern: ^/.*
+                      description: Mount path for secrets
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
+                    sub_path:
+                      type: string
+                      title: Sub Path
+                      description: Path within the Secret to mount a specific key
+                        or file
+                  required:
+                  - name
+                  - mount_path
+            pvc:
+              type: object
+              title: PVC
+              description: PVC mounts
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: PVC Name
+                  properties:
+                    claim_name:
+                      type: string
+                      title: Claim Name
+                      pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
+                      description: PVC name
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with an alphanumeric character and should be in range of 3-20
+                        characters
+                      x-ui-typeable: true
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                        method: GET
+                        params:
+                          includeContent: false
+                        labelKey: resourceName
+                        valueKey: resourceName
+                        valueTemplate: ${pvc.{{value}}.out.attributes.name}
+                        filterConditions:
+                        - field: resourceType
+                          value: pvc
+                    mount_path:
+                      type: string
+                      title: Mount Path
+                      pattern: ^/.*
+                      description: Mount path for PVC
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
+                    sub_path:
+                      type: string
+                      title: Sub Path
+                      description: Path within the PVC to mount a specific subdirectory
+                  required:
+                  - claim_name
+                  - mount_path
+            host_path:
+              type: object
+              title: Host Path
+              description: Host path mounts
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Host Path Name
+                  properties:
+                    mount_path:
+                      type: string
+                      title: Mount Path
+                      pattern: ^/.*
+                      description: Mount path for host path
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
+                    sub_path:
+                      type: string
+                      title: Sub Path
+                      description: Path within the host filesystem to mount a specific
+                        directory or file
+                  required:
+                  - name
+                  - mount_path
       required:
+      - ports
       - size
+      - health_checks
     env:
       title: Environment Variables
       description: Map of environment variables passed to the main container.

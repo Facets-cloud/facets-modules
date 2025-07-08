@@ -7,6 +7,20 @@ clouds:
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+outputs:
+  default:
+    type: "@outputs/postgres"
 metadata:
   title: Metadata of Mongo
   type: object

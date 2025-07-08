@@ -1,9 +1,30 @@
 intent: s3
-flavor: default
-version: "0.2"
+flavor: default_demo
+version: '0.2'
 description: Adds S3 module
 clouds:
 - aws
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The AWS Cloud Account where the VPC will be created
+    optional: false
+    providers:
+    - aws
+    - aws4
+    - aws5
+    - aws593
+outputs:
+  s3_outputs:
+    type: '@outputs/aws_s3'
+imports:
+- name: s3_bucket
+  resource_address: aws_s3_bucket.bucket
+  required: true
+- name: s3_bucket_policy
+  resource_address: aws_s3_bucket_policy.external[1]
+  required: false
 spec:
   title: AWS S3
   type: object
@@ -20,7 +41,8 @@ spec:
       description: Importing existing s3 resources to facets
       x-ui-visible-if:
         field: spec.enable_import
-        values: [true]
+        values:
+        - true
       properties:
         s3_bucket:
           type: string
@@ -37,7 +59,7 @@ spec:
       title: Lifecycle Rules
       description: Lifecycle Rules
       patternProperties:
-        "^[a-zA-Z0-9_-]*$":
+        ^[a-zA-Z0-9_-]*$:
           type: object
           title: Lifecycle Rule
           description: Lifecycle Rule for S3 Bucket
@@ -88,7 +110,7 @@ spec:
                 storage_class:
                   type: string
                   title: Storage Class
-                  default: "STANDARD_IA"
+                  default: STANDARD_IA
                   description: Storage class to which you want the object to transition
                 date:
                   type: string
@@ -127,12 +149,11 @@ spec:
                   description: Number of days after a new version of the object is
                     created when the noncurrent version is transitioned
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/s3/s3.schema.json
   disabled: true
-  flavor: default
+  flavor: default_demo
   kind: s3
   metadata: {}
-  version: "0.2"
+  version: '0.2'
   spec: {}
   advanced: {}
