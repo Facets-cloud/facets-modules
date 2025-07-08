@@ -194,11 +194,14 @@ module "ecs" {
   propagate_tags                     = "SERVICE"
   proxy_configuration                = {}
   requires_compatibilities           = ["FARGATE"]
-  runtime_platform                   = lookup(local.advanced_ecs, "runtime_platform", { "cpu_architecture" : "X86_64", "operating_system_family" : "LINUX" })
-  scale                              = lookup(local.advanced_ecs, "scale", {})
-  scheduling_strategy                = lookup(local.advanced_ecs, "scheduling_strategy", null)
-  security_group_description         = "Security group created through terraform for ECS ${module.name.name}"
-  security_group_name                = module.name.name
+  runtime_platform = merge({
+    cpu_architecture        = "X86_64"
+    operating_system_family = "LINUX"
+  }, lookup(local.advanced_ecs, "runtime_platform", {}))
+  scale                      = lookup(local.advanced_ecs, "scale", {})
+  scheduling_strategy        = lookup(local.advanced_ecs, "scheduling_strategy", null)
+  security_group_description = "Security group created through terraform for ECS ${module.name.name}"
+  security_group_name        = module.name.name
   security_group_rules = {
     all_outbound_traffic = {
       type        = "egress"
