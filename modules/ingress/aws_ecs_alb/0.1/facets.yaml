@@ -2,6 +2,7 @@ intent: ingress
 flavor: aws_ecs_alb
 version: "0.1"
 description: Configures AWS ECS with Application Load Balancer
+allow_skipping_module_on_selective_release: false
 clouds:
 - aws
 metadata:
