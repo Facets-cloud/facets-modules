@@ -3,3 +3,6 @@ type: K8s
 displayName: Kubernetes Node Pool
 description: Group of nodes within a Kubernetes cluster that can be scaled and configured independently.
 iconUrl: https://cdn.prod.website-files.com/6252ef50a9f5d4afb6983bc3/669fa0ccd8fbce5640b8bb0a_kubernetes_node_pool.svg
+outputs:
+  - name: default
+    type: "@outputs/kubernetes_node_pool"
