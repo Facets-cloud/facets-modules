@@ -159,7 +159,7 @@ inputs:
     - aws5
     - aws593
 outputs:
-  default:
+  attributes.k8s_details:
     type: '@outputs/aws_eks'
     title: Kubernetes Cluster Output
     description: The output for the Kubernetes cluster
