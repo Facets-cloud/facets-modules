@@ -23,6 +23,21 @@ spec:
   title: Grafana Dashboard Configuration
   description: Configuration for a Grafana dashboard, including panels, data sources,
     and layout.
+  properties:
+    dashboard:
+      type: object
+      title: Dashboard JSON Definition
+      description: Complete Grafana dashboard definition following the Grafana JSON
+        model
+      x-ui-yaml-editor: true
+    preserve_uid:
+      type: boolean
+      title: Preserve Dashboard UID
+      description: Whether to preserve the UID from the dashboard JSON or generate
+        a random one
+      default: false
+  required:
+  - dashboard
 sample:
   kind: grafana_dashboard
   flavor: default
