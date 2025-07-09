@@ -2,6 +2,7 @@ intent: atlas_account
 flavor: default
 version: '0.1'
 description: Adds atlas_account - default flavor
+critical: true
 outputs:
   default:
     type: "@outputs/atlas_account"
@@ -28,6 +29,7 @@ spec:
       x-ui-typeable: true
       x-ui-placeholder: "e.g., '5f8d0c0b0f1a2b3c4d5e6f7g'"
       x-ui-error-message: "Please enter a valid Atlas Project ID."
+      x-ui-critical: true
     public_key:
       type: string
       title: Atlas Public Key
