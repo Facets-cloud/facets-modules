@@ -10,20 +10,20 @@ clouds:
 inputs:
   kubernetes_details:
     optional: false
-    type: "@outputs/kubernetes"
+    type: '@outputs/kubernetes'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
     providers:
-      - kubernetes
-      - kubernetes-alpha
-      - helm
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 spec:
   type: object
   title: Grafana Dashboard Configuration
-  description: Configuration for a Grafana dashboard, including panels, data sources, and layout.
+  description: Configuration for a Grafana dashboard, including panels, data sources,
+    and layout.
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/grafana_dashboard/grafana_dashboard.schema.json
   kind: grafana_dashboard
   flavor: default
   version: '0.1'
