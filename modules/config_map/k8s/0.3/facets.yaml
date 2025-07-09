@@ -2,6 +2,7 @@ intent: config_map
 flavor: k8s
 version: '0.3'
 description: "config_map - k8s"
+critical: true
 clouds:
 - aws
 - azure
@@ -29,6 +30,7 @@ spec:
               description: Value of the configmap object
               type: string
               x-ui-textarea: true
+              x-ui-critical: true
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/config_map/config_map.schema.json
