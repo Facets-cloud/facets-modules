@@ -88,7 +88,7 @@ locals {
   prometheus_retention = lookup(local.spec, "retention", "100d")
 
   # Nodepool configuration from inputs
-  nodepool_config = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details.attributes : {
+  nodepool_config = lookup(var.inputs, "kubernetes_node_pool_details", null) != null ? var.inputs.kubernetes_node_pool_details : {
     node_class_name = ""
     node_pool_name  = ""
     taints          = []

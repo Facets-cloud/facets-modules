@@ -168,24 +168,24 @@ outputs:
         source: hashicorp/kubernetes
         version: 2.17.0
         attributes:
-          host: attributes.cluster.auth.host
-          token: attributes.cluster.auth.token
-          cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
+          host: cluster.auth.host
+          token: cluster.auth.token
+          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
       helm:
         source: hashicorp/helm
         version: 2.8.0
         attributes:
           kubernetes:
-            host: attributes.cluster.auth.host
-            token: attributes.cluster.auth.token
-            cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
+            host: cluster.auth.host
+            token: cluster.auth.token
+            cluster_ca_certificate: cluster.auth.cluster_ca_certificate
       kubernetes-alpha:
         source: hashicorp/kubernetes-alpha
         version: 0.6.0
         attributes:
-          host: attributes.cluster.auth.host
-          cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
-          token: attributes.cluster.auth.token
+          host: cluster.auth.host
+          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
+          token: cluster.auth.token
 sample:
   kind: kubernetes_cluster
   flavor: aws_eks_demo

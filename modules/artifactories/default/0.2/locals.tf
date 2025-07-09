@@ -5,7 +5,7 @@ locals {
   namespace              = lookup(local.metadata, "namespace", lookup(var.cluster, "namespace", "default"))
   artifactories          = lookup(local.spec, "artifactories", {})
   include_all            = lookup(local.spec, "include_all", length(local.artifactories) > 0 ? "false" : "true")
-  kubernetes_details     = var.inputs.kubernetes_details.attributes.cluster
+  kubernetes_details     = var.inputs.kubernetes_details.attributes.k8s_details.cluster
   host                   = local.kubernetes_details.auth.host
   cluster_ca_certificate = base64encode(local.kubernetes_details.auth.cluster_ca_certificate)
   token                  = local.kubernetes_details.auth.token

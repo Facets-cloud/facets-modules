@@ -293,7 +293,7 @@ inputs:
     description: VPC network details for node placement
     optional: false
 outputs:
-  default:
+  attributes:
     type: '@outputs/aws_karpenter_nodepool'
     title: AWS Karpenter NodePool
 sample:

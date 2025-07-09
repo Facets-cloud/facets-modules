@@ -23,8 +23,8 @@ locals {
 
   # Transform taints from object format to string format for utility module compatibility
   kubernetes_node_pool_details = lookup(var.inputs, "kubernetes_node_pool_details", {})
-  node_pool_taints             = lookup(lookup(local.kubernetes_node_pool_details, "attributes", {}), "taints", [])
-  node_pool_labels             = lookup(lookup(local.kubernetes_node_pool_details, "attributes", {}), "node_selector", [])
+  node_pool_taints             = lookup(local.kubernetes_node_pool_details, "taints", [])
+  node_pool_labels             = lookup(local.kubernetes_node_pool_details, "node_selector", [])
 
   # Convert taints from {key: "key", value: "value", effect: "effect"} to "key=value:effect" format
   transformed_taints = [
@@ -116,7 +116,7 @@ module "irsa" {
   iam_role_name         = "${module.sr-name.name}-sr"
   namespace             = local.namespace
   sa_name               = "${local.sa_name}-sa"
-  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.cluster.oidc_provider_arn
+  eks_oidc_provider_arn = var.inputs.kubernetes_details.cluster.oidc_provider_arn
 }
 
 module "app-helm-chart" {
@@ -159,7 +159,7 @@ resource "aws_iam_role" "application-role" {
       "Sid": "",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "${var.inputs.kubernetes_details.attributes.node_group.iam_role_arn}"
+        "AWS": "${var.inputs.kubernetes_details.node_group.iam_role_arn}"
       },
       "Action": "sts:AssumeRole"
     }

@@ -5,7 +5,7 @@ module "iam_user_name" {
   environment     = var.environment
   limit           = 64
   globally_unique = false
-  resource_name   = var.inputs.kubernetes_details.attributes.cluster.name
+  resource_name   = var.inputs.kubernetes_details.attributes.k8s_details.cluster.name
   resource_type   = ""
   is_k8s          = false
 }
@@ -16,7 +16,7 @@ module "iam_policy_name" {
   environment     = var.environment
   limit           = 128
   globally_unique = false
-  resource_name   = var.inputs.kubernetes_details.attributes.cluster.name
+  resource_name   = var.inputs.kubernetes_details.attributes.k8s_details.cluster.name
   resource_type   = ""
   is_k8s          = false
 }

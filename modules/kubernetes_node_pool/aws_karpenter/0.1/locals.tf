@@ -32,7 +32,7 @@ locals {
   proxy_bypass_list = try(local.networking.proxy_configuration.bypass_domains, "") != "" ? split(",", local.networking.proxy_configuration.bypass_domains) : split(",", "localhost,127.0.0.1,169.254.169.254,.internal,.eks.amazonaws.com")
 
   # Automatically detect IAM role from EKS cluster - updated path for new structure
-  node_iam_role_arn = local.kubernetes_details.attributes.node_group.iam_role_name
+  node_iam_role_arn = local.kubernetes_details.node_group.iam_role_name
 
   # Subnet selection based on user choice from dropdown
   subnet_type = try(local.networking.subnet_type, "private")
@@ -52,7 +52,7 @@ locals {
   ]
 
   # Always use the node security group ID from EKS cluster output
-  node_security_group_id = local.kubernetes_details.attributes.node_group.security_group_id
+  node_security_group_id = local.kubernetes_details.node_group.security_group_id
 
   # Combine user tags with environment tags - updated cluster name path
   combined_tags = merge(
@@ -60,7 +60,7 @@ locals {
     {
       "facets.cloud/environment" = var.environment.name
       "facets.cloud/managed-by"  = "facets"
-      # "kubernetes.io/cluster/${local.kubernetes_details.attributes.cluster.name}" = "owned"
+      # "kubernetes.io/cluster/${local.kubernetes_details.cluster.name}" = "owned"
     }
   )
 
