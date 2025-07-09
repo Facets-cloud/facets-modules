@@ -81,7 +81,6 @@ spec:
   required:
   - topics
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_topic/kafka_topic.schema.json
   kind: kafka_topic
   flavor: default
   version: 0.1-test
