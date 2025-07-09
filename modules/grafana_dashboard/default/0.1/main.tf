@@ -1,9 +1,9 @@
 locals {
-  advanced         = lookup(var.instance, "advanced", {})
-  spec             = lookup(var.instance, "spec", {})
+  advanced = lookup(var.instance, "advanced", {})
+  spec     = lookup(var.instance, "spec", {})
   advanced_default = lookup(local.advanced, "default", {})
-  preserve_uid     = lookup(local.spec, "preserve_uid", lookup(local.advanced_default, "preserve_uid", false))
-  uid_override     = local.preserve_uid ? {} : { uid = random_string.uid.result }
+  preserve_uid = lookup(local.spec, "preserve_uid", lookup(local.advanced_default, "preserve_uid", false))
+  uid_override = local.preserve_uid ? {} : { uid = random_string.uid.result }
 }
 
 resource "random_string" "uid" {
