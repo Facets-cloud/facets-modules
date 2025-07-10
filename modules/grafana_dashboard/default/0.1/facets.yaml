@@ -30,6 +30,7 @@ spec:
       description: Complete Grafana dashboard definition following the Grafana JSON
         model
       x-ui-yaml-editor: true
+      x-ui-editor: true
     preserve_uid:
       type: boolean
       title: Preserve Dashboard UID
