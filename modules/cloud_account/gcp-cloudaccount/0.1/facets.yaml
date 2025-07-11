@@ -36,20 +36,6 @@ outputs:
   default:
     type: '@outputs/cloud_account'
     providers:
-      google-beta:
-        source: hashicorp/google-beta
-        version: 6.23.0
-        attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
-      google:
-        source: hashicorp/google
-        version: 6.23.0
-        attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
       google5:
         source: hashicorp/google5
         version: 5.32.0
