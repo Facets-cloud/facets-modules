@@ -1,5 +1,5 @@
 intent: service
-flavor: statefulset_raun
+flavor: statefulset
 version: '0.1'
 description: Adds service module
 clouds:
