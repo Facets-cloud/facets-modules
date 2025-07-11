@@ -4,6 +4,28 @@ version: "0.1"
 description: Adds kubernetes_node_pool - eks_self_managed flavor
 clouds:
 - aws
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/aws_vpc"
+    displayName: Network
+    description: Details of the network where the kubernetes node pool will be created.
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: "@outputs/aws_eks"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the kubernetes service account will be
+      created.
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 spec:
   title: Kubernetes Node Pool
   description: Specification of the kubernetes node pool for eks self managed flavor

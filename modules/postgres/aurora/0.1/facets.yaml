@@ -4,6 +4,22 @@ version: "0.1"
 description: Adds Postgres module of flavor aurora
 clouds:
 - aws
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/aws_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: "@outputs/aws_eks"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the kubernetes service account will be
+      created.
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
 spec:
   title: Aurora
   type: object
