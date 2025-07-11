@@ -1,6 +1,6 @@
 intent: service
-flavor: statefulset
-version: "0.1"
+flavor: statefulset_raun
+version: '0.1'
 description: Adds service module
 clouds:
 - aws
@@ -9,8 +9,8 @@ clouds:
 - kubernetes
 artifact_inputs:
   primary:
-    attribute_path: "spec.release.image"
-    artifact_type: "docker_image"
+    attribute_path: spec.release.image
+    artifact_type: docker_image
 metadata:
   title: Metadata of service
   type: object
@@ -36,7 +36,7 @@ spec:
       x-ui-override-disable: true
       x-ui-toggle: true
       patternProperties:
-        "^[a-zA-Z0-9_-]*$":
+        ^[a-zA-Z0-9_-]*$:
           type: object
           title: PVC
           description: Define volume details
@@ -54,19 +54,18 @@ spec:
               description: The storage size of the pvc , it should be specified like
                 `10Gi`
               minLength: 1
-              pattern: "^(0\\.[1-9]|[1-9](\\.[0-9]+)?|[1-5][0-9](\\.[0-9]+)?|6[0-4])Gi$|^([1-9](\\\
-                .[0-9]+)?|[1-9][0-9]{1,3}(\\.[0-9]+)?|[1-5][0-9]{4}(\\.[0-9]+)?|6[0-3][0-9]{3}(\\\
-                .[0-9]+)?|64000)Mi$"
-              x-ui-placeholder: "e.g., '800Mi' or '1.5Gi'"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+              pattern: ^(0\.[1-9]|[1-9](\.[0-9]+)?|[1-5][0-9](\.[0-9]+)?|6[0-4])Gi$|^([1-9](\.[0-9]+)?|[1-9][0-9]{1,3}(\.[0-9]+)?|[1-5][0-9]{4}(\.[0-9]+)?|6[0-3][0-9]{3}(\.[0-9]+)?|64000)Mi$
+              x-ui-placeholder: e.g., '800Mi' or '1.5Gi'
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             path:
               type: string
               title: Path
               description: Path to mount the PVC
-              pattern: "^(/[^/]+)*(/)?$"
-              x-ui-error-message: "Value doesn't match pattern, eg: / or /<path> etc"
-              x-ui-placeholder: "Enter the storage size, eg. /data/temp"
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /<path>
+                etc'
+              x-ui-placeholder: Enter the storage size, eg. /data/temp
           required:
           - access_mode
           - path
@@ -99,17 +98,17 @@ spec:
               description: Define IAM policies to manage permissions, control-access
                 and secure resources
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   title: policy_name
                   properties:
                     arn:
                       title: ARN
                       type: string
-                      pattern: '^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_]+|\$\{[A-Za-z0-9._-]+\})$'
-                      x-ui-placeholder: "IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1"
-                      x-ui-error-message: "Value doesn't match pattern, accepted value
-                        pattern Eg: arn:aws:iam::123456789012:policy/policy1"
-                      x-ui-output-type: "iam_policy_arn"
+                      pattern: ^(arn:aws:iam::(\d{12}|aws):policy\/[A-Za-z0-9+=,.@\-_]+|\$\{[A-Za-z0-9._-]+\})$
+                      x-ui-placeholder: 'IAM policy example. Eg: arn:aws:iam::123456789012:policy/policy1'
+                      x-ui-error-message: 'Value doesn''t match pattern, accepted
+                        value pattern Eg: arn:aws:iam::123456789012:policy/policy1'
+                      x-ui-output-type: iam_policy_arn
                       x-ui-typeable: true
                   required:
                   - arn
@@ -125,16 +124,16 @@ spec:
               description: Assign GCP roles to define access and permissions for managing
                 resources.
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   title: Roles
                   properties:
                     role:
                       title: Role
                       type: string
-                      pattern: '(^roles\/[A-Za-z_.-]+$)|(^\${.+}$)'
-                      x-ui-placeholder: "gcp role example. Eg: roles/firestore.serviceAgent"
-                      x-ui-error-message: "Value doesn't match pattern, accepted value
-                        pattern Eg: roles/firestore.serviceAgent"
+                      pattern: (^roles\/[A-Za-z_.-]+$)|(^\${.+}$)
+                      x-ui-placeholder: 'gcp role example. Eg: roles/firestore.serviceAgent'
+                      x-ui-error-message: 'Value doesn''t match pattern, accepted
+                        value pattern Eg: roles/firestore.serviceAgent'
                     condition:
                       type: object
                       title: Condition
@@ -168,14 +167,14 @@ spec:
               description: Assign Azure roles to define access and permissions for
                 managing resources.
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   title: Roles
                   properties:
                     role:
                       title: role
                       type: string
-                      x-ui-placeholder: "Azure role to be added, example. Eg: Storage
-                        Account Contributor"
+                      x-ui-placeholder: 'Azure role to be added, example. Eg: Storage
+                        Account Contributor'
                   required:
                   - role
                   type: object
@@ -224,12 +223,15 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter readiness start up time for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter readiness start up time for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Wait time for readiness check (in sec)
             readiness_timeout:
               type: integer
@@ -237,12 +239,15 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter readiness timeout for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter readiness timeout for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Max time for readiness (in sec)
             readiness_period:
               type: integer
@@ -250,46 +255,50 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter readiness period for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter readiness period for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Repeated interval for health-check (in sec)
             readiness_port:
               type: string
               title: Readiness Port
-              x-ui-placeholder: "Enter readiness port for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-65535"
+              x-ui-placeholder: Enter readiness port for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-65535
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["PortCheck", "HttpCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
               description: Port for Health Checks
               x-ui-dynamic-enum: spec.runtime.ports.*.port
-              x-ui-disable-tooltip: "No Ports Added"
+              x-ui-disable-tooltip: No Ports Added
             readiness_url:
               type: string
               title: Readiness URL
-              pattern: "^(/[^/]+)*(/)?$"
-              x-ui-placeholder: "Enter readiness url for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter readiness url for the Pod
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["HttpCheck"]
+                values:
+                - HttpCheck
               description: URL for readiness
             readiness_exec_command:
               type: array
               title: Readiness Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder: "Enter readiness exec for the Pod, commands are separated
-                by commas"
-              x-ui-error-message: "Value doesn't match pattern, commands needs to
-                be comma separated"
+              x-ui-placeholder: "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
-                values: ["ExecCheck"]
+                values:
+                - ExecCheck
               description: Commands for readiness check
               items:
                 type: string
@@ -310,12 +319,15 @@ spec:
               title: Liveness Start-Up Time
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter liveness start up time for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter liveness start up time for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.liveness_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Wait time for liveness (in sec)
             liveness_timeout:
               type: integer
@@ -323,12 +335,15 @@ spec:
               title: Liveness Timeout
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter liveness timeout for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter liveness timeout for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Max time for liveness (in sec)
             liveness_period:
               type: integer
@@ -336,46 +351,50 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter liveness period for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter liveness period for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Interval for Liveness (in sec)
             liveness_port:
               type: string
               title: Liveness Port
-              x-ui-placeholder: "Enter liveness port for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-65535"
+              x-ui-placeholder: Enter liveness port for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-65535
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["PortCheck", "HttpCheck"]
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
               description: Port for Health Checks
               x-ui-dynamic-enum: spec.runtime.ports.*.port
-              x-ui-disable-tooltip: "No Ports Added"
+              x-ui-disable-tooltip: No Ports Added
             liveness_url:
               type: string
               title: Liveness URL
-              pattern: "^(/[^/]+)*(/)?$"
-              x-ui-placeholder: "Enter liveness url for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter liveness url for the Pod
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["HttpCheck"]
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - HttpCheck
               description: URL for liveness
             liveness_exec_command:
               type: array
               title: Liveness Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder: "Enter readiness exec for the Pod, commands are separated
-                by commas"
-              x-ui-error-message: "Value doesn't match pattern, commands needs to
-                be comma separated"
+              x-ui-placeholder: "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.liveness_check_type"
-                values: ["ExecCheck"]
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - ExecCheck
               description: Commands for liveness
               items:
                 type: string
@@ -396,12 +415,15 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter startup start up time for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter startup start up time for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Wait time for startup check (in sec)
             startup_timeout:
               type: integer
@@ -409,12 +431,15 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter startup timeout for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter startup timeout for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Max time for startup (in sec)
             startup_period:
               type: integer
@@ -422,34 +447,40 @@ spec:
               default: 10
               minimum: 0
               maximum: 10000
-              x-ui-placeholder: "Enter startup period for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-10000"
+              x-ui-placeholder: Enter startup period for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-10000
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
               description: Repeated interval for health-check (in sec)
             startup_port:
               type: string
               title: Startup Port
-              x-ui-placeholder: "Enter startup port for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, accepted values are
-                from 0-65535"
+              x-ui-placeholder: Enter startup port for the Pod
+              x-ui-error-message: Value doesn't match pattern, accepted values are
+                from 0-65535
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["PortCheck", "HttpCheck"]
+                values:
+                - PortCheck
+                - HttpCheck
               description: Port for Health Checks
               x-ui-dynamic-enum: spec.runtime.ports.*.port
-              x-ui-disable-tooltip: "No Ports Added"
+              x-ui-disable-tooltip: No Ports Added
             startup_url:
               type: string
               title: Startup URL
-              pattern: "^(/[^/]+)*(/)?$"
-              x-ui-placeholder: "Enter startup url for the Pod"
-              x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter startup url for the Pod
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["HttpCheck"]
+                values:
+                - HttpCheck
               description: URL for startup
             startup_headers:
               type: object
@@ -457,19 +488,18 @@ spec:
               description: Headers to be sent with startup check request
               x-ui-yaml-editor: true
               x-ui-visible-if:
-                field: "spec.runtime.health_checks.startup_check_type"
-                values: ["HttpCheck"]
+                field: spec.runtime.health_checks.startup_check_type
+                values:
+                - HttpCheck
             startup_exec_command:
               type: array
               title: Startup Exec Command
-              pattern: '^([^,]+)(,\s*[^,]+)*$'
-              x-ui-placeholder: "Enter startup exec for the Pod, commands are separated
-                by space"
-              x-ui-error-message: "Value doesn't match pattern, commands needs to
-                be space separated"
+              x-ui-placeholder: "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.startup_check_type
-                values: ["ExecCheck"]
+                values:
+                - ExecCheck
               description: Commands for startup check
               x-ui-override-disable: true
           required:
@@ -496,9 +526,9 @@ spec:
               minimum: 1
               maximum: 200
               description: Min replicas
-              x-ui-placeholder: "Enter Min replicas for you application"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging
-                from 1-200"
+              x-ui-placeholder: Enter Min replicas for you application
+              x-ui-error-message: Value doesn't match pattern, number should be ranging
+                from 1-200
             max:
               type: integer
               title: Max
@@ -506,10 +536,10 @@ spec:
               minimum: 1
               maximum: 200
               description: Max replicas
-              x-ui-placeholder: "Enter Max replicas for you application"
-              x-ui-validation: "spec.runtime.autoscaling.max > spec.runtime.autoscaling.min"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging
-                from 1-200 and Max should be more than Min"
+              x-ui-placeholder: Enter Max replicas for you application
+              x-ui-validation: spec.runtime.autoscaling.max > spec.runtime.autoscaling.min
+              x-ui-error-message: Value doesn't match pattern, number should be ranging
+                from 1-200 and Max should be more than Min
             scaling_on:
               type: string
               title: Scale based on
@@ -521,24 +551,26 @@ spec:
               type: string
               title: CPU Threshold
               description: Max CPU threshold
-              pattern: "^(100|[1-9][0-9]?)$"
-              x-ui-placeholder: "Enter cpu threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging
-                from 1-100"
+              pattern: ^(100|[1-9][0-9]?)$
+              x-ui-placeholder: Enter cpu threshold for you application to scale
+              x-ui-error-message: Value doesn't match pattern, number should be ranging
+                from 1-100
               x-ui-visible-if:
-                field: "spec.runtime.autoscaling.scaling_on"
-                values: ["CPU"]
+                field: spec.runtime.autoscaling.scaling_on
+                values:
+                - CPU
             ram_threshold:
               type: string
               title: RAM Threshold
               description: Max RAM threshold
-              pattern: "^(1?[0-9]?[0-9]|100)$"
-              x-ui-placeholder: "Enter memory threshold for you application to scale"
-              x-ui-error-message: "Value doesn't match pattern, number should be ranging
-                from 1-100"
+              pattern: ^(1?[0-9]?[0-9]|100)$
+              x-ui-placeholder: Enter memory threshold for you application to scale
+              x-ui-error-message: Value doesn't match pattern, number should be ranging
+                from 1-100
               x-ui-visible-if:
-                field: "spec.runtime.autoscaling.scaling_on"
-                values: ["RAM"]
+                field: spec.runtime.autoscaling.scaling_on
+                values:
+                - RAM
         size:
           type: object
           title: Size
@@ -548,50 +580,50 @@ spec:
               type: string
               title: CPU
               description: CPU size
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
               x-ui-compare:
                 field: spec.runtime.size.cpu_limit
-                comparator: '<='
-                x-ui-error-message: 'CPU cannot be more than CPU limit'
-              x-ui-placeholder: "Enter CPU requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 1 to 32 or 1m to 32000m"
+                comparator: <=
+                x-ui-error-message: CPU cannot be more than CPU limit
+              x-ui-placeholder: Enter CPU requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory:
               type: string
               title: Memory
               description: Memory size
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
               x-ui-compare:
                 field: spec.runtime.size.memory_limit
-                comparator: '<='
-                x-ui-error-message: 'Memory cannot be more than memory limit'
-              x-ui-placeholder: "Enter Memory requests for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                comparator: <=
+                x-ui-error-message: Memory cannot be more than memory limit
+              x-ui-placeholder: Enter Memory requests for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
             cpu_limit:
               type: string
               title: CPU Limit
               description: CPU limit size
-              pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
+              pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
               x-ui-compare:
                 field: spec.runtime.size.cpu
                 comparator: '>='
-                x-ui-error-message: 'CPU limit cannot be less than CPU'
-              x-ui-placeholder: "Enter CPU limits for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 1 to 32 or 1m to 32000m"
+                x-ui-error-message: CPU limit cannot be less than CPU
+              x-ui-placeholder: Enter CPU limits for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1 to 32 or 1m to 32000m
             memory_limit:
               type: string
               title: Memory Limit
               description: Memory limit size
-              pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
+              pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
               x-ui-compare:
                 field: spec.runtime.size.memory
                 comparator: '>='
-                x-ui-error-message: 'Memory limit cannot be less than memory'
-              x-ui-placeholder: "Enter Memory limits for your application"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                x-ui-error-message: Memory limit cannot be less than memory
+              x-ui-placeholder: Enter Memory limits for your application
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 1Gi to 64Gi or 1Mi to 64000Mi
           required:
           - cpu
           - memory
@@ -601,7 +633,7 @@ spec:
           x-ui-override-disable: true
           description: Port mappings
           patternProperties:
-            "^[0-9]+[m]?$":
+            ^[0-9]+[m]?$:
               type: object
               title: Port Name
               description: Define port allocation to facilitate communication with
@@ -611,22 +643,22 @@ spec:
                   type: string
                   title: Port
                   description: Port on which application is running
-                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+                  pattern: ^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
                   x-ui-unique: true
-                  x-ui-placeholder: "Enter the port number to expose for your application
-                    container"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number
-                    ranging from 1-65535"
+                  x-ui-placeholder: Enter the port number to expose for your application
+                    container
+                  x-ui-error-message: Value doesn't match pattern, it should be number
+                    ranging from 1-65535
                 service_port:
                   type: string
                   title: Service Port
                   description: Port from which application service can be exposed
-                  pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+                  pattern: ^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
                   x-ui-unique: true
-                  x-ui-placeholder: "Enter the port number to expose for your application
-                    service"
-                  x-ui-error-message: "Value doesn't match pattern, it should be number
-                    ranging from 1-65535"
+                  x-ui-placeholder: Enter the port number to expose for your application
+                    service
+                  x-ui-error-message: Value doesn't match pattern, it should be number
+                    ranging from 1-65535
                 protocol:
                   type: string
                   title: Protocol
@@ -644,7 +676,7 @@ spec:
           x-ui-toggle: true
           description: Metrics port mappings
           patternProperties:
-            "^[a-zA-Z0-9_.-]*$":
+            ^[a-zA-Z0-9_.-]*$:
               type: object
               title: Metrics Name
               description: Track and analyze performance metrics to monitor service
@@ -654,13 +686,13 @@ spec:
                   type: string
                   title: Path
                   description: Metrics path
-                  pattern: "^(/[^/]+)*(/)?$"
+                  pattern: ^(/[^/]+)*(/)?$
                 port_name:
                   type: string
                   title: Port Name
                   description: Port name for metrics
                   x-ui-dynamic-enum: spec.runtime.ports.*
-                  x-ui-disable-tooltip: "No Ports Available"
+                  x-ui-disable-tooltip: No Ports Available
               required:
               - path
               - port_name
@@ -676,37 +708,37 @@ spec:
               title: Config Maps
               description: Config map mounts
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   type: object
                   title: Config Map Name
                   properties:
                     name:
                       type: string
                       title: Name
-                      pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                      pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
                       description: Config map name
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        start with an alphanumeric character and should be in range
-                        of 3-20 characters"
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with an alphanumeric character and should be in range of 3-20
+                        characters
                       x-ui-typeable: true
                       x-ui-api-source:
-                        endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                         method: GET
                         params:
                           includeContent: false
                         labelKey: resourceName
                         valueKey: resourceName
-                        valueTemplate: "${config_map.{{value}}.out.attributes.name}"
+                        valueTemplate: ${config_map.{{value}}.out.attributes.name}
                         filterConditions:
                         - field: resourceType
                           value: config_map
                     mount_path:
                       type: string
                       title: Mount Path
-                      pattern: "^/.*"
+                      pattern: ^/.*
                       description: Mount path for config maps
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        start with a forward slash (/)"
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
                     sub_path:
                       type: string
                       title: Sub Path
@@ -720,7 +752,7 @@ spec:
               title: Secrets
               description: Secret mounts
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   type: object
                   title: Secret name
                   properties:
@@ -730,20 +762,20 @@ spec:
                       description: Secret name
                       x-ui-typeable: true
                       x-ui-api-source:
-                        endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                         method: GET
                         params:
                           includeContent: false
                         labelKey: resourceName
                         valueKey: resourceName
-                        valueTemplate: "${kubernetes_secret.{{value}}.out.attributes.name}"
+                        valueTemplate: ${kubernetes_secret.{{value}}.out.attributes.name}
                         filterConditions:
                         - field: resourceType
                           value: kubernetes_secret
                     mount_path:
                       type: string
                       title: Mount Path
-                      pattern: "^/.*"
+                      pattern: ^/.*
                       description: Mount path for secrets
                     sub_path:
                       type: string
@@ -758,37 +790,37 @@ spec:
               title: PVC
               description: PVC mounts
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   type: object
                   title: PVC Name
                   properties:
                     claim_name:
                       type: string
                       title: Claim Name
-                      pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
+                      pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
                       description: PVC name
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        start with an alphanumeric character and should be in range
-                        of 3-20 characters"
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with an alphanumeric character and should be in range of 3-20
+                        characters
                       x-ui-typeable: true
                       x-ui-api-source:
-                        endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                         method: GET
                         params:
                           includeContent: false
                         labelKey: resourceName
                         valueKey: resourceName
-                        valueTemplate: "${pvc.{{value}}.out.attributes.name}"
+                        valueTemplate: ${pvc.{{value}}.out.attributes.name}
                         filterConditions:
                         - field: resourceType
                           value: pvc
                     mount_path:
                       type: string
                       title: Mount Path
-                      pattern: "^/.*"
+                      pattern: ^/.*
                       description: Mount path for PVC
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        start with a forward slash (/)"
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
                     sub_path:
                       type: string
                       title: Sub Path
@@ -801,17 +833,17 @@ spec:
               title: Host Path
               description: Host path mounts
               patternProperties:
-                "^[a-zA-Z0-9_.-]*$":
+                ^[a-zA-Z0-9_.-]*$:
                   type: object
                   title: Host Path Name
                   properties:
                     mount_path:
                       type: string
                       title: Mount Path
-                      pattern: "^/.*"
+                      pattern: ^/.*
                       description: Mount path for host path
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        start with a forward slash (/)"
+                      x-ui-error-message: Value doesn't match pattern, it should start
+                        with a forward slash (/)
                     sub_path:
                       type: string
                       title: Sub Path
@@ -844,7 +876,7 @@ spec:
           title: Image
           description: The docker image of the application that you want to run
           x-ui-skip: true
-          x-ui-error-message: "Value doesn't match pattern for a container image"
+          x-ui-error-message: Value doesn't match pattern for a container image
         image_pull_policy:
           type: string
           title: Image Pull Policy
@@ -875,7 +907,9 @@ spec:
               - IfNotPresent
               - Always
               - Never
-          required: ["artifactory", "name"]
+          required:
+          - artifactory
+          - name
           x-ui-skip: true
         strategy:
           type: object
@@ -885,7 +919,7 @@ spec:
             type:
               type: string
               title: Type
-              description: "Your kubernetes rollout type eg: RollingUpdate or Recreate"
+              description: 'Your kubernetes rollout type eg: RollingUpdate or Recreate'
               enum:
               - RollingUpdate
               - Recreate
@@ -894,21 +928,21 @@ spec:
               title: Max Available
               description: If type RollingUpdate, this is the max number of pods that
                 can be created from the default replicas
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the max number or percentage of pods that needs
-                to be available during rolling restart"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 0 to 100 or 0% to 100%"
+              pattern: ^((100|[1-9]?[0-9])%?)$
+              x-ui-placeholder: Enter the max number or percentage of pods that needs
+                to be available during rolling restart
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 0 to 100 or 0% to 100%
             max_unavailable:
               type: string
               title: Max Unavailable
               description: If type RollingUpdate, this is the max number of pods that
                 can be unavailable from the default replicas
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the max number or percentage of pods that needs
-                to be unavailable during rolling restart"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 0 to 100 or 0% to 100%"
+              pattern: ^((100|[1-9]?[0-9])%?)$
+              x-ui-placeholder: Enter the max number or percentage of pods that needs
+                to be unavailable during rolling restart
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 0 to 100 or 0% to 100%
         disruption_policy:
           type: object
           title: Disruption Policy
@@ -922,21 +956,21 @@ spec:
               title: Min Available
               description: This is the min number of pods should be available in case
                 of failures
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the min number or percentage of pods that needs
-                to be available during disruption, this is pod disruption budget"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 0 to 100 or 0% to 100%"
+              pattern: ^((100|[1-9]?[0-9])%?)$
+              x-ui-placeholder: Enter the min number or percentage of pods that needs
+                to be available during disruption, this is pod disruption budget
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 0 to 100 or 0% to 100%
             max_unavailable:
               type: string
               title: Max Unavailable
               description: This is the max number of pods that can be unavailable
                 during a failure.
-              pattern: "^((100|[1-9]?[0-9])%?)$"
-              x-ui-placeholder: "Enter the max number or percentage of pods that needs
-                to be unavailable during disruption, this is pod disruption budget"
-              x-ui-error-message: "Value doesn't match pattern, it should be number
-                ranging from 0 to 100 or 0% to 100%"
+              pattern: ^((100|[1-9]?[0-9])%?)$
+              x-ui-placeholder: Enter the max number or percentage of pods that needs
+                to be unavailable during disruption, this is pod disruption budget
+              x-ui-error-message: Value doesn't match pattern, it should be number
+                ranging from 0 to 100 or 0% to 100%
     env:
       title: Environment Variables
       description: Map of environment variables passed to the main container.
@@ -950,7 +984,7 @@ spec:
       type: object
       x-ui-toggle: true
       patternProperties:
-        "^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$":
+        ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$:
           title: Init Container
           description: Init Container Specification.
           type: object
@@ -959,7 +993,7 @@ spec:
               type: string
               title: Image
               description: Docker image of the init container.
-              x-ui-error-message: "Value doesn't match pattern for a container image"
+              x-ui-error-message: Value doesn't match pattern for a container image
             pull_policy:
               title: Image Pull Policy
               description: Specifies when the image should be pulled from the registry.
@@ -973,24 +1007,17 @@ spec:
               title: Environment Variables
               description: Map of environment variables passed to init container.
               type: object
-              patternProperties:
-                "^[a-zA-Z][a-zA-Z0-9_-.]*$":
-                  title: Evironment Variable
-                  description: Environment Variable
-                  type: string
               x-ui-yaml-editor: true
             additional_k8s_env:
               title: Additional Environment Variables
               description: List of evironment variables to be created from referencing
-                key from configmap or secret. Eg 
-                https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/pod-configmap-env-var-valueFrom.yaml.
+                key from configmap or secret. Eg https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/pod-configmap-env-var-valueFrom.yaml.
               type: object
               x-ui-yaml-editor: true
             additional_k8s_env_from:
               title: Import Additional Environment Variables
               description: List of configmap or secret reference from which environments
-                varibales to be imported. Eg. 
-                https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
+                varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml.
               type: object
               x-ui-yaml-editor: true
             runtime:
@@ -1023,34 +1050,34 @@ spec:
                       type: string
                       title: CPU
                       description: CPU size
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      x-ui-placeholder: "Enter CPU requests for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1 to 32 or 1m to 32000m"
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      x-ui-placeholder: Enter CPU requests for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1 to 32 or 1m to 32000m
                     memory:
                       type: string
                       title: Memory
                       description: Memory size
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      x-ui-placeholder: "Enter Memory requests for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      x-ui-placeholder: Enter Memory requests for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1Gi to 64Gi or 1Mi to 64000Mi
                     cpu_limit:
                       type: string
                       title: CPU Limit
                       description: CPU limit size
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      x-ui-placeholder: "Enter CPU limits for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1 to 32 or 1m to 32000m"
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      x-ui-placeholder: Enter CPU limits for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1 to 32 or 1m to 32000m
                     memory_limit:
                       type: string
                       title: Memory Limit
                       description: Memory limit size
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      x-ui-placeholder: "Enter Memory limits for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      x-ui-placeholder: Enter Memory limits for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1Gi to 64Gi or 1Mi to 64000Mi
                   required:
                   - cpu
                   - memory
@@ -1066,7 +1093,7 @@ spec:
                       title: Config Maps
                       description: Config map mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Config Map Name
                           properties:
@@ -1074,19 +1101,19 @@ spec:
                               type: string
                               title: Name
                               description: Config map name
-                              pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                              x-ui-error-message: "Value doesn't match pattern, it
+                              pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
+                              x-ui-error-message: Value doesn't match pattern, it
                                 should start with an alphanumeric character and should
-                                be in range of 3-20 characters"
+                                be in range of 3-20 characters
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${config_map.{{value}}.out.attributes.name}"
+                                valueTemplate: ${config_map.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: config_map
@@ -1107,7 +1134,7 @@ spec:
                       title: Secrets
                       description: Secret mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Secret name
                           properties:
@@ -1117,13 +1144,13 @@ spec:
                               description: Secret name
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${kubernetes_secret.{{value}}.out.attributes.name}"
+                                valueTemplate: ${kubernetes_secret.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: kubernetes_secret
@@ -1144,7 +1171,7 @@ spec:
                       title: PVC
                       description: PVC mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: PVC Name
                           properties:
@@ -1152,19 +1179,19 @@ spec:
                               type: string
                               title: Claim Name
                               description: PVC name
-                              pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                              x-ui-error-message: "Value doesn't match pattern, it
+                              pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
+                              x-ui-error-message: Value doesn't match pattern, it
                                 should start with an alphanumeric character and should
-                                be in range of 3-20 characters"
+                                be in range of 3-20 characters
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${pvc.{{value}}.out.attributes.name}"
+                                valueTemplate: ${pvc.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: pvc
@@ -1185,7 +1212,7 @@ spec:
                       title: Host Path
                       description: Host path mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Host Path Name
                           properties:
@@ -1219,7 +1246,7 @@ spec:
       type: object
       x-ui-toggle: true
       patternProperties:
-        "^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$":
+        ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$:
           title: Sidecar Container
           description: Sidecar Container Specification
           type: object
@@ -1228,7 +1255,7 @@ spec:
               type: string
               title: Image
               description: Docker image of the init container
-              x-ui-error-message: "Value doesn't match pattern for a container image"
+              x-ui-error-message: Value doesn't match pattern for a container image
             pull_policy:
               title: Image Pull Policy
               description: Specifies when the image should be pulled from the registry.
@@ -1242,24 +1269,17 @@ spec:
               title: Environment Variables
               description: Map of environment variables passed to init container
               type: object
-              patternProperties:
-                "^[a-zA-Z][a-zA-Z0-9_-.]*$":
-                  title: Evironment Variable
-                  description: Environment Variable
-                  type: string
               x-ui-yaml-editor: true
             additional_k8s_env:
               title: Additional Environment Variables
               description: List of evironment variables to be created from referencing
-                key from configmap or secret. Eg 
-                https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/pod-configmap-env-var-valueFrom.yaml
+                key from configmap or secret. Eg https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/pod-configmap-env-var-valueFrom.yaml
               type: object
               x-ui-yaml-editor: true
             additional_k8s_env_from:
               title: Import Additional Environment Variables
               description: List of configmap or secret reference from which environments
-                varibales to be imported. Eg. 
-                https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
+                varibales to be imported. Eg. https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/inject/pod-secret-envFrom.yaml
               type: object
               x-ui-yaml-editor: true
             runtime:
@@ -1292,34 +1312,34 @@ spec:
                       type: string
                       title: CPU
                       description: CPU size
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      x-ui-placeholder: "Enter CPU requests for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1 to 32 or 1m to 32000m"
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      x-ui-placeholder: Enter CPU requests for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1 to 32 or 1m to 32000m
                     memory:
                       type: string
                       title: Memory
                       description: Memory size
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      x-ui-placeholder: "Enter Memory requests for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      x-ui-placeholder: Enter Memory requests for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1Gi to 64Gi or 1Mi to 64000Mi
                     cpu_limit:
                       type: string
                       title: CPU Limit
                       description: CPU limit size
-                      pattern: "^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$"
-                      x-ui-placeholder: "Enter CPU limits for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1 to 32 or 1m to 32000m"
+                      pattern: ^([1-9]|[12][0-9]|3[0-2])$|^(3[0-1][0-9]{3}|[1-2][0-9]{4}|[1-9][0-9]{0,3}|32000)m$
+                      x-ui-placeholder: Enter CPU limits for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1 to 32 or 1m to 32000m
                     memory_limit:
                       type: string
                       title: Memory Limit
                       description: Memory limit size
-                      pattern: "^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$"
-                      x-ui-placeholder: "Enter Memory limits for your application"
-                      x-ui-error-message: "Value doesn't match pattern, it should
-                        be number ranging from 1Gi to 64Gi or 1Mi to 64000Mi"
+                      pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
+                      x-ui-placeholder: Enter Memory limits for your application
+                      x-ui-error-message: Value doesn't match pattern, it should be
+                        number ranging from 1Gi to 64Gi or 1Mi to 64000Mi
                   required:
                   - cpu
                   - memory
@@ -1335,7 +1355,7 @@ spec:
                       title: Config Maps
                       description: Config map mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Config Map Name
                           properties:
@@ -1343,19 +1363,19 @@ spec:
                               type: string
                               title: Name
                               description: Config map name
-                              pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                              x-ui-error-message: "Value doesn't match pattern, it
+                              pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
+                              x-ui-error-message: Value doesn't match pattern, it
                                 should start with an alphanumeric character and should
-                                be in range of 3-20 characters"
+                                be in range of 3-20 characters
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${config_map.{{value}}.out.attributes.name}"
+                                valueTemplate: ${config_map.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: config_map
@@ -1376,7 +1396,7 @@ spec:
                       title: Secrets
                       description: Secret mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Secret name
                           properties:
@@ -1386,13 +1406,13 @@ spec:
                               description: Secret name
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${kubernetes_secret.{{value}}.out.attributes.name}"
+                                valueTemplate: ${kubernetes_secret.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: kubernetes_secret
@@ -1413,7 +1433,7 @@ spec:
                       title: PVC
                       description: PVC mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: PVC Name
                           properties:
@@ -1421,19 +1441,19 @@ spec:
                               type: string
                               title: Claim Name
                               description: PVC name
-                              pattern: "^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$"
-                              x-ui-error-message: "Value doesn't match pattern, it
+                              pattern: ^[a-zA-Z0-9]([a-zA-Z0-9-]{1,18}[a-zA-Z0-9])$
+                              x-ui-error-message: Value doesn't match pattern, it
                                 should start with an alphanumeric character and should
-                                be in range of 3-20 characters"
+                                be in range of 3-20 characters
                               x-ui-typeable: true
                               x-ui-api-source:
-                                endpoint: "/cc-ui/v1/dropdown/stack/{{stackName}}/resources-info"
+                                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
                                 method: GET
                                 params:
                                   includeContent: false
                                 labelKey: resourceName
                                 valueKey: resourceName
-                                valueTemplate: "${pvc.{{value}}.out.attributes.name}"
+                                valueTemplate: ${pvc.{{value}}.out.attributes.name}
                                 filterConditions:
                                 - field: resourceType
                                   value: pvc
@@ -1454,7 +1474,7 @@ spec:
                       title: Host Path
                       description: Host path mounts
                       patternProperties:
-                        "^[a-zA-Z0-9_.-]*$":
+                        ^[a-zA-Z0-9_.-]*$:
                           type: object
                           title: Host Path Name
                           properties:
@@ -1476,7 +1496,7 @@ spec:
                   x-ui-override-disable: true
                   description: Port mappings for sidecar container
                   patternProperties:
-                    "^[0-9]+[m]?$":
+                    ^[0-9]+[m]?$:
                       type: object
                       title: Port Name
                       description: Define port to be exposed from sidecar
@@ -1485,11 +1505,11 @@ spec:
                           type: string
                           title: Port
                           description: Port on which sidecar application is running
-                          pattern: "^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-                          x-ui-placeholder: "Enter the port number to expose for your
-                            sidecar container"
-                          x-ui-error-message: "Value doesn't match pattern, it should
-                            be number ranging from 1-65535"
+                          pattern: ^(?!0$)([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+                          x-ui-placeholder: Enter the port number to expose for your
+                            sidecar container
+                          x-ui-error-message: Value doesn't match pattern, it should
+                            be number ranging from 1-65535
                       required:
                       - port
                 health_checks:
@@ -1516,12 +1536,15 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter readiness start up time for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter readiness start up time for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Wait time for readiness check (in sec)
                     readiness_timeout:
                       type: integer
@@ -1529,12 +1552,15 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter readiness timeout for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter readiness timeout for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Max time for readiness (in sec)
                     readiness_period:
                       type: integer
@@ -1542,34 +1568,36 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter readiness period for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter readiness period for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Repeated interval for health-check (in sec)
                     readiness_url:
                       type: string
                       title: Readiness URL
-                      pattern: "^(/[^/]+)*(/)?$"
-                      x-ui-placeholder: "Enter readiness url for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter readiness url for the Pod
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
-                        values: ["HttpCheck"]
+                        values:
+                        - HttpCheck
                       description: URL for readiness
                     readiness_exec_command:
                       type: array
                       title: Readiness Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Enter readiness exec for the Pod, commands
-                        are separated by commas"
-                      x-ui-error-message: "Value doesn't match pattern, commands needs
-                        to be comma separated"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
-                        values: ["ExecCheck"]
+                        values:
+                        - ExecCheck
                       description: Commands for readiness check
                       items:
                         type: string
@@ -1590,12 +1618,15 @@ spec:
                       title: Liveness Start-Up Time
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter liveness start up time for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter liveness start up time for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Wait time for liveness (in sec)
                     liveness_timeout:
                       type: integer
@@ -1603,12 +1634,15 @@ spec:
                       title: Liveness Timeout
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter liveness timeout for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter liveness timeout for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
-                        field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Max time for liveness (in sec)
                     liveness_period:
                       type: integer
@@ -1616,34 +1650,36 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter liveness period for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter liveness period for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
-                        field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Interval for Liveness (in sec)
                     liveness_url:
                       type: string
                       title: Liveness URL
-                      pattern: "^(/[^/]+)*(/)?$"
-                      x-ui-placeholder: "Enter liveness url for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter liveness url for the Pod
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
                       x-ui-visible-if:
-                        field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
-                        values: ["HttpCheck"]
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - HttpCheck
                       description: URL for liveness
                     liveness_exec_command:
                       type: array
                       title: Liveness Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Enter readiness exec for the Pod, commands
-                        are separated by commas"
-                      x-ui-error-message: "Value doesn't match pattern, commands needs
-                        to be comma separated"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
-                        field: "spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type"
-                        values: ["ExecCheck"]
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - ExecCheck
                       description: Commands for liveness
                       items:
                         type: string
@@ -1664,12 +1700,15 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter startup start up time for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter startup start up time for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Wait time for startup check (in sec)
                     startup_timeout:
                       type: integer
@@ -1677,12 +1716,15 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter startup timeout for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter startup timeout for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Max time for startup (in sec)
                     startup_period:
                       type: integer
@@ -1690,47 +1732,51 @@ spec:
                       default: 10
                       minimum: 0
                       maximum: 10000
-                      x-ui-placeholder: "Enter startup period for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-10000"
+                      x-ui-placeholder: Enter startup period for the Pod
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-10000
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
-                        values: ["PortCheck", "HttpCheck", "ExecCheck"]
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
                       description: Repeated interval for health-check (in sec)
                     startup_url:
                       type: string
                       title: Startup URL
-                      pattern: "^(/[^/]+)*(/)?$"
-                      x-ui-placeholder: "Enter startup url for the Pod"
-                      x-ui-error-message: "Value doesn't match pattern, eg: / , /<path>"
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter startup url for the Pod
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / , /<path>'
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
-                        values: ["HttpCheck"]
+                        values:
+                        - HttpCheck
                       description: URL for startup
                     startup_exec_command:
                       type: array
                       title: Startup Exec Command
-                      pattern: '^([^,]+)(,\s*[^,]+)*$'
-                      x-ui-placeholder: "Enter startup exec for the Pod, commands
-                        are separated by space"
-                      x-ui-error-message: "Value doesn't match pattern, commands needs
-                        to be space separated"
+                      x-ui-placeholder: "Add each command argument as a new entry"
+                      x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
                         field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
-                        values: ["ExecCheck"]
+                        values:
+                        - ExecCheck
                       description: Commands for startup check
                       x-ui-override-disable: true
                     port:
                       type: string
                       title: Health Check Port
-                      x-ui-placeholder: "Enter health check port for the Sidecar"
-                      x-ui-error-message: "Value doesn't match pattern, accepted values
-                        are from 0-65535"
+                      x-ui-placeholder: Enter health check port for the Sidecar
+                      x-ui-error-message: Value doesn't match pattern, accepted values
+                        are from 0-65535
                       x-ui-visible-if:
-                        field: "spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type"
-                        values: ["PortCheck", "HttpCheck"]
+                        field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
                       description: Port for Health Checks
-                      x-ui-disable-tooltip: "No Ports Added"
+                      x-ui-disable-tooltip: No Ports Added
                       x-ui-typeable: true
                   required:
                   - readiness_url
@@ -1766,15 +1812,13 @@ spec:
   - sidecars
   - cloud_permissions
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
   flavor: statefulset
   metadata:
     labels:
       deliveryType: MANUAL
   kind: service
   disabled: true
-  version: "0.1"
+  version: '0.1'
   spec:
     enable_host_anti_affinity: false
     type: statefulset
@@ -1789,7 +1833,7 @@ sample:
         scaling_on: CPU
         min: 1
         max: 1
-        cpu_threshold: "50"
+        cpu_threshold: '50'
       ports: {}
       size:
         cpu: 300m
