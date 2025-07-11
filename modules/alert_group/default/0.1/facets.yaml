@@ -1,110 +1,298 @@
 intent: alert_group
 flavor: default
 version: '0.1'
-description: Adds alert_group - default flavor
+description: Creates Prometheus alert rules for monitoring and alerting with comprehensive
+  validation and enhanced UI features
 clouds:
-  - aws
-  - gcp
-  - azure
-  - kubernetes
-
+- aws
+- gcp
+- azure
+- kubernetes
 spec:
   type: object
   properties:
     rules:
       type: object
       title: Alert Rules
-      description: Map of alert rule definitions
+      description: Define alert rules for Prometheus monitoring
+      x-ui-toggle: false
       patternProperties:
-        "^[a-zA-Z][a-zA-Z0-9_]*$":
+        ^[a-zA-Z0-9_-]+$:
           type: object
-          title: Alert Rule
-          description: Configuration for an individual alert rule
+          title: Alert Rule Configuration
           properties:
             expr:
               type: string
-              title: Expression
-              description: PromQL expression that defines the alert condition
+              title: Prometheus Expression
+              description: PromQL expression for the alert condition
+              pattern: ^.{1,2000}$
+              x-ui-error-message: Prometheus expression is required and must be between
+                1-2000 characters
             for:
               type: string
-              title: Duration
-              description: How long the condition must be true to fire the alert (e.g., "5m", "1h")
-              default: "5m"
-            summary:
-              type: string
-              title: Summary
-              description: Brief summary of what the alert indicates
+              title: Alert Duration
+              description: Duration for which the condition must be true (e.g., 5m,
+                10s, 1h, 2d)
+              pattern: ^[0-9]+[smhd]$
+              default: 5m
+              x-ui-error-message: Duration must be in format like 5m, 30s, 1h, 2d
             message:
               type: string
-              title: Message
-              description: Detailed message describing the alert condition
-            severity:
+              title: Alert Message
+              description: Detailed message when alert fires
+              minLength: 10
+              maxLength: 1000
+              x-ui-error-message: Alert message must be between 10-1000 characters
+                and provide clear context
+            summary:
               type: string
-              title: Severity Level
-              description: Severity level of the alert
-              enum:
-                - critical
-                - warning
-                - info
-              default: warning
-            resource_name:
-              type: string
-              title: Resource Name
-              description: Template for the resource name (supports Go templating with labels)
+              title: Alert Summary
+              description: Brief summary of the alert (appears in notifications)
+              minLength: 5
+              maxLength: 200
+              x-ui-error-message: Alert summary must be between 5-200 characters
             resource_type:
               type: string
               title: Resource Type
-              description: Type of resource this alert applies to (e.g., pod, statefulset, deployment)
+              description: Type of Kubernetes resource being monitored
+              minLength: 1
+              maxLength: 100
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceType
+                valueKey: resourceType
+                filterConditions:
+                - field: resourceType
+                  value: UNKNOWN
+                  type: negation
+              x-ui-typeable: true
+              x-ui-error-message: Please enter a valid Kubernetes resource type
+            resource_name:
+              type: string
+              resource_name: null
+              title: Resource Name
+              description: Name of the resource being monitored (must follow Kubernetes
+                naming conventions)
+              pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+              minLength: 1
+              maxLength: 63
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                filterConditions:
+                - field: resourceType
+                  value: spec.rules.{{this}}.resource_type
+                  type: dynamic
+              x-ui-error-message: Resource name must be valid Kubernetes name (lowercase,
+                alphanumeric, hyphens, 1-63 chars)
+            alert_type:
+              type: string
+              title: Alert Type
+              description: Type of alert supported by Facets monitoring system
+              enum:
+              - performance
+              - availability
+              - security
+              - capacity
+              - network
+              - database
+              - application
+              - infrastructure
+              - custom
+              minLength: 1
+              maxLength: 100
+              x-ui-typeable: true
+              x-ui-error-message: Select from predefined alert types or enter a custom
+                alert type
+            severity:
+              type: string
+              title: Severity Level
+              description: Alert severity level for prioritization and routing
+              enum:
+              - high
+              - normal
+              - urgent
+              - warning
+              - critical
+              default: normal
+              x-ui-typeable: true
+              x-ui-error-message: Select from predefined severity levels or enter
+                a custom severity
             disabled:
               type: boolean
               title: Disabled
-              description: Whether this rule is disabled
+              description: Whether this alert rule is disabled (won't trigger when
+                conditions are met)
               default: false
+            runbook_url:
+              type: string
+              title: Runbook URL
+              description: URL to documentation or runbook for handling this alert
+              pattern: ^https?://.*
+              x-ui-error-message: Runbook URL must be a valid HTTP/HTTPS URL
+            escalation_policy:
+              type: string
+              title: Escalation Policy
+              description: Name of the escalation policy for this alert
+              enum:
+              - immediate
+              - standard
+              - low_priority
+              - business_hours
+              - weekend_only
+              - custom
+              default: standard
+              x-ui-error-message: Please select a valid escalation policy
+            thresholds:
+              type: object
+              title: Alert Thresholds
+              description: Configurable thresholds for the alert condition
+              x-ui-toggle: true
+              properties:
+                warning:
+                  type: number
+                  title: Warning Threshold
+                  description: Threshold value for warning level alerts
+                  minimum: 0
+                critical:
+                  type: number
+                  title: Critical Threshold
+                  description: Threshold value for critical level alerts
+                  minimum: 0
+                unit:
+                  type: string
+                  title: Unit
+                  description: Unit of measurement for thresholds
+                  enum:
+                  - percent
+                  - bytes
+                  - count
+                  - seconds
+                  - milliseconds
+                  - requests_per_second
+                  - errors_per_minute
+                  default: percent
             labels:
               type: object
-              title: Labels
-              description: Additional labels to attach to the alert
+              title: Additional Labels
+              description: Additional labels for the alert (key-value pairs for routing
+                and grouping)
+              x-ui-toggle: true
               x-ui-yaml-editor: true
-              additionalProperties:
-                type: string
-              default: {}
+              x-ui-error-message: Labels should be key-value pairs with valid Kubernetes
+                label format
             annotations:
               type: object
-              title: Annotations
-              description: Additional annotations to attach to the alert
+              title: Additional Annotations
+              description: Additional annotations for the alert (key-value pairs for
+                metadata)
+              x-ui-toggle: true
               x-ui-yaml-editor: true
-              additionalProperties:
-                type: string
-              default: {}
+              x-ui-error-message: Annotations should be key-value pairs providing
+                additional context
+            notification_channels:
+              type: object
+              title: Notification Channels
+              description: Specific notification channels for this alert
+              x-ui-toggle: true
+              properties:
+                slack:
+                  type: boolean
+                  title: Slack Notifications
+                  description: Send notifications to Slack
+                  default: false
+                email:
+                  type: boolean
+                  title: Email Notifications
+                  description: Send notifications via email
+                  default: true
+                pagerduty:
+                  type: boolean
+                  title: PagerDuty Integration
+                  description: Create incidents in PagerDuty
+                  default: false
+                webhook:
+                  type: boolean
+                  title: Webhook Notifications
+                  description: Send notifications to custom webhook
+                  default: false
           required:
-            - expr
-            - for
-            - resource_name
-            - resource_type
-            - summary
-            - message
-          additionalProperties: false
-      additionalProperties: false
-  additionalProperties: false
+          - expr
+          - for
+          - resource_name
+          - resource_type
+          - summary
+          - message
+          - alert_type
+  required:
+  - rules
+inputs:
+  kubernetes_details:
+    type: '@outputs/kubernetes'
+    optional: false
+    displayName: Kubernetes Cluster
+    description: Target Kubernetes cluster where alert rules will be deployed
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+  prometheus_details:
+    type: '@outputs/prometheus'
+    optional: true
+    displayName: Prometheus Configuration
+    description: Prometheus instance details for alert rule configuration and deployment
+    default:
+      resource_type: configuration
+      resource_name: prometheus
+outputs:
+  default:
+    type: '@outputs/prometheus'
+    title: Alert Group Configuration
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/alert_group/alert_group.schema.json
   kind: alert_group
   flavor: default
   version: '0.1'
-  disabled: true
-  metadata: {}
   spec:
-    disabled: false
     rules:
-      KubernetesPodCrashLooping1:
-        expr: rate(kube_pod_container_status_restarts_total{container!="filebeat-daemon"}[20m]) * 1200 > 5
+      high_cpu_usage:
+        expr: cpu_usage_percent > 80
         for: 5m
-        summary: Kubernetes pod crash looping
-        message: Kubernetes pod crash looping since last 5 minutes for {{ $labels.instance }}
-        severity: critical
-        resource_name: '{{ $labels.pod }}'
+        message: CPU usage is above 80% for more than 5 minutes
+        summary: High CPU usage detected
         resource_type: pod
-        labels:
-          team: stack_owner
-        annotations:
-          sample: This is a sample annotation
+        resource_name: my-application
+        alert_type: performance
+        severity: normal
+        thresholds:
+          warning: 70
+          critical: 90
+          unit: percent
+        notification_channels:
+          email: true
+          slack: false
+      memory_usage_critical:
+        expr: memory_usage_percent > 95
+        for: 2m
+        message: Memory usage is critically high
+        summary: Critical memory usage detected
+        resource_type: container
+        resource_name: my-app-container
+        alert_type: critical
+        severity: high
+        escalation_policy: immediate
+        thresholds:
+          critical: 95
+          unit: percent
+        notification_channels:
+          email: true
+          pagerduty: true
