@@ -4,6 +4,14 @@ version: "0.1"
 description: Adds Kafka module of MSK flavor
 clouds:
 - aws
+inputs:
+  network_details:
+    type: "@outputs/aws_vpc"
+    displayName: Network
+    optional: false
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: Kafka spec
   type: object
