@@ -8,6 +8,19 @@ spec:
   title: Azure storage container
   description: Specification of the azure storage container resource intent
   type: object
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/azure_aks"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+  network_details:
+    optional: false
+    type: "@outputs/azure_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 sample:
   $schema: >-
     https://facets-cloud.github.io/facets-schemas/schemas/azure_storage_container/azure_storage_container.schema.json
