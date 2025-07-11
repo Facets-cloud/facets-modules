@@ -87,7 +87,6 @@ spec:
   - connection_string
   - endpoint
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json
   kind: kafka
   version: '0.1'
   flavor: external
