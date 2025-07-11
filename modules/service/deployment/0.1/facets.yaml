@@ -1,5 +1,5 @@
 intent: service
-flavor: deployment_1
+flavor: deployment
 alias-flavors: ["k8s", "default"]
 version: "0.1"
 description: Adds service module
@@ -1773,9 +1773,7 @@ spec:
   - sidecars
   - cloud_permissions
 sample:
-  $schema: >-
-    https://facets-cloud.github.io/facets-schemas/schemas/service/service.schema.json
-  flavor: deployment_1
+  flavor: deployment
   metadata:
     labels:
       deliveryType: MANUAL
