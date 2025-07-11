@@ -1,0 +1,8 @@
+name: prometheus
+out:
+  type: object
+  title: Prometheus
+  description: Prometheus
+  properties:
+    attributes:
+    interfaces:
