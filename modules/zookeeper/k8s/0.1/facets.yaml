@@ -7,15 +7,6 @@ clouds:
 - gcp
 - azure
 - kubernetes
-intent: zookeeper
-flavor: k8s
-version: '0.1'
-description: Adds Apache ZooKeeper - k8s flavor
-clouds:
-- gcp
-- kubernetes
-- azure
-- aws
 spec:
   title: ZooKeeper Configuration
   type: object
