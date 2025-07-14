@@ -1,12 +1,18 @@
 intent: cloud_account
-flavor: gcp-cloudaccount
-version: '0.1'
+alias-flavors:
+- default
+flavor: azure
+lifecycle: ENVIRONMENT
+version: '0.2'
+depends_on: []
+input_type: instance
 description: Module to configure and provision resources within a cloud account
+composition: {}
+conditional_on_intent: ''
 clouds:
-- gcp
+- azure
 spec:
   description: Module to configure and provision resources within a cloud account
-    (AWS, GCP, Azure)
   properties:
     cloud_account:
       description: Select the cloud account to use (must be previously linked)
@@ -23,7 +29,7 @@ spec:
         - field: accountType
           value: CLOUD
         - field: provider
-          value: GCP
+          value: AZURE
         params:
           includeContent: false
   required:
@@ -31,21 +37,24 @@ spec:
   title: Cloud Account Manager
   type: object
   x-ui-order:
+  - cloud_provider
   - cloud_account
 outputs:
   default:
     type: '@outputs/cloud_account'
     providers:
-      google5:
-        source: hashicorp/google5
-        version: 5.32.0
+      azurerm3-116-0:
+        source: hashicorp/azurerm3-116-0
+        version: 3.116.0
         attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
+          features: {}
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
 sample:
-  version: '0.1'
-  flavor: gcp-cloudaccount
+  version: '0.2'
+  flavor: azure
   kind: cloud_account
   disabled: false
   spec: {}

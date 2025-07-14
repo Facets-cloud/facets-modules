@@ -1,19 +1,24 @@
 intent: cloud_account
-alias-flavors:
-- default
-flavor: azure-cloudaccount
-lifecycle: ENVIRONMENT
-version: '0.1'
-depends_on: []
-input_type: instance
+flavor: aws
+version: '0.2'
 description: Module to configure and provision resources within a cloud account
-composition: {}
-conditional_on_intent: ''
 clouds:
-- azure
+- aws
 spec:
   description: Module to configure and provision resources within a cloud account
+    (AWS, GCP, Azure)
   properties:
+    region:
+      type: string
+      title: AWS Region
+      description: AWS region where the VPC will be created
+      x-ui-overrides-only: true
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/dropdown/aws/regions-v2
+        method: GET
+        labelKey: region
+        valueKey: region
+        path: regions
     cloud_account:
       description: Select the cloud account to use (must be previously linked)
       title: Cloud Account
@@ -29,32 +34,36 @@ spec:
         - field: accountType
           value: CLOUD
         - field: provider
-          value: AZURE
+          value: AWS
         params:
           includeContent: false
   required:
   - cloud_account
+  - region
   title: Cloud Account Manager
   type: object
   x-ui-order:
   - cloud_provider
   - cloud_account
+  - region
 outputs:
   default:
     type: '@outputs/cloud_account'
     providers:
-      azurerm3-116-0:
-        source: hashicorp/azurerm3-116-0
-        version: 3.116.0
+      aws593:
+        source: hashicorp/aws593
+        version: = 5.93.0
         attributes:
-          features: {}
-          subscription_id: attributes.subscription_id
-          client_id: attributes.client_id
-          client_secret: attributes.client_secret
-          tenant_id: attributes.tenant_id
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
 sample:
-  version: '0.1'
-  flavor: azure-cloudaccount
+  version: '0.2'
+  flavor: aws
   kind: cloud_account
   disabled: false
   spec: {}
