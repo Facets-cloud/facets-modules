@@ -19,5 +19,5 @@ module "irsa" {
   iam_role_name         = module.irsa_name.name
   namespace             = var.environment.namespace
   sa_name               = local.irsa_config.service_account_name
-  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.oidc_provider_arn
+  eks_oidc_provider_arn = var.inputs.kubernetes_details.attributes.k8s_details.cluster.oidc_provider_arn
 }

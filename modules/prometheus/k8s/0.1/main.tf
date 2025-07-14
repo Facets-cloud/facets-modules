@@ -24,7 +24,7 @@ resource "helm_release" "prometheus-operator" {
     yamlencode(merge(
       local.default_values,
       # Add EC2 scrape config if IRSA is enabled
-      local.irsa_config.enabled == 1 ? {
+        local.irsa_config.enabled == 1 ? {
         prometheus = {
           prometheusSpec = {
             additionalScrapeConfigs = concat(

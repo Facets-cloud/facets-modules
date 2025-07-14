@@ -1,14 +1,17 @@
 inputs:
   kubernetes_details:
     optional: false
-    type: '@output/kubernetes'
+    type: '@outputs/kubernetes'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
     providers:
-    - kubernetes
-    - kubernetes-alpha
-    - helm
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+  kubernetes_node_pool_details:
+    optional: true
+    type: '@outputs/aws_karpenter_nodepool'
 outputs:
   default:
     type: '@outputs/prometheus'
@@ -18,21 +21,27 @@ flavor: k8s
 description: Prometheus monitoring stack for Kubernetes with Grafana, Alertmanager,
   and kube-state-metrics
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 spec:
   title: Prometheus Stack
   description: Specification of the Prometheus stack
   type: object
   properties:
-    namespace:
-      type: string
-      title: Namespace
-      description: Kubernetes namespace for the Prometheus stack
-      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-      x-ui-placeholder: e.g., monitoring, prometheus, default
+    metadata:
+      type: object
+      title: Metadata
+      description: Metadata for the Prometheus stack
+      properties:
+        namespace:
+          type: string
+          title: Namespace
+          description: Kubernetes namespace for the Prometheus stack
+          default: default
+          pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+          x-ui-placeholder: e.g., monitoring, prometheus, default
     values:
       type: object
       title: Custom Values
@@ -60,8 +69,8 @@ spec:
               title: Label Value
               description: Value for the node selector label
           required:
-          - key
-          - value
+            - key
+            - value
     tolerations:
       type: object
       title: Tolerations
@@ -87,7 +96,7 @@ spec:
           x-ui-visible-if:
             field: spec.operator.enabled
             values:
-            - true
+              - true
           type: object
           title: Operator Size
           description: Resource sizing configuration for the Prometheus operator
@@ -154,7 +163,7 @@ spec:
           x-ui-visible-if:
             field: spec.prometheus.enabled
             values:
-            - true
+              - true
           x-ui-placeholder: e.g., 100d, 24h, 1440m
         size:
           type: object
@@ -164,7 +173,7 @@ spec:
           x-ui-visible-if:
             field: spec.prometheus.enabled
             values:
-            - true
+              - true
           properties:
             volume:
               type: string
@@ -234,7 +243,7 @@ spec:
           x-ui-visible-if:
             field: spec.grafana.enabled
             values:
-            - true
+              - true
           properties:
             resources:
               type: object
@@ -297,7 +306,7 @@ spec:
           x-ui-visible-if:
             field: spec.alertmanager.enabled
             values:
-            - true
+              - true
           properties:
             volume:
               type: string
@@ -369,7 +378,7 @@ spec:
           x-ui-visible-if:
             field: spec.kube-state-metrics.enabled
             values:
-            - true
+              - true
           x-ui-override-disable: true
         size:
           type: object
@@ -378,7 +387,7 @@ spec:
           x-ui-visible-if:
             field: spec.kube-state-metrics.enabled
             values:
-            - true
+              - true
           properties:
             resources:
               type: object
@@ -424,19 +433,19 @@ spec:
                       pattern: ^([1-9]|[1-5][0-9]|6[0-4])Gi$|^([1-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-3][0-9]{3}|64000)Mi$
                       default: 512Mi
   x-ui-order:
-  - namespace
-  - operator
-  - enable_crds
-  - prometheus
-  - alertmanager
-  - grafana
-  - kube-state-metrics
-  - node_selector
-  - tolerations
-  - values
+    - metadata
+    - operator
+    - enable_crds
+    - prometheus
+    - alertmanager
+    - grafana
+    - kube-state-metrics
+    - node_selector
+    - tolerations
+    - values
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/prometheus/prometheus.schema.json
-  flavor: k8s
+  flavor: k8s_demo
   metadata:
     namespace: default
   kind: prometheus
@@ -503,4 +512,4 @@ sample:
             memory: 512Mi
 iac:
   validated_files:
-  - variables.tf
+    - variables.tf
