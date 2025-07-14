@@ -43,8 +43,4 @@ sample:
   flavor: external
   disabled: true
   metadata: {}
-  spec:
-    username: ''
-    password: ''
-    endpoint: ''
-    connection_string: ''
+  spec: {}
