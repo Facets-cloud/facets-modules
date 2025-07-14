@@ -4,6 +4,23 @@ version: "0.1"
 description: Adds kubernetes_node_pool - aks flavor
 clouds:
 - azure
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+  network_details:
+    optional: false
+    type: "@outputs/azure_vpc"
+    default:
+      resource_type: network
+      resource_name: default
 spec:
   title: Kubernetes Node Pool
   description: Specification of the kubernetes node pool for aks flavor
