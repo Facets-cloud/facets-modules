@@ -4,8 +4,79 @@ version: '0.1'
 description: Adds gcp_iam_role - default flavor
 clouds:
 - gcp
+spec:
+  title: GCP IAM Role Configuration
+  description: Configuration for GCP IAM Role.
+  type: object
+  properties:
+    role_id:
+      type: string
+      title: Role ID
+      description: Unique identifier for the role.
+    target_id:
+      type: string
+      title: Target ID
+      description: The target ID for the role.
+      x-ui-variable-ref: true
+    permissions:
+      type: array
+      title: Permissions
+      description: List of permissions to be granted by the role.
+      items:
+        type: string
+      default: []
+      x-ui-override-disable: true
+      x-ui-yaml-editor: true
+    excluded_permissions:
+      type: array
+      title: Excluded Permissions
+      description: List of permissions that are excluded from the role.
+      items:
+        type: string
+      default: []
+      x-ui-override-disable: true
+      x-ui-yaml-editor: true
+    members:
+      type: array
+      title: Members
+      description: List of members to be granted the role.
+      items:
+        type: string
+      default: []
+      x-ui-override-disable: true
+      x-ui-yaml-editor: true
+    base_roles:
+      type: array
+      title: Base Roles
+      description: List of base roles to be included in the role.
+      items:
+        type: string
+      default: []
+      x-ui-override-disable: true
+      x-ui-yaml-editor: true
+    stage:
+      type: string
+      title: Stage
+      description: The stage of the role (e.g., GA, BETA, ALPHA
+      enum: ["ALPHA", "BETA", "GA", "DEPRECATED"]
+      default: "GA"
+  required:
+  - role_id
+  
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/gcp_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+
+outputs:
+  default:
+    type: "@outputs/gcp_iam_role"
+    title: "GCP IAM Role"
+  
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/gcp_iam_role/gcp_iam_role.schema.json
   kind: gcp_iam_role
   flavor: default
   version: '0.1'
