@@ -37,14 +37,14 @@ spec:
       description: This is the Kafka connections string with protocol that is used
         to connect kafka instances
       pattern: ^kafka:\/\/[a-zA-Z0-9._%+-]+:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(:[0-9]{1,5})(,[a-zA-Z0-9.-]+(:[0-9]{1,5}))*$
-  required:
-  - connection_string
-  - endpoint
 sample:
   kind: kafka
   version: '0.1'
   flavor: external
   disabled: true
   metadata: {}
-  spec:{
-}
+  spec:
+    username: ''
+    password: ''
+    endpoint: ''
+    connection_string: ''
