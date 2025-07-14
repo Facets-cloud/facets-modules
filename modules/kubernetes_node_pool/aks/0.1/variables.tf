@@ -1,21 +1,3 @@
-variable "cluster" {
-  type = any
-  default = {
-#    stackName = "infra-dev"
-#    name      = "aks-infra-dev"
-#    project   = "facets-cp-test"
-#    region    = "centralindia"
-#    vpcCIDR   = "10.35.0.0/16"
-#    azs       = ["1", "2"]
-  }
-}
-
-variable "baseinfra" {
-  type    = any
-  default = {}
-
-}
-
 #variable "cc_metadata" {
 #  type = any
 #  default = {
@@ -58,6 +40,6 @@ variable "environment" {
 }
 
 variable "inputs" {
-  type = any
+  type    = any
   default = {}
 }

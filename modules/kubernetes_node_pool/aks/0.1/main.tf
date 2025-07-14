@@ -119,7 +119,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
       }
 
     }
-    
+
   }
 
   // max_surge NA if priority == spot
