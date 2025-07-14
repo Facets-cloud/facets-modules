@@ -1,6 +1,6 @@
 intent: kubernetes_node_pool
 flavor: aks
-version: "0.1"
+version: "0.1-test"
 description: Adds kubernetes_node_pool - aks flavor
 clouds:
 - azure
@@ -101,7 +101,7 @@ sample:
       managed-by: facets
     annotations: {}
   disabled: true
-  version: "0.1"
+  version: "0.1-test"
   spec:
     instance_type: Standard_F8
     min_node_count: 0
