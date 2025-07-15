@@ -92,8 +92,6 @@ spec:
   - taints
   - labels
 sample:
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   flavor: aks
   kind: kubernetes_node_pool
   metadata:
