@@ -90,7 +90,6 @@ spec:
   - max_node_count
   - disk_size
   - taints
-  - labels
 sample:
   flavor: aks
   kind: kubernetes_node_pool
