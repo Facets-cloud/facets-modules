@@ -38,14 +38,17 @@ spec:
       title: Kafka Version
       description: Version of kafka e.g. 3.8.0
       x-ui-typeable: true
-      enum:
-      - 3.8.0
     mode:
       type: string
       title: Kafka mode
       description: Mode in which kafka to be run e.g. kraft
+      x-ui-typeable: true
       enum:
       - kraft
+      - combined
+      - zookeeper
+      - standalone
+      - combined
     controller:
       title: Controller Spec
       type: object
@@ -229,7 +232,6 @@ spec:
       - size
   required:
   - authenticated
-  - password
   - mode
   - kafka_version
   - controller
@@ -244,7 +246,7 @@ sample:
   version: '0.3'
   spec:
     authenticated: true
-    password: "kafka-admin-password"
+    password: kafka-admin-password
     kafka_version: 3.8.0
     mode: kraft
     controller:
