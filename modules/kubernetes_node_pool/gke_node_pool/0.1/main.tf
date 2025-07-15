@@ -13,7 +13,7 @@ locals {
 }
 
 module "sa-name" {
-  source          = "https://github.com/Facets-cloud/facets-utility-modules//name"
+  source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
   limit           = 30
   globally_unique = false
