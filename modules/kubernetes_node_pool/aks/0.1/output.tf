@@ -8,7 +8,7 @@ locals {
     cluster_id     = azurerm_kubernetes_cluster_node_pool.node_pool.id
   }
   output_interfaces = {}
-}
+} 
 
 ############## testing #####################
 output "aks_node_pool_details" {
