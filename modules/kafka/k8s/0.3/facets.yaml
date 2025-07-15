@@ -246,7 +246,6 @@ sample:
   version: '0.3'
   spec:
     authenticated: true
-    password: kafka-admin-password
     kafka_version: 3.8.0
     mode: kraft
     controller:
