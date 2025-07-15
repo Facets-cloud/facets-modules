@@ -1,5 +1,12 @@
 locals {
-  output_attributes = {}
+  output_attributes = {
+    node_pool_name  = azurerm_kubernetes_cluster_node_pool.node_pool.name
+    taints          = azurerm_kubernetes_cluster_node_pool.node_pool.node_taints
+    node_selector   = azurerm_kubernetes_cluster_node_pool.node_pool.node_labels
+    disk_size       = azurerm_kubernetes_cluster_node_pool.node_pool.os_disk_size_gb
+    node_count      = azurerm_kubernetes_cluster_node_pool.node_pool.node_count
+    cluster_id      = azurerm_kubernetes_cluster_node_pool.node_pool.id
+  }
   output_interfaces = {}
 }
 
