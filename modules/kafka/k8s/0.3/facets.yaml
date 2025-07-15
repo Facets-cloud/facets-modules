@@ -23,6 +23,16 @@ spec:
       type: boolean
       title: Authenticated
       description: Make this kafka password protected
+    password:
+      type: string
+      title: Password
+      description: Password for Kafka authentication
+      x-ui-secret-ref: true
+      x-ui-typeable: true
+      x-ui-visible-if:
+        field: spec.authenticated
+        values:
+        - true
     kafka_version:
       type: string
       title: Kafka Version
@@ -219,6 +229,7 @@ spec:
       - size
   required:
   - authenticated
+  - password
   - mode
   - kafka_version
   - controller
@@ -233,6 +244,7 @@ sample:
   version: '0.3'
   spec:
     authenticated: true
+    password: "kafka-admin-password"
     kafka_version: 3.8.0
     mode: kraft
     controller:
