@@ -58,7 +58,7 @@ variable "instance_name" {
 }
 
 variable "inputs" {
-  type = any
+  type    = any
   default = {}
 }
 

@@ -1,6 +1,6 @@
 intent: kubernetes_node_pool
 flavor: gke_node_pool
-version: "0.1"
+version: "0.1-test"
 description: Adds kubernetes_node_pool - gke_node_pool flavor
 clouds:
 - gcp
@@ -103,9 +103,7 @@ spec:
   - labels
 sample:
   flavor: gke_node_pool
-  $schema: 
-    https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
-  version: "0.1"
+  version: "0.1-test"
   kind: kubernetes_node_pool
   metadata: {}
   disabled: true
