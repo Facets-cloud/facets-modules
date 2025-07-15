@@ -11,6 +11,11 @@ inputs:
   kafka_details:
     type: '@outputs/kafka'
     optional: false
+  crossplane_details:
+    type: "@outputs/crossplane"
+    displayName: Crossplane
+    description: Details of crossplane which will be responsible to create kafka topics
+    optional: false
   kubernetes_details:
     optional: false
     type: '@outputs/kubernetes'
