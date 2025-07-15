@@ -8,25 +8,19 @@ clouds:
 - azure
 - kubernetes
 inputs:
-  crossplane_details:
-    type: '@outputs/crossplane'
-    displayName: Crossplane
-    description: Details of crossplane which will be responsible to create kafka topics
-    optional: false
   kafka_details:
-    type: '@outputs/kafka'
+    type: "@outputs/kafka"
     optional: false
-    displayName: Kafka
-    description: Kafka instance to create the topic in
   kubernetes_details:
-    displayName: Kubernetes Cluster
-    description: Kubernetes Cluster where crossplane is installed
     optional: false
-    type: '@outputs/kubernetes'
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
     providers:
-    - kubernetes
-    - kubernetes-alpha
-    - helm
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 outputs:
   default:
     type: '@outputs/kafka_topic'
