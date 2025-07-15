@@ -9,18 +9,18 @@ clouds:
 - kubernetes
 inputs:
   kafka_details:
-    type: "@outputs/kafka"
+    type: '@outputs/kafka'
     optional: false
   kubernetes_details:
     optional: false
-    type: "@outputs/kubernetes"
+    type: '@outputs/kubernetes'
     default:
       resource_type: kubernetes_cluster
       resource_name: default
     providers:
-      - kubernetes
-      - kubernetes-alpha
-      - helm
+    - kubernetes
+    - kubernetes-alpha
+    - helm
 outputs:
   default:
     type: '@outputs/kafka_topic'
