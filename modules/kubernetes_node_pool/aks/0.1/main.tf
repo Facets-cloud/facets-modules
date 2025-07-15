@@ -144,11 +144,5 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
   }
 }
 
-output "main_output" {
-  value = {
-    #zones = local.zones
-  }
-}
-
 
 
