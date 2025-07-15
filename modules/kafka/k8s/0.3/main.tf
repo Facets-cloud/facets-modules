@@ -121,14 +121,14 @@ depends_on = [module.default-password, module.controller_pvc, module.broker_pvc]
 }
 
 module "default-password" {
-  source = "../../../3_utility/password"
+  source = "github.com/Facets-cloud/facets-utility-modules//password"
   count  = local.spec.authenticated ? 1 : 0
   length = 12
 }
 
 module "controller_pvc" {
   count             = local.controller_persistence_enabled ? local.controller_replica_count : 0
-  source            = "../../../3_utility/pvc"
+  source            = "github.com/Facets-cloud/facets-utility-modules//pvc"
   name              = "data-${local.name}-kafka-controller-${count.index}"
   namespace         = local.namespace
   provisioned_for   = "kafka_replica-${count.index}"
@@ -141,7 +141,7 @@ module "controller_pvc" {
 
 module "broker_pvc" {
   count             = local.broker_persistence_enabled ? local.broker_replica_count : 0
-  source            = "../../../3_utility/pvc"
+  source            = "github.com/Facets-cloud/facets-utility-modules//pvc"
   name              = "data-${local.name}-kafka-broker-${count.index}"
   namespace         = local.namespace
   provisioned_for   = "kafka_replica-${count.index}"
@@ -154,7 +154,7 @@ module "broker_pvc" {
 
 
 resource "helm_release" "kafka-lag-exporter" {
-  chart       = "${path.module}/../kafka-lag-exporter-0.8.0.tgz"
+  chart       = "${path.module}/kafka-lag-exporter-0.8.0.tgz"
   name        = "${local.name}-kafka-lag-exporter"
   namespace   = local.namespace
   max_history = 10
