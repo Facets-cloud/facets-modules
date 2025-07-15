@@ -66,9 +66,9 @@ resource "google_container_node_pool" "node_pool" {
   version = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.kubernetes_version
 
   node_config {
-    machine_type    = lookup(local.spec, "instance_type", null)
-    image_type      = "COS_CONTAINERD"
-    disk_size_gb    = lookup(local.spec, "disk_size", null)
+    machine_type = lookup(local.spec, "instance_type", null)
+    image_type   = "COS_CONTAINERD"
+    disk_size_gb = lookup(local.spec, "disk_size", null)
     dynamic "taint" {
       for_each = lookup(local.spec, "taints", [])
       content {

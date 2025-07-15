@@ -57,6 +57,11 @@ variable "instance_name" {
   default = "private-nodepool"
 }
 
+variable "inputs" {
+  type = any
+  default = {}
+}
+
 variable "environment" {
   type    = map(any)
   default = {}
