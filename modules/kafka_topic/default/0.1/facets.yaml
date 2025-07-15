@@ -1,6 +1,6 @@
 intent: kafka_topic
-flavor: default
-version: 0.1-test
+flavor: kafka_topic-test
+version: '0.1'
 description: Adds kafka_topic - default flavor
 clouds:
 - aws
@@ -12,7 +12,7 @@ inputs:
     type: '@outputs/kafka'
     optional: false
   crossplane_details:
-    type: "@outputs/crossplane"
+    type: '@outputs/crossplane'
     displayName: Crossplane
     description: Details of crossplane which will be responsible to create kafka topics
     optional: false
@@ -81,8 +81,8 @@ spec:
   - topics
 sample:
   kind: kafka_topic
-  flavor: default
-  version: 0.1-test
+  flavor: kafka_topic-test
+  version: '0.1'
   disabled: true
   metadata: {}
   out: {}
