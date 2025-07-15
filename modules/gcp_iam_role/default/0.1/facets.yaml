@@ -73,7 +73,7 @@ inputs:
 
 outputs:
   default:
-    type: "@outputs/gcp_iam_role"
+    type: "@outputs/gcp_iam_role_name"
     title: "GCP IAM Role"
   
 sample:
