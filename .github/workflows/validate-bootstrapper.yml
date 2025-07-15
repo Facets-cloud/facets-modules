@@ -15,6 +15,7 @@ jobs:
     runs-on: iac-arc
     outputs:
       script_output: ${{ steps.run.outputs.script_output }}
+      slack_message: ${{ steps.run.outputs.slack_message }}
       exit_status: ${{ steps.run.outputs.exit_status }}
 
     steps:
@@ -28,12 +29,31 @@ jobs:
           ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
         run: |
           set +e
-          output=$(python .github/workflows/innersourcing/validate_bootstrapper.py)
+          python -u .github/workflows/innersourcing/validate_bootstrapper.py 2>&1 | tee script_output.txt
           exit_status=${PIPESTATUS[0]}
+          output=$(cat script_output.txt)
+          
+          # Extract Slack message if present
+          slack_message=$(echo "$output" | sed -n '/--- SLACK_MESSAGE_START ---/,/--- SLACK_MESSAGE_END ---/p' | sed '1d;$d')
+          if [ -z "$slack_message" ]; then
+            slack_message="Bootstrap validation failed but no detailed error message available. Check logs for details."
+          fi
+          
           echo "script_output<<EOF" >> $GITHUB_OUTPUT
           echo "$output" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          echo "slack_message<<EOF" >> $GITHUB_OUTPUT
+          echo "$slack_message" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
           echo "exit_status=$exit_status" >> $GITHUB_OUTPUT
+          
+          # Debug information
+          echo "Exit status: $exit_status"
+          echo "Output length: ${#output}"
+          echo "Slack message length: ${#slack_message}"
+          
+          # Clean up
+          rm -f script_output.txt
   on-failure:
     needs: validate-bootstrapper
     runs-on: iac-arc
@@ -44,7 +64,7 @@ jobs:
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.CHANNEL_ID }}
-          slack-message: ':alert-siren:Bootstrap Module Failed: ${{needs.validate-bootstrapper.outputs.script_output}}'
+          slack-message: ':alert-siren: Bootstrap Module Failed:\n${{needs.validate-bootstrapper.outputs.slack_message}}'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
       - name: Exiting with error

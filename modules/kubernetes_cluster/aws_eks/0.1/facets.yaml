@@ -105,7 +105,7 @@ spec:
           properties:
             instance_types:
               title: Instance Types
-              description: space separated list of instance types for worker nodes
+              description: Add list of instance types for worker nodes
               type: array
               x-ui-placeholder: e.g. m4.xlarge t3.2xlarge
               x-ui-overrides-only: true

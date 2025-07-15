@@ -1,12 +1,12 @@
 intent: kafka
 flavor: external
-version: "0.1"
+version: '0.1'
 description: Adds Kafka module of kubernetes flavor
 clouds:
-  - aws
-  - azure
-  - gcp
-  - kubernetes
+- aws
+- azure
+- gcp
+- kubernetes
 spec:
   title: Kafka Spec
   type: object
@@ -15,16 +15,18 @@ spec:
       type: string
       title: Endpoint
       description: This is the Kafka Endpoint that is used to connect kafka instances
-      pattern: '^((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost|(\d{1,3}\.){3}\d{1,3})):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|\d{1,4})$'
-      x-ui-placeholder: "Enter the Kafka endpoint in the format host:port"
-      x-ui-error-message: "Value must be in the format host:port, where host is a valid domain name or IP address, and port is a number between 1 and 65535."
+      pattern: ^((([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost|(\d{1,3}\.){3}\d{1,3})):(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|\d{1,4})$
+      x-ui-placeholder: Enter the Kafka endpoint in the format host:port
+      x-ui-error-message: Value must be in the format host:port, where host is a valid
+        domain name or IP address, and port is a number between 1 and 65535.
     username:
       type: string
       title: Username
       description: This is the Kafka username that is used to connect kafka instances
-      pattern: '^[a-zA-Z0-9_-]+$'
-      x-ui-placeholder: "Enter the Kafka username"
-      x-ui-error-message: "Username can only contain alphanumeric characters, underscores, or hyphens."
+      pattern: ^[a-zA-Z0-9_-]+$
+      x-ui-placeholder: Enter the Kafka username
+      x-ui-error-message: Username can only contain alphanumeric characters, underscores,
+        or hyphens.
     password:
       type: string
       title: Password
@@ -32,18 +34,13 @@ spec:
     connection_string:
       type: string
       title: Connection String
-      description: This is the Kafka connections string with protocol that is used to connect kafka instances
-      pattern: "^kafka:\\/\\/[a-zA-Z0-9._%+-]+:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(:[0-9]{1,5})(,[a-zA-Z0-9.-]+(:[0-9]{1,5}))*$"
-  required: ["connection_string", "endpoint"]
+      description: This is the Kafka connections string with protocol that is used
+        to connect kafka instances
+      pattern: ^kafka:\/\/[a-zA-Z0-9._%+-]+:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+(:[0-9]{1,5})(,[a-zA-Z0-9.-]+(:[0-9]{1,5}))*$
 sample:
-  $schema: "https://facets-cloud.github.io/facets-schemas/schemas/kafka/kafka.schema.json"
   kind: kafka
-  version: "0.1"
+  version: '0.1'
   flavor: external
   disabled: true
   metadata: {}
-  spec:
-    username: ""
-    password: ""
-    endpoint: ""
-    connection_string: ""
+  spec: {}
