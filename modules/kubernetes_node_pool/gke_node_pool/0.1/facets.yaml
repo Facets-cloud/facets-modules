@@ -4,6 +4,23 @@ version: "0.1"
 description: Adds kubernetes_node_pool - gke_node_pool flavor
 clouds:
 - gcp
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/gcp_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 spec:
   title: Kubernetes Node Pool
   description: Specification of the kubernetes node pool for gke_node_pool flavor
