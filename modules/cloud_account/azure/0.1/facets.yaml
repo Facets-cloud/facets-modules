@@ -11,7 +11,7 @@ clouds:
 - azure
 outputs:
   default:
-    type: "@outputs/cloud_account"
+    type: "@outputs/azure_cloud_account"
     providers:
       azurerm:
         source: hashicorp/azurerm
