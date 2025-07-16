@@ -1,0 +1,17 @@
+name: gcp_cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    attributes:
+    interfaces:
+      type: object
+      description: Attributes of the gcp cloud account module outputs
+      properties:
+          project:
+            type: string
+            description: "GCP project ID fetched from external data source."
+          credentials:
+            type: string
+            description: "GCP service account key. [Sensitive]"
