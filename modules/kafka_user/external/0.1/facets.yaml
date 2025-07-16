@@ -19,6 +19,8 @@ spec:
       type: string
       title: Password
       description: This is the Kafka password that is used to connect kafka instances
+      x-ui-secret-ref: true
+      x-ui-typeable: true
 sample:
   kind: kafka_user
   flavor: external
