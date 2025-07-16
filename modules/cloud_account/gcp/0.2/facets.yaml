@@ -43,13 +43,6 @@ outputs:
           project: attributes.project
           region: attributes.region
           credentials: attributes.credentials
-      google5:
-        source: hashicorp/google5
-        version: 5.32.0
-        attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
 sample:
   version: '0.2'
   flavor: gcp
