@@ -3,6 +3,6 @@ locals {
   }
   output_attributes = {
     username = lookup(local.spec, "username", "")
-    password = lookup(local.spec, "password", "")
+    password = sensitive(lookup(local.spec, "password", ""))
   }
 }
