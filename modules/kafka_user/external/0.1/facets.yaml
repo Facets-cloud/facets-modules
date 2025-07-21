@@ -13,20 +13,19 @@ spec:
   properties:
     username:
       type: string
-      title: Endpoint
+      title: Username
       description: This is the Kafka username that is used to connect kafka instances
     password:
       type: string
-      title: Endpoint
+      title: Password
       description: This is the Kafka password that is used to connect kafka instances
+      x-ui-secret-ref: true
+      x-ui-typeable: true
 sample:
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kafka_user/kafka_user.schema.json
   kind: kafka_user
   flavor: external
   version: '0.1'
   disabled: false
   metadata: {}
   out: {}
-  spec:
-    username: ""
-    password: ""
+  spec: {}
