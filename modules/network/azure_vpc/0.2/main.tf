@@ -543,7 +543,7 @@ resource "azurerm_subnet_nat_gateway_association" "private" {
   }
 
   subnet_id      = each.value.id
-  nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_nat_gateway.main[split("-", each.key)[0]].id : azurerm_nat_gateway.main["1"].id
+  nat_gateway_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_nat_gateway.main[split("-", each.key)[0]].id : azurerm_nat_gateway.main["single"].id
 }
 
 # Associate NAT Gateway with Functions Subnets
