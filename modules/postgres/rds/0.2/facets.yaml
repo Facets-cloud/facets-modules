@@ -188,6 +188,10 @@ spec:
           - db
           - schema
           type: object
+    snapshot_identifier:
+      type: string
+      title: Snapshot Identifier
+      description: The identifier of the DB snapshot to restore from
   required:
   - size
   - postgres_version
@@ -196,6 +200,7 @@ spec:
   - size
   - db_names
   - db_schemas
+  - snapshot_identifier
 advanced:
   type: object
   title: RDS Advanced Properties
