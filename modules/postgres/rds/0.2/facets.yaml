@@ -192,6 +192,7 @@ spec:
       type: string
       title: Snapshot Identifier
       description: The identifier of the DB snapshot to restore from
+      x-ui-override-only: true
   required:
   - size
   - postgres_version
