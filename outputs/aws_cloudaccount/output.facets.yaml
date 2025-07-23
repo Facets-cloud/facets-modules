@@ -1,0 +1,23 @@
+name: aws_cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    attributes:
+    interfaces:
+      type: object
+      description: Attributes of the aws cloud account module outputs
+      properties:
+        aws_iam_role:
+          type: string
+          description: "AWS IAM role ARN. [Sensitive]"
+        session_name:
+          type: string
+          description: "Generated session name."
+        external_id:
+          type: string
+          description: "External ID used for AWS STS assume role. [Sensitive]"
+        aws_region:
+          type: string
+          description: "AWS region of the cluster."

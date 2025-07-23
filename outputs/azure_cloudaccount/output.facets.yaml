@@ -1,0 +1,23 @@
+name: azure_cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    attributes:
+    interfaces:
+      type: object
+      description: Attributes of the azure cloud account module outputs
+      properties:
+        subscription_id:
+          type: string
+          description: "Azure subscription ID. [Sensitive]"
+        client_id:
+          type: string
+          description: "Azure client (application) ID. [Sensitive]"
+        client_secret:
+          type: string
+          description: "Azure client secret. [Sensitive]"
+        tenant_id:
+          type: string
+          description: "Azure tenant ID. [Sensitive]"
