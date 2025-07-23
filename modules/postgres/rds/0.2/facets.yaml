@@ -219,6 +219,9 @@ spec:
   required:
   - size
   - postgres_version
+  - snapshot_identifier
+  - snapshot_password
+  - snapshot_username
   x-ui-order:
   - postgres_version
   - size
