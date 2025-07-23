@@ -433,7 +433,7 @@ resource "azurerm_public_ip" "nat_gateway" {
   resource_group_name = azurerm_resource_group.main.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  zones               = [each.key]
+  zones               = [each.value]
 
   tags = local.common_tags
 
@@ -455,7 +455,7 @@ resource "azurerm_nat_gateway" "main" {
   resource_group_name     = azurerm_resource_group.main.name
   sku_name                = "Standard"
   idle_timeout_in_minutes = 10
-  zones                   = [each.key]
+  zones                   = [each.value]
 
   tags = local.common_tags
 
@@ -511,7 +511,7 @@ resource "azurerm_subnet_route_table_association" "private" {
   for_each = azurerm_subnet.private
 
   subnet_id      = each.value.id
-  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_route_table.private[split("-", each.key)[0]].id : azurerm_route_table.private["1"].id
+  route_table_id = var.instance.spec.nat_gateway.strategy == "per_az" ? azurerm_route_table.private[split("-", each.key)[0]].id : azurerm_route_table.private["single"].id
 }
 
 # Route Table for Database Subnets (isolated)
