@@ -1,6 +1,6 @@
 
 locals {
-  snapshot_identifier = lookup(local.spec, "use_snapshot", false) ? lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null)) : null
+  snapshot_identifier = lookup(var.instance.spec, "use_snapshot", false) ? lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null)) : lookup(local.advanced_rds_postgres, "snapshot_identifier", null)
   instance_size       = lookup(var.instance.spec, "size", {})
   reader_count        = lookup(local.instance_size, "reader", {}) == {} ? 0 : lookup(lookup(var.instance.spec.size, "reader", {}), "replica_count", lookup(lookup(local.instance_size, "reader", {}), "instance_count", 0))
   reader_db_instances = local.reader_count > 0 ? {
