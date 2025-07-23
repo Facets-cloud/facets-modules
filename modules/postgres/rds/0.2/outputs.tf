@@ -6,8 +6,8 @@ locals {
     "writer-0" = {
       name     = module.rds_postgres_master.db_instance_identifier
       host     = local.writer_hostname
-      username = module.rds_postgres_master.db_instance_username
-      password = module.postgres_password.result
+      username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port     = module.rds_postgres_master.db_instance_port
     }
   }
@@ -18,8 +18,8 @@ locals {
     "reader-${index}" => {
       name     = module.rds_postgres_replica["replica-${index}"].db_instance_identifier
       host     = split(":", module.rds_postgres_replica["replica-${index}"].db_instance_endpoint)[0]
-      username = module.rds_postgres_replica["replica-${index}"].db_instance_username
-      password = module.postgres_password.result
+      username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port     = module.rds_postgres_replica["replica-${index}"].db_instance_port
     }
   } : {}
@@ -27,8 +27,8 @@ locals {
   output_interfaces = {
     "writer" = {
       host              = local.writer_hostname
-      username          = module.rds_postgres_master.db_instance_username
-      password          = sensitive(module.postgres_password.result)
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_master.db_instance_port
       connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
       name              = "writer"
@@ -36,16 +36,16 @@ locals {
     }
     "reader" = local.reader_count > 0 ? {
       host              = split(":", module.rds_postgres_replica["replica-0"].db_instance_endpoint)[0]
-      username          = module.rds_postgres_replica["replica-0"].db_instance_username
-      password          = sensitive(module.rds_postgres_replica["replica-0"].db_instance_master_user_secret_arn)
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_replica["replica-0"].db_instance_port
       connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${split(":", module.rds_postgres_replica["replica-0"].db_instance_endpoint)[0]}:${module.rds_postgres_replica["replica-0"].db_instance_port}/")
       secrets           = ["password", "connection_string"]
       name              = "reader"
       } : {
       host              = local.writer_hostname
-      username          = module.rds_postgres_master.db_instance_username
-      password          = sensitive(module.postgres_password.result)
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_master.db_instance_port
       connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
       secrets           = ["password", "connection_string"]

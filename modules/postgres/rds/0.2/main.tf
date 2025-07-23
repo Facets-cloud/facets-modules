@@ -1,7 +1,8 @@
 
 locals {
-  instance_size = lookup(var.instance.spec, "size", {})
-  reader_count  = lookup(local.instance_size, "reader", {}) == {} ? 0 : lookup(lookup(var.instance.spec.size, "reader", {}), "replica_count", lookup(lookup(local.instance_size, "reader", {}), "instance_count", 0))
+  snapshot_identifier = lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null))
+  instance_size       = lookup(var.instance.spec, "size", {})
+  reader_count        = lookup(local.instance_size, "reader", {}) == {} ? 0 : lookup(lookup(var.instance.spec.size, "reader", {}), "replica_count", lookup(lookup(local.instance_size, "reader", {}), "instance_count", 0))
   reader_db_instances = local.reader_count > 0 ? {
     for index in range(local.reader_count) :
     "replica-${index}" => {
@@ -222,5 +223,5 @@ module "pg_database" {
   db_names    = local.db_names
   db_schemas  = local.db_schemas
   tolerations = lookup(local.advanced_rds_postgres, "job_tolerations", [])
-  inputs      = var.inputs    
+  inputs      = var.inputs
 }
