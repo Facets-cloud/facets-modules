@@ -146,6 +146,9 @@ resource "aws_db_instance" "this" {
     update = lookup(var.timeouts, "update", null)
   }
 
+  lifecycle {
+    prevent_destroy = true
+  }
   # Note: do not add `latest_restorable_time` to `ignore_changes`
   # https://github.com/terraform-aws-modules/terraform-aws-rds/issues/478
 }
