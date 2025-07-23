@@ -1,6 +1,6 @@
 intent: network
 flavor: azure_network
-version: '1.0'
+version: '0.2'
 description: Creates an Azure Virtual Network with configurable public subnets, private
   subnets, database subnets, and specialized subnets across availability zones
 clouds:
@@ -243,7 +243,7 @@ outputs:
 sample:
   kind: network
   flavor: azure_network
-  version: '1.0'
+  version: '0.2'
   spec:
     vnet_cidr: 10.0.0.0/16
     region: centralindia
