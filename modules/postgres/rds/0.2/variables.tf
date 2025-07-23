@@ -4,22 +4,6 @@ variable "cluster" {
   }
 }
 
-variable "baseinfra" {
-  type = any
-  default = {
-    k8s_details = {
-      registry_secret_objects = []
-    }
-  }
-}
-
-variable "cc_metadata" {
-  type = any
-  default = {
-    tenant_base_domain : "tenant.facets.cloud"
-  }
-}
-
 variable "instance" {
   type    = any
   default = {}
@@ -40,9 +24,4 @@ variable "environment" {
 variable "inputs" {
   type    = any
   default = []
-}
-
-variable "release_metadata" {
-  type    = any
-  default = {}
 }

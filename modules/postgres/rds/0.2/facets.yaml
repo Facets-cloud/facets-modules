@@ -187,20 +187,50 @@ spec:
           - db
           - schema
           type: object
+    use_snapshot:
+      type: boolean
+      title: Use an existing snapshot
+      description: Use an existing snapshot
+      x-ui-override-only: true
     snapshot_identifier:
       type: string
       title: Snapshot Identifier
       description: The identifier of the DB snapshot to restore from
       x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.use_snapshot
+        values: [ true ]
+    snapshot_username:
+      type: string
+      title: Snapshot Username
+      description: Username for the snapshot database
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.use_snapshot
+        values: [ true ]
+    snapshot_password:
+      type: string
+      title: Snapshot Password
+      description: Password for the snapshot database
+      x-ui-override-only: true
+      x-ui-visible-if:
+        field: spec.use_snapshot
+        values: [ true ]
   required:
   - size
   - postgres_version
+  - snapshot_identifier
+  - snapshot_password
+  - snapshot_username
   x-ui-order:
   - postgres_version
   - size
   - db_names
   - db_schemas
+  - use_snapshot
   - snapshot_identifier
+  - snapshot_username
+  - snapshot_password
 advanced:
   type: object
   title: RDS Advanced Properties
