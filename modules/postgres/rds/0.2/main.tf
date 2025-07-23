@@ -1,6 +1,6 @@
 
 locals {
-  snapshot_identifier = lookup(var.instance.spec, "use_snapshot", false) ? lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null)) : lookup(local.advanced_rds_postgres, "snapshot_identifier", null)
+  snapshot_identifier = lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null))
   instance_size       = lookup(var.instance.spec, "size", {})
   reader_count        = lookup(local.instance_size, "reader", {}) == {} ? 0 : lookup(lookup(var.instance.spec.size, "reader", {}), "replica_count", lookup(lookup(local.instance_size, "reader", {}), "instance_count", 0))
   reader_db_instances = local.reader_count > 0 ? {
@@ -131,7 +131,7 @@ module "rds_postgres_master" {
   domain_iam_role_name                  = lookup(local.advanced_rds_postgres, "domain_iam_role_name", null)
   maintenance_window                    = lookup(local.advanced_rds_postgres, "maintenance_window", "sun:01:00-sun:02:00")
   backup_window                         = lookup(local.advanced_rds_postgres, "backup_window", "03:00-06:00")
-  snapshot_identifier                   = local.snapshot_identifier
+  snapshot_identifier                   = lookup(var.instance.spec, "snapshot_identifier", lookup(local.advanced_rds_postgres, "snapshot_identifier", null))
   enabled_cloudwatch_logs_exports       = lookup(local.advanced_rds_postgres, "enabled_cloudwatch_logs_exports", ["postgresql", "upgrade"])
   create_cloudwatch_log_group           = lookup(local.advanced_rds_postgres, "create_cloudwatch_log_group", true)
   backup_retention_period               = lookup(local.advanced_rds_postgres, "backup_retention_period", 1)

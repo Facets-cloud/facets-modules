@@ -1,15 +1,13 @@
 # Define your outputs here
 
 locals {
-  db_password = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
-  db_username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
   writer_hostname = split(":", module.rds_postgres_master.db_instance_endpoint)[0]
   writer_dbs = {
     "writer-0" = {
       name     = module.rds_postgres_master.db_instance_identifier
       host     = local.writer_hostname
-      username = local.db_username
-      password = local.db_password
+      username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port     = module.rds_postgres_master.db_instance_port
     }
   }
@@ -20,8 +18,8 @@ locals {
     "reader-${index}" => {
       name     = module.rds_postgres_replica["replica-${index}"].db_instance_identifier
       host     = split(":", module.rds_postgres_replica["replica-${index}"].db_instance_endpoint)[0]
-      username = local.db_username
-      password = local.db_password
+      username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port     = module.rds_postgres_replica["replica-${index}"].db_instance_port
     }
   } : {}
@@ -29,27 +27,27 @@ locals {
   output_interfaces = {
     "writer" = {
       host              = local.writer_hostname
-      username          = local.db_username
-      password          = local.db_password
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_master.db_instance_port
-      connection_string = sensitive("postgresql://${local.db_username}:${local.db_password}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
+      connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
       name              = "writer"
       secrets           = ["password", "connection_string"]
     }
     "reader" = local.reader_count > 0 ? {
       host              = split(":", module.rds_postgres_replica["replica-0"].db_instance_endpoint)[0]
-      username          = local.db_username
-      password          = local.db_password
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_replica["replica-0"].db_instance_port
-      connection_string = sensitive("postgresql://${local.db_username}:${local.db_password}@${split(":", module.rds_postgres_replica["replica-0"].db_instance_endpoint)[0]}:${module.rds_postgres_replica["replica-0"].db_instance_port}/")
+      connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${split(":", module.rds_postgres_replica["replica-0"].db_instance_endpoint)[0]}:${module.rds_postgres_replica["replica-0"].db_instance_port}/")
       secrets           = ["password", "connection_string"]
       name              = "reader"
       } : {
       host              = local.writer_hostname
-      username          = local.db_username
-      password          = local.db_password
+      username          = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : var.instance.spec.snapshot_username
+      password          = local.snapshot_identifier == null ? module.postgres_password.result : var.instance.spec.snapshot_password
       port              = module.rds_postgres_master.db_instance_port
-      connection_string = sensitive("postgresql://${local.db_username}:${local.db_password}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
+      connection_string = sensitive("postgresql://${module.rds_postgres_master.db_instance_username}:${module.postgres_password.result}@${local.writer_hostname}:${module.rds_postgres_master.db_instance_port}/")
       secrets           = ["password", "connection_string"]
       name              = "writer"
     }
@@ -77,11 +75,11 @@ output "writer_port" {
   value = module.rds_postgres_master.db_instance_port
 }
 output "writer_username" {
-  value = local.db_username
+  value = module.rds_postgres_master.db_instance_username
   # sensitive = true
 }
 output "writer_password" {
-  value = local.db_password
+  value = module.postgres_password.result
   # sensitive = true
 }
 output "writer_connection_string" {
