@@ -213,7 +213,6 @@ spec:
       title: Snapshot Password
       description: Password for the snapshot database
       x-ui-override-only: true
-      x-ui-secret-ref: true
       x-ui-visible-if:
         field: spec.use_snapshot
         values: [ true ]
