@@ -16,7 +16,7 @@ locals {
   }
   advanced              = lookup(lookup(var.instance, "advanced", {}), "rds", {})
   advanced_rds_postgres = lookup(local.advanced, "rds-postgres", {})
-  username              = lookup(local.advanced_rds_postgres, "username", "root")
+  username              = local.snapshot_identifier != null ? lookup(var.instance.spec, "snapshot_username", lookup(local.advanced_rds_postgres, "username", "root")): lookup(local.advanced_rds_postgres, "username", "root")
   db_names              = lookup(var.instance.spec, "db_names", [])
   db_schemas            = lookup(var.instance.spec, "db_schemas", {})
   metadata              = lookup(var.instance, "metadata", {})
