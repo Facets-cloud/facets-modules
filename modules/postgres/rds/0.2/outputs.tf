@@ -59,7 +59,9 @@ locals {
     resource_type = "postgres"
     resource_name = var.instance_name
     instances     = merge(local.writer_dbs, local.reader_dbs)
-    secrets       = ["instances"]
+    generated_password = module.postgres_password.result
+    secrets       = ["instances", "generated_password"]
+    
   }
 }
 
