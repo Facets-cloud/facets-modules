@@ -1,0 +1,12 @@
+name: kubernetes_node_pool
+out:
+  type: object
+  title: Kubernetes Node Pool
+  description: Kubernetes Node Pool
+  properties:
+    interfaces: null
+    attributes:
+      taints:
+        type: array
+      node_selector:
+        type: object

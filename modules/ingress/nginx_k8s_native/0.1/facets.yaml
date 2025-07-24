@@ -124,6 +124,24 @@ spec:
               x-ui-visible-if:
                 field: spec.grpc
                 values: [false]
+            namespace:
+              type: string
+              title: Namespace (Optional)
+              description:
+                Kubernetes namespace where the service is located
+                <br />
+                Optional, only needed if the service is in a different namespace
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                filterConditions:
+                - field: resourceType
+                  value: service
           required: ["service_name", "path", "port"]
           type: object
     force_ssl_redirection:
