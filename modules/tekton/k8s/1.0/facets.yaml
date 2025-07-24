@@ -1,0 +1,39 @@
+intent: tekton
+flavor: k8s
+version: "1.0"
+clouds:
+  - kubernetes
+  - aws
+  - azure
+  - gcp
+title: Tekton Pipeline
+description: Deploy Tekton Pipelines Chart on Kubernetes using Helm chart
+spec:
+  title: Tekton Pipeline Configuration  
+  description: Configuration for Tekton Pipeline deployment
+  type: object
+  properties:
+    namespace:
+      type: string
+      default: "tekton-pipelines"
+      description: "Namespace for Tekton Pipelines deployment"
+      displayName: "Namespace"
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    title: Kubernetes Details
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+outputs:
+  default:
+    type: "@outputs/tekton-pipeline"
+    title: "Tekton Pipeline"
+sample:
+  kind: tekton
+  flavor: k8s
+  version: "1.0"
+  disabled: true
+  spec:
+    namespace: "tekton-pipelines"

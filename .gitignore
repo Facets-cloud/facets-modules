@@ -10,3 +10,4 @@
 .DS_store
 zips/*
 .aider*
+**/.terraform.lock.hcl
