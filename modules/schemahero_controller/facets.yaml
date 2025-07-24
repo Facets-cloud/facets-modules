@@ -1,0 +1,57 @@
+intent: schemahero-controller
+flavor: default
+version: '0.1'
+description: Deploys SchemaHero controller for automated database schema management
+  in Kubernetes environments
+lifecycle: ENVIRONMENT_BOOTSTRAP
+clouds:
+- kubernetes
+input_type: config
+spec:
+  type: object
+  properties:
+    size:
+      type: object
+      title: Resource Configuration
+      description: CPU and memory resource limits for the schemahero controller
+      properties:
+        cpu:
+          type: string
+          title: CPU Limit
+          description: CPU resource limit for the schemahero controller
+          default: 100m
+          pattern: ^[0-9]+[m]?$
+        memory:
+          type: string
+          title: Memory Limit
+          description: Memory resource limit for the schemahero controller
+          default: 150Mi
+          pattern: ^[0-9]+[KMGT]?[i]?[Bb]?$
+      default:
+        cpu: 100m
+        memory: 150Mi
+  required: []
+inputs:
+  kubernetes_details:
+    type: '@outputs/kubernetes-cluster-details'
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    displayName: Kubernetes Cluster Details
+    description: Kubernetes cluster configuration and provider access
+    providers:
+    - kubernetes
+    - helm
+outputs:
+  default:
+    type: '@outputs/schemahero-controller'
+    title: SchemaHero Controller Installation
+sample:
+  kind: schemahero-controller
+  flavor: default
+  version: '0.1'
+  spec:
+    size:
+      cpu: 100m
+      memory: 150Mi
