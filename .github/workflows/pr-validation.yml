@@ -1,0 +1,109 @@
+name: FTF Validation on PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'modules/**/*'
+      - 'intents/**/*'
+      - 'outputs/**/*'
+
+jobs:
+  validate-modules:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install ftf-cli
+        run: |
+          pip install ftf-cli
+
+      - name: Get changed directories
+        id: changed_dirs
+        run: |
+          set -e
+          set -o pipefail
+          
+          # Get the base branch (usually master)
+          BASE_BRANCH="${{ github.base_ref }}"
+          
+          # Get changed files between base branch and current PR
+          git fetch origin "$BASE_BRANCH"
+          changed_files=$(git diff --name-only "origin/$BASE_BRANCH"...HEAD)
+          
+          echo "Changed files:"
+          echo "$changed_files"
+          
+          # Get unique directories from changed files, filtering for modules, intents, and outputs
+          changed_dirs=$(echo "$changed_files" | xargs -n 1 dirname | sort -u | grep -E '^(modules|intents|outputs)' || true)
+          
+          echo "Changed directories:"
+          echo "$changed_dirs"
+          
+          # Convert to space-separated string and set as output
+          changed_dirs_str=$(echo "$changed_dirs" | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+          echo "changed_dirs=$changed_dirs_str" >> $GITHUB_OUTPUT
+          echo "CHANGED_DIRS=$changed_dirs_str" >> $GITHUB_ENV
+
+      - name: Validate changed modules with ftf
+        if: env.CHANGED_DIRS != ''
+        run: |
+          set -e
+          
+          # Convert space-separated string back to array
+          IFS=' ' read -r -a dirs <<< "$CHANGED_DIRS"
+          
+          echo "Running FTF validation on changed directories..."
+          
+          validation_failed=false
+          
+          for dir in "${dirs[@]}"; do
+            if [ -n "$dir" ] && [ -d "$dir" ]; then
+              echo "=== Validating directory: $dir ==="
+              
+              # Run ftf validate-directory
+              echo "Running: ftf validate-directory $dir"
+              if ! ftf validate-directory "$dir"; then
+                echo "❌ ftf validate-directory failed for $dir"
+                validation_failed=true
+              else
+                echo "✅ ftf validate-directory passed for $dir"
+              fi
+              
+              # Check if directory contains facets.yaml for validate-facets
+              if [ -f "$dir/facets.yaml" ]; then
+                echo "Running: ftf validate-facets $dir/facets.yaml"
+                if ! ftf validate-facets "$dir/facets.yaml"; then
+                  echo "❌ ftf validate-facets failed for $dir/facets.yaml"
+                  validation_failed=true
+                else
+                  echo "✅ ftf validate-facets passed for $dir/facets.yaml"
+                fi
+              else
+                echo "ℹ️  No facets.yaml found in $dir, skipping validate-facets"
+              fi
+              
+              echo ""
+            fi
+          done
+          
+          if [ "$validation_failed" = true ]; then
+            echo "❌ FTF validation failed for one or more modules"
+            exit 1
+          else
+            echo "✅ All FTF validations passed"
+          fi
+
+      - name: No changes detected
+        if: env.CHANGED_DIRS == ''
+        run: |
+          echo "ℹ️  No relevant changes detected in modules, intents, or outputs directories"
