@@ -1,7 +1,7 @@
 # Define your outputs here
 
 locals {
-  db_password = local.snapshot_identifier == null ? module.postgres_password.result : lookup(var.instance.spec, "snapshot_password", module.postgres_password.result)
+  db_password = module.postgres_password.result
   db_username = local.snapshot_identifier == null ? module.rds_postgres_master.db_instance_username : lookup(var.instance.spec, "snapshot_username", module.rds_postgres_master.db_instance_username)
   writer_hostname = split(":", module.rds_postgres_master.db_instance_endpoint)[0]
   writer_dbs = {
