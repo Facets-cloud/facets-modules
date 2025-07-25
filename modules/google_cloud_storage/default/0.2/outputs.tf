@@ -1,5 +1,7 @@
 locals {
   output_attributes = {
+    name = google_storage_bucket.bucket.name
+    url = "gs://${google_storage_bucket.bucket.name}"
     bucket_url                      = "gs://${google_storage_bucket.bucket.name}"
     bucket_name                     = google_storage_bucket.bucket.name
     read_only_role                  = "roles/storage.objectViewer"
