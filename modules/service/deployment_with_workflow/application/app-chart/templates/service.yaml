@@ -1,0 +1,33 @@
+{{- if or (eq .Values.spec.type "application") (eq .Values.spec.type "statefulset") }}
+{{- if  hasKey .Values.spec.runtime  "ports" }}
+{{- if gt (len .Values.spec.runtime.ports) 0 }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    {{- range $k, $v := .Values.spec.runtime.ports }}
+    {{- with . }}
+    {{- if ( hasKey $v "service_port" ) }}
+    - port: {{ $v.service_port }}
+    {{- else }}
+    - port: {{ $v.port }}
+    {{- end }}
+      targetPort: {{ $k | lower | replace "_" "-" }}
+      protocol: {{ $v.protocol | upper }}
+      name: {{ printf "%s-%s" $k "svc" | lower | replace "_" "-" }}
+      {{- end }}
+      {{- end }}
+  selector:
+    {{- include "app-chart.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}
+{{ end }}

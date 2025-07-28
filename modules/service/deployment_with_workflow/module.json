@@ -1,0 +1,15 @@
+{
+    "provides": "service",
+    "flavors": [
+      "default","k8s","statefulset","cronjob","job","deployment"
+    ],
+    "supported_clouds": [
+      "aws"
+    ],
+    "version": "0.1",
+    "depends_on": [],
+    "lifecycle": "ENVIRONMENT",
+    "input_type": "instance",
+    "composition": {
+    }
+  }

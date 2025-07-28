@@ -1,0 +1,98 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if and (hasKey .Values.spec.runtime "autoscaling") (not (hasKey .Values.advanced.common.app_chart.values "keda")) }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if hasKey .Values.spec.release  "strategy" }}
+{{- if or (eq .Values.spec.release.strategy.type "BlueGreen") (eq .Values.spec.release.strategy.type "Canary") }}
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: {{ include "app-chart.fullname" . }}
+{{- else }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "app-chart.fullname" . }}
+{{- end }}
+{{- end }}
+  minReplicas: {{ default 1 .Values.spec.runtime.autoscaling.min }}
+  maxReplicas: {{ default 2 .Values.spec.runtime.autoscaling.max }}
+{{- if hasKey .Values.advanced.common.app_chart.values "hpa" }}
+{{- if hasKey .Values.advanced.common.app_chart.values.hpa "behavior" }}
+{{- $yamlBlock := .Values.advanced.common.app_chart.values.hpa | toYaml }}
+{{- printf "%s" $yamlBlock | nindent 2 }}
+{{- end }}
+{{- end }}
+  metrics:
+{{- if or .Values.spec.runtime.autoscaling.cpu_threshold .Values.spec.runtime.autoscaling.ram_threshold }}
+  {{- with .Values.spec.runtime.autoscaling }}
+  {{- if .cpu_threshold }}
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ default 60 .cpu_threshold }}
+  {{- end }}
+  {{- if .ram_threshold }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: {{ default 60 .ram_threshold }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+{{- if hasKey .Values.spec.runtime.autoscaling "metrics" }}
+  {{- range .Values.spec.runtime.autoscaling.metrics }}
+  - type: {{ .type }}
+    {{- if eq .type "Resource" }}
+    resource:
+      name: {{ .resource.name }}
+      target:
+        type: {{ .resource.target.type }}
+        averageUtilization: {{ .resource.target.averageUtilization }}
+    {{- end }}
+    {{- if eq .type "Pods" }}
+    pods:
+      metric:
+        name: {{ .pods.metric.name }}
+      target:
+        type: {{ .pods.target.type }}
+        averageValue: {{ .pods.target.averageValue }}
+    {{- end }}
+    {{- if eq .type "Object" }}
+    object:
+      metric:
+        name: {{ .object.metric.name }}
+      describedObject:
+        apiVersion: {{ .object.describedObject.apiVersion }}
+        kind: {{ .object.describedObject.kind }}
+        name: {{ .object.describedObject.name }}
+      target:
+        type: {{ .object.target.type }}
+        value: {{ .object.target.value }}
+    {{- end }}
+    {{- if eq .type "External" }}
+    external:
+      metric:
+        name: {{ .external.metric.name }}
+      target:
+        type: {{ .external.target.type }}
+        value: {{ .external.target.value }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

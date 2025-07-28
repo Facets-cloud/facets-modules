@@ -1,0 +1,27 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if ( hasKey .Values.spec.release "disruption_policy" ) }}
+{{- if .Values.spec.release.disruption_policy }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if ( hasKey .Values.spec.release.disruption_policy "min_available" ) }}
+  minAvailable: {{ default 1 .Values.spec.release.disruption_policy.min_available }}
+{{- end }}
+{{- if ( hasKey .Values.spec.release.disruption_policy "max_unavailable" ) }}
+  maxUnavailable: {{ default 0 .Values.spec.release.disruption_policy.max_unavailable }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "app-chart.selectorLabels" . | nindent 6 }}
+{{- end }}
+{{- end }}
+{{- end }}

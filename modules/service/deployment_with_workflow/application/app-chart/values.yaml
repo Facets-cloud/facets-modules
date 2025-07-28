@@ -1,0 +1,357 @@
+---
+# flavor: default
+# metadata:
+#   name: alpha-facets-permission
+#   labels:
+#     sidecar.istio.io/inject: 'true'
+advanced:
+  common:
+    app_chart:
+      # atomic: false
+      # wait: false
+      values:
+        enable_vpa: true
+        enable_service_links: false
+        hpa: {}
+        pod: {}
+        node: {}
+        tolerations : {}
+        pod_distribution: {}
+        init_containers: {}
+        # - name: qa-1
+        #   image: busybox
+        #   additional_k8s_env:
+        #   - name: SPECIAL_LEVEL_KEY
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: special-config
+        #         key: special.how
+        #   additional_k8s_env_from:
+        #   - configMapRef:
+        #       name: special-config
+        #   runtime:
+        #     size:
+        #       cpu: 100m
+        #       memory: 100Mi
+        #     volumes:
+        #       config_maps:
+        #       - name: test
+        #         mount_path: /data
+        #       pvc:
+        #       - name: test-pvc
+        #         claim_name: test-pvc
+        #         mount_path: /data
+        #       secrets:
+        #       - name: test-secret
+        #         mount_path: /bin
+        #       host_path:
+        #       - name: test-host
+        #         mount_path: /etc
+        #       additional_vol:
+        #       - name: test-vol-extra
+        #         emptydir:
+        #           sizeLimit: 5Mi
+        security_context: {}
+          # fsgroup: 2000
+          # run_as_user: 1000
+          # run_as_group: 3000
+          # fs_group_change_policy: "Always"
+          # run_as_non_root: false
+          #linux_options: {}
+          # comp_profile:
+          # supplemental_groups:
+          # sysctls:
+          # windows_options:
+        lifecycle: {}
+        additional_k8s_env: []
+        additional_k8s_env_from: []
+        additional_k8s_objects: {}
+        # additional_k8s_env:
+        # - name: SPECIAL_LEVEL_KEY
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: special-config
+        #       key: special.how
+        # - name: LOG_LEVEL
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: env-config
+        #       key: log_level
+        # additional_k8s_env_from:
+        # - configMapRef:
+        #     name: special-config
+        # termination_grace_period_seconds: 60
+        
+metadata:
+  name: ""        
+  # aws:
+  #   iam:
+  #     full_s3_access:
+  #       arn: arn:aws:iam::aws:policy/AmazonS3FullAccess
+  #     iam_read_only:
+  #       arn: arn:aws:iam::aws:policy/IAMReadOnlyAccess
+# kind: service
+# disabled: true
+# version: latest
+spec:
+  type: application
+  # enable_host_anti_affinity: true
+  # restart_policy: OnFailure
+  # priority_class_name: ""
+  release:
+    # image: vishnukvfacets/facets-permissions-testing:latest
+    strategy:
+      # type: BlueGreen
+      blue_green_strategy: {}
+      canary_strategy: {}
+
+    build: {}
+  runtime:
+    size:
+      cpu: 100m
+      memory: 200Mi
+    # volumes: {}
+    #   config_maps:
+    #   - name: test
+    #     mount_path: /data
+    #   additional_vol_mount:
+    #   - name: test
+    #     mount_path: /test
+  #   autoscaling:
+  #     cpu_threshold: 50
+  #     max: 20
+  #     min: 10
+  #   ports:
+  #     http:
+  #       protocol: tcp
+  #       port: 80
+  #   metrics:
+  #     metrics1:
+  #       path: "/metrics"
+  #       port_name: http
+  # env: {}
+
+
+# kind: service
+# flavor: default
+# version: latest
+# disabled: false
+# provided: true
+# metadata:
+#   name: app1
+#   labels:
+#     sidecar.istio.io/inject: 'true'
+#   annotations:
+#     traffic.sidecar.istio.io/excludeOutboundIPRanges: "*"
+# spec:
+#   sa_name: default
+#   type: application
+#   cron_job:
+#     schedule: "*/1 * * * * "
+#     suspend: false
+#     concurrency_policy: Allow
+#   job:
+#     retry: 5
+#   restart_policy: "Always"
+#   release:
+#     strategy: 
+#       type: RollingUpdate
+#       max_available: 2
+#       max_unavailable: 1
+#     image: "vishnukvfacets/facets-testing-api:latest"
+#     # disruption_policy:
+#     #   max_available: 1
+#     #   max_unavailable: 0
+#   enable_host_anti_affinity: true
+#   persistent_volume_claims:
+#     claimName1:
+#       access_mode: ReadWriteOnce
+#       storage_size: "10"
+#       path: "/mnt/data"
+#     claimName2:
+#       access_mode: ReadWriteMany
+#       storage_size: "10"
+#       path: "/data"
+#   runtime:
+#     volumes:
+#       configs:
+#         mount:
+#             mount_name: "mount-k8s"
+#             mount_path: "/var/data/html"
+#         mount_1:
+#             mount_name: "mount-k8s-1"
+#             mount_path: "/var/data/html"
+#         mount_2:
+#             mount_name: "mount-k8s-2"
+#             mount_path: "/var/data/html"
+#     heath_checks:
+#       start_up_time: 15
+#       timeout: 10
+#       period: 30
+#       port: 8080
+#       # liveness_exec_command: 
+#       # - cat
+#       # - /tmp/healthy
+#       liveness_url: "/health"
+#       readiness_url: "/health"
+#       readiness_exec_command:
+#       - cat
+#       - /tmp/healthy
+#     command: ["printenv"]
+#     args: ["KUBERNETES_PORT", "HOSTNAME"]
+#     autoscaling: 
+#       min: 1
+#       max: 10
+#       cpu_threshold: 50
+#       ram_threshold: 80
+#       packets_per_second: 1k
+#       requests_per_second:
+#         threshold: 10k
+#         ingress_name: "alb-ingress"
+#     ports:
+#       http:
+#         port: 80
+#         protocol: "TCP"
+#       # portName1: 
+#       #   protocol: tcp
+#       #   port: 80
+#       # portName2: 
+#       #   protocol: UDP
+#       #   port: 8080
+#     metrics: {}
+#       # custom_metrics:
+#       #   path: "/"
+#       #   portName: "metricsport1"
+#       # custom_metrics1:
+#       #   path: "/"
+#       #   portName: "metricsport2"
+#     size:
+#       cpu: "500m"
+#       memory: "500Mi"
+#   env:
+#     LOG_LEVEL: INFO
+#     NEWRELIC_KEY: "${stack.out.variables.NEW_RELIC_KEY}"
+#     REGION: "${stack.out.variables.REGION}"
+#     REDIS_URL: "${redis.main.out.interfaces.default.host}"
+#     REDIS_PORT: "${redis.main.out.interfaces.default.port}"
+#     REDIS_USERNAME: "${redis.main.out.interfaces.default.username}"
+#     REDIS_PASSWORD: "${redis.main.out.interfaces.default.password}"
+#     S3_BUCKET: "${s3.log.out.bucket_name}"
+
+# advanced:
+#   aws:
+#     iam_policies: 
+#       someuniqname:
+#         arn: ""
+#       someuniqname2:
+#         arn: ""
+#   image_pull_secrets:
+#   - myregistrykey
+#   - myregistrykey2
+#   - myregistrykey3
+#   node_selector: {}
+#     # facets-node-type: "facets"
+#   affinity:
+#     node:
+      # required: 
+      #   key: eks.amazonaws.com/capacityType
+      #   value:
+      #   - SPOT
+      # preferred: 
+      #   key: eks.amazonaws.com/capacityType
+      #   weight: 1
+      #   value:
+      #   - SPOT
+# #     pod: 
+# #       affinity:
+# #         required: {}
+# #           # key: app
+# #           # topologyKey: "kubernetes.io/hostname"
+# #           # value:
+# #           # - app1
+# #         preferred: {}
+# #           # key: app
+# #           # weight: 1
+# #           # topologyKey: "kubernetes.io/hostname"
+# #           # value:
+# #           # - app1
+# #       antiAffinity: 
+# #         required: {}
+# #           # key: app
+# #           # topologyKey: "kubernetes.io/hostname"
+# #           # value:
+# #           # - app1
+# #         preferred: {}
+# #           # key: app
+# #           # weight: 1
+# #           # topologyKey: "kubernetes.io/hostname"
+# #           # value:
+# #           # - app1
+# #   SecurityContextDeployment:
+# #     allowPrivilegeEscalation: false
+# #     runAsNonRoot: false
+# #     runAsUser: 1000
+# #     runAsGroup: 3000
+# #     fsGroup: 2000
+# #     readOnlyRootFilesystem: false
+# #     procMount: 
+# #     capabilities:
+# #       add: []
+# #       drop: []
+# #     fsGroupChangePolicy: "OnRootMismatch"
+
+# #   imagePullSecrets:
+# #   - myregistrykey
+# #   - myregistrykey2
+# #   - myregistrykey3
+# #   tolerations:
+# #   - key: "key1"
+# #     operator: "Equal"
+# #     value: "value1"
+# #     effect: "NoSchedule"
+# #   - key: "key1"
+# #     operator: "Equal"
+# #     value: "value1"
+# #     effect: "NoExecute"
+# #   sidecars: 
+# #   - name: "/"
+# #     image: "imagename"
+# #     size:
+# #       cpu: "1000"
+# #       memory: "4000"
+# #   initContainers: {}
+#   # pvc:
+#   # - claimName: "default"
+#   #   mount:
+#   #   - path: "/data"
+#   #     name: "sample"
+#   #   - path: "/var/html"
+#   #     name: "sample2"
+#   # - claimName: "default2"
+#   #   mount:
+#   #   - path: "/data2"
+#   #     name: "sample3"
+#   #   - path: "/var/html3"
+#   #     name: "sample4"
+#   # secrets:
+#   # - secretName: secret_name
+#   #   mount:
+#   #   - path: "/var/data/html"
+#   #     name: "mountName1"
+#   # - secretName: secret_name2
+#   #   mount:
+#   #   - path: "/var/data/html/dev"
+#   #     name: "mountName2"
+#   # - secretName: secret_name3
+#   #   mount:
+#   #   - path: "/var/data/html2"
+#   #     name: "mountName3"
+
+
+
+# # TODO: 
+# # initcontainer, 
+# # sidecars, 
+# # securityContext,
+# # Cronjobs,
+# # priorityClass, 

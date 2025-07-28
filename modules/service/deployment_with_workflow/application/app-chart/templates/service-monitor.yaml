@@ -1,0 +1,34 @@
+{{- if or (eq .Values.spec.type "application") (eq .Values.spec.type "statefulset") }}
+{{- if ( hasKey .Values.spec.runtime "metrics" ) }}
+{{- if gt (len .Values.spec.runtime) 0 }}
+{{- if .Values.spec.runtime.metrics }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+  {{- range $k, $v := .Values.spec.runtime.metrics }}
+  {{- with .}}
+    - interval: 10s
+      path: {{ $v.path }}
+      port: {{ printf "%s-%s" $v.port_name "svc" | lower | replace "_" "-" }}
+  {{- end }}
+  {{- end }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "app-chart.selectorLabels" . | nindent 6 }}
+{{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
