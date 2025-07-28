@@ -139,10 +139,9 @@ spec:
       title: Database Names
       description: List of database names
       x-ui-placeholder: "e.g., 'my_database'"
-      pattern: "^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(, [a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*)*$|^(?!.*[_-]{2,})[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*(,
-        [a-zA-Z0-9]+([-_][a-zA-Z0-9])+)*$"
-      x-ui-error-message: "Database names must start with an alphanumeric character
-        and should be separated by commas"
+      x-ui-array-input-validation:
+        pattern: "^(?!.*[_-]{2,})(?![_-])[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$"
+        error: "Database names can only have alphanumeric, hyphens and underscores"
       items:
         type: string
       x-ui-override-disable: true
