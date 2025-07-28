@@ -1,10 +1,10 @@
 module "rollout_restart_task" {
-  source     = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/aws?ref=workflows"
-  name       = "rollout-restart"
+  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  name   = "rollout-restart"
 
-  instance_name = var.instance_name
-  environment   = var.environment
-  instance      = var.instance
+  instance_name    = var.instance_name
+  environment      = var.environment
+  instance         = var.instance
   auth_secret_name = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.workflows_auth_secret_name
   providers = {
     helm = "helm.release-pod"
@@ -19,15 +19,15 @@ module "rollout_restart_task" {
         {
           name  = "RESOURCE_TYPE"
           value = local.resource_type
-          },
-          {
-            name  = "RESOURCE_NAME"
-            value = local.resource_name
-          },
-          {
-            name  = "NAMESPACE"
-            value = local.namespace
-          }
+        },
+        {
+          name  = "RESOURCE_NAME"
+          value = local.resource_name
+        },
+        {
+          name  = "NAMESPACE"
+          value = local.namespace
+        }
       ]
       script = <<-EOT
         #!/bin/bash
