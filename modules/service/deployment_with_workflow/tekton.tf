@@ -119,10 +119,6 @@ module "print_params_task" {
           type = "string"
         }
       }
-      default = {
-        url    = "https://github.com/example/repo.git"
-        commit = "main"
-      }
     },
     {
       name        = "timeout"
