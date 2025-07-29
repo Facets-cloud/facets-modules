@@ -1730,8 +1730,6 @@ spec:
                       description: Port for Health Checks
                       x-ui-disable-tooltip: "No Ports Added"
                       x-ui-typeable: true
-                  # Note: Sidecar health check fields are conditionally required based on their respective check types
-                  # The UI will handle validation based on x-ui-visible-if conditions
               required:
               - size
               x-ui-order:
