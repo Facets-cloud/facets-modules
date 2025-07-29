@@ -94,54 +94,55 @@ module "print_params_task" {
     helm = "helm.release-pod"
   }
 
+  params = [
+    {
+      name        = "ACTION"
+      type        = "string"
+      description = "supported actions: restart, stop, start"
+      default     = "restart"
+    },
+    {
+      name        = "flags"
+      type        = "array"
+      description = "array of compilation flags or options"
+      default     = ["--verbose", "--force"]
+    },
+    {
+      name        = "gitrepo"
+      type        = "object"
+      description = "git repository information with url and commit"
+      properties = {
+        url = {
+          type = "string"
+        }
+        commit = {
+          type = "string"
+        }
+      }
+      default = {
+        url    = "https://github.com/example/repo.git"
+        commit = "main"
+      }
+    },
+    {
+      name        = "timeout"
+      type        = "string"
+      description = "timeout duration in Go format (e.g., 30s, 5m, 1h)"
+      default     = "300s"
+    },
+    {
+      name        = "debug"
+      type        = "string"
+      description = "enable debug mode (true/false)"
+      default     = "false"
+    }
+  ]
+
   steps = [
     {
       name      = "print-params"
       image     = "bitnami/kubectl:latest"
       resources = {}
-      params = [
-        {
-          name        = "ACTION"
-          type        = "string"
-          description = "supported actions: restart, stop, start"
-          default     = "restart"
-        },
-        {
-          name        = "flags"
-          type        = "array"
-          description = "array of compilation flags or options"
-          default     = ["--verbose", "--force"]
-        },
-        {
-          name        = "gitrepo"
-          type        = "object"
-          description = "git repository information with url and commit"
-          properties = {
-            url = {
-              type = "string"
-            }
-            commit = {
-              type = "string"
-            }
-          }
-          default = {
-            url    = "https://github.com/example/repo.git"
-            commit = "main"
-          }
-        },
-        {
-          name        = "timeout"
-          type        = "string"
-          description = "timeout duration in Go format (e.g., 30s, 5m, 1h)"
-          default     = "300s"
-        },
-        {
-          name        = "debug"
-          type        = "string"
-          description = "enable debug mode (true/false)"
-          default     = "false"
-        }
-      ]
       env = [
         {
           name  = "RESOURCE_TYPE"
