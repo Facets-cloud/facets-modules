@@ -494,16 +494,8 @@ spec:
                 values: ["ExecCheck"]
               description: Commands for startup check
               x-ui-override-disable: true
-          required:
-          - readiness_port
-          - readiness_url
-          - readiness_exec_command
-          - liveness_port
-          - liveness_url
-          - liveness_exec_command
-          - startup_port
-          - startup_url
-          - startup_exec_command
+          # Note: Health check fields are conditionally required based on their respective check types
+          # The UI will handle validation based on x-ui-visible-if conditions
         autoscaling:
           type: object
           title: Autoscaling
@@ -1738,14 +1730,8 @@ spec:
                       description: Port for Health Checks
                       x-ui-disable-tooltip: "No Ports Added"
                       x-ui-typeable: true
-                  required:
-                  - readiness_url
-                  - readiness_exec_command
-                  - liveness_url
-                  - liveness_exec_command
-                  - startup_url
-                  - startup_exec_command
-                  - port
+                  # Note: Sidecar health check fields are conditionally required based on their respective check types
+                  # The UI will handle validation based on x-ui-visible-if conditions
               required:
               - size
               x-ui-order:
