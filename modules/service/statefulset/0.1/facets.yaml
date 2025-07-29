@@ -502,8 +502,6 @@ spec:
                 - ExecCheck
               description: Commands for startup check
               x-ui-override-disable: true
-          # Note: Health check fields are conditionally required based on their respective check types
-          # The UI will handle validation based on x-ui-visible-if conditions
         autoscaling:
           type: object
           title: Autoscaling
