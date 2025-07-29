@@ -80,3 +80,129 @@ module "rollout_restart_task" {
     }
   ]
 }
+
+
+module "print_params_task" {
+  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  name   = "print-params"
+
+  instance_name    = var.instance_name
+  environment      = var.environment
+  instance         = var.instance
+  auth_secret_name = var.inputs.kubernetes_details.attributes.legacy_outputs.k8s_details.workflows_auth_secret_name
+  providers = {
+    helm = "helm.release-pod"
+  }
+
+  steps = [
+    {
+      name      = "print-params"
+      image     = "bitnami/kubectl:latest"
+      resources = {}
+      params = [
+        {
+          name        = "ACTION"
+          type        = "string"
+          description = "supported actions: restart, stop, start"
+          default     = "restart"
+        },
+        {
+          name        = "flags"
+          type        = "array"
+          description = "array of compilation flags or options"
+          default     = ["--verbose", "--force"]
+        },
+        {
+          name        = "gitrepo"
+          type        = "object"
+          description = "git repository information with url and commit"
+          properties = {
+            url = {
+              type = "string"
+            }
+            commit = {
+              type = "string"
+            }
+          }
+          default = {
+            url    = "https://github.com/example/repo.git"
+            commit = "main"
+          }
+        },
+        {
+          name        = "timeout"
+          type        = "string"
+          description = "timeout duration in Go format (e.g., 30s, 5m, 1h)"
+          default     = "300s"
+        },
+        {
+          name        = "debug"
+          type        = "string"
+          description = "enable debug mode (true/false)"
+          default     = "false"
+        }
+      ]
+      env = [
+        {
+          name  = "RESOURCE_TYPE"
+          value = local.resource_type
+        },
+        {
+          name  = "RESOURCE_NAME"
+          value = local.resource_name
+        },
+        {
+          name  = "NAMESPACE"
+          value = local.namespace
+        }
+      ]
+      script = <<-EOT
+        #!/bin/bash
+        set -e
+        
+        echo "=== Tekton Task Parameters ==="
+        echo "ACTION: $(params.ACTION)"
+        echo "Timeout: $(params.timeout)"
+        echo "Debug mode: $(params.debug)"
+        
+        echo "=== Array Parameter (flags) ==="
+        echo "All flags: $(params.flags[*])"
+        echo "First flag: $(params.flags[0])"
+        echo "Second flag: $(params.flags[1])"
+        
+        echo "=== Object Parameter (gitrepo) ==="
+        echo "Git URL: $(params.gitrepo.url)"
+        echo "Git Commit: $(params.gitrepo.commit)"
+        
+        echo "=== Environment Variables ==="
+        echo "Resource Type: $RESOURCE_TYPE"
+        echo "Resource Name: $RESOURCE_NAME"
+        echo "Namespace: $NAMESPACE"
+        
+        echo "=== Starting workflow based on ACTION parameter ==="
+        case "$(params.ACTION)" in
+          "restart")
+            echo "Performing restart operation..."
+            ;;
+          "stop")
+            echo "Performing stop operation..."
+            ;;
+          "start")
+            echo "Performing start operation..."
+            ;;
+          *)
+            echo "Unknown action: $(params.ACTION)"
+            exit 1
+            ;;
+        esac
+        
+        if [ "$(params.debug)" == "true" ]; then
+          echo "=== Debug mode enabled ==="
+          echo "Additional debug information would be shown here"
+        fi
+        
+        echo "Task completed successfully!"
+      EOT
+    }
+  ]
+}
