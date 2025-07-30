@@ -141,11 +141,6 @@ spec:
   - storage_class
   - versioning_enabled
   - uniform_bucket_level_access
-inputs:
-  cloud_account:
-    type: '@outputs/cloud_account'
-    providers:
-    - google
 outputs:
   default:
     type: '@outputs/google_cloud_storage_bucket'
