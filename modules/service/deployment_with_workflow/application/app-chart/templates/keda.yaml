@@ -1,0 +1,58 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if hasKey .Values.advanced.common.app_chart.values "keda" }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    name: {{ include "app-chart.fullname" . }}
+    apiVersion: {{ .Values.advanced.common.app_chart.values.keda.api_version | default "apps/v1" }}
+    kind: {{ .Values.advanced.common.app_chart.values.keda.kind | default "Deployment" }}
+    # envSourceContainerName: {{ .Values.advanced.common.app_chart.values.keda.env_source_container_name | default ".spec.template.spec.containers[0]" }}
+  pollingInterval: {{ .Values.advanced.common.app_chart.values.keda.polling_interval | default 30 }}
+  cooldownPeriod: {{ .Values.advanced.common.app_chart.values.keda.cooldown_period | default 300 }}
+#   idleReplicaCount: {{ .Values.advanced.common.app_chart.values.keda.idle_replicaCount | default 1 }}
+{{- if hasKey .Values.spec.runtime.autoscaling "min" }}
+  minReplicaCount: {{ .Values.spec.runtime.autoscaling.min }}
+  {{ else }}
+  minReplicaCount: 1
+{{- end }}
+{{- if hasKey .Values.spec.runtime.autoscaling "max" }}
+  maxReplicaCount: {{ .Values.spec.runtime.autoscaling.max }}
+  {{ else }}
+  maxReplicaCount: 10
+{{- end }}
+  fallback:
+    failureThreshold: {{ .Values.advanced.common.app_chart.values.keda.failure_threshold | default 3 }}
+    replicas: {{ .Values.advanced.common.app_chart.values.keda.replicas | default 6 }}
+  advanced:
+    restoreToOriginalReplicaCount: {{ .Values.advanced.common.app_chart.values.keda.restore_to_original_replica_count | default "false" }}
+{{- if hasKey .Values.advanced.common.app_chart.values "hpa" }}
+{{- if hasKey .Values.advanced.common.app_chart.values.hpa "behavior" }}
+    horizontalPodAutoscalerConfig:
+{{- $yamlBlock := .Values.advanced.common.app_chart.values.hpa | toYaml }}
+{{- printf "%s" $yamlBlock | nindent 6 }}
+{{- end }}
+{{- end }}
+  triggers:
+{{- range $key, $value := .Values.advanced.common.app_chart.values.keda.triggers }}
+  {{- if eq $value.type "prometheus" }}
+  - type: {{ $value.type }}
+    {{- $metadata := $value.metadata }}
+    {{- if not $metadata.serverAddress }}
+      {{- $metadata = merge $metadata (dict "serverAddress" "http://prometheus-operator-prometheus.default.svc.cluster.local:9090") }}
+    {{- end }}
+    metadata:
+      {{- $metadata | toYaml | nindent 6 }}
+  {{- else }}
+  - type: {{ $value.type }}
+    metadata:
+      {{- $value.metadata | toYaml | nindent 6 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

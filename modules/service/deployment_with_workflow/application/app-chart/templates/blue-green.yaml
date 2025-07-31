@@ -1,0 +1,66 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if hasKey .Values.spec.release  "strategy" }}
+{{- if eq .Values.spec.release.strategy.type "BlueGreen" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+spec:
+  replicas: {{ include "app-chart.replicas" . }}
+  analysis:
+    successfulRunHistoryLimit: {{ default 10 .Values.spec.release.strategy.blue_green_strategy.successful_run_history_limit }}
+    unsuccessfulRunHistoryLimit: {{ default 10 .Values.spec.release.strategy.blue_green_strategy.unsuccessful_run_history_limit }}
+  selector:
+    matchLabels:
+      {{- include "app-chart.selectorLabels" . | nindent 6 }}
+  workloadRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "app-chart.fullname" . }}
+    scaleDown: progressively
+  minReadySeconds: {{ default 0 .Values.spec.release.strategy.blue_green_strategy.min_ready_seconds }}
+  revisionHistoryLimit: {{ default 3 .Values.spec.release.strategy.blue_green_strategy.revision_history_limit }}
+  paused: {{ default false .Values.spec.release.strategy.blue_green_strategy.enable_manual_rollout }}
+  progressDeadlineSeconds: {{ default 600 .Values.spec.release.strategy.blue_green_strategy.progress_deadline_seconds }}
+  progressDeadlineAbort: {{ default false .Values.spec.release.strategy.blue_green_strategy.progress_deadline_abort }}
+  restartAt: {{ default "" .Values.spec.release.strategy.blue_green_strategy.restart_at }}
+  rollbackWindow:
+    revisions: {{ default "" .Values.spec.release.strategy.blue_green_strategy.rollback_window_revisions }}
+  strategy:
+    blueGreen:
+      activeMetadata:
+        labels:
+          role: active
+      previewMetadata:
+        labels:
+          role: preview
+      activeService: {{ include "app-chart.fullname" . }}
+    #   prePromotionAnalysis:
+    #     templates:
+    #     - templateName: success-rate
+    #     args:
+    #     - name: service-name
+    #       value: guestbook-svc.default.svc.cluster.local
+
+    #   postPromotionAnalysis:
+    #     templates:
+    #     - templateName: success-rate
+    #     args:
+    #     - name: service-name
+    #       value: guestbook-svc.default.svc.cluster.local
+      previewService: {{ include "app-chart.fullname" . }}-preview
+      previewReplicaCount: {{ default 1 .Values.spec.release.strategy.blue_green_strategy.preview_replicas }}
+      autoPromotionEnabled: {{ default false .Values.spec.release.strategy.blue_green_strategy.auto_promotion }}
+      autoPromotionSeconds: {{ default "" .Values.spec.release.strategy.blue_green_strategy.auto_promotion_seconds }}
+      scaleDownDelaySeconds: {{ default 30 .Values.spec.release.strategy.blue_green_strategy.scale_down_delay_seconds }}
+      scaleDownDelayRevisionLimit: {{ default "" .Values.spec.release.strategy.blue_green_strategy.scale_down_delay_revision_limit }}
+      abortScaleDownDelaySeconds: {{ default 30 .Values.spec.release.strategy.blue_green_strategy.abort_scale_down_delay_seconds }}
+    #   antiAffinity:
+    #     requiredDuringSchedulingIgnoredDuringExecution: {}
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #       weight: 1 # Between 1 - 100
+{{- end }}
+{{- end }}
+{{- end }}
