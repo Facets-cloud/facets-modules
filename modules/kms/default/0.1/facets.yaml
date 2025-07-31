@@ -72,6 +72,8 @@ spec:
       type: array
       title: Key Owners
       description: List of key owners
+      x-ui-array-input-validation:
+        error: "Invalid key owner. Please enter a valid key owner."
       items:
         type: string
       x-ui-override-disable: true
@@ -79,6 +81,8 @@ spec:
       type: array
       title: Key Administrators
       description: List of key administrators
+      x-ui-array-input-validation:
+        error: "Invalid key administrator. Please enter a valid key administrator."
       items:
         type: string
       x-ui-override-disable: true
@@ -86,6 +90,8 @@ spec:
       type: array
       title: Key Users
       description: List of key users
+      x-ui-array-input-validation:
+        error: "Invalid key user. Please enter a valid key user."
       items:
         type: string
       x-ui-override-disable: true
@@ -93,6 +99,8 @@ spec:
       type: array
       title: Key Service Users
       description: List of key service users
+      x-ui-array-input-validation:
+        error: "Invalid key service user. Please enter a valid key service user."
       items:
         type: string
       x-ui-override-disable: true
@@ -100,6 +108,8 @@ spec:
       type: array
       title: Key Service Roles for Autoscaling
       description: List of key service roles for autoscaling
+      x-ui-array-input-validation:
+        error: "Invalid key service role for autoscaling. Please enter a valid key service role for autoscaling."
       items:
         type: string
       x-ui-override-disable: true
@@ -107,6 +117,8 @@ spec:
       type: array
       title: Key Symmetric Encryption Users
       description: List of key symmetric encryption users
+      x-ui-array-input-validation:
+        error: "Invalid key symmetric encryption user. Please enter a valid key symmetric encryption user."
       items:
         type: string
       x-ui-override-disable: true
@@ -114,6 +126,8 @@ spec:
       type: array
       title: Key HMAC Users
       description: List of key HMAC users
+      x-ui-array-input-validation:
+        error: "Invalid key HMAC user. Please enter a valid key HMAC user."
       items:
         type: string
       x-ui-override-disable: true
@@ -121,6 +135,8 @@ spec:
       type: array
       title: Key Asymmetric Public Encryption Users
       description: List of key asymmetric public encryption users
+      x-ui-array-input-validation:
+        error: "Invalid key asymmetric public encryption user. Please enter a valid key asymmetric public encryption user."
       items:
         type: string
       x-ui-override-disable: true
@@ -128,6 +144,8 @@ spec:
       type: array
       title: Key Asymmetric Sign Verify Users
       description: List of key asymmetric sign verify users
+      x-ui-array-input-validation:
+        error: "Invalid key asymmetric sign verify user. Please enter a valid key asymmetric sign verify user."
       items:
         type: string
       x-ui-override-disable: true
@@ -140,6 +158,8 @@ spec:
       type: array
       title: Source Policy Documents
       description: List of source policy documents
+      x-ui-array-input-validation:
+        error: "Invalid source policy document. Please enter a valid source policy document."
       items:
         type: string
       x-ui-override-disable: true
@@ -147,6 +167,8 @@ spec:
       type: array
       title: Override Policy Documents
       description: List of override policy documents
+      x-ui-array-input-validation:
+        error: "Invalid override policy document. Please enter a valid override policy document."
       items:
         type: string
       x-ui-override-disable: true
@@ -158,6 +180,8 @@ spec:
       type: array
       title: Route53 DNSSEC Sources
       description: List of Route53 DNSSEC sources
+      x-ui-array-input-validation:
+        error: "Invalid Route53 DNSSEC source. Please enter a valid Route53 DNSSEC source."
       items:
         type: string
       x-ui-override-disable: true
@@ -187,6 +211,8 @@ spec:
       type: array
       title: Key Aliases
       description: List of aliases for the key
+      x-ui-array-input-validation:
+        error: "Invalid alias. Please enter a valid alias."
       items:
         type: string
       x-ui-override-disable: true

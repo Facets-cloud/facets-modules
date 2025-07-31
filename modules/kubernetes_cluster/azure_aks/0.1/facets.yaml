@@ -76,6 +76,8 @@ spec:
               type: array
               minItems: 1
               x-ui-overrides-only: true
+              x-ui-array-input-validation:
+                error: "Invalid instance type. Please enter a valid instance type."
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
