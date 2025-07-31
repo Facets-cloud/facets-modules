@@ -56,6 +56,8 @@ spec:
               type: array
               title: Targets
               description: The targets to invoke when the rule is triggered
+              x-ui-array-input-validation:
+                error: "Invalid target. Please enter a valid target."
               items:
                 type: string
               x-ui-override-disable: true
