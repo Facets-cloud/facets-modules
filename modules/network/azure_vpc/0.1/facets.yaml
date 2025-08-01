@@ -26,6 +26,8 @@ spec:
       title: Availability Zones
       description: Availability zones for the vpc
       type: array
+      x-ui-array-input-validation:
+        error: "Invalid availability zone. Please enter a valid availability zone."
       x-ui-placeholder: e.g. 1 2
       x-ui-immutable: true
       x-ui-overrides-only: true
