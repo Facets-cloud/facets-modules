@@ -8,7 +8,7 @@ module "name" {
   globally_unique = true
 }
 
-# Create the AKS cluster using the official Azure module
+# Create the AKS cluster using the locally modified Azure module
 module "k8scluster" {
   source = "./k8scluster"
 
@@ -124,9 +124,6 @@ module "k8scluster" {
     var.environment.cloud_tags,
     var.instance.spec.tags != null ? var.instance.spec.tags : {}
   )
-
-  # Disable http application routing
-  http_application_routing_enabled = false
 
   # Disable local accounts for better security
   local_account_disabled = true
