@@ -10,7 +10,8 @@ module "name" {
 
 # Create the AKS cluster using the locally modified Azure module
 module "k8scluster" {
-  source = "./k8scluster"
+  source  = "Azure/aks/azurerm//v4"
+  version = "10.2.0"
 
   # Required variables
   resource_group_name = var.inputs.network_details.attributes.resource_group_name
@@ -132,6 +133,3 @@ module "k8scluster" {
   rbac_aad                    = true
   rbac_aad_azure_rbac_enabled = true
 }
-
-# Data source to get current client configuration for authentication
-data "azurerm_client_config" "current" {}

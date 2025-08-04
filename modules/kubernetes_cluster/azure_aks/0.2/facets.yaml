@@ -316,24 +316,27 @@ outputs:
         source: hashicorp/kubernetes
         version: 2.17.0
         attributes:
-          host: attributes.cluster.auth.host
-          token: attributes.cluster.auth.token
-          cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
+          host: attributes.auth_host
+          client_certificate: attributes.client_certificate
+          client_key: attributes.client_key
+          cluster_ca_certificate: attributes.auth_cluster_ca_certificate
       helm:
         source: hashicorp/helm
         version: 2.8.0
         attributes:
           kubernetes:
-            host: attributes.cluster.auth.host
-            token: attributes.cluster.auth.token
-            cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
+            host: attributes.auth_host
+            client_certificate: attributes.client_certificate
+            client_key: attributes.client_key
+            cluster_ca_certificate: attributes.auth_cluster_ca_certificate
       kubernetes-alpha:
         source: hashicorp/kubernetes-alpha
         version: 0.6.0
         attributes:
-          host: attributes.cluster.auth.host
-          cluster_ca_certificate: attributes.cluster.auth.cluster_ca_certificate
-          token: attributes.cluster.auth.token
+          host: attributes.auth_host
+          client_certificate: attributes.client_certificate
+          client_key: attributes.client_key
+          cluster_ca_certificate: attributes.auth_cluster_ca_certificate
 sample:
   kind: kubernetes_cluster
   flavor: azure_aks_cluster

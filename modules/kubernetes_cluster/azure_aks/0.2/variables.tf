@@ -154,7 +154,7 @@ variable "inputs" {
   type = object({
     network_details = object({
       attributes = object({
-        vpc_id                     = string
+        vnet_id                    = string
         region                     = string
         resource_group_name        = string
         availability_zones         = list(string)
@@ -172,8 +172,8 @@ variable "inputs" {
   })
 
   validation {
-    condition     = length(var.inputs.network_details.attributes.vpc_id) > 0
-    error_message = "VPC ID cannot be empty."
+    condition     = length(var.inputs.network_details.attributes.vnet_id) > 0
+    error_message = "VNet ID cannot be empty."
   }
 
   validation {
