@@ -308,7 +308,7 @@ inputs:
     - azurerm
 outputs:
   default:
-    type: '@outputs/azure_aks'
+    type: '@facets/azure_aks'
     title: Kubernetes Cluster Output
     description: The output for the Kubernetes cluster
     providers:
