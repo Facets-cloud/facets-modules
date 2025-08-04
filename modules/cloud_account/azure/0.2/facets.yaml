@@ -61,6 +61,14 @@ outputs:
           client_id: attributes.client_id
           client_secret: attributes.client_secret
           tenant_id: attributes.tenant_id
+      azapi:
+        source: Azure/azapi
+        version: 2.5.0
+        attributes:
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
 sample:
   version: '0.2'
   flavor: azure
