@@ -312,8 +312,8 @@ resource "azurerm_subnet" "database" {
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
 
-  # Enable private link endpoint policies
-  enforce_private_link_endpoint_network_policies = true
+  # Configure private endpoint network policies
+  private_endpoint_network_policies = "Disabled"
 
   # Delegate to SQL services
   delegation {
@@ -382,8 +382,8 @@ resource "azurerm_subnet" "functions" {
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
 
-  # Enable private link endpoint policies
-  enforce_private_link_endpoint_network_policies = true
+  # Configure private endpoint network policies  
+  private_endpoint_network_policies = "Disabled"
 
   # Delegate to Azure Functions
   delegation {
@@ -412,8 +412,8 @@ resource "azurerm_subnet" "private_link_service" {
   address_prefixes     = [each.value.cidr_block]
   service_endpoints    = ["Microsoft.Storage"]
 
-  # Enable private link service policies (this is why we need a dedicated subnet)
-  enforce_private_link_service_network_policies = true
+  # Configure private link service network policies (disabled for Private Link Service)
+  private_link_service_network_policies_enabled = false
 
   lifecycle {
     ignore_changes = [service_endpoints, name]

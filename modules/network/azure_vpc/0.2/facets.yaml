@@ -13,9 +13,6 @@ inputs:
     optional: false
     providers:
     - azurerm
-    - azurerm3
-    - azurerm3-105-0
-    - azurerm3-116-0
 spec:
   type: object
   properties:
