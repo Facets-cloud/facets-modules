@@ -45,6 +45,7 @@ spec:
             cpu:
               type: string
               title: CPU
+              x-ui-critical: false
               description: Number of CPU cores required
               minLength: 1
               pattern: "^[0-9]+[m]?$"
