@@ -15,27 +15,9 @@ spec:
   - cluster
   - auto_upgrade_settings
   - node_pools
-  - secret_copier
   - features
   - tags
   properties:
-    secret_copier:
-      type: object
-      title: Secret Copier
-      description: Configuration for the Secret Copier.
-      x-ui-toggle: false
-      properties:
-        disabled:
-          type: boolean
-          title: Disabled
-          description: Disable secret copier.
-          default: false
-        values:
-          type: object
-          title: Values
-          description: Values to pass to the secret copier.
-          default: {}
-          x-ui-yaml-editor: true
     cluster:
       type: object
       title: Cluster
@@ -281,132 +263,6 @@ spec:
                 field: spec.node_pools.system_np.enabled
                 values:
                 - true
-        default:
-          type: object
-          title: Default Node Pool
-          description: Configuration for default application node pool.
-          x-ui-toggle: false
-          properties:
-            enabled:
-              type: boolean
-              title: Enabled
-              description: Enable default node pool.
-              default: true
-            instance_type:
-              type: string
-              title: Instance Type
-              description: Azure VM size for default nodes.
-              default: Standard_D4s_v3
-              x-ui-visible-if:
-                field: spec.node_pools.default.enabled
-                values:
-                - true
-            node_lifecycle_type:
-              type: string
-              title: Node Lifecycle Type
-              description: Node lifecycle type.
-              default: SPOT
-              enum:
-              - ON_DEMAND
-              - SPOT
-              x-ui-visible-if:
-                field: spec.node_pools.default.enabled
-                values:
-                - true
-            max_nodes:
-              type: integer
-              title: Maximum Nodes
-              description: Maximum number of nodes in the pool.
-              default: 200
-              minimum: 1
-              maximum: 1000
-              x-ui-visible-if:
-                field: spec.node_pools.default.enabled
-                values:
-                - true
-            root_disk_volume:
-              type: integer
-              title: Root Disk Volume (GB)
-              description: Root disk size in GB.
-              default: 100
-              minimum: 30
-              maximum: 2048
-              x-ui-visible-if:
-                field: spec.node_pools.default.enabled
-                values:
-                - true
-            azure_disk_type:
-              type: string
-              title: Azure Disk Type
-              description: Azure disk type.
-              default: Managed
-              enum:
-              - Managed
-              - Ephemeral
-              x-ui-visible-if:
-                field: spec.node_pools.default.enabled
-                values:
-                - true
-          required:
-          - enabled
-          - node_lifecycle_type
-        facets_dedicated:
-          type: object
-          title: Facets Dedicated Node Pool
-          description: Configuration for Facets dedicated node pool.
-          x-ui-toggle: false
-          properties:
-            enable:
-              type: boolean
-              title: Enable
-              description: Enable Facets dedicated node pool.
-              default: true
-            instance_type:
-              type: string
-              title: Instance Type
-              description: Azure VM size for Facets dedicated nodes.
-              default: Standard_D4as_v5
-              x-ui-visible-if:
-                field: spec.node_pools.facets_dedicated.enable
-                values:
-                - true
-            node_lifecycle_type:
-              type: string
-              title: Node Lifecycle Type
-              description: Node lifecycle type for Facets nodes.
-              default: SPOT
-              enum:
-              - ON_DEMAND
-              - SPOT
-              x-ui-visible-if:
-                field: spec.node_pools.facets_dedicated.enable
-                values:
-                - true
-            max_nodes:
-              type: integer
-              title: Maximum Nodes
-              description: Maximum number of Facets dedicated nodes.
-              default: 200
-              minimum: 1
-              maximum: 1000
-              x-ui-visible-if:
-                field: spec.node_pools.facets_dedicated.enable
-                values:
-                - true
-            root_disk_volume:
-              type: integer
-              title: Root Disk Volume (GB)
-              description: Root disk size in GB for Facets nodes.
-              default: 100
-              minimum: 30
-              maximum: 2048
-              x-ui-visible-if:
-                field: spec.node_pools.facets_dedicated.enable
-                values:
-                - true
-          required:
-          - enable
-          - node_lifecycle_type
     features:
       type: object
       title: Features
@@ -504,13 +360,6 @@ sample:
         day_of_week: SUN
         start_time: 2
         end_time: 6
-    secret_copier:
-      disabled: false
-      values:
-        resources:
-          requests:
-            cpu: 150m
-            memory: 256Mi
     node_pools:
       system_np:
         enabled: true
@@ -519,17 +368,10 @@ sample:
         max_pods: 30
         os_disk_size_gb: 50
         enable_auto_scaling: false
-      default:
-        enabled: true
-        instance_type: Standard_D4s_v3
-        node_lifecycle_type: SPOT
-        max_nodes: 200
-        root_disk_volume: 100
-        azure_disk_type: Managed
-      facets_dedicated:
-        enable: true
-        instance_type: Standard_D4as_v5
-        node_lifecycle_type: SPOT
-        max_nodes: 200
-        root_disk_volume: 100
     tags: {}
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - outputs.tf
+  - locals.tf

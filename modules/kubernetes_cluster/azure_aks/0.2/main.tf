@@ -1,138 +1,141 @@
+# Generate a unique name for the AKS cluster
 module "name" {
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
-  limit           = 32
+  limit           = 63
   resource_name   = var.instance_name
   resource_type   = "kubernetes_cluster"
   globally_unique = true
 }
 
-module "k8s_cluster" {
-  source              = "./k8s_cluster"
-  instance            = var.instance
-  vpc_id              = var.inputs.network_details.attributes.vpc_id
-  cc_metadata         = var.cc_metadata
-  environment         = var.environment
-  cluster             = var.cluster
-  k8s_subnets         = var.inputs.network_details.attributes.private_subnet_ids
-  instance_name       = var.instance_name
-  region              = var.inputs.network_details.attributes.region
-  azs                 = var.inputs.network_details.attributes.availability_zones
+# Create the AKS cluster using the official Azure module
+module "k8scluster" {
+  source  = "Azure/aks/azurerm"
+  version = "10.2.0"
+
+  # Required variables
   resource_group_name = var.inputs.network_details.attributes.resource_group_name
-  public_subnets      = var.inputs.network_details.attributes.public_subnet_ids
-  private_subnets     = var.inputs.network_details.attributes.private_subnet_ids
+  location            = var.inputs.network_details.attributes.region
 
-}
+  # Basic cluster configuration
+  cluster_name = local.name
+  prefix       = ""
 
-# Storage class for AKS
-module "storage_class" {
-  depends_on      = [module.k8s_cluster]
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "aks-storage-class"
-  namespace       = var.environment.namespace
-  release_name    = "${local.name}-fc-storage-class"
-  data            = local.storage_class_data
-  advanced_config = {}
-}
+  # Kubernetes version
+  kubernetes_version = var.instance.spec.cluster.kubernetes_version
 
-# Default node pool reference (for compatibility)
-module "default_node_pool" {
-  depends_on      = [module.k8s_cluster]
-  count           = lookup(local.default_node_pool, "enabled", true) ? 1 : 0
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-default-np"
-  namespace       = var.environment.namespace
-  release_name    = "${local.name}-fc-default-np"
-  data            = local.default_node_pool_data
-  advanced_config = {}
-}
+  # SKU tier
+  sku_tier = var.instance.spec.cluster.sku_tier
 
-# Dedicated node pool reference (for compatibility)
-module "dedicated_node_pool" {
-  depends_on      = [module.k8s_cluster]
-  count           = lookup(local.dedicated_node_pool, "enabled", false) ? 1 : 0
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-fc-dedicated-np"
-  namespace       = var.environment.namespace
-  release_name    = "${local.name}-fc-dedicated-np"
-  data            = local.dedicated_node_pool_data
-  advanced_config = {}
-}
-
-provider "kubernetes" {
-  host                   = module.k8s_cluster.k8s_details.cluster.auth.host
-  client_certificate     = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
-  client_key             = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
-  cluster_ca_certificate = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
-}
-
-provider "helm" {
-  kubernetes {
-    host                   = module.k8s_cluster.k8s_details.cluster.auth.host
-    client_certificate     = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
-    client_key             = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
-    cluster_ca_certificate = base64decode(module.k8s_cluster.k8s_details.cluster.auth.cluster_ca_certificate)
+  # Network configuration
+  network_plugin = "azure"
+  network_policy = "calico"
+  vnet_subnet = {
+    id = var.inputs.network_details.attributes.private_subnet_ids[0]
   }
+  net_profile_service_cidr   = "10.254.0.0/16"
+  net_profile_dns_service_ip = "10.254.0.254"
+
+  # Private cluster configuration
+  private_cluster_enabled         = !var.instance.spec.cluster.cluster_endpoint_public_access
+  api_server_authorized_ip_ranges = var.instance.spec.cluster.cluster_endpoint_public_access ? var.instance.spec.cluster.cluster_endpoint_public_access_cidrs : null
+
+  # Node pool configuration
+  agents_count              = var.instance.spec.node_pools.system_np.node_count
+  agents_size               = var.instance.spec.node_pools.system_np.instance_type
+  agents_max_pods           = var.instance.spec.node_pools.system_np.max_pods
+  os_disk_size_gb           = var.instance.spec.node_pools.system_np.os_disk_size_gb
+  agents_availability_zones = var.inputs.network_details.attributes.availability_zones
+  agents_pool_name          = "system"
+
+  # Auto-scaling configuration
+  enable_auto_scaling = var.instance.spec.node_pools.system_np.enable_auto_scaling
+  agents_min_count    = var.instance.spec.node_pools.system_np.enable_auto_scaling ? var.instance.spec.node_pools.system_np.node_count : null
+  agents_max_count    = var.instance.spec.node_pools.system_np.enable_auto_scaling ? 10 : null
+
+  # System node pool - mark it as system mode
+  only_critical_addons_enabled = true
+
+  # Auto-upgrade configuration
+  automatic_channel_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade ? var.instance.spec.auto_upgrade_settings.automatic_channel_upgrade : null
+
+  # Maintenance window configuration
+  maintenance_window_auto_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade && !var.instance.spec.auto_upgrade_settings.maintenance_window.is_disabled ? {
+    frequency = "Weekly"
+    interval  = 1
+    duration  = var.instance.spec.auto_upgrade_settings.maintenance_window.end_time - var.instance.spec.auto_upgrade_settings.maintenance_window.start_time
+    day_of_week = lookup({
+      "SUN" = "Sunday"
+      "MON" = "Monday"
+      "TUE" = "Tuesday"
+      "WED" = "Wednesday"
+      "THU" = "Thursday"
+      "FRI" = "Friday"
+      "SAT" = "Saturday"
+    }, var.instance.spec.auto_upgrade_settings.maintenance_window.day_of_week, "Sunday")
+    start_time = format("%02d:00", var.instance.spec.auto_upgrade_settings.maintenance_window.start_time)
+    utc_offset = "+00:00"
+  } : null
+
+  # Node surge configuration for upgrades
+  agents_pool_max_surge = var.instance.spec.auto_upgrade_settings.max_surge
+
+  # Enable Azure Policy
+  azure_policy_enabled = true
+
+  # Enable workload identity and OIDC issuer
+  workload_identity_enabled = true
+  oidc_issuer_enabled       = true
+
+  # Enable monitoring if log analytics workspace is provided
+  log_analytics_workspace_enabled = var.inputs.network_details.attributes.log_analytics_workspace_id != null
+  log_analytics_workspace = var.inputs.network_details.attributes.log_analytics_workspace_id != null ? {
+    id   = var.inputs.network_details.attributes.log_analytics_workspace_id
+    name = split("/", var.inputs.network_details.attributes.log_analytics_workspace_id)[8]
+  } : null
+
+  # Auto-scaler profile configuration
+  auto_scaler_profile_enabled                          = var.instance.spec.node_pools.system_np.enable_auto_scaling
+  auto_scaler_profile_balance_similar_node_groups      = false
+  auto_scaler_profile_expander                         = "random"
+  auto_scaler_profile_max_graceful_termination_sec     = "600"
+  auto_scaler_profile_max_node_provisioning_time       = "15m"
+  auto_scaler_profile_max_unready_nodes                = 3
+  auto_scaler_profile_max_unready_percentage           = 45
+  auto_scaler_profile_new_pod_scale_up_delay           = "10s"
+  auto_scaler_profile_scale_down_delay_after_add       = "10m"
+  auto_scaler_profile_scale_down_delay_after_delete    = "10s"
+  auto_scaler_profile_scale_down_delay_after_failure   = "3m"
+  auto_scaler_profile_scan_interval                    = "10s"
+  auto_scaler_profile_scale_down_unneeded              = "10m"
+  auto_scaler_profile_scale_down_unready               = "20m"
+  auto_scaler_profile_scale_down_utilization_threshold = "0.5"
+  auto_scaler_profile_empty_bulk_delete_max            = 10
+  auto_scaler_profile_skip_nodes_with_local_storage    = true
+  auto_scaler_profile_skip_nodes_with_system_pods      = true
+
+  # Node labels for system node pool
+  agents_labels = {
+    "facets.cloud/node-type" = "system"
+    "managed-by"             = "facets"
+  }
+
+  # Tags
+  tags = merge(
+    var.environment.cloud_tags,
+    var.instance.spec.tags != null ? var.instance.spec.tags : {}
+  )
+
+  # Disable http application routing
+  http_application_routing_enabled = false
+
+  # Disable local accounts for better security
+  local_account_disabled = true
+
+  # Enable RBAC with Azure AD
+  rbac_aad                    = true
+  rbac_aad_azure_rbac_enabled = true
 }
 
-# Secret copier helm release
-resource "helm_release" "secret-copier" {
-  depends_on = [module.k8s_cluster]
-  count      = lookup(local.secret_copier, "disabled", false) ? 0 : 1
-  chart      = lookup(local.secret_copier, "chart", "secret-copier")
-  namespace  = lookup(local.secret_copier, "namespace", local.namespace)
-  name       = lookup(local.secret_copier, "name", "facets-secret-copier")
-  repository = lookup(local.secret_copier, "repository", "https://facets-cloud.github.io/helm-charts")
-  version    = lookup(local.secret_copier, "version", "1.0.2")
-
-  values = [
-    yamlencode(
-      {
-        resources = {
-          requests = {
-            cpu    = "50m"
-            memory = "256Mi"
-          }
-          limits = {
-            cpu    = "300m"
-            memory = "1000Mi"
-          }
-        }
-      }
-    ),
-    yamlencode(local.user_supplied_helm_values)
-  ]
-}
-
-# Cluster overprovisioner for better resource management
-resource "helm_release" "cluster-overprovisioner" {
-  depends_on      = [module.k8s_cluster]
-  name            = "${local.name}-cluster-overprovisioner"
-  repository      = "https://charts.deliveryhero.io/"
-  chart           = "cluster-overprovisioner"
-  version         = "0.7.10"
-  wait            = false
-  cleanup_on_fail = true
-
-  values = [
-    <<DEPLOYMENTS
-priorityClassOverprovision:
-  name: overprovisioning-apps
-  value: 1
-priorityClassDefault:
-  enabled: true
-deployments:
-  - name: overprovisioner
-    annotations: {}
-    replicaCount: ${lookup(local.spec, "overprovisioner_replicas", 1)}
-    nodeSelector: {}
-    resources:
-      requests:
-        cpu: 500m
-        memory: 500Mi
-    tolerations: []
-    affinity: {}
-    labels: {}
-DEPLOYMENTS
-  ]
-}
+# Data source to get current client configuration for authentication
+data "azurerm_client_config" "current" {}
