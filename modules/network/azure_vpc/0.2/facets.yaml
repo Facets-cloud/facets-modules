@@ -281,4 +281,14 @@ sample:
       Project: main-infrastructure
 iac:
   validated_files:
+  - main.tf
   - variables.tf
+  - locals.tf
+  - network.tf
+  - subnets.tf
+  - nat-gateway.tf
+  - routing.tf
+  - security-groups.tf
+  - private-endpoints.tf
+  - outputs.tf
+disable_state_reference_on_selective_release: true
