@@ -6,15 +6,13 @@ variable "instance" {
     version = string
     spec = object({
       cluster = object({
-        kubernetes_version                       = string
-        cluster_endpoint_public_access           = optional(bool, true)
-        cluster_endpoint_private_access          = optional(bool, false)
-        cluster_endpoint_public_access_cidrs     = optional(list(string), ["0.0.0.0/0"])
-        cluster_endpoint_private_access_cidrs    = optional(list(string), [])
-        cluster_enabled_log_types                = optional(list(string), [])
-        default_reclaim_policy                   = optional(string, "Delete")
-        sku_tier                                 = optional(string, "Free")
-        storage_account_last_access_time_enabled = optional(bool, true)
+        kubernetes_version                    = string
+        cluster_endpoint_public_access        = optional(bool, true)
+        cluster_endpoint_private_access       = optional(bool, false)
+        cluster_endpoint_public_access_cidrs  = optional(list(string), ["0.0.0.0/0"])
+        cluster_endpoint_private_access_cidrs = optional(list(string), [])
+        cluster_enabled_log_types             = optional(list(string), [])
+        sku_tier                              = optional(string, "Free")
       })
       auto_upgrade_settings = object({
         enable_auto_upgrade       = optional(bool, true)
@@ -37,18 +35,18 @@ variable "instance" {
           enable_auto_scaling = optional(bool, false)
         })
       })
-      features = optional(object({
-        enable_agic              = optional(bool, false)
-        enable_overprovisioner   = optional(bool, true)
-        overprovisioner_replicas = optional(number, 1)
-      }), {})
       tags = optional(map(string), {})
     })
   })
 
   validation {
-    condition     = contains(["Free", "Standard", "Premium"], var.instance.spec.cluster.sku_tier)
-    error_message = "SKU tier must be one of: Free, Standard, Premium."
+    condition     = contains(["1.29", "1.30", "1.31", "1.32"], var.instance.spec.cluster.kubernetes_version)
+    error_message = "Kubernetes version must be a supported version (1.29, 1.30, 1.31, or 1.32)."
+  }
+
+  validation {
+    condition     = contains(["Free", "Standard"], var.instance.spec.cluster.sku_tier)
+    error_message = "SKU tier must be one of: Free, Standard."
   }
 
   validation {

@@ -15,7 +15,6 @@ spec:
   - cluster
   - auto_upgrade_settings
   - node_pools
-  - features
   - tags
   properties:
     cluster:
@@ -39,13 +38,11 @@ spec:
           title: Cluster Endpoint Public Access
           description: Whether the AKS public API server endpoint is enabled.
           default: true
-          x-ui-overrides-only: true
         cluster_endpoint_private_access:
           type: boolean
           title: Cluster Endpoint Private Access
           description: Whether the AKS private API server endpoint is enabled.
           default: false
-          x-ui-overrides-only: true
         cluster_endpoint_public_access_cidrs:
           type: array
           title: Cluster Endpoint Public Access CIDRs
@@ -53,14 +50,14 @@ spec:
             endpoint.
           default:
           - 0.0.0.0/0
-          x-ui-overrides-only: true
+          x-ui-override-disable: true
         cluster_endpoint_private_access_cidrs:
           type: array
           title: Cluster Endpoint Private Access CIDRs
           description: List of CIDR blocks which can access the AKS private API server
             endpoint.
           default: []
-          x-ui-overrides-only: true
+          x-ui-override-disable: true
         cluster_enabled_log_types:
           type: array
           title: Cluster Enabled Log Types
@@ -75,15 +72,6 @@ spec:
             - authenticator
             - controllerManager
             - scheduler
-        default_reclaim_policy:
-          type: string
-          title: Default Reclaim Policy
-          description: Default reclaim policy for the AKS cluster.
-          default: Delete
-          x-ui-overrides-only: true
-          enum:
-          - Delete
-          - Retain
         sku_tier:
           type: string
           title: SKU Tier
@@ -92,12 +80,6 @@ spec:
           enum:
           - Free
           - Standard
-        storage_account_last_access_time_enabled:
-          type: boolean
-          title: Storage Account Last Access Time Enabled
-          description: Enable last access time tracking for storage account.
-          default: true
-          x-ui-overrides-only: true
       required:
       - kubernetes_version
     auto_upgrade_settings:
@@ -269,33 +251,6 @@ spec:
                 field: spec.node_pools.system_np.enabled
                 values:
                 - true
-    features:
-      type: object
-      title: Features
-      description: Additional cluster features.
-      x-ui-toggle: false
-      properties:
-        enable_agic:
-          type: boolean
-          title: Enable AGIC
-          description: Enable Application Gateway Ingress Controller.
-          default: false
-        enable_overprovisioner:
-          type: boolean
-          title: Enable Overprovisioner
-          description: Enable cluster overprovisioner for better resource management.
-          default: true
-        overprovisioner_replicas:
-          type: integer
-          title: Overprovisioner Replicas
-          description: Number of overprovisioner replicas.
-          default: 1
-          minimum: 0
-          maximum: 10
-          x-ui-visible-if:
-            field: spec.features.enable_overprovisioner
-            values:
-            - true
   required:
   - cluster
 inputs:

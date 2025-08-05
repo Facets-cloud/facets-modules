@@ -41,8 +41,9 @@ module "k8scluster" {
   net_profile_dns_service_ip = "10.254.0.254"
 
   # Private cluster configuration
-  private_cluster_enabled         = !var.instance.spec.cluster.cluster_endpoint_public_access
-  api_server_authorized_ip_ranges = var.instance.spec.cluster.cluster_endpoint_public_access ? var.instance.spec.cluster.cluster_endpoint_public_access_cidrs : null
+  private_cluster_enabled             = var.instance.spec.cluster.cluster_endpoint_private_access
+  private_cluster_public_fqdn_enabled = var.instance.spec.cluster.cluster_endpoint_public_access
+  api_server_authorized_ip_ranges     = var.instance.spec.cluster.cluster_endpoint_public_access ? var.instance.spec.cluster.cluster_endpoint_public_access_cidrs : null
 
   # Node pool configuration
   agents_count              = var.instance.spec.node_pools.system_np.node_count
@@ -96,6 +97,14 @@ module "k8scluster" {
   log_analytics_workspace = var.inputs.network_details.attributes.log_analytics_workspace_id != null ? {
     id   = var.inputs.network_details.attributes.log_analytics_workspace_id
     name = split("/", var.inputs.network_details.attributes.log_analytics_workspace_id)[8]
+  } : null
+
+  # Enable AKS cluster logging
+  log_analytics_solution = var.inputs.network_details.attributes.log_analytics_workspace_id != null && length(var.instance.spec.cluster.cluster_enabled_log_types) > 0 ? {
+    enabled                    = true
+    id                         = var.inputs.network_details.attributes.log_analytics_workspace_id
+    log_analytics_workspace_id = var.inputs.network_details.attributes.log_analytics_workspace_id
+    log_retention_in_days      = 30
   } : null
 
   # Auto-scaler profile configuration
