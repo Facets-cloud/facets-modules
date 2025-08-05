@@ -188,7 +188,6 @@ spec:
           title: Command
           description: Command to run in the container
           x-ui-array-input-validation:
-            error: "Invalid command. Please enter a valid command."
           items:
             type: string
           x-ui-command: true
@@ -299,7 +298,6 @@ spec:
               type: array
               title: Readiness Exec Command
               x-ui-array-input-validation:
-                error: "Invalid command. Please enter a valid command."
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -397,7 +395,6 @@ spec:
               type: array
               title: Liveness Exec Command
               x-ui-array-input-validation:
-                error: "Invalid command. Please enter a valid command."
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -504,7 +501,6 @@ spec:
               type: array
               title: Startup Exec Command
               x-ui-array-input-validation:
-                error: "Invalid command. Please enter a valid command."
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -1041,7 +1037,6 @@ spec:
                   title: Command
                   description: Command to run in the container
                   x-ui-array-input-validation:
-                    error: "Invalid command. Please enter a valid command."
                   items:
                     type: string
                   x-ui-command: true
@@ -1308,7 +1303,6 @@ spec:
                   title: Command
                   description: Command to run in the container
                   x-ui-array-input-validation:
-                    error: "Invalid command. Please enter a valid command."
                   items:
                     type: string
                   x-ui-command: true
@@ -1615,7 +1609,6 @@ spec:
                       type: array
                       title: Readiness Exec Command
                       x-ui-array-input-validation:
-                        error: "Invalid command. Please enter a valid command."
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
@@ -1699,7 +1692,6 @@ spec:
                       type: array
                       title: Liveness Exec Command
                       x-ui-array-input-validation:
-                        error: "Invalid command. Please enter a valid command."
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
@@ -1783,7 +1775,6 @@ spec:
                       type: array
                       title: Startup Exec Command
                       x-ui-array-input-validation:
-                        error: "Invalid command. Please enter a valid command."
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:

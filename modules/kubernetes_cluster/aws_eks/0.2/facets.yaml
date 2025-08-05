@@ -112,7 +112,6 @@ spec:
               x-ui-placeholder: e.g. m4.xlarge t3.2xlarge
               x-ui-overrides-only: true
               x-ui-array-input-validation:
-                error: "Invalid instance type. Please enter a valid instance type."
               items:
                 type: string
             root_disk_volume:
