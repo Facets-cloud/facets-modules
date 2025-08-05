@@ -312,6 +312,7 @@ inputs:
     optional: false
     providers:
     - azurerm
+    - azapi
 outputs:
   default:
     type: '@facets/azure_aks'
