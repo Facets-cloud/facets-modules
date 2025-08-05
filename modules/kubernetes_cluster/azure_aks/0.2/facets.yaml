@@ -323,10 +323,10 @@ outputs:
         source: hashicorp/kubernetes
         version: 2.17.0
         attributes:
-          host: attributes.auth_host
+          host: attributes.cluster_endpoint
           client_certificate: attributes.client_certificate
           client_key: attributes.client_key
-          cluster_ca_certificate: attributes.auth_cluster_ca_certificate
+          cluster_ca_certificate: attributes.cluster_ca_certificate
       helm:
         source: hashicorp/helm
         version: 2.8.0
