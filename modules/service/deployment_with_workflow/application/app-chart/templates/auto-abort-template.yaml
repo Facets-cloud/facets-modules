@@ -1,0 +1,31 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if hasKey .Values.spec.release "strategy" }}
+{{- if eq .Values.spec.release.strategy.type "Canary" }}
+{{- if and (hasKey .Values.spec.release.strategy "canary_strategy") .Values.spec.release.strategy.canary_strategy.enable_auto_abort }}
+{{- $auto_abort_timeout := default 3600 .Values.spec.release.strategy.canary_strategy.auto_abort_timeout}}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: auto-abort-canary-{{ include "app-chart.fullname" . }}
+spec:
+  metrics:
+    - name: auto-abort
+      count: 1
+      interval: 0s
+      failureLimit: 0
+      provider:
+        job:
+          spec:
+            backoffLimit: 0
+            template:
+              spec:
+                containers:
+                  - name: busybox
+                    image: busybox
+                    command: ["sh", "-c"]
+                    args: ["echo 'Starting Canary auto-abort check, sleeping for {{ $auto_abort_timeout }} seconds'; sleep {{ $auto_abort_timeout }}; echo 'Canary Auto-abort check complete, exiting and aborting the canary release'; exit -1"]
+                restartPolicy: Never
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
