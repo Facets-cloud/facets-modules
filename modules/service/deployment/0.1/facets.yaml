@@ -193,8 +193,7 @@ spec:
                       description: Command to run in the container.
                       x-ui-array-input-validation:
                       items:
-                        type: string
-                      x-ui-command: true
+                        type: string                     
                       x-ui-override-disable: true
               required:
               - exec
@@ -214,8 +213,7 @@ spec:
                       description: Command to run in the container.
                       x-ui-array-input-validation:
                       items:
-                        type: string
-                      x-ui-command: true
+                        type: string                     
                       x-ui-override-disable: true
               required:
               - exec
@@ -227,8 +225,7 @@ spec:
           description: Command to run in the container
           x-ui-array-input-validation:
           items:
-            type: string
-          x-ui-command: true
+            type: string 
           x-ui-override-disable: true
         args:
           type: array
@@ -239,8 +236,7 @@ spec:
             error: "Each argument can only contain alphanumeric characters,
             dashes, underscores, and spaces."
           items:
-            type: string
-          x-ui-command: true
+            type: string         
           x-ui-override-disable: true
         health_checks:
           type: object
@@ -1039,7 +1035,6 @@ spec:
                   x-ui-array-input-validation:
                   items:
                     type: string
-                  x-ui-command: true
                   x-ui-override-disable: true
                 args:
                   type: array
@@ -1051,7 +1046,6 @@ spec:
                     dashes, underscores, and spaces."
                   items:
                     type: string
-                  x-ui-command: true
                   x-ui-override-disable: true
                 size:
                   type: object
@@ -1308,7 +1302,6 @@ spec:
                   x-ui-array-input-validation:
                   items:
                     type: string
-                  x-ui-command: true
                   x-ui-override-disable: true
                 args:
                   type: array
@@ -1320,7 +1313,6 @@ spec:
                     dashes, underscores, and spaces."
                   items:
                     type: string
-                  x-ui-command: true
                   x-ui-override-disable: true
                 size:
                   type: object
