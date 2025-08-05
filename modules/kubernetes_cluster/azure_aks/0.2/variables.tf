@@ -40,11 +40,6 @@ variable "instance" {
   })
 
   validation {
-    condition     = contains(["1.29", "1.30", "1.31", "1.32"], var.instance.spec.cluster.kubernetes_version)
-    error_message = "Kubernetes version must be a supported version (1.29, 1.30, 1.31, or 1.32)."
-  }
-
-  validation {
     condition     = contains(["Free", "Standard"], var.instance.spec.cluster.sku_tier)
     error_message = "SKU tier must be one of: Free, Standard."
   }

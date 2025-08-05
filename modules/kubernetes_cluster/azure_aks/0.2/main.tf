@@ -10,8 +10,7 @@ module "name" {
 
 # Create the AKS cluster using the locally modified Azure module
 module "k8scluster" {
-  source  = "Azure/aks/azurerm//v4"
-  version = "10.2.0"
+  source = "./k8scluster/v4"
 
   # Required variables
   resource_group_name = var.inputs.network_details.attributes.resource_group_name

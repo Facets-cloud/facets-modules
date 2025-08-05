@@ -51,6 +51,10 @@ spec:
           default:
           - 0.0.0.0/0
           x-ui-override-disable: true
+          x-ui-visible-if:
+            field: spec.cluster.cluster_endpoint_public_access
+            values:
+            - true
         cluster_endpoint_private_access_cidrs:
           type: array
           title: Cluster Endpoint Private Access CIDRs
@@ -58,6 +62,10 @@ spec:
             endpoint.
           default: []
           x-ui-override-disable: true
+          x-ui-visible-if:
+            field: spec.cluster.cluster_endpoint_private_access
+            values:
+            - true
         cluster_enabled_log_types:
           type: array
           title: Cluster Enabled Log Types
