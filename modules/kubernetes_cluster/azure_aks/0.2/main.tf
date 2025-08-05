@@ -39,10 +39,9 @@ module "k8scluster" {
   net_profile_service_cidr   = "10.254.0.0/16"
   net_profile_dns_service_ip = "10.254.0.254"
 
-  # Private cluster configuration
-  private_cluster_enabled             = var.instance.spec.cluster.cluster_endpoint_private_access
-  private_cluster_public_fqdn_enabled = var.instance.spec.cluster.cluster_endpoint_public_access
-  api_server_authorized_ip_ranges     = var.instance.spec.cluster.cluster_endpoint_public_access ? var.instance.spec.cluster.cluster_endpoint_public_access_cidrs : null
+  # Public cluster configuration - always enabled
+  private_cluster_enabled         = false
+  api_server_authorized_ip_ranges = var.instance.spec.cluster.cluster_endpoint_public_access_cidrs
 
   # Node pool configuration
   agents_count              = var.instance.spec.node_pools.system_np.node_count

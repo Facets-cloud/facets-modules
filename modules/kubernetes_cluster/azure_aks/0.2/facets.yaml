@@ -33,16 +33,6 @@ spec:
             field: spec.auto_upgrade_settings.enable_auto_upgrade
             values:
             - false
-        cluster_endpoint_public_access:
-          type: boolean
-          title: Cluster Endpoint Public Access
-          description: Whether the AKS public API server endpoint is enabled.
-          default: true
-        cluster_endpoint_private_access:
-          type: boolean
-          title: Cluster Endpoint Private Access
-          description: Whether the AKS private API server endpoint is enabled.
-          default: false
         cluster_endpoint_public_access_cidrs:
           type: array
           title: Cluster Endpoint Public Access CIDRs
@@ -51,21 +41,6 @@ spec:
           default:
           - 0.0.0.0/0
           x-ui-override-disable: true
-          x-ui-visible-if:
-            field: spec.cluster.cluster_endpoint_public_access
-            values:
-            - true
-        cluster_endpoint_private_access_cidrs:
-          type: array
-          title: Cluster Endpoint Private Access CIDRs
-          description: List of CIDR blocks which can access the AKS private API server
-            endpoint.
-          default: []
-          x-ui-override-disable: true
-          x-ui-visible-if:
-            field: spec.cluster.cluster_endpoint_private_access
-            values:
-            - true
         cluster_enabled_log_types:
           type: array
           title: Cluster Enabled Log Types
@@ -318,11 +293,8 @@ sample:
   spec:
     cluster:
       kubernetes_version: '1.31'
-      cluster_endpoint_public_access: true
-      cluster_endpoint_private_access: false
       cluster_endpoint_public_access_cidrs:
       - 0.0.0.0/0
-      cluster_endpoint_private_access_cidrs: []
       sku_tier: Free
     auto_upgrade_settings:
       enable_auto_upgrade: true
