@@ -6,7 +6,7 @@ variable "instance" {
     version = string
     spec = object({
       cluster = object({
-        kubernetes_version                   = string
+        kubernetes_version                   = optional(string, null)
         cluster_endpoint_public_access_cidrs = optional(list(string), ["0.0.0.0/0"])
         cluster_enabled_log_types            = optional(list(string), [])
         sku_tier                             = optional(string, "Free")
