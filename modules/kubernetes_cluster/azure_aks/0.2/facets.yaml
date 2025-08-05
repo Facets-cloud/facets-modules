@@ -124,15 +124,15 @@ spec:
               type: string
               title: Day of Week
               description: Day of week for maintenance.
-              default: SUN
+              default: Sunday
               enum:
-              - SUN
-              - MON
-              - TUE
-              - WED
-              - THU
-              - FRI
-              - SAT
+              - Sunday
+              - Monday
+              - Tuesday
+              - Wednesday
+              - Thursday
+              - Friday
+              - Saturday
               x-ui-visible-if:
                 field: spec.auto_upgrade_settings.maintenance_window.is_disabled
                 values:
@@ -302,7 +302,7 @@ sample:
       max_surge: '1'
       maintenance_window:
         is_disabled: true
-        day_of_week: SUN
+        day_of_week: Sunday
         start_time: 2
         end_time: 6
     node_pools:

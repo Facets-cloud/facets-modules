@@ -64,20 +64,12 @@ module "k8scluster" {
 
   # Maintenance window configuration
   maintenance_window_auto_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade && !var.instance.spec.auto_upgrade_settings.maintenance_window.is_disabled ? {
-    frequency = "Weekly"
-    interval  = 1
-    duration  = var.instance.spec.auto_upgrade_settings.maintenance_window.end_time - var.instance.spec.auto_upgrade_settings.maintenance_window.start_time
-    day_of_week = lookup({
-      "SUN" = "Sunday"
-      "MON" = "Monday"
-      "TUE" = "Tuesday"
-      "WED" = "Wednesday"
-      "THU" = "Thursday"
-      "FRI" = "Friday"
-      "SAT" = "Saturday"
-    }, var.instance.spec.auto_upgrade_settings.maintenance_window.day_of_week, "Sunday")
-    start_time = format("%02d:00", var.instance.spec.auto_upgrade_settings.maintenance_window.start_time)
-    utc_offset = "+00:00"
+    frequency   = "Weekly"
+    interval    = 1
+    duration    = var.instance.spec.auto_upgrade_settings.maintenance_window.end_time - var.instance.spec.auto_upgrade_settings.maintenance_window.start_time
+    day_of_week = var.instance.spec.auto_upgrade_settings.maintenance_window.day_of_week
+    start_time  = format("%02d:00", var.instance.spec.auto_upgrade_settings.maintenance_window.start_time)
+    utc_offset  = "+00:00"
   } : null
 
   # Node surge configuration for upgrades

@@ -17,7 +17,7 @@ variable "instance" {
         max_surge                 = optional(string, "1")
         maintenance_window = object({
           is_disabled = optional(bool, true)
-          day_of_week = optional(string, "SUN")
+          day_of_week = optional(string, "Sunday")
           start_time  = optional(number, 2)
           end_time    = optional(number, 6)
         })
@@ -70,9 +70,9 @@ variable "instance" {
 
   validation {
     condition = contains([
-      "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"
+      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
     ], var.instance.spec.auto_upgrade_settings.maintenance_window.day_of_week)
-    error_message = "Maintenance window day_of_week must be one of: SUN, MON, TUE, WED, THU, FRI, SAT."
+    error_message = "Maintenance window day_of_week must be one of: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday."
   }
 
   validation {
