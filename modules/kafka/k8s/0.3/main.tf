@@ -74,7 +74,7 @@ resource "helm_release" "kafka" {
 prometheus_id: ${try(var.inputs.prometheus_details.attributes.helm_release_id, "")}
 image:
   registry: docker.io
-  repository: bitnami/kafka
+  repository: bitnamilegacy/kafka
   tag: ${local.kafka_version}
   pullPolicy: IfNotPresent
 controller:
