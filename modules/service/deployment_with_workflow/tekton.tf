@@ -157,47 +157,6 @@ module "print_params_task" {
         #!/bin/bash
         set -e
         
-        echo "=== Tekton Task Parameters ==="
-        echo "ACTION: $(params.ACTION)"
-        echo "Timeout: $(params.timeout)"
-        echo "Debug mode: $(params.debug)"
-        
-        echo "=== Array Parameter (flags) ==="
-        echo "All flags: $(params.flags[*])"
-        echo "First flag: $(params.flags[0])"
-        echo "Second flag: $(params.flags[1])"
-        
-        echo "=== Object Parameter (gitrepo) ==="
-        echo "Git URL: $(params.gitrepo.url)"
-        echo "Git Commit: $(params.gitrepo.commit)"
-        
-        echo "=== Environment Variables ==="
-        echo "Resource Type: $RESOURCE_TYPE"
-        echo "Resource Name: $RESOURCE_NAME"
-        echo "Namespace: $NAMESPACE"
-        
-        echo "=== Starting workflow based on ACTION parameter ==="
-        case "$(params.ACTION)" in
-          "restart")
-            echo "Performing restart operation..."
-            ;;
-          "stop")
-            echo "Performing stop operation..."
-            ;;
-          "start")
-            echo "Performing start operation..."
-            ;;
-          *)
-            echo "Unknown action: $(params.ACTION)"
-            exit 1
-            ;;
-        esac
-        
-        if [ "$(params.debug)" == "true" ]; then
-          echo "=== Debug mode enabled ==="
-          echo "Additional debug information would be shown here"
-        fi
-        
         echo "Task completed successfully!"
       EOT
     }
