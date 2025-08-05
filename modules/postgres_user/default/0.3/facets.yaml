@@ -125,7 +125,6 @@ spec:
                   title: Statements
                   description: List of grant statements to be executed
                   x-ui-array-input-validation:
-                    error: "Invalid grant statement. Please enter a valid grant statement."
                   items:
                     type: string
                   minItems: 1

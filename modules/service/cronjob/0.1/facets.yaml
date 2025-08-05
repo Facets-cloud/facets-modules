@@ -89,7 +89,6 @@ spec:
           title: Command
           description: Command to run in the container
           x-ui-array-input-validation:
-            error: "Invalid command. Please enter a valid command."
           items:
             type: string
           x-ui-command: true

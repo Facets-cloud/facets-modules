@@ -92,7 +92,6 @@ spec:
                       description: Contains a list of cookie names
                       x-ui-placeholder: "Enter the cookie name"
                       x-ui-array-input-validation:
-                        error: "Invalid cookie name. Please enter a valid cookie name."
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -114,7 +113,6 @@ spec:
                       type: array
                       title: Headers
                       x-ui-array-input-validation:
-                        error: "Invalid header name. Please enter a valid header name."
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -143,7 +141,6 @@ spec:
                       description: Contains a list of query string names
                       x-ui-placeholder: "Enter the header name"
                       x-ui-array-input-validation:
-                        error: "Invalid query string name. Please enter a valid query string name."
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -180,7 +177,6 @@ spec:
             to your Amazon S3 bucket or your custom origin
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
           x-ui-array-input-validation:
-            error: "Invalid allowed method. Please enter a valid allowed method."
           items:
             type: string
           x-ui-override-disable: true
@@ -191,7 +187,6 @@ spec:
             using the specified HTTP methods
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
           x-ui-array-input-validation:
-            error: "Invalid cached method. Please enter a valid cached method."
           items:
             type: string
           x-ui-override-disable: true
@@ -247,7 +242,6 @@ spec:
                 to your Amazon S3 bucket or your custom origin
               x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
               x-ui-array-input-validation:
-                error: "Invalid allowed method. Please enter a valid allowed method."
               items:
                 type: string
               x-ui-override-disable: true
@@ -258,7 +252,6 @@ spec:
                 using the specified HTTP methods
               x-ui-placeholder: Enter cached methods eg. GET, HEADS
               x-ui-array-input-validation:
-                error: "Invalid cached method. Please enter a valid cached method."
               items:
                 type: string
               x-ui-override-disable: true
