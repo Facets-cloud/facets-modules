@@ -27,8 +27,13 @@ spec:
         kubernetes_version:
           type: string
           title: Kubernetes Version
-          description: Version of Kubernetes to use for the AKS cluster.
+          description: Version of Kubernetes to use for the AKS cluster. Only used
+            when auto-upgrade is disabled or using patch channel.
           default: '1.31'
+          x-ui-visible-if:
+            field: spec.auto_upgrade_settings.enable_auto_upgrade
+            values:
+            - false
         cluster_endpoint_public_access:
           type: boolean
           title: Cluster Endpoint Public Access
@@ -109,7 +114,8 @@ spec:
         automatic_channel_upgrade:
           type: string
           title: Automatic Channel Upgrade
-          description: Auto-upgrade channel for the cluster.
+          description: Auto-upgrade channel for the cluster. Note - when using stable/rapid/node-image,
+            the Kubernetes version will be managed automatically by Azure.
           default: stable
           enum:
           - rapid

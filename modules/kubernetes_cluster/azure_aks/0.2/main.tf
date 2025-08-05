@@ -4,7 +4,7 @@ module "name" {
   environment     = var.environment
   limit           = 63
   resource_name   = var.instance_name
-  resource_type   = "kubernetes_cluster"
+  resource_type   = "k8s"
   globally_unique = true
 }
 
@@ -18,11 +18,15 @@ module "k8scluster" {
   location            = var.inputs.network_details.attributes.region
 
   # Basic cluster configuration
-  cluster_name = local.name
-  prefix       = ""
+  cluster_name        = local.name
+  prefix              = local.name
+  node_resource_group = "MC_${local.name}"
 
-  # Kubernetes version
-  kubernetes_version = var.instance.spec.cluster.kubernetes_version
+  # Kubernetes version - only set when auto-upgrade is disabled or using patch channel
+  kubernetes_version = (
+    var.instance.spec.auto_upgrade_settings.enable_auto_upgrade &&
+    contains(["stable", "rapid", "node-image"], var.instance.spec.auto_upgrade_settings.automatic_channel_upgrade)
+  ) ? null : var.instance.spec.cluster.kubernetes_version
 
   # SKU tier
   sku_tier = var.instance.spec.cluster.sku_tier
@@ -126,10 +130,10 @@ module "k8scluster" {
     var.instance.spec.tags != null ? var.instance.spec.tags : {}
   )
 
-  # Disable local accounts for better security
-  local_account_disabled = true
-
-  # Enable RBAC with Azure AD
+  # Azure AD and RBAC configuration
   rbac_aad                    = true
   rbac_aad_azure_rbac_enabled = true
+
+  # Keep local accounts enabled for compatibility with client certificate auth
+  local_account_disabled = false
 }
