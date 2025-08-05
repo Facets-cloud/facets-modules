@@ -115,10 +115,10 @@ spec:
             values:
             - true
           properties:
-            is_disabled:
+            is_enabled:
               type: boolean
-              title: Disable Maintenance Window
-              description: Disable maintenance window (allow upgrades anytime).
+              title: Enable Maintenance Window
+              description: Enable maintenance window for scheduled upgrades.
               default: true
             day_of_week:
               type: string
@@ -134,9 +134,9 @@ spec:
               - Friday
               - Saturday
               x-ui-visible-if:
-                field: spec.auto_upgrade_settings.maintenance_window.is_disabled
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
                 values:
-                - false
+                - true
             start_time:
               type: integer
               title: Start Time
@@ -145,9 +145,9 @@ spec:
               minimum: 0
               maximum: 23
               x-ui-visible-if:
-                field: spec.auto_upgrade_settings.maintenance_window.is_disabled
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
                 values:
-                - false
+                - true
             end_time:
               type: integer
               title: End Time
@@ -156,9 +156,9 @@ spec:
               minimum: 0
               maximum: 23
               x-ui-visible-if:
-                field: spec.auto_upgrade_settings.maintenance_window.is_disabled
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
                 values:
-                - false
+                - true
     tags:
       type: object
       title: Tags
@@ -301,7 +301,7 @@ sample:
       automatic_channel_upgrade: stable
       max_surge: '1'
       maintenance_window:
-        is_disabled: true
+        is_enabled: true
         day_of_week: Sunday
         start_time: 2
         end_time: 6

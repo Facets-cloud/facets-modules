@@ -63,7 +63,7 @@ module "k8scluster" {
   automatic_channel_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade ? var.instance.spec.auto_upgrade_settings.automatic_channel_upgrade : null
 
   # Maintenance window configuration
-  maintenance_window_auto_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade && !var.instance.spec.auto_upgrade_settings.maintenance_window.is_disabled ? {
+  maintenance_window_auto_upgrade = var.instance.spec.auto_upgrade_settings.enable_auto_upgrade && var.instance.spec.auto_upgrade_settings.maintenance_window.is_enabled ? {
     frequency   = "Weekly"
     interval    = 1
     duration    = var.instance.spec.auto_upgrade_settings.maintenance_window.end_time - var.instance.spec.auto_upgrade_settings.maintenance_window.start_time

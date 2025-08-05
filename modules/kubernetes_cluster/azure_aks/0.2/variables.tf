@@ -16,7 +16,7 @@ variable "instance" {
         automatic_channel_upgrade = optional(string, "stable")
         max_surge                 = optional(string, "1")
         maintenance_window = object({
-          is_disabled = optional(bool, true)
+          is_enabled  = optional(bool, true)
           day_of_week = optional(string, "Sunday")
           start_time  = optional(number, 2)
           end_time    = optional(number, 6)
