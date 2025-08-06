@@ -41,17 +41,8 @@ spec:
   - cloud_account
 outputs:
   default:
-    type: '@outputs/cloud_account'
+    type: '@facets/azure_cloud_account'
     providers:
-      azurerm3-116-0:
-        source: hashicorp/azurerm3-116-0
-        version: 3.116.0
-        attributes:
-          features: {}
-          subscription_id: attributes.subscription_id
-          client_id: attributes.client_id
-          client_secret: attributes.client_secret
-          tenant_id: attributes.tenant_id
       azurerm:
         source: hashicorp/azurerm
         version: 4.36.0

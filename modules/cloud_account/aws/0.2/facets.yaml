@@ -48,22 +48,11 @@ spec:
   - region
 outputs:
   default:
-    type: '@outputs/cloud_account'
+    type: '@facets/aws_cloud_account'
     providers:
       aws:
         source: hashicorp/aws
         version: = 6.3.0
-        attributes:
-          region: attributes.aws_region
-          skip_region_validation: true
-          attributes:
-            assume_role:
-              role_arn: attributes.aws_iam_role
-              session_name: attributes.session_name
-              external_id: attributes.external_id
-      aws593:
-        source: hashicorp/aws593
-        version: = 5.93.0
         attributes:
           region: attributes.aws_region
           skip_region_validation: true

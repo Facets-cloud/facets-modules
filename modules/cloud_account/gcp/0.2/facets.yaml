@@ -34,18 +34,11 @@ spec:
   - cloud_account
 outputs:
   default:
-    type: '@outputs/cloud_account'
+    type: '@facets/gcp_cloud_account'
     providers:
       google:
         source: hashicorp/google
         version: 6.43.0
-        attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
-      google5:
-        source: hashicorp/google5
-        version: 5.32.0
         attributes:
           project: attributes.project
           region: attributes.region

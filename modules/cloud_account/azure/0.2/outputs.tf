@@ -6,10 +6,7 @@ locals {
     client_secret   = sensitive(data.external.azure_fetch_cloud_secret.result["client_secret"])
     tenant_id       = sensitive(data.external.azure_fetch_cloud_secret.result["tenant_id"])
     secrets = [
-      "subscription_id",
-      "client_id",
-      "client_secret",
-      "tenant_id",
+      "client_secret"
     ]
   }
 }

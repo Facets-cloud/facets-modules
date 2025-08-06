@@ -6,9 +6,7 @@ locals {
     external_id  = sensitive(local.script_output.external_id)
     aws_region   = local.script_output.aws_region
     secrets = [
-      "aws_iam_role",
-      "session_name",
-      "external_id",
+      "external_id"
     ]
   }
 }
