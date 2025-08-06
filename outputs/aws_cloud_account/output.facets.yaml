@@ -1,0 +1,24 @@
+name: aws_cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    interfaces:
+    attributes:
+      type: object
+      title: attributes
+      description: output attributes
+      properties:
+        aws_iam_role:
+          type: string
+          description: "AWS IAM role ARN (sensitive)"
+        session_name:
+          type: string
+          description: "AWS session name with UUID"
+        external_id:
+          type: string
+          description: "External ID for role assumption (sensitive)"
+        aws_region:
+          type: string
+          description: "AWS region"
