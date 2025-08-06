@@ -1,13 +1,23 @@
 intent: cloud_account
-flavor: gcp
-version: '0.2'
+flavor: aws_provider
+version: '1.0'
 description: Module to configure and provision resources within a cloud account
 clouds:
-- gcp
+- aws
 spec:
   description: Module to configure and provision resources within a cloud account
-    (AWS, GCP, Azure)
   properties:
+    region:
+      type: string
+      title: AWS Region
+      description: AWS region where the VPC will be created
+      x-ui-overrides-only: true
+      x-ui-api-source:
+        endpoint: /cc-ui/v1/dropdown/aws/regions-v2
+        method: GET
+        labelKey: region
+        valueKey: region
+        path: regions
     cloud_account:
       description: Select the cloud account to use (must be previously linked)
       title: Cloud Account
@@ -23,29 +33,36 @@ spec:
         - field: accountType
           value: CLOUD
         - field: provider
-          value: GCP
+          value: AWS
         params:
           includeContent: false
   required:
   - cloud_account
+  - region
   title: Cloud Account Manager
   type: object
   x-ui-order:
+  - cloud_provider
   - cloud_account
+  - region
 outputs:
   default:
-    type: '@facets/gcp_cloud_account'
+    type: '@facets/aws_cloud_account'
     providers:
-      google:
-        source: hashicorp/google
-        version: 6.43.0
+      aws:
+        source: hashicorp/aws
+        version: = 6.3.0
         attributes:
-          project: attributes.project
-          region: attributes.region
-          credentials: attributes.credentials
+          region: attributes.aws_region
+          skip_region_validation: true
+          attributes:
+            assume_role:
+              role_arn: attributes.aws_iam_role
+              session_name: attributes.session_name
+              external_id: attributes.external_id
 sample:
-  version: '0.2'
-  flavor: gcp
+  version: '1.0'
+  flavor: aws_provider
   kind: cloud_account
   disabled: false
   spec: {}

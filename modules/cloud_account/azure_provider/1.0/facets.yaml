@@ -1,23 +1,19 @@
 intent: cloud_account
-flavor: aws
-version: '0.2'
+alias-flavors:
+- default
+flavor: azure_provider
+lifecycle: ENVIRONMENT
+version: '1.0'
+depends_on: []
+input_type: instance
 description: Module to configure and provision resources within a cloud account
+composition: {}
+conditional_on_intent: ''
 clouds:
-- aws
+- azure
 spec:
   description: Module to configure and provision resources within a cloud account
   properties:
-    region:
-      type: string
-      title: AWS Region
-      description: AWS region where the VPC will be created
-      x-ui-overrides-only: true
-      x-ui-api-source:
-        endpoint: /cc-ui/v1/dropdown/aws/regions-v2
-        method: GET
-        labelKey: region
-        valueKey: region
-        path: regions
     cloud_account:
       description: Select the cloud account to use (must be previously linked)
       title: Cloud Account
@@ -33,36 +29,40 @@ spec:
         - field: accountType
           value: CLOUD
         - field: provider
-          value: AWS
+          value: AZURE
         params:
           includeContent: false
   required:
   - cloud_account
-  - region
   title: Cloud Account Manager
   type: object
   x-ui-order:
   - cloud_provider
   - cloud_account
-  - region
 outputs:
   default:
-    type: '@facets/aws_cloud_account'
+    type: '@facets/azure_cloud_account'
     providers:
-      aws:
-        source: hashicorp/aws
-        version: = 6.3.0
+      azurerm:
+        source: hashicorp/azurerm
+        version: 4.36.0
         attributes:
-          region: attributes.aws_region
-          skip_region_validation: true
-          attributes:
-            assume_role:
-              role_arn: attributes.aws_iam_role
-              session_name: attributes.session_name
-              external_id: attributes.external_id
+          features: { }
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
+      azapi:
+        source: Azure/azapi
+        version: 2.5.0
+        attributes:
+          subscription_id: attributes.subscription_id
+          client_id: attributes.client_id
+          client_secret: attributes.client_secret
+          tenant_id: attributes.tenant_id
 sample:
-  version: '0.2'
-  flavor: aws
+  version: '1.0'
+  flavor: azure_provider
   kind: cloud_account
   disabled: false
   spec: {}
