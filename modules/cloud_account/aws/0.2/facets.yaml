@@ -6,7 +6,6 @@ clouds:
 - aws
 spec:
   description: Module to configure and provision resources within a cloud account
-    (AWS, GCP, Azure)
   properties:
     region:
       type: string
