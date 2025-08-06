@@ -1,0 +1,8 @@
+{
+  "provided": {
+    "Name": "provided",
+    "URL": "https://facetsdemo.console.facets.cloud",
+    "Username": "***",
+    "TokenRef": "PROVIDED_TOKEN"
+  }
+}
