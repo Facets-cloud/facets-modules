@@ -11,9 +11,7 @@ data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
+# aws_eks_cluster_auth data source removed - not needed with exec plugin
 
 
 module "eks" {
@@ -71,18 +69,6 @@ terraform {
   }
 }
 
-provider "kubernetes" {
-  alias                  = "k8s"
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-}
+# Kubernetes provider removed - configure at consumer level with exec plugin
 
-provider "helm" {
-  alias                  = "k8s"
-  kubernetes {
-    host                   = data.aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.cluster.token
-  }
-}
+# Helm provider removed - configure at consumer level with exec plugin

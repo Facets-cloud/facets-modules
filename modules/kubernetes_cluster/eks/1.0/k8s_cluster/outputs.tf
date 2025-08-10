@@ -3,11 +3,10 @@ output "k8s_details" {
     cluster = {
       auth = {
         host                   = module.eks.cluster_endpoint
-        cluster_ca_certificate = try(kubernetes_secret_v1.facets-admin-token.data["ca.crt"], "na")
-        token                  = try(kubernetes_secret_v1.facets-admin-token.data["token"], "na")
+        cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
       }
+      name              = data.aws_eks_cluster.cluster.name
       version           = module.eks.cluster_version
-      name              = "${substr(var.cluster.name, 0, 38 - 11 - 12)}-${var.cluster.clusterCode}-k8s-cluster"
       arn               = module.eks.cluster_arn
       id                = module.eks.cluster_id
       oidc_issuer_url   = module.eks.cluster_oidc_issuer_url
@@ -30,9 +29,9 @@ output "legacy_outputs" {
     k8s_details = {
       auth = {
         host                   = module.eks.cluster_endpoint
-        cluster_ca_certificate = try(kubernetes_secret_v1.facets-admin-token.data["ca.crt"], "na")
-        token                  = try(kubernetes_secret_v1.facets-admin-token.data["token"], "na")
+        cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
       }
+      cluster_name             = data.aws_eks_cluster.cluster.name
       eks_auto_mode_enabled    = true
       oidc_provider_arn        = module.eks.oidc_provider_arn
       cluster_id               = module.eks.cluster_id
