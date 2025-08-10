@@ -1,6 +1,6 @@
 intent: network
-flavor: aws_vpc_demo
-version: '0.2'
+flavor: aws_network
+version: '1.0'
 description: Creates an AWS VPC with configurable public subnets, private subnets,
   and database subnets across availability zones
 clouds:
@@ -234,8 +234,8 @@ outputs:
     type: '@facets/aws-vpc-details'
 sample:
   kind: network
-  flavor: aws_vpc_demo
-  version: '0.2'
+  flavor: aws_network
+  version: '1.0'
   spec:
     vpc_cidr: 10.0.0.0/16
     auto_select_azs: true
