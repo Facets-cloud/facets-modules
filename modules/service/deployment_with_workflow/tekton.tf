@@ -94,20 +94,20 @@ module "print_params_task" {
     helm = "helm.release-pod"
   }
 
-  params = [
-    {
+  params = {
+    "ACTION" = {
       name        = "ACTION"
       type        = "string"
       description = "supported actions: restart, stop, start"
       default     = "restart"
-    },
-    {
+    }
+    "flags" = {
       name        = "flags"
       type        = "array"
       description = "array of compilation flags or options"
       default     = ["--verbose", "--force"]
-    },
-    {
+    }
+    "gitrepo" = {
       name        = "gitrepo"
       type        = "object"
       description = "git repository information with url and commit"
@@ -119,20 +119,20 @@ module "print_params_task" {
           type = "string"
         }
       }
-    },
-    {
+    }
+    "timeout" = {
       name        = "timeout"
       type        = "string"
       description = "timeout duration in Go format (e.g., 30s, 5m, 1h)"
       default     = "300s"
-    },
-    {
+    }
+    "debug" = {
       name        = "debug"
       type        = "string"
       description = "enable debug mode (true/false)"
       default     = "false"
     }
-  ]
+  }
 
   steps = {
     "print-params" = {
