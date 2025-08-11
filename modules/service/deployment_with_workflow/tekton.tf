@@ -116,8 +116,7 @@ module "print_params_task" {
           type = "string"
         }
         commit = {
-          type = "array"
-          description = "list of commits to be used"
+          type = "string"
         }
       }
     }
