@@ -10,8 +10,8 @@ module "rollout_restart_task" {
     helm = "helm.release-pod"
   }
 
-  steps = [
-    {
+  steps = {
+    "restart-deployments" = {
       name      = "restart-deployments"
       image     = "bitnami/kubectl:latest"
       resources = {}
@@ -78,7 +78,7 @@ module "rollout_restart_task" {
         echo "All deployments restarted successfully."
       EOT
     }
-  ]
+  }
 }
 
 
@@ -134,8 +134,8 @@ module "print_params_task" {
     }
   ]
 
-  steps = [
-    {
+  steps = {
+    "print-params" = {
       name      = "print-params"
       image     = "bitnami/kubectl:latest"
       resources = {}
@@ -160,5 +160,5 @@ module "print_params_task" {
         echo "Task completed successfully!"
       EOT
     }
-  ]
+  }
 }
