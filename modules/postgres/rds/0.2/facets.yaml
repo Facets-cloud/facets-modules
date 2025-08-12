@@ -233,6 +233,7 @@ spec:
   x-ui-order:
   - postgres_version
   - size
+  - storage_type
   - db_names
   - db_schemas
   - use_snapshot
