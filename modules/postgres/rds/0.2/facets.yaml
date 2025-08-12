@@ -150,6 +150,14 @@ spec:
               minimum: 0
           required:
           - instance
+    storage_type:
+      type: string
+      title: Storage Type
+      description: EBS volume type for database storage
+      default: "gp3"
+      enum:
+        - "gp2"
+        - "gp3"
     db_names:
       type: array
       title: Database Names
