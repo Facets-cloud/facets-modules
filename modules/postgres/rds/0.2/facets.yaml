@@ -93,6 +93,7 @@ spec:
               x-ui-placeholder: "Select writer instance type"
           required:
           - instance
+          - allocated_storage
         reader:
           type: object
           title: Reader
@@ -150,14 +151,20 @@ spec:
               minimum: 0
           required:
           - instance
-    storage_type:
-      type: string
-      title: Storage Type
-      description: EBS volume type for database storage
-      default: "gp3"
-      enum:
-        - "gp2"
-        - "gp3"
+        allocated_storage:
+          type: integer
+          title: Allocated Storage
+          description: The allocated storage in gibibytes (GiB)
+          minimum: 20
+          maximum: 65536
+        storage_type:
+          type: string
+          title: Storage Type
+          description: EBS volume type for database storage
+          default: "gp3"
+          enum:
+            - "gp2"
+            - "gp3"
     db_names:
       type: array
       title: Database Names
@@ -233,7 +240,6 @@ spec:
   x-ui-order:
   - postgres_version
   - size
-  - storage_type
   - db_names
   - db_schemas
   - use_snapshot
