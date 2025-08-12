@@ -34,7 +34,7 @@ spec:
   - cloud_account
 outputs:
   default:
-    type: '@facets/gcp_cloud_account'
+    type: '@outputs/gcp_cloud_account'
     providers:
       google:
         source: hashicorp/google

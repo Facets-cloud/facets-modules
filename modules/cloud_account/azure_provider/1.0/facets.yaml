@@ -41,7 +41,7 @@ spec:
   - cloud_account
 outputs:
   default:
-    type: '@facets/azure_cloud_account'
+    type: '@outputs/azure_cloud_account'
     providers:
       azurerm:
         source: hashicorp/azurerm

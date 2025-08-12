@@ -47,7 +47,7 @@ spec:
   - region
 outputs:
   default:
-    type: '@facets/aws_cloud_account'
+    type: '@outputs/aws_cloud_account'
     providers:
       aws:
         source: hashicorp/aws
