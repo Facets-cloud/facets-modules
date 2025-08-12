@@ -107,19 +107,6 @@ module "print_params_task" {
       description = "array of compilation flags or options"
       default     = ["--verbose", "--force"]
     }
-    "gitrepo" = {
-      name        = "gitrepo"
-      type        = "object"
-      description = "git repository information with url and commit"
-      properties = {
-        url = {
-          type = "string"
-        }
-        commit = {
-          type = "string"
-        }
-      }
-    }
     "timeout" = {
       name        = "timeout"
       type        = "string"
