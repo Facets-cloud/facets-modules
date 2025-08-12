@@ -1,6 +1,4 @@
 intent: cloud_account
-alias-flavors:
-- default
 flavor: azure_provider
 lifecycle: ENVIRONMENT
 version: '1.0'
