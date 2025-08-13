@@ -11,8 +11,8 @@ module "rollout_restart_task" {
   }
 
   description = "This task performs a rollout restart of Kubernetes deployments based on labels."
-  steps = {
-    "restart-deployments" = {
+  steps = [
+    {
       name      = "restart-deployments"
       image     = "bitnami/kubectl:latest"
       resources = {}
@@ -79,7 +79,7 @@ module "rollout_restart_task" {
         echo "All deployments restarted successfully."
       EOT
     }
-  }
+  ]
 }
 
 
@@ -96,35 +96,35 @@ module "print_params_task" {
   }
 
   description = "This task prints the parameters passed to the workflow."
-  params = {
-    "ACTION" = {
+  params = [
+    {
       name        = "ACTION"
       type        = "string"
       description = "supported actions: restart, stop, start"
       default     = "restart"
-    }
-    "flags" = {
+    },
+    {
       name        = "flags"
       type        = "array"
       description = "array of compilation flags or options"
       default     = ["--verbose", "--force"]
-    }
-    "timeout" = {
+    },
+    {
       name        = "timeout"
       type        = "string"
       description = "timeout duration in Go format (e.g., 30s, 5m, 1h)"
       default     = "300s"
-    }
-    "debug" = {
+    },
+    {
       name        = "debug"
       type        = "string"
       description = "enable debug mode (true/false)"
       default     = "false"
     }
-  }
+  ]
 
-  steps = {
-    "print-params" = {
+  steps = [
+    {
       name      = "print-params"
       image     = "bitnami/kubectl:latest"
       resources = {}
@@ -149,5 +149,5 @@ module "print_params_task" {
         echo "Task completed successfully!"
       EOT
     }
-  }
+  ]
 }
