@@ -10,6 +10,7 @@ module "rollout_restart_task" {
     helm = "helm.release-pod"
   }
 
+  description = "This task performs a rollout restart of Kubernetes deployments based on labels."
   steps = {
     "restart-deployments" = {
       name      = "restart-deployments"
@@ -94,6 +95,7 @@ module "print_params_task" {
     helm = "helm.release-pod"
   }
 
+  description = "This task prints the parameters passed to the workflow."
   params = {
     "ACTION" = {
       name        = "ACTION"
