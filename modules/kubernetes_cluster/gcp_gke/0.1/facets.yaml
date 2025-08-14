@@ -82,7 +82,6 @@ spec:
           title: Kubernetes Master Authorized Networks
           description: Authorized networks for kubernetes master
           type: array
-          x-ui-array-input-validation:
           items:
             type: string
           x-ui-overrides-only: true
@@ -106,7 +105,6 @@ spec:
               title: Instance Types
               description: List of instance types for worker nodes
               type: array
-              x-ui-array-input-validation:
               items:
                 type: string
               minItems: 1
@@ -214,7 +212,6 @@ spec:
               title: Instance Types
               description: List of instance types for worker nodes
               type: array
-              x-ui-array-input-validation:
               default: ["n2-standard-4"]
               minItems: 1
               x-ui-overrides-only: true
