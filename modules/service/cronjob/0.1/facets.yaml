@@ -88,7 +88,6 @@ spec:
           type: array
           title: Command
           description: Command to run in the container
-          x-ui-array-input-validation:
           items:
             type: string
           x-ui-override-disable: true

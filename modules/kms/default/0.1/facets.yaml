@@ -72,7 +72,6 @@ spec:
       type: array
       title: Key Owners
       description: List of key owners
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -80,7 +79,6 @@ spec:
       type: array
       title: Key Administrators
       description: List of key administrators
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -88,7 +86,6 @@ spec:
       type: array
       title: Key Users
       description: List of key users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -96,7 +93,6 @@ spec:
       type: array
       title: Key Service Users
       description: List of key service users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -104,7 +100,6 @@ spec:
       type: array
       title: Key Service Roles for Autoscaling
       description: List of key service roles for autoscaling
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -112,7 +107,6 @@ spec:
       type: array
       title: Key Symmetric Encryption Users
       description: List of key symmetric encryption users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -120,7 +114,6 @@ spec:
       type: array
       title: Key HMAC Users
       description: List of key HMAC users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -128,7 +121,6 @@ spec:
       type: array
       title: Key Asymmetric Public Encryption Users
       description: List of key asymmetric public encryption users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -136,7 +128,6 @@ spec:
       type: array
       title: Key Asymmetric Sign Verify Users
       description: List of key asymmetric sign verify users
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -149,7 +140,6 @@ spec:
       type: array
       title: Source Policy Documents
       description: List of source policy documents
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -157,7 +147,6 @@ spec:
       type: array
       title: Override Policy Documents
       description: List of override policy documents
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -169,7 +158,6 @@ spec:
       type: array
       title: Route53 DNSSEC Sources
       description: List of Route53 DNSSEC sources
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true
@@ -199,7 +187,6 @@ spec:
       type: array
       title: Key Aliases
       description: List of aliases for the key
-      x-ui-array-input-validation:
       items:
         type: string
       x-ui-override-disable: true

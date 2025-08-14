@@ -26,7 +26,6 @@ spec:
       title: Availability Zones
       description: Availability zones for the vpc
       type: array
-      x-ui-array-input-validation:
       x-ui-placeholder: e.g. asia-southeast1-a asia-southeast1-b
       x-ui-immutable: true
       x-ui-overrides-only: true

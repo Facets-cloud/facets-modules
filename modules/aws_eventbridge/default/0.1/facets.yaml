@@ -56,7 +56,6 @@ spec:
               type: array
               title: Targets
               description: The targets to invoke when the rule is triggered
-              x-ui-array-input-validation:
               items:
                 type: string
               x-ui-override-disable: true

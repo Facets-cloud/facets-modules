@@ -91,7 +91,6 @@ spec:
                       title: Cookies
                       description: Contains a list of cookie names
                       x-ui-placeholder: "Enter the cookie name"
-                      x-ui-array-input-validation:
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -112,7 +111,6 @@ spec:
                     headers:
                       type: array
                       title: Headers
-                      x-ui-array-input-validation:
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -140,7 +138,6 @@ spec:
                       title: Query Strings
                       description: Contains a list of query string names
                       x-ui-placeholder: "Enter the header name"
-                      x-ui-array-input-validation:
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -176,7 +173,6 @@ spec:
           description: Controls which HTTP methods CloudFront processes and forwards
             to your Amazon S3 bucket or your custom origin
           x-ui-placeholder: Enter the allowed methods eg. GET, HEAD, OPTIONS
-          x-ui-array-input-validation:
           items:
             type: string
           x-ui-override-disable: true
@@ -186,7 +182,6 @@ spec:
           description: Controls whether CloudFront caches the response to requests
             using the specified HTTP methods
           x-ui-placeholder: Enter the cached methods eg. GET, HEAD
-          x-ui-array-input-validation:
           items:
             type: string
           x-ui-override-disable: true
@@ -241,7 +236,6 @@ spec:
               description: Controls which HTTP methods CloudFront processes and forwards
                 to your Amazon S3 bucket or your custom origin
               x-ui-placeholder: Enter allowed methods eg. GET, POST, PUT
-              x-ui-array-input-validation:
               items:
                 type: string
               x-ui-override-disable: true
@@ -251,7 +245,6 @@ spec:
               description: Controls whether CloudFront caches the response to requests
                 using the specified HTTP methods
               x-ui-placeholder: Enter cached methods eg. GET, HEADS
-              x-ui-array-input-validation:
               items:
                 type: string
               x-ui-override-disable: true
