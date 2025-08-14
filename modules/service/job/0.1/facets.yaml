@@ -59,7 +59,6 @@ spec:
           type: array
           title: Command
           description: Command to run in the container
-          x-ui-array-input-validation:
           items:
             type: string
           x-ui-override-disable: true
@@ -69,7 +68,7 @@ spec:
           description: Arguments to pass to the command
           x-ui-array-input-validation:
             pattern: '^[a-zA-Z0-9-_ ]+$'
-            error: "Invalid command. Please enter a valid command."
+            error: "Each argument can only contain alphanumeric characters, dashes, underscores, and spaces."
           x-ui-error-message: "Each argument can only contain alphanumeric characters,
             dashes, underscores, and spaces."
           items:

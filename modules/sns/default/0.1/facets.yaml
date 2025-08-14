@@ -64,7 +64,6 @@ spec:
               type: array
               title: Events
               description: A list of all S3 events you want to subscribe to
-              x-ui-array-input-validation:
               items:
                 type: string
               x-ui-override-disable: true
