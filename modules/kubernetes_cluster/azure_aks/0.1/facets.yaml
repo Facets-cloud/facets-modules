@@ -76,7 +76,6 @@ spec:
               type: array
               minItems: 1
               x-ui-overrides-only: true
-              x-ui-array-input-validation:
               x-ui-visible-if:
                 field: spec.nodepools.default.enable
                 values: [true]
