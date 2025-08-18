@@ -1,5 +1,5 @@
 intent: ingress
-flavor: gcp_alb_custom
+flavor: gcp_alb
 version: '0.2'
 description: Adds ingress - gcp_alb flavor
 clouds:
@@ -159,7 +159,7 @@ spec:
 sample:
   kind: ingress
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/ingress/ingress.schema.json
-  flavor: gcp_alb_custom
+  flavor: gcp_alb
   disabled: true
   version: '0.2'
   metadata:
