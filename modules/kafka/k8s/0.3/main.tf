@@ -74,9 +74,19 @@ resource "helm_release" "kafka" {
 prometheus_id: ${try(var.inputs.prometheus_details.attributes.helm_release_id, "")}
 image:
   registry: docker.io
-  repository: bitnami/kafka
+  repository: bitnamilegacy/kafka
   tag: ${local.kafka_version}
   pullPolicy: IfNotPresent
+externalAccess:
+  autoDiscovery:
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/kubectl
+volumePermissions:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/os-shell
+    tag: 11-debian-11-r90
 controller:
   controllerOnly: ${local.controller_dedicated_mode_enabled}
   replicaCount: ${local.controller_replica_count}
@@ -112,6 +122,9 @@ CONFIG
 metrics:
   jmx:
     enabled: true
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/jmx-exporter
   serviceMonitor:
     enabled: true
 VALUES
