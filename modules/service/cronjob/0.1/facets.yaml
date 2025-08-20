@@ -96,10 +96,8 @@ spec:
           type: array
           title: Arguments
           description: Arguments to pass to the command
-          x-ui-array-input-validation:
-            pattern: '^[a-zA-Z0-9-_ ]+$'
-            error: "Each argument can only contain alphanumeric characters,
-            dashes, underscores, and spaces."
+          pattern: '^[a-zA-Z0-9-_ ]+$'
+          x-ui-error-message: "Each argument can only contain alphanumeric characters,
           items:
             type: string
           x-ui-command: true
