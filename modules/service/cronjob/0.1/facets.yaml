@@ -90,6 +90,7 @@ spec:
           description: Command to run in the container
           items:
             type: string
+          x-ui-command: true
           x-ui-override-disable: true
         args:
           type: array
@@ -101,6 +102,7 @@ spec:
             dashes, underscores, and spaces."
           items:
             type: string
+          x-ui-command: true
           x-ui-override-disable: true
       x-ui-order:
       - args

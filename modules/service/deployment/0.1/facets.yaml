@@ -193,6 +193,7 @@ spec:
                       description: Command to run in the container.
                       items:
                         type: string                     
+                      x-ui-command: true
                       x-ui-override-disable: true
               required:
               - exec
@@ -212,6 +213,7 @@ spec:
                       description: Command to run in the container.
                       items:
                         type: string                     
+                      x-ui-command: true
                       x-ui-override-disable: true
               required:
               - exec
@@ -223,17 +225,16 @@ spec:
           description: Command to run in the container
           items:
             type: string 
+          x-ui-command: true
           x-ui-override-disable: true
         args:
           type: array
           title: Arguments
           description: Arguments to pass to the command
-          x-ui-array-input-validation:
-            pattern: '^[a-zA-Z0-9-_ ]+$'
-            error: "Each argument can only contain alphanumeric characters,
-            dashes, underscores, and spaces."
+          x-ui-error-message: "Enter each argument in a separate line"
           items:
             type: string         
+          x-ui-command: true
           x-ui-override-disable: true
         health_checks:
           type: object
@@ -1017,17 +1018,16 @@ spec:
                   description: Command to run in the container
                   items:
                     type: string
+                  x-ui-command: true
                   x-ui-override-disable: true
                 args:
                   type: array
                   title: Arguments
                   description: Arguments to pass to the command
-                  x-ui-array-input-validation:
-                    pattern: '^[a-zA-Z0-9-_ ]+$'
-                    error: "Each argument can only contain alphanumeric characters,
-                    dashes, underscores, and spaces."
+                  x-ui-error-message: "Enter each argument in a separate line"
                   items:
                     type: string
+                  x-ui-command: true
                   x-ui-override-disable: true
                 size:
                   type: object
@@ -1283,17 +1283,16 @@ spec:
                   description: Command to run in the container
                   items:
                     type: string
+                  x-ui-command: true
                   x-ui-override-disable: true
                 args:
                   type: array
                   title: Arguments
                   description: Arguments to pass to the command
-                  x-ui-array-input-validation:
-                    pattern: '^[a-zA-Z0-9-_ ]+$'
-                    error: "Each argument can only contain alphanumeric characters,
-                    dashes, underscores, and spaces."
+                  x-ui-error-message: "Enter each argument in a separate line"
                   items:
                     type: string
+                  x-ui-command: true
                   x-ui-override-disable: true
                 size:
                   type: object
