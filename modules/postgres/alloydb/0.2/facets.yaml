@@ -104,6 +104,8 @@ spec:
       title: Database Names
       description: List of database names to create.
       x-ui-array-input-validation:
+        minLength: 1
+        maxLength: 63
         pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
         error: "Database names must start with a letter and can only contain letters, numbers, and underscores"
       x-ui-override-disable: true
