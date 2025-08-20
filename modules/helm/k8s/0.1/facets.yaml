@@ -74,6 +74,9 @@ spec:
       x-ui-yaml-editor: true
       x-ui-placeholder: Enter values in YAML format
   required: [ "helm", "values" ]
+info:
+  isKubernetes : true
+  critical: true
 sample:
   $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
   kind: helm
