@@ -319,6 +319,7 @@ spec:
               type: array
               title: Readiness Exec Command
               x-ui-placeholder:  "Add each command argument as a new entry"
+              x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
                 field: spec.runtime.health_checks.readiness_check_type
                 values: ["ExecCheck"]
