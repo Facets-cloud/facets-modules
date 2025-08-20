@@ -2,6 +2,10 @@ intent: service
 flavor: deployment
 alias-flavors: ["k8s", "default"]
 version: "0.1"
+info: {
+  isKubernetes: true,
+  critical: true
+}
 description: Adds service module
 clouds:
 - aws
