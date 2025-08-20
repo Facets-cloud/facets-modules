@@ -67,7 +67,9 @@ spec:
           type: array
           title: Arguments
           description: Arguments to pass to the command
-          x-ui-error: "Enter each argument in a separate line"
+          pattern: '^[a-zA-Z0-9-_ ]+$'
+          x-ui-error-message: "Each argument can only contain alphanumeric characters,
+            dashes, underscores, and spaces."
           items:
             type: string
           x-ui-command: true
