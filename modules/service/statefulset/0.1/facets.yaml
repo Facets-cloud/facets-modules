@@ -187,7 +187,6 @@ spec:
           type: array
           title: Command
           description: Command to run in the container
-          x-ui-array-input-validation:
           items:
             type: string
           
@@ -297,7 +296,6 @@ spec:
             readiness_exec_command:
               type: array
               title: Readiness Exec Command
-              x-ui-array-input-validation:
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -394,7 +392,6 @@ spec:
             liveness_exec_command:
               type: array
               title: Liveness Exec Command
-              x-ui-array-input-validation:
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -500,7 +497,6 @@ spec:
             startup_exec_command:
               type: array
               title: Startup Exec Command
-              x-ui-array-input-validation:
               x-ui-placeholder: "Add each command argument as a new entry"
               x-ui-error-message: "Enter each command/argument in a separate line"
               x-ui-visible-if:
@@ -1026,7 +1022,6 @@ spec:
                   type: array
                   title: Command
                   description: Command to run in the container
-                  x-ui-array-input-validation:
                   items:
                     type: string
                   
@@ -1292,7 +1287,6 @@ spec:
                   type: array
                   title: Command
                   description: Command to run in the container
-                  x-ui-array-input-validation:
                   items:
                     type: string
                   
@@ -1598,7 +1592,6 @@ spec:
                     readiness_exec_command:
                       type: array
                       title: Readiness Exec Command
-                      x-ui-array-input-validation:
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
@@ -1681,7 +1674,6 @@ spec:
                     liveness_exec_command:
                       type: array
                       title: Liveness Exec Command
-                      x-ui-array-input-validation:
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
@@ -1764,7 +1756,6 @@ spec:
                     startup_exec_command:
                       type: array
                       title: Startup Exec Command
-                      x-ui-array-input-validation:
                       x-ui-placeholder: "Add each command argument as a new entry"
                       x-ui-error-message: "Enter each command/argument in a separate line"
                       x-ui-visible-if:
