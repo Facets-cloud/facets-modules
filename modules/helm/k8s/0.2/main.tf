@@ -16,6 +16,7 @@ locals {
 }
 
 resource "helm_release" "external_helm_charts" {
+  provider            = "helm3"
   chart               = var.instance.spec["helm"]["chart"]
   name                = var.instance_name
   namespace           = lookup(var.instance.spec["helm"], "namespace", var.environment.namespace)
