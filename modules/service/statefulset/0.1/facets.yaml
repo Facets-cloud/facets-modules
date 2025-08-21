@@ -195,7 +195,6 @@ spec:
           type: array
           title: Arguments
           description: Arguments to pass to the command
-          x-ui-error-message: "Enter each argument in a separate line"
           items:
             type: string
           x-ui-command: true
@@ -1028,7 +1027,6 @@ spec:
                   type: array
                   title: Arguments
                   description: Arguments to pass to the command
-                  x-ui-error-message: "Enter each argument in a separate line"
                   items:
                     type: string
                   x-ui-command: true
@@ -1291,7 +1289,6 @@ spec:
                   type: array
                   title: Arguments
                   description: Arguments to pass to the command
-                  x-ui-error-message: "Enter each argument in a separate line"
                   items:
                     type: string
                   x-ui-command: true
