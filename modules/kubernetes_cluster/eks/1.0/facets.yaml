@@ -1,50 +1,88 @@
 intent: kubernetes_cluster
 flavor: eks
 alias-flavors:
-  - default
-version: "1.0"
+- default
+version: '1.0'
 clouds:
-  - aws
+- aws
 title: EKS Cluster with Auto Mode support
-description:
-  A Kubernetes EKS cluster module with auto mode enabled by default and
+description: A Kubernetes EKS cluster module with auto mode enabled by default and
   all necessary configurations preset.
-allow_skipping_module_on_selective_release: false
+inputs:
+  network_details:
+    type: '@facets/aws-vpc-details'
+    displayName: Network
+    default:
+      resource_type: network
+      resource_name: default
+  cloud_account:
+    type: '@facets/aws_cloud_account'
+    displayName: Cloud Account
+    description: The AWS Cloud Account where the EKS cluster will be created
+    optional: false
+    providers:
+    - aws
+outputs:
+  attributes.k8s_details:
+    type: '@facets/eks'
+    title: Kubernetes Cluster Output
+    description: The output for the Kubernetes cluster with exec plugin support
+    providers:
+      kubernetes:
+        source: hashicorp/kubernetes
+        version: 2.38.0
+        attributes:
+          host: '@facets-ref/cluster.auth.host'
+          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+          exec:
+            api_version: client.authentication.k8s.io/v1beta1
+            command: aws
+            args:
+            - eks
+            - get-token
+            - --cluster-name
+            - '@facets-ref/cluster.name'
+      helm:
+        source: hashicorp/helm
+        version: 3.0.2
+        attributes:
+          kubernetes:
+            host: '@facets-ref/cluster.auth.host'
+            cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+            exec:
+              api_version: client.authentication.k8s.io/v1beta1
+              command: aws
+              args:
+              - eks
+              - get-token
+              - --cluster-name
+              - '@facets-ref/cluster.name'
+      kubernetes-alpha:
+        source: hashicorp/kubernetes-alpha
+        version: 0.6.0
+        attributes:
+          host: '@facets-ref/cluster.auth.host'
+          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+          exec:
+            api_version: client.authentication.k8s.io/v1beta1
+            command: aws
+            args:
+            - eks
+            - get-token
+            - --cluster-name
+            - '@facets-ref/cluster.name'
 spec:
   type: object
   x-ui-order:
-    - cluster
-    - secret_copier
-    - tags
+  - cluster
+  - tags
   properties:
-    secret_copier:
-      type: object
-      title: Secret Copier
-      description: Configuration for the Secret Copier.
-      x-ui-toggle: false
-      properties:
-        enabled:
-          type: boolean
-          title: Enabled
-          description: Enable secret copier.
-          default: true
-        values:
-          type: object
-          title: Values
-          description: Values to pass to the secret copier.
-          default: {}
-          x-ui-yaml-editor: true
     cluster:
       type: object
       title: Cluster
       description: Configuration for the EKS cluster.
       x-ui-toggle: false
       properties:
-        kubernetes_version:
-          type: string
-          title: Kubernetes Version
-          description: Version of Kubernetes to use for the EKS cluster.
-          default: "1.31"
         cluster_endpoint_public_access:
           type: boolean
           title: Cluster Endpoint Public Access
@@ -60,20 +98,18 @@ spec:
         cluster_endpoint_public_access_cidrs:
           type: array
           title: Cluster Endpoint Public Access CIDRs
-          description:
-            List of CIDR blocks which can access the Amazon EKS public
+          description: List of CIDR blocks which can access the Amazon EKS public
             API server endpoint.
           default:
-            - 0.0.0.0/0
+          - 0.0.0.0/0
           x-ui-overrides-only: true
         cluster_endpoint_private_access_cidrs:
           type: array
           title: Cluster Endpoint Private Access CIDRs
-          description:
-            List of CIDR blocks which can access the Amazon EKS private
+          description: List of CIDR blocks which can access the Amazon EKS private
             API server endpoint.
           default:
-            - 0.0.0.0/0
+          - 0.0.0.0/0
           x-ui-overrides-only: true
         cloudwatch_log_group_retention_in_days:
           type: number
@@ -85,24 +121,15 @@ spec:
           title: Cluster Enabled Log Types
           description: List of log types to enable for the EKS cluster.
           default:
-            - api
-            - audit
-            - authenticator
+          - api
+          - audit
+          - authenticator
           x-ui-overrides-only: true
         enable_cluster_encryption:
           type: boolean
           title: Enable Cluster Encryption
           description: Enable encryption for the cluster secrets.
           default: true
-        default_reclaim_policy:
-          type: string
-          title: Default Reclaim Policy
-          description: Default reclaim policy for the EKS cluster.
-          default: Delete
-          x-ui-overrides-only: true
-          enum:
-            - Delete
-            - Retain
         kms:
           type: object
           title: KMS
@@ -133,9 +160,8 @@ spec:
               x-ui-visible-if:
                 field: spec.cluster.kms_keys.enable_rotation
                 values:
-                  - true
-      required:
-        - kubernetes_version
+                - true
+      required: []
     tags:
       type: object
       title: Tags
@@ -143,83 +169,21 @@ spec:
       x-ui-toggle: false
       x-ui-yaml-editor: true
   required:
-    - cluster
-inputs:
-  network_details:
-    type: "@facets/aws-vpc-details"
-    displayName: Network
-    default:
-      resource_type: network
-      resource_name: default
-  cloud_account:
-    type: "@outputs/cloud_account"
-    displayName: Cloud Account
-    description: The AWS Cloud Account where the EKS cluster will be created
-    optional: false
-    providers:
-      - aws
-      - aws4
-      - aws5
-      - aws593
-outputs:
-  attributes.k8s_details:
-    type: "@outputs/aws_eks"
-    title: Kubernetes Cluster Output
-    description: The output for the Kubernetes cluster with exec plugin support
-    providers:
-      kubernetes:
-        source: hashicorp/kubernetes
-        version: 2.38.0
-        attributes:
-          host: "@facets-ref/cluster.auth.host"
-          cluster_ca_certificate: "@facets-ref/cluster.auth.cluster_ca_certificate"
-          exec:
-            api_version: "client.authentication.k8s.io/v1beta1"
-            command: "aws"
-            args: ["eks", "get-token", "--cluster-name", "@facets-ref/cluster.name"]
-      helm:
-        source: hashicorp/helm
-        version: 3.0.2
-        attributes:
-          kubernetes:
-            host: "@facets-ref/cluster.auth.host"
-            cluster_ca_certificate: "@facets-ref/cluster.auth.cluster_ca_certificate"
-            exec:
-              api_version: "client.authentication.k8s.io/v1beta1"
-              command: "aws"
-              args: ["eks", "get-token", "--cluster-name", "@facets-ref/cluster.name"]
-      kubernetes-alpha:
-        source: hashicorp/kubernetes-alpha
-        version: 0.6.0
-        attributes:
-          host: "@facets-ref/cluster.auth.host"
-          cluster_ca_certificate: "@facets-ref/cluster.auth.cluster_ca_certificate"
-          exec:
-            api_version: "client.authentication.k8s.io/v1beta1"
-            command: "aws"
-            args: ["eks", "get-token", "--cluster-name", "@facets-ref/cluster.name"]
+  - cluster
 sample:
   kind: kubernetes_cluster
   flavor: eks
   alias-flavors:
-    - default
-  version: "1.0"
+  - default
+  version: '1.0'
   metadata:
     name: eks-cluster
   spec:
     cluster:
-      kubernetes_version: "1.31"
       cluster_endpoint_public_access: true
       cluster_endpoint_private_access: false
       cluster_endpoint_public_access_cidrs:
-        - 0.0.0.0/0
+      - 0.0.0.0/0
       cluster_endpoint_private_access_cidrs:
-        - 0.0.0.0/0
-    secret_copier:
-      enabled: true
-      values:
-        resources:
-          requests:
-            cpu: 150m
-            memory: 256Mi
+      - 0.0.0.0/0
     tags: {}

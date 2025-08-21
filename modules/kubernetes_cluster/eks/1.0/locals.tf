@@ -1,7 +1,7 @@
 locals {
-  name                      = module.name.name
-  spec                      = lookup(var.instance, "spec", {})
-  cluster                   = lookup(local.spec, "cluster", {})
+  name    = module.name.name
+  spec    = lookup(var.instance, "spec", {})
+  cluster = lookup(local.spec, "cluster", {})
   # Commented out - used by deprecated resources
   # default_reclaim_policy    = lookup(local.cluster, "default_reclaim_policy", "Delete")
   # namespace                 = lookup(var.cluster, "namespace", "default")

@@ -203,7 +203,7 @@ variable "instance" {
   # Validation for tags: ensure all tag values are strings
   validation {
     condition = lookup(var.instance.spec, "tags", null) == null || alltrue([
-      for k, v in var.instance.spec.tags : can(tostring(v))
+      for k, v in lookup(var.instance.spec, "tags", {}) : can(tostring(v))
     ])
     error_message = "All tag values must be strings."
   }
@@ -211,7 +211,7 @@ variable "instance" {
   # Validation for tags: ensure tag keys don't conflict with reserved keys
   validation {
     condition = lookup(var.instance.spec, "tags", null) == null || alltrue([
-      for k in keys(var.instance.spec.tags) : !contains(["Name", "Environment"], k)
+      for k in keys(lookup(var.instance.spec, "tags", {})) : !contains(["Name", "Environment"], k)
     ])
     error_message = "Tag keys 'Name' and 'Environment' are reserved and will be overridden by the module."
   }

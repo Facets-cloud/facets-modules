@@ -5,6 +5,17 @@ description: Creates an AWS VPC with configurable public subnets, private subnet
   and database subnets across availability zones
 clouds:
 - aws
+inputs:
+  cloud_account:
+    type: '@facets/aws_cloud_account'
+    displayName: Cloud Account
+    description: The AWS Cloud Account where the VPC will be created
+    optional: false
+    providers:
+    - aws
+outputs:
+  default:
+    type: '@facets/aws-vpc-details'
 spec:
   type: object
   properties:
@@ -218,20 +229,6 @@ spec:
   - private_subnets
   - database_subnets
   - nat_gateway
-inputs:
-  cloud_account:
-    type: '@outputs/cloud_account'
-    displayName: Cloud Account
-    description: The AWS Cloud Account where the VPC will be created
-    optional: false
-    providers:
-    - aws
-    - aws4
-    - aws5
-    - aws593
-outputs:
-  default:
-    type: '@facets/aws-vpc-details'
 sample:
   kind: network
   flavor: aws_network

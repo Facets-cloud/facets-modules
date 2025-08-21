@@ -1,8 +1,8 @@
-# AWS Karpenter Node Pool Module v0.1
+# AWS Karpenter Node Pool Module v1.0
 
 ![AWS](https://img.shields.io/badge/AWS-Karpenter-orange.svg)
 ![Terraform](https://img.shields.io/badge/Terraform-1.5.7-blue.svg)
-![Version](https://img.shields.io/badge/Version-0.1-green.svg)
+![Version](https://img.shields.io/badge/Version-1.0-green.svg)
 
 ## Overview
 

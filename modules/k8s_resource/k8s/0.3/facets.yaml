@@ -1,5 +1,5 @@
 intent: k8s_resource
-flavor: k8s-pa-test
+flavor: k8s
 version: '0.3'
 description: Adds kubernetes objects inside the cluster via yaml manifests
 clouds:
@@ -57,7 +57,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/k8s_resource/k8s_resource.schema.json
   kind: k8s_resource
   metadata: {}
-  flavor: k8s-pa-test
+  flavor: k8s
   version: '0.3'
   disabled: true
   spec:

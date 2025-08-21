@@ -34,16 +34,13 @@ module "eks" {
 
 
 resource "aws_eks_addon" "addon" {
-  provider                 = "aws593"
-  depends_on               = [
-    null_resource.add-k8s-creds-backend
-  ]
   for_each                 = local.addons
   cluster_name             = module.eks.cluster_name
   addon_name               = each.key
   addon_version            = each.value["addon_version"]
   configuration_values     = each.value["configuration_values"]
-  resolve_conflicts        = each.value["resolve_conflicts"]
+  resolve_conflicts_on_create = each.value["resolve_conflicts_on_create"]
+  resolve_conflicts_on_update = each.value["resolve_conflicts_on_update"]
   tags                     = each.value["tags"]
   preserve                 = each.value["preserve"]
   service_account_role_arn = each.value["service_account_role_arn"]

@@ -1,11 +1,30 @@
 intent: kubernetes_node_pool
-flavor: aws_karpenter_demo
-version: '0.1'
+flavor: aws_karpenter
+version: '1.0'
 clouds:
 - aws
 title: EKS Auto Mode Karpenter NodePool Manager
 description: Creates and manages dynamic node pools for EKS Auto Mode clusters with
   intelligent scaling and cost optimization.
+inputs:
+  kubernetes_details:
+    type: '@facets/eks'
+    displayName: EKS Cluster
+    description: The EKS cluster where the node pool will be created
+    optional: false
+    providers:
+    - helm
+    - kubernetes
+    - kubernetes-alpha
+  network_details:
+    type: '@facets/aws-vpc-details'
+    displayName: VPC Network
+    description: VPC network details for node placement
+    optional: false
+outputs:
+  attributes:
+    type: '@facets/aws_karpenter_nodepool'
+    title: AWS Karpenter NodePool
 spec:
   type: object
   x-ui-order:
@@ -277,29 +296,10 @@ spec:
       default: {}
   required:
   - name
-inputs:
-  kubernetes_details:
-    type: '@outputs/aws_eks'
-    displayName: EKS Cluster
-    description: The EKS cluster where the node pool will be created
-    optional: false
-    providers:
-    - helm
-    - kubernetes
-    - kubernetes-alpha
-  network_details:
-    type: '@facets/aws-vpc-details'
-    displayName: VPC Network
-    description: VPC network details for node placement
-    optional: false
-outputs:
-  attributes:
-    type: '@outputs/aws_karpenter_nodepool'
-    title: AWS Karpenter NodePool
 sample:
   kind: kubernetes_node_pool
-  flavor: aws_karpenter_demo
-  version: '0.1'
+  flavor: aws_karpenter
+  version: '1.0'
   metadata:
     name: production-nodepool
   spec:

@@ -6,7 +6,7 @@ locals {
   cluster_endpoint_private_access        = lookup(local.cluster, "cluster_endpoint_private_access", true)
   cluster_endpoint_public_access_cidrs   = lookup(local.cluster, "cluster_endpoint_public_access_cidrs", ["0.0.0.0/0"])
   enable_cluster_encryption              = lookup(local.cluster, "enable_cluster_encryption", true)
-  kubernetes_version                     = lookup(local.cluster, "kubernetes_version", "1.31")
+  kubernetes_version                     = null  # Use latest available version by default
   default_reclaim_policy                 = lookup(local.cluster, "default_reclaim_policy", "Delete")
   cluster_enabled_log_types              = lookup(local.cluster, "cluster_enabled_log_types", [])
   cluster_endpoint_private_access_cidrs  = lookup(local.cluster, "cluster_endpoint_private_access_cidrs", [])
@@ -14,9 +14,10 @@ locals {
   cluster_service_ipv4_cidr              = lookup(local.cluster, "cluster_service_ipv4_cidr", null)
   cluster_addons = {
     snapshot-controller = {
-      enabled           = true
-      resolve_conflicts = "OVERWRITE"
-      addon_version     = "v8.0.0-eksbuild.1"
+      enabled                     = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      addon_version               = "v8.0.0-eksbuild.1"
     }
   }
   cloud_tags = {
@@ -29,7 +30,8 @@ locals {
     for name, attributes in local.cluster_addons : name => {
       addon_version            = lookup(attributes, "addon_version", null)
       configuration_values     = lookup(attributes, "configuration_values", null) != null ? lookup(attributes, "configuration_values", null) : null
-      resolve_conflicts        = lookup(attributes, "resolve_conflicts", null)
+      resolve_conflicts_on_create = lookup(attributes, "resolve_conflicts_on_create", "OVERWRITE")
+      resolve_conflicts_on_update = lookup(attributes, "resolve_conflicts_on_update", "OVERWRITE")
       tags                     = merge(lookup(attributes, "tags", {}), local.cloud_tags)
       preserve                 = lookup(attributes, "preserve", false)
       service_account_role_arn = lookup(attributes, "service_account_role_arn", null)
