@@ -1,0 +1,62 @@
+intent: random_string_generator
+flavor: configurable
+version: 1.0.0
+clouds:
+- aws
+- gcp
+- azure
+description: Generate configurable random strings using a utility module
+spec:
+  title: Random String Generator
+  description: Configure and generate random strings with customizable parameters
+  type: object
+  properties:
+    string_length:
+      type: number
+      title: String Length
+      description: Length of the random string to generate
+      default: 12
+      minimum: 1
+      maximum: 128
+    include_special:
+      type: boolean
+      title: Include Special Characters
+      description: Include special characters in the generated string
+      default: false
+    include_upper:
+      type: boolean
+      title: Include Uppercase Letters
+      description: Include uppercase letters in the generated string
+      default: true
+    include_lower:
+      type: boolean
+      title: Include Lowercase Letters
+      description: Include lowercase letters in the generated string
+      default: true
+    include_numeric:
+      type: boolean
+      title: Include Numeric Characters
+      description: Include numeric characters in the generated string
+      default: true
+  required:
+  - string_length
+outputs:
+  default:
+    type: '@outputs/random-string'
+    title: Generated Random String
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - outputs.tf
+sample:
+  kind: random_string_generator
+  flavor: configurable
+  version: 1.0.0
+  disabled: true
+  spec:
+    string_length: 12
+    include_special: false
+    include_upper: true
+    include_lower: true
+    include_numeric: true
