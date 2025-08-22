@@ -29,6 +29,17 @@ locals {
     persistence = {
       size = local.minio_volume
     }
+    image = {
+      registry   = "docker.io"
+      repository = "bitnamilegacy/minio"
+    }
+    volumePermissions = {
+      image = {
+        registry   = "docker.io"
+        repository = "bitnamilegacy/os-shell"
+        tag        = "11-debian-11-r90"
+      }
+    }
     metrics = {
       serviceMonitor = {
         enabled = true
