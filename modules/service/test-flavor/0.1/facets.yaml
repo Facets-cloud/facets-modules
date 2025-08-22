@@ -1775,7 +1775,7 @@ spec:
   - sidecars
   - cloud_permissions
 sample:
-  flavor: test_flavor
+  flavor: test-flavor
   metadata:
     labels:
       deliveryType: MANUAL
