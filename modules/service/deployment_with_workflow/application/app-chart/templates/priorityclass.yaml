@@ -1,0 +1,9 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: {{ include "app-chart.priorityClassName" . }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+value: {{ .Values.advanced.common.app_chart.values.priority_class_value | default 0 }}
+globalDefault: false
+description: "Priority class used for service pods"
