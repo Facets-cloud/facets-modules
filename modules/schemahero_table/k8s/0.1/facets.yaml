@@ -1,15 +1,101 @@
 intent: schemahero_table
-flavor: k8s
+flavor: test-schema
 version: '0.1'
-description: Adds schemahero_table - k8s flavor
+description: Creates a SchemaHero Table resource to manage database table schemas
+  in Kubernetes using the SchemaHero operator
 clouds:
 - aws
 - gcp
 - azure
 - kubernetes
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+spec:
+  type: object
+  properties:
+    database:
+      type: string
+      title: Database Name
+      description: The name of the database where the table will be created
+      default: schemahero
+    connection:
+      type: string
+      title: Database Connection Type
+      description: The type of database connection
+      enum:
+      - mysql
+      - postgres
+      - postgresql
+      default: mysql
+    primary_key:
+      type: object
+      title: Primary Key Columns
+      description: Definition of primary key columns
+      x-ui-yaml-editor: true
+    columns:
+      type: object
+      title: Table Columns
+      description: Definition of table columns with their properties
+      patternProperties:
+        ^[0-9]+$:
+          type: object
+          properties:
+            name:
+              type: string
+              title: Column Name
+              description: The name of the column
+            type:
+              type: string
+              title: Column Type
+              description: The data type of the column (e.g., varchar(100), int, char(4))
+            default:
+              type: string
+              title: Default Value
+              description: Default value for the column
+            constraints:
+              type: object
+              title: Column Constraints
+              description: Constraints for the column (e.g., NOT NULL, UNIQUE)
+              x-ui-yaml-editor: true
+            attributes:
+              type: object
+              title: Column Attributes
+              description: Additional attributes for the column (MySQL specific)
+              x-ui-yaml-editor: true
+          required:
+          - name
+          - type
+    indexes:
+      type: object
+      title: Table Indexes
+      description: Index definitions for the table
+      x-ui-yaml-editor: true
+    foreign_keys:
+      type: object
+      title: Foreign Key Constraints
+      description: Foreign key constraint definitions
+      x-ui-yaml-editor: true
+  required:
+  - database
+  - connection
+  - primary_key
+  - columns
+advanced:
+  type: object
+  properties:
+    default:
+      type: object
+      title: Additional SchemaHero Table Configuration
+      description: Additional configuration options for the SchemaHero Table resource
+      x-ui-yaml-editor: true
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/schemahero_table/schemahero_table.schema.json
-  flavor: k8s
+  flavor: test-schema
   kind: schemahero_table
   version: '0.1'
   disabled: true
