@@ -55,7 +55,7 @@ resource "google_storage_bucket" "bucket" {
   # Labels
   labels = merge(
     var.environment.cloud_tags,
-    var.instance.spec.custom_labels
+    lookup(var.instance.spec, "custom_labels", {})
   )
 
   # Force destroy for easier cleanup in testing
