@@ -547,6 +547,7 @@ spec:
               enum:
               - CPU
               - RAM
+              - BOTH
             cpu_threshold:
               type: string
               title: CPU Threshold
@@ -557,7 +558,7 @@ spec:
                 from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
-                values: ["CPU"]
+                values: ["CPU", "BOTH"]
             ram_threshold:
               type: string
               title: RAM Threshold
@@ -568,7 +569,7 @@ spec:
                 from 1-100"
               x-ui-visible-if:
                 field: "spec.runtime.autoscaling.scaling_on"
-                values: ["RAM"]
+                values: ["RAM", "BOTH"]
         size:
           type: object
           title: Size
