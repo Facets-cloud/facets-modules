@@ -16,7 +16,7 @@ variable "instance" {
         action        = string
         storage_class = string
       })
-      custom_labels = map(string)
+      custom_labels = optional(map(string), {})
       # location is now fully optional and not required in the type definition
     })
   })
