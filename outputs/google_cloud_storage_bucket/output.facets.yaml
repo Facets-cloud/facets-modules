@@ -14,5 +14,32 @@ out:
         name:
           type: string
           description: The name of the created GCS bucket
+        bucket_url:
+          type: string
+          description: Full URL of the GCS bucket in the format gs://bucket-name
+        bucket_name:
+          type: string
+          description: The name of the created GCS bucket
+        read_only_role:
+          type: string
+          description: GCP IAM role for read-only access to the bucket
+        bucket_location:
+          type: string
+          description: The location of the GCS bucket
+        read_write_role:
+          type: string
+          description: GCP IAM role for read-write access to the bucket
+        bucket_self_link:
+          type: string
+          description: The self link of the GCS bucket
+        bucket_storage_class:
+          type: string
+          description: The storage class of the GCS bucket
+        bucket_iam_condition_title:
+          type: string
+          description: Title for IAM condition restricting access to this bucket
+        bucket_iam_condition_expression:
+          type: string
+          description: Expression for IAM condition restricting access to this bucket
     interfaces: {}
       
