@@ -1,0 +1,107 @@
+{{- if eq .Values.spec.type "application" }}
+{{- if hasKey .Values.spec.release  "strategy" }}
+{{- if eq .Values.spec.release.strategy.type "Canary" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ include "app-chart.replicas" . }}
+  analysis:
+    successfulRunHistoryLimit: {{ default 10 .Values.spec.release.strategy.canary_strategy.successful_run_history_limit }}
+    unsuccessfulRunHistoryLimit: {{ default 10 .Values.spec.release.strategy.canary_strategy.unsuccessful_run_history_limit }}
+  selector:
+    matchLabels:
+      {{- include "app-chart.selectorLabels" . | nindent 6 }}
+  workloadRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "app-chart.fullname" . }}
+    scaleDown: progressively
+  minReadySeconds: {{ default 0 .Values.spec.release.strategy.canary_strategy.min_ready_seconds }}
+  revisionHistoryLimit: {{ default 3 .Values.spec.release.strategy.canary_strategy.revision_history_limit }}
+  paused: {{ default false .Values.spec.release.strategy.canary_strategy.enable_manual_rollout }}
+  progressDeadlineSeconds: {{ default 600 .Values.spec.release.strategy.canary_strategy.progress_deadline_seconds }}
+  progressDeadlineAbort: {{ default false .Values.spec.release.strategy.canary_strategy.progress_deadline_abort }}
+  restartAt: {{ default "" .Values.spec.release.strategy.canary_strategy.restart_at }}
+  rollbackWindow:
+    revisions: {{ default "" .Values.spec.release.strategy.canary_strategy.rollback_window_revisions }}
+  strategy:
+    canary:
+      {{- if and (hasKey .Values.spec.release.strategy.canary_strategy "enable_service") (.Values.spec.release.strategy.canary_strategy.enable_service) }}
+      canaryService: {{ include "app-chart.fullname" . }}-preview
+      stableService: {{ include "app-chart.fullname" . }}
+      {{- end }}
+      canaryMetadata:
+        annotations:
+          role: preview
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "canary_metadata") (gt (len .Values.spec.release.strategy.canary_strategy.canary_metadata) 0) }}
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy.canary_metadata  "annotations") (gt (len .Values.spec.release.strategy.canary_strategy.canary_metadata.annotations) 0) }}
+          {{- toYaml .Values.spec.release.strategy.canary_strategy.canary_metadata.annotations | nindent 10 -}}
+          {{- end }}
+          {{- end }}
+        labels:
+          role: preview
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "canary_metadata") (gt (len .Values.spec.release.strategy.canary_strategy.canary_metadata) 0) }}
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy.canary_metadata  "labels") (gt (len .Values.spec.release.strategy.canary_strategy.canary_metadata.labels) 0) }}
+          {{- toYaml .Values.spec.release.strategy.canary_strategy.canary_metadata.labels | nindent 8 -}}
+          {{- end }}
+          {{- end }}
+      stableMetadata:
+        annotations:
+          role: active
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "stable_metadata") (gt (len .Values.spec.release.strategy.canary_strategy.stable_metadata) 0) }}
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy.stable_metadata  "annotations") (gt (len .Values.spec.release.strategy.canary_strategy.stable_metadata.annotations) 0) }}
+          {{- toYaml .Values.spec.release.strategy.canary_strategy.stable_metadata.annotations | nindent 10 -}}
+          {{- end }}
+          {{- end }}
+        labels:
+          role: active
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "stable_metadata") (gt (len .Values.spec.release.strategy.canary_strategy.stable_metadata) 0) }}
+          {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy.stable_metadata  "labels") (gt (len .Values.spec.release.strategy.canary_strategy.stable_metadata.labels) 0) }}
+          {{- toYaml .Values.spec.release.strategy.canary_strategy.stable_metadata.labels | nindent 10 -}}
+          {{- end }}
+          {{- end }}
+      maxUnavailable: {{ .Values.spec.release.strategy.canary_strategy.max_unavailable }}
+      maxSurge: {{ .Values.spec.release.strategy.canary_strategy.max_surge | quote }}
+      scaleDownDelaySeconds: {{ .Values.spec.release.strategy.canary_strategy.scale_down_delay_seconds }}
+      minPodsPerReplicaSet: {{ default 1 .Values.spec.release.strategy.canary_strategy.min_pods_per_replicaset }}
+      scaleDownDelayRevisionLimit: {{ .Values.spec.release.strategy.canary_strategy.scale_down_delay_revision_limit }}
+      analysis:
+        templates:
+          {{- if and (hasKey .Values.spec.release.strategy "canary_strategy") .Values.spec.release.strategy.canary_strategy.enable_auto_abort }}
+          - templateName: auto-abort-canary-{{ include "app-chart.fullname" . }}
+          {{- end }}
+        {{- if and (hasKey .Values.spec.release.strategy.canary_strategy "analysis") (gt (len .Values.spec.release.strategy.canary_strategy.analysis) 0) }}
+        {{- range .Values.spec.release.strategy.canary_strategy.analysis.template_names }}
+          - templateName: {{ . }}
+        {{- end }}
+        {{- end }}
+      {{- if and (hasKey .Values.spec.release.strategy.canary_strategy "analysis") (gt (len .Values.spec.release.strategy.canary_strategy.analysis) 0) }}
+      {{- if hasKey .Values.spec.release.strategy.canary_strategy.analysis "args" }}
+        args:
+          {{- toYaml .Values.spec.release.strategy.canary_strategy.args | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "steps") (gt (len .Values.spec.release.strategy.canary_strategy.steps) 0) }}
+      steps:
+      {{- toYaml .Values.spec.release.strategy.canary_strategy.steps | nindent 8 -}}
+      {{- end }}
+      {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "anti_affinity") (gt (len .Values.spec.release.strategy.canary_strategy.anti_affinity) 0) }}
+      antiAffinity:
+      {{- toYaml .Values.spec.release.strategy.canary_strategy.anti_affinity | nindent 8 -}}
+      {{- end }}
+      {{- if and ( hasKey  .Values.spec.release.strategy.canary_strategy  "traffic_routing") (gt (len .Values.spec.release.strategy.canary_strategy.traffic_routing) 0) }}
+      trafficRouting:
+      {{- toYaml .Values.spec.release.strategy.canary_strategy.traffic_routing | nindent 8 -}}
+      {{- end }}
+      abortScaleDownDelaySeconds: {{ default 30 .Values.spec.release.strategy.canary_strategy.abort_scale_down_delay_seconds }}
+{{- end }}
+{{- end }}
+{{- end }}
