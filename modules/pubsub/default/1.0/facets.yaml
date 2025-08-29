@@ -1,0 +1,456 @@
+intent: pubsub
+flavor: default
+version: '1.0'
+clouds:
+- gcp
+description: A fully-managed real-time messaging service for Google Cloud that enables
+  message exchange between independent applications with support for AWS Kinesis Data
+  Streams ingestion.
+iac:
+  validated_files:
+  - main.tf
+  - topic.tf
+  - schema.tf
+  - pull_subscriptions.tf
+  - push_subscriptions.tf
+  - variables.tf
+  - outputs.tf
+inputs:
+  service_account:
+    type: '@outputs/service_account'
+    description: The GCP service account with AWS workload identity capabilities for
+      Pub/Sub resources and cross-cloud operations
+    providers:
+    - google
+spec:
+  title: Google Cloud Pub/Sub
+  description: A fully-managed real-time messaging service for Google Cloud that enables
+    message exchange between independent applications with support for AWS Kinesis
+    Data Streams ingestion.
+  type: object
+  properties:
+    tags:
+      description: Standardized tags to apply to cloud resources
+      properties:
+        purpose:
+          description: Application name for tagging resources
+          title: Purpose
+          type: string
+        costgroup:
+          description: Cost group for billing and tracking
+          title: Cost Group
+          type: string
+          x-ui-output-type: cost_group_tag
+        group:
+          description: Team or organization group
+          title: Group
+          type: string
+          x-ui-output-type: groups_tag
+        owner:
+          description: Owner of the resource
+          title: Owner
+          type: string
+          x-ui-output-type: owner_tag
+        securitylevel:
+          description: Security classification level
+          title: Security Level
+          type: string
+          x-ui-output-type: security_level_tag
+        lifecycle:
+          description: Resource lifecycle status
+          title: Lifecycle
+          type: string
+          x-ui-output-type: lifecycle_tag
+        compliancegroup:
+          description: Compliance requirement group
+          title: Compliance Group
+          type: string
+          x-ui-output-type: compliance_group
+        billing:
+          description: Billing frequency
+          title: Billing
+          type: string
+          x-ui-output-type: billing
+        workstream:
+          description: Associated workstream
+          title: Workstream
+          type: string
+          x-ui-output-type: workstream
+        sharedresource:
+          description: Indicates if this is a shared resource
+          title: Shared Resource
+          type: boolean
+        merchant:
+          description: The merchant's name in case this service is linked to a specific
+            merchant.
+          title: Merchant
+          type: string
+          x-ui-output-type: merchant
+          x-ui-typeable: true
+        dataclassification:
+          description: The data type or sub category classification that will tell
+            what level of restriction and retention period is required.
+          title: Data Classification
+          type: string
+          x-ui-output-type: dataclassification
+          x-ui-typeable: true
+      title: Tags
+      type: object
+      required:
+      - purpose
+      - costgroup
+      - group
+      - owner
+      - securitylevel
+      - lifecycle
+      - dataclassification
+    topic_kms_key_name:
+      type: string
+      title: KMS Key Name
+      description: The resource name of the Cloud KMS CryptoKey to be used to protect
+        access to messages published on this topic
+    topic_message_retention_duration:
+      type: string
+      title: Message Retention Duration
+      description: Indicates the minimum duration to retain a message after it is
+        published to the topic (e.g., '86600s')
+      default: 604800s
+    kinesis_ingestion:
+      type: object
+      title: AWS Kinesis Data Streams Ingestion
+      description: Configuration for ingesting data from AWS Kinesis Data Streams
+        into this Pub/Sub topic using the service account's AWS workload identity
+      x-ui-toggle: true
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Kinesis Ingestion
+          description: Enable ingestion from AWS Kinesis Data Streams to create an
+            import topic (AWS role ARN and GCP service account will be automatically
+            used from the input service account)
+          default: false
+        stream_arn:
+          type: string
+          title: Kinesis Stream ARN
+          description: 'The ARN of the AWS Kinesis Data Stream to ingest data from
+            (format: arn:aws:kinesis:region:account:stream/stream-name)'
+          x-ui-visible-if:
+            field: spec.kinesis_ingestion.enabled
+            values:
+            - true
+          x-ui-secret-ref: true
+        consumer_arn:
+          type: string
+          title: Kinesis Consumer ARN
+          description: The ARN of the consumer resource registered to the AWS Kinesis
+            Data Stream
+          x-ui-visible-if:
+            field: spec.kinesis_ingestion.enabled
+            values:
+            - true
+          x-ui-secret-ref: true
+      required: []
+    schema:
+      type: object
+      title: Schema Configuration
+      description: Schema for message validation
+      x-ui-toggle: true
+      properties:
+        enabled:
+          type: boolean
+          title: Enable Schema Validation
+          description: Enable schema validation for messages published to this topic
+          default: false
+        name:
+          type: string
+          title: Schema Name
+          description: Name of the schema
+          x-ui-visible-if:
+            field: spec.schema.enabled
+            values:
+            - true
+        type:
+          type: string
+          title: Schema Type
+          description: Type of the schema
+          enum:
+          - AVRO
+          - PROTOCOL_BUFFER
+          default: AVRO
+          x-ui-visible-if:
+            field: spec.schema.enabled
+            values:
+            - true
+        definition:
+          type: string
+          title: Schema Definition
+          description: The definition of the schema
+          x-ui-yaml-editor: true
+          x-ui-visible-if:
+            field: spec.schema.enabled
+            values:
+            - true
+        encoding:
+          type: string
+          title: Schema Encoding
+          description: The encoding of messages validated against this schema
+          enum:
+          - JSON
+          - BINARY
+          default: JSON
+          x-ui-visible-if:
+            field: spec.schema.enabled
+            values:
+            - true
+      required: []
+    pull_subscriptions:
+      type: object
+      title: Pull Subscriptions
+      description: Pull-based subscriptions where clients pull messages from Pub/Sub
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_-]+$:
+          type: object
+          title: Pull Subscription Configuration
+          properties:
+            ack_deadline_seconds:
+              type: number
+              title: Acknowledgment Deadline (seconds)
+              description: The approximate amount of time a message must remain unacknowledged
+                before Pub/Sub attempts redelivery
+              default: 20
+              minimum: 10
+              maximum: 600
+            message_retention_duration:
+              type: string
+              title: Message Retention Duration
+              description: How long to retain unacknowledged messages in the subscription's
+                backlog (e.g., '86400s')
+              default: 604800s
+            retain_acked_messages:
+              type: boolean
+              title: Retain Acknowledged Messages
+              description: Indicates whether to retain acknowledged messages
+              default: false
+            filter:
+              type: string
+              title: Message Filter
+              description: The filter to apply to messages before delivery
+            enable_message_ordering:
+              type: boolean
+              title: Enable Message Ordering
+              description: If true, messages published to the subscription will be
+                delivered in order
+              default: false
+            enable_exactly_once_delivery:
+              type: boolean
+              title: Enable Exactly Once Delivery
+              description: If true, Pub/Sub provides exactly-once delivery guarantees
+              default: false
+            dead_letter_policy:
+              type: object
+              title: Dead Letter Policy
+              description: Policy for handling messages that can't be delivered
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Dead Letter Policy
+                  description: Enable dead letter policy for failed messages
+                  default: false
+                dead_letter_topic:
+                  type: string
+                  title: Dead Letter Topic
+                  description: The name of the topic to which dead letter messages
+                    should be published
+                  x-ui-visible-if:
+                    field: spec.pull_subscriptions.*.dead_letter_policy.enabled
+                    values:
+                    - true
+                max_delivery_attempts:
+                  type: number
+                  title: Max Delivery Attempts
+                  description: The maximum number of delivery attempts for any message
+                  default: 5
+                  minimum: 5
+                  maximum: 100
+                  x-ui-visible-if:
+                    field: spec.pull_subscriptions.*.dead_letter_policy.enabled
+                    values:
+                    - true
+            retry_policy:
+              type: object
+              title: Retry Policy
+              description: Policy for retrying failed message deliveries
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Retry Policy
+                  description: Enable retry policy with exponential backoff
+                  default: false
+                minimum_backoff:
+                  type: string
+                  title: Minimum Backoff
+                  description: The minimum delay between consecutive deliveries of
+                    a given message (e.g., '10s')
+                  default: 10s
+                  x-ui-visible-if:
+                    field: spec.pull_subscriptions.*.retry_policy.enabled
+                    values:
+                    - true
+                maximum_backoff:
+                  type: string
+                  title: Maximum Backoff
+                  description: The maximum delay between consecutive deliveries of
+                    a given message (e.g., '600s')
+                  default: 600s
+                  x-ui-visible-if:
+                    field: spec.pull_subscriptions.*.retry_policy.enabled
+                    values:
+                    - true
+    push_subscriptions:
+      type: object
+      title: Push Subscriptions
+      description: Push-based subscriptions where Pub/Sub pushes messages to HTTP
+        endpoints
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_-]+$:
+          type: object
+          title: Push Subscription Configuration
+          properties:
+            push_endpoint:
+              type: string
+              title: Push Endpoint
+              description: The URL of the endpoint to which messages should be pushed
+            ack_deadline_seconds:
+              type: number
+              title: Acknowledgment Deadline (seconds)
+              description: The approximate amount of time a message must remain unacknowledged
+                before Pub/Sub attempts redelivery
+              default: 20
+              minimum: 10
+              maximum: 600
+            message_retention_duration:
+              type: string
+              title: Message Retention Duration
+              description: How long to retain unacknowledged messages in the subscription's
+                backlog (e.g., '86400s')
+              default: 604800s
+            retain_acked_messages:
+              type: boolean
+              title: Retain Acknowledged Messages
+              description: Indicates whether to retain acknowledged messages
+              default: false
+            filter:
+              type: string
+              title: Message Filter
+              description: The filter to apply to messages before delivery
+            enable_message_ordering:
+              type: boolean
+              title: Enable Message Ordering
+              description: If true, messages published to the subscription will be
+                delivered in order
+              default: false
+            enable_exactly_once_delivery:
+              type: boolean
+              title: Enable Exactly Once Delivery
+              description: If true, Pub/Sub provides exactly-once delivery guarantees
+              default: false
+            oidc_token:
+              type: object
+              title: OIDC Token Configuration
+              description: Configuration for OIDC JWT token authentication using the
+                input service account
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable OIDC Token
+                  description: If specified, Pub/Sub will generate and attach an OIDC
+                    JWT token as an Authorization header using the input service account
+                  default: false
+                audience:
+                  type: string
+                  title: Audience
+                  description: Audience to be used when generating OIDC token
+                  x-ui-visible-if:
+                    field: spec.push_subscriptions.*.oidc_token.enabled
+                    values:
+                    - true
+            dead_letter_policy:
+              type: object
+              title: Dead Letter Policy
+              description: Policy for handling messages that can't be delivered
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Dead Letter Policy
+                  description: Enable dead letter policy for failed messages
+                  default: false
+                dead_letter_topic:
+                  type: string
+                  title: Dead Letter Topic
+                  description: The name of the topic to which dead letter messages
+                    should be published
+                  x-ui-visible-if:
+                    field: spec.push_subscriptions.*.dead_letter_policy.enabled
+                    values:
+                    - true
+                max_delivery_attempts:
+                  type: number
+                  title: Max Delivery Attempts
+                  description: The maximum number of delivery attempts for any message
+                  default: 5
+                  minimum: 5
+                  maximum: 100
+                  x-ui-visible-if:
+                    field: spec.push_subscriptions.*.dead_letter_policy.enabled
+                    values:
+                    - true
+            retry_policy:
+              type: object
+              title: Retry Policy
+              description: Policy for retrying failed message deliveries
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Retry Policy
+                  description: Enable retry policy with exponential backoff
+                  default: false
+                minimum_backoff:
+                  type: string
+                  title: Minimum Backoff
+                  description: The minimum delay between consecutive deliveries of
+                    a given message (e.g., '10s')
+                  default: 10s
+                  x-ui-visible-if:
+                    field: spec.push_subscriptions.*.retry_policy.enabled
+                    values:
+                    - true
+                maximum_backoff:
+                  type: string
+                  title: Maximum Backoff
+                  description: The maximum delay between consecutive deliveries of
+                    a given message (e.g., '600s')
+                  default: 600s
+                  x-ui-visible-if:
+                    field: spec.push_subscriptions.*.retry_policy.enabled
+                    values:
+                    - true
+  required:
+  - tags
+outputs:
+  default:
+    type: '@signifyd/pubsub'
+    title: Pub/Sub Topic
+sample:
+  kind: pubsub
+  flavor: default
+  version: '1.0'
+  disabled: false
+  spec:
+    topic_message_retention_duration: 86400s
