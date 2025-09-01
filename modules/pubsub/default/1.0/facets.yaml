@@ -72,8 +72,7 @@ spec:
   required: []
 outputs:
   default:
-    type: '@outputs/misc'
-    title: Pub/Sub Topic
+    type: "@outputs/pubsub"
 sample:
   kind: pubsub
   flavor: default
