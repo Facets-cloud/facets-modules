@@ -3,3 +3,6 @@ type: K8s
 displayName: Helm
 description: A package manager for Kubernetes that simplifies the deployment and management of applications using Helm charts.
 iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0cc373415b11213a424_helm.svg
+outputs:
+  default:
+    type: "@outputs/helm"

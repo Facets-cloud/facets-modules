@@ -1,0 +1,13 @@
+name: helm
+out:
+  type: object
+  title: Helm Output
+  description: Output attributes for a Google Cloud Storage bucket
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the Helm release
+      properties:
+        release_name:
+          type: string
+          description: The helm release name
