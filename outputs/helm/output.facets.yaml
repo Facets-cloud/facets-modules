@@ -2,7 +2,7 @@ name: helm
 out:
   type: object
   title: Helm Output
-  description: Output attributes for a Google Cloud Storage bucket
+  description: Output attributes for a Helm release
   properties:
     attributes:
       type: object
