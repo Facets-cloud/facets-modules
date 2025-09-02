@@ -1,22 +1,3 @@
-variable "cluster" {
-  type = any
-  default = {
-    secrets = {
-      TEST = "test_value"
-    }
-  }
-}
-
-variable "baseinfra" {
-  type    = any
-  default = {}
-}
-
-variable "cc_metadata" {
-  type    = any
-  default = {}
-}
-
 variable "instance" {
   type    = any
   default = {}
