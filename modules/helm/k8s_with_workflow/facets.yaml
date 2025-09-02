@@ -1,0 +1,109 @@
+intent: helm
+flavor: k8s_with_workflow
+version: '0.1'
+description: Adds Helm module
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+spec:
+  title: Helm
+  description: Specification of the Helm chart intent
+  type: object
+  properties:
+    helm:
+      title: Helm
+      description: Configuration for the Helm chart
+      type: object
+      properties:
+        chart:
+          type: string
+          title: Chart
+          description:  Name of the Helm chart package
+          x-ui-placeholder: Enter name of the helm chart
+          pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*[a-zA-Z0-9]$'
+          x-ui-error-message: "Invalid format. Only alphabets, numbers and hypens are allowed"
+        repository:
+          type: string
+          title: Repository
+          description: URL or relative path for the helm repository
+          x-ui-placeholder: Enter URL or relative path of the repository
+          pattern: "[a-zA-Z0-9:/._-]+"
+          x-ui-error-message: "Invalid input format. The URL or relative path should contain only valid regex `[a-zA-Z0-9:/._-]+`"
+        version:
+          type: string
+          title: Version
+          description: Version for the helm chart
+          x-ui-placeholder: Enter the valid chart version
+        namespace:
+          type: string
+          title: Namespace
+          description: Namespace to deploy the Helm chart in
+          x-ui-placeholder: Enter namespace
+          pattern: '^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$'
+          x-ui-error-message: "Invalid namespace format. The namespace must be DNS-compliant, containing only letters, numbers, and hyphens, and must not start or end with a hyphen"
+        wait:
+          type: boolean
+          title: Wait
+          description: Whether to wait for the Helm chart deployment to complete
+        repository_username:
+          type: string
+          title: Repository Username
+          description: Username to authenticate to private helm repository
+          x-ui-placeholder: Enter repository username
+        repository_password:
+          type: string
+          title: Repository Password
+          description: Password to authenticate to private helm repository
+          x-ui-placeholder: Enter repository password
+          x-ui-mask-content: true
+      required: [ "chart" ]
+      x-ui-order:
+        - repository
+        - chart
+        - version
+        - namespace
+        - repository_username
+        - repository_password
+        - wait
+    values:
+      type: object
+      title: Values
+      description: The values to be passed on to the chart in the form of a YAML object
+      x-ui-yaml-editor: true
+      x-ui-placeholder: Enter values in YAML format
+  required: [ "helm", "values" ]
+sample:
+  $schema: 'https://facets-cloud.github.io/facets-schemas/schemas/helm/helm.schema.json'
+  kind: helm
+  flavor: k8s_with_workflow
+  disabled: true
+  metadata: {}
+  version: '0.1'
+  spec:
+    helm:
+      repository: >-
+        https://helm.datadoghq.com
+      chart: datadog
+      namespace: default
+      wait: false
+    values:
+
+inputs:
+  prometheus_details:
+    type: "@outputs/prometheus"
+    optional: false
+    default:
+      resource_type: configuration
+      resource_name: prometheus
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - helm
+      - kubernetes-alpha
