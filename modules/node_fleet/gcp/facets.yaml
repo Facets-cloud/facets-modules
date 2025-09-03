@@ -1,0 +1,175 @@
+intent: kubernetes_node_pool
+flavor: node_fleet_test
+version: '1.0'
+description: Creates and manages multiple Kubernetes node pools as a fleet for GKE
+  clusters
+clouds:
+- gcp
+spec:
+  title: Kubernetes Node Fleet
+  description: Specification of multiple kubernetes node pools for node_fleet_test
+    flavor
+  type: object
+  properties:
+    node_pools:
+      title: Node Pools Configuration
+      description: Map of node pool names to their configurations. Each key represents
+        a node pool name with its configuration.
+      type: object
+      patternProperties:
+        ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+          title: Node Pool Configuration
+          description: Configuration for a specific node pool
+          type: object
+          properties:
+            instance_type:
+              title: Instance Type
+              description: Instance type for nodes in this node pool
+              type: string
+              x-ui-placeholder: e.g. 'e2-standard-2'
+            min_node_count:
+              title: Min Node Count
+              description: Minimum number of nodes which should exist within this
+                node pool
+              type: integer
+              minimum: 0
+              maximum: 100
+            max_node_count:
+              title: Max Node Count
+              description: Maximum number of nodes which should exist within this
+                node pool
+              type: integer
+              minimum: 0
+              maximum: 100
+            is_public:
+              title: Is Public
+              description: Set this to true to deploy the node pool in public subnets
+              type: boolean
+            disk_size:
+              title: Disk Size
+              description: Size of the Disk in GiB for node in this node pool
+              type: integer
+              minimum: 50
+              maximum: 1000
+            disk_type:
+              title: Disk Type
+              description: Type of disk for the nodes (e.g. pd-standard, pd-ssd, pd-balanced)
+              type: string
+              x-ui-placeholder: e.g. 'pd-standard'
+            type:
+              title: Node Type
+              description: Type of nodes to provision (ondemand or spot)
+              type: string
+              x-ui-placeholder: e.g. 'ondemand'
+            azs:
+              title: Availability Zones
+              description: List of zones where nodes can be created
+              type: array
+              items:
+                type: string
+              x-ui-overrides-only: true
+            iam:
+              title: IAM
+              description: IAM specification for node pool
+              type: object
+              properties:
+                roles:
+                  title: IAM Roles
+                  description: IAM roles to be assigned to node pool service account
+                  type: object
+                  patternProperties:
+                    ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+                      title: Key Name For Role
+                      description: Key name for role
+                      type: object
+                      properties:
+                        role:
+                          title: Role
+                          description: Role to be added to the node pool service account
+                          type: string
+                          x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+                      x-ui-error-message: Key name should start with an alphabet and
+                        should contain alpha numeric characters with allowed special
+                        characters like underscore, period and hyphen
+          x-ui-error-message: Node pool name should start with an alphabet and should
+            contain alpha numeric characters with allowed special characters like
+            underscore, period and hyphen
+    labels:
+      title: Labels
+      description: 'Map of labels to be added to all nodes in the fleet. Enter key-value
+        pair for labels in YAML format. Eg. key: value (provide a space after '':''
+        as expected in the YAML format)'
+      type: object
+      x-ui-yaml-editor: true
+      x-ui-placeholder: 'Eg. key1: value1'
+    taints:
+      title: Taints
+      description: "Kubernetes taints for all nodes (YAML array of objects). Set [] if none."
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+            title: Taint Key
+          value:
+            type: string
+            title: Taint Value
+          effect:
+            title: Taint Effect
+            description: Effect of the taint (NoSchedule, PreferNoSchedule, or NoExecute)
+            type: string
+            x-ui-placeholder: e.g. 'NoSchedule'
+        required:
+        - key
+        - value
+        - effect
+      x-ui-overrides-only: true
+      x-ui-placeholder: "Eg. \n- key: CriticalAddonsOnly\n  value: \"true\"\n  effect:\
+        \ NoSchedule"
+  required:
+  - node_pools
+inputs:
+  kubernetes_details:
+    type: '@outputs/kubernetes'
+    optional: false
+    displayName: Kubernetes Cluster
+    description: The target Kubernetes cluster for node pool deployment
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+  network_details:
+    type: '@outputs/gcp_vpc'
+    optional: false
+    displayName: GCP VPC Network
+    description: The VPC network where nodes will be deployed
+outputs:
+  default:
+    type: '@outputs/kubernetes_node_pool'
+    title: Kubernetes Node Fleet
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - locals.tf
+  - versions.tf
+sample:
+  flavor: node_fleet_test
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
+  version: '1.0'
+  kind: kubernetes_node_pool
+  metadata: {}
+  disabled: true
+  spec:
+    node_pools:
+      default:
+        instance_type: e2-medium
+        min_node_count: 1
+        max_node_count: 3
+        disk_size: 100
+        disk_type: pd-standard
+        is_public: false
+        type: ondemand
+    taints: []
+    labels: {}
