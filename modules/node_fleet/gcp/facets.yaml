@@ -170,6 +170,6 @@ sample:
         disk_size: 100
         disk_type: pd-standard
         is_public: false
-        type: ondemand
+        type: spot
     taints: []
     labels: {}
