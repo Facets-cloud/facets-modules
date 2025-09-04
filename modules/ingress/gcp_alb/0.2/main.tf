@@ -1,7 +1,8 @@
 locals {
   tenant_provider        = lower(lookup(var.cc_metadata, "cc_tenant_provider", "aws"))
+  spec_config            = lookup(var.instance, "spec", {})
   advanced_config        = lookup(lookup(var.instance, "advanced", {}), "gcp_alb", {})
-  use_internal_static_ip = lookup(local.advanced_config, "use_internal_static_ip", false)
+  use_internal_static_ip = lookup(local.advanced_config, "use_internal_static_ip", lookup(local.spec_config, "use_internal_static_ip", false))
   stackName              = var.cluster.stackName
   instance_env_name      = length(var.environment.unique_name) + length(var.instance_name) + length(var.cc_metadata.tenant_base_domain) >= 60 ? substr(md5("${var.instance_name}-${var.environment.unique_name}"), 0, 20) : "${var.instance_name}-${var.environment.unique_name}"
   base_domain            = lower("${var.instance_name}-${var.environment.unique_name}.${var.cc_metadata.tenant_base_domain}") # domains are to be always lowercase
@@ -9,18 +10,18 @@ locals {
   ipv6                   = lookup(var.instance.spec, "ipv6_enabled", false)
   enable_internal_lb     = lookup(var.instance.spec, "private", false)
 
-  dns                 = lookup(local.advanced_config, "dns", {})
+  dns                 = lookup(local.advanced_config, "dns", lookup(local.spec_config, "dns", {}))
   custom_record_type  = lookup(local.dns, "record_type", "")
   dns_record_value    = lookup(local.dns, "record_value", "")
   custom_record_value = split(",", local.dns_record_value)
   # the below logic is explained in clickup for https internal loadbalancing
   internal_lb                     = lookup(var.instance.spec, "private", false) ? false : true
   force_redirection               = local.internal_lb && lookup(var.instance.spec, "force_ssl_redirection", false) ? true : false
-  ssl_policy                      = lookup(local.advanced_config, "ssl_policy", {})
-  existing_ssl_policy             = lookup(local.advanced_config, "existing_ssl_policy", null)
-  managed_certificates            = local.internal_lb && lookup(local.advanced_config, "certificate_type", "") == "managed" ? true : false
-  k8s_certificates                = lookup(local.advanced_config, "certificate_type", "") == "k8s" ? true : false
-  enable_certificate_auto_renewal = lookup(local.advanced_config, "enable_certificate_auto_renewal", false)
+  ssl_policy                      = lookup(local.advanced_config, "ssl_policy", lookup(local.spec_config, "ssl_policy", {}))
+  existing_ssl_policy             = lookup(local.advanced_config, "existing_ssl_policy", lookup(local.spec_config, "existing_ssl_policy", null))
+  managed_certificates            = local.internal_lb && lookup(local.advanced_config, "certificate_type", lookup(local.spec_config, "certificate_type", "")) == "managed" ? true : false
+  k8s_certificates                = lookup(local.advanced_config, "certificate_type", lookup(local.spec_config, "certificate_type", "")) == "k8s" ? true : false
+  enable_certificate_auto_renewal = lookup(local.advanced_config, "enable_certificate_auto_renewal", lookup(local.spec_config, "enable_certificate_auto_renewal", false))
   auto_renew_certificates         = local.enable_certificate_auto_renewal && local.k8s_certificates ? true : false
   internal_lb_ipv6                = local.internal_lb && local.ipv6 ? true : false
 
@@ -62,7 +63,7 @@ locals {
     { // default cert manager annotations
       "cert-manager.io/cluster-issuer" : "letsencrypt-prod-http01"
       "acme.cert-manager.io/http01-edit-in-place" : "true"
-      "cert-manager.io/renew-before" : lookup(local.advanced_config, "renew_cert_before", "720h") // 30days; value must be parsable by https://pkg.go.dev/time#ParseDuration
+      "cert-manager.io/renew-before" : lookup(local.advanced_config, "renew_cert_before", lookup(local.spec_config, "renew_cert_before", "720h")) // 30days; value must be parsable by https://pkg.go.dev/time#ParseDuration
     },
     { // overriding common annotations from instance.metadata
       for key, value in lookup(local.metadata, "annotations", {}) :
@@ -269,7 +270,7 @@ resource "kubernetes_ingress_v1" "example_ingress" {
   }
   spec {
     dynamic "default_backend" {
-      for_each = lookup(local.advanced_config, "default_backend", null) != null ? [lookup(local.advanced_config, "default_backend", null)] : []
+      for_each = lookup(local.advanced_config, "default_backend", lookup(local.spec_config, "default_backend", null)) != null ? [lookup(local.advanced_config, "default_backend", lookup(local.spec_config, "default_backend", null))] : []
       content {
         service {
           name = default_backend.value.service
