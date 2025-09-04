@@ -1,6 +1,6 @@
 intent: kubernetes_node_pool
-flavor: node_fleet_test
-version: '1.0'
+flavor: node_fleet
+version: '0.1'
 description: Creates and manages multiple Kubernetes node pools as a fleet for GKE
   clusters
 clouds:
@@ -53,13 +53,23 @@ spec:
               maximum: 1000
             disk_type:
               title: Disk Type
-              description: Type of disk for the nodes (e.g. pd-standard, pd-ssd, pd-balanced)
+              description: Type of disk for the nodes
               type: string
-              x-ui-placeholder: e.g. 'pd-standard'
+              enum:
+              - pd-standard
+              - pd-balanced
+              - pd-ssd
+              - pd-extreme
+              - hyperdisk-balanced
+              - hyperdisk-extreme
+              x-ui-placeholder: e.g. 'pd-balanced'
             type:
               title: Node Type
               description: Type of nodes to provision (ondemand or spot)
               type: string
+              enum:
+              - ondemand
+              - spot
               x-ui-placeholder: e.g. 'ondemand'
             azs:
               title: Availability Zones
@@ -100,33 +110,40 @@ spec:
         pair for labels in YAML format. Eg. key: value (provide a space after '':''
         as expected in the YAML format)'
       type: object
+      default: {}
       x-ui-yaml-editor: true
       x-ui-placeholder: 'Eg. key1: value1'
     taints:
       title: Taints
-      description: "Kubernetes taints for all nodes (YAML array of objects). Set [] if none."
-      type: array
-      items:
-        type: object
-        properties:
-          key:
-            type: string
-            title: Taint Key
-          value:
-            type: string
-            title: Taint Value
-          effect:
-            title: Taint Effect
-            description: Effect of the taint (NoSchedule, PreferNoSchedule, or NoExecute)
-            type: string
-            x-ui-placeholder: e.g. 'NoSchedule'
-        required:
-        - key
-        - value
-        - effect
+      description: Map of taint configurations for all nodes in the fleet
+      type: object
+      patternProperties:
+        ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+          title: Taint Configuration
+          description: Individual taint configuration
+          type: object
+          properties:
+            key:
+              type: string
+              title: Taint Key
+              description: The key of the taint
+            value:
+              type: string
+              title: Taint Value
+              description: The value of the taint
+            effect:
+              title: Taint Effect
+              description: Effect of the taint
+              type: string
+              enum:
+              - NoSchedule
+              - PreferNoSchedule
+              - NoExecute
+          required:
+          - key
+          - value
+          - effect
       x-ui-overrides-only: true
-      x-ui-placeholder: "Eg. \n- key: CriticalAddonsOnly\n  value: \"true\"\n  effect:\
-        \ NoSchedule"
   required:
   - node_pools
 inputs:
@@ -155,9 +172,9 @@ iac:
   - locals.tf
   - versions.tf
 sample:
-  flavor: node_fleet_test
+  flavor: node_fleet
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
-  version: '1.0'
+  version: '0.1'
   kind: kubernetes_node_pool
   metadata: {}
   disabled: true
@@ -168,8 +185,8 @@ sample:
         min_node_count: 1
         max_node_count: 3
         disk_size: 100
-        disk_type: pd-standard
+        disk_type: pd-balanced
         is_public: false
-        type: spot
-    taints: []
+        type: ondemand
+    taints: {}
     labels: {}
