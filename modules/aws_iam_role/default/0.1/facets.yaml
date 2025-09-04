@@ -4,6 +4,20 @@ version: '0.1'
 description: Adds AWS IAM Role
 clouds:
 - aws
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    displayName: Kubernetes Cluster
+    description: Details of Kubernetes where the kubernetes service account will be
+      created.
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 spec:
   title: AWS IAM Role
   description: Specification of the aws iam role resource intent

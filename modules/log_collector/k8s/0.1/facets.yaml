@@ -7,6 +7,17 @@ clouds:
 - kubernetes
 - azure
 - aws
+inputs:
+  kubernetes_details:
+    optional: false
+    type: "@outputs/kubernetes"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/log-collector/log-collector.schema.json
   kind: log_collector

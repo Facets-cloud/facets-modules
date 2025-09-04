@@ -4,6 +4,23 @@ version: "0.1"
 description: Adds Postgres module of flavor alloydb
 clouds:
 - gcp
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/gcp_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: "@outputs/gcp_gke"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 spec:
   title: AlloyDB
   type: object
