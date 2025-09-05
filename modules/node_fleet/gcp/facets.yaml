@@ -98,9 +98,18 @@ spec:
                           description: Role to be added to the node pool service account
                           type: string
                           x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+                      required:
+                      - role
                       x-ui-error-message: Key name should start with an alphabet and
                         should contain alpha numeric characters with allowed special
                         characters like underscore, period and hyphen
+          required:
+          - instance_type
+          - min_node_count
+          - max_node_count
+          - disk_size
+          - disk_type
+          - type
           x-ui-error-message: Node pool name should start with an alphabet and should
             contain alpha numeric characters with allowed special characters like
             underscore, period and hyphen
