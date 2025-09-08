@@ -23,6 +23,9 @@ inputs:
     providers:
     - aws
 outputs:
+  default:
+    type: '@facets/kubernetes-details'
+    title: "Kubernetes Cluster Output\u02D9"
   attributes.k8s_details:
     type: '@facets/eks'
     title: Kubernetes Cluster Output
@@ -32,45 +35,24 @@ outputs:
         source: hashicorp/kubernetes
         version: 2.38.0
         attributes:
-          host: '@facets-ref/cluster.auth.host'
-          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
-          exec:
-            api_version: client.authentication.k8s.io/v1beta1
-            command: aws
-            args:
-            - eks
-            - get-token
-            - --cluster-name
-            - '@facets-ref/cluster.name'
+          host: cluster.auth.host
+          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
+          token: cluster.auth.token
       helm:
         source: hashicorp/helm
         version: 3.0.2
         attributes:
           kubernetes:
-            host: '@facets-ref/cluster.auth.host'
-            cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
-            exec:
-              api_version: client.authentication.k8s.io/v1beta1
-              command: aws
-              args:
-              - eks
-              - get-token
-              - --cluster-name
-              - '@facets-ref/cluster.name'
+            host: cluster.auth.host
+            cluster_ca_certificate: cluster.auth.cluster_ca_certificate
+            token: cluster.auth.token
       kubernetes-alpha:
         source: hashicorp/kubernetes-alpha
         version: 0.6.0
         attributes:
-          host: '@facets-ref/cluster.auth.host'
-          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
-          exec:
-            api_version: client.authentication.k8s.io/v1beta1
-            command: aws
-            args:
-            - eks
-            - get-token
-            - --cluster-name
-            - '@facets-ref/cluster.name'
+          host: cluster.auth.host
+          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
+          token: cluster.auth.token
 spec:
   type: object
   x-ui-order:

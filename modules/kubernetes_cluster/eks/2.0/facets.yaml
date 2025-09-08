@@ -32,24 +32,45 @@ outputs:
         source: hashicorp/kubernetes
         version: 2.38.0
         attributes:
-          host: cluster.auth.host
-          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
-          token: cluster.auth.token
+          host: '@facets-ref/cluster.auth.host'
+          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+          exec:
+            api_version: client.authentication.k8s.io/v1beta1
+            command: aws
+            args:
+            - eks
+            - get-token
+            - --cluster-name
+            - '@facets-ref/cluster.name'
       helm:
         source: hashicorp/helm
         version: 3.0.2
         attributes:
           kubernetes:
-            host: cluster.auth.host
-            cluster_ca_certificate: cluster.auth.cluster_ca_certificate
-            token: cluster.auth.token
+            host: '@facets-ref/cluster.auth.host'
+            cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+            exec:
+              api_version: client.authentication.k8s.io/v1beta1
+              command: aws
+              args:
+              - eks
+              - get-token
+              - --cluster-name
+              - '@facets-ref/cluster.name'
       kubernetes-alpha:
         source: hashicorp/kubernetes-alpha
         version: 0.6.0
         attributes:
-          host: cluster.auth.host
-          cluster_ca_certificate: cluster.auth.cluster_ca_certificate
-          token: cluster.auth.token
+          host: '@facets-ref/cluster.auth.host'
+          cluster_ca_certificate: '@facets-ref/cluster.auth.cluster_ca_certificate'
+          exec:
+            api_version: client.authentication.k8s.io/v1beta1
+            command: aws
+            args:
+            - eks
+            - get-token
+            - --cluster-name
+            - '@facets-ref/cluster.name'
 spec:
   type: object
   x-ui-order:
