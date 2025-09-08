@@ -1,5 +1,5 @@
 intent: aws_iam_role
-flavor: irsa_with_ns
+flavor: default
 version: '0.2'
 description: Adds AWS IAM Role
 clouds:
@@ -79,7 +79,7 @@ sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
   version: '0.2'
   disabled: true
-  flavor: irsa_with_ns
+  flavor: default
   metadata: {}
   kind: aws_iam_role
   spec:
