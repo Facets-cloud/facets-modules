@@ -1,5 +1,5 @@
 module "rollout_restart_task" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "rollout-restart"
 
   instance_name    = var.instance_name
@@ -83,7 +83,7 @@ module "rollout_restart_task" {
 }
 
 module "print_params_task" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "print-params"
 
   instance_name    = var.instance_name
@@ -153,7 +153,7 @@ module "print_params_task" {
 
 
 module "scale_down_task" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "scale-down"
 
   instance_name    = var.instance_name
@@ -244,7 +244,7 @@ module "scale_down_task" {
 
 
 module "scale_up_task" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "scale-up"
 
   instance_name    = var.instance_name

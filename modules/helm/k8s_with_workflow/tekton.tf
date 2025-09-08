@@ -1,5 +1,5 @@
 module "helm_history_workflow" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "helm-history"
 
   instance_name    = var.instance_name
@@ -27,7 +27,7 @@ module "helm_history_workflow" {
 }
 
 module "helm_rollback_workflow" {
-  source = "github.com/Facets-cloud/facets-utility-modules//facets-workflows/kubernetes?ref=workflows"
+  source = "github.com/Facets-cloud/facets-utility-modules//actions/kubernetes?ref=workflows"
   name   = "helm-rollback"
 
   instance_name    = var.instance_name
