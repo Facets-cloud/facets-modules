@@ -138,8 +138,6 @@ spec:
                         description:
                           title: Description
                           type: string
-                      required:
-                      - expression
                   required:
                   - role
                   type: object
@@ -501,9 +499,6 @@ spec:
           - liveness_port
           - liveness_url
           - liveness_exec_command
-          - startup_port
-          - startup_url
-          - startup_exec_command
         autoscaling:
           type: object
           title: Autoscaling
