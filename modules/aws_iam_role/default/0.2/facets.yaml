@@ -1,0 +1,107 @@
+intent: aws_iam_role
+flavor: default
+version: '0.2'
+description: Adds AWS IAM Role
+clouds:
+- aws
+spec:
+  title: AWS IAM Role
+  description: Specification of the aws iam role resource intent
+  type: object
+  properties:
+    irsa:
+      type: object
+      description: IRSA block which required to attach EKS OIDC to service accounts
+        for allowing applications to get cloud credentials
+      properties:
+        service_accounts:
+          type: object
+          title: Service Accounts
+          description: the map of all service accounts that you want to attach IRSA
+          patternProperties:
+            ^[a-zA-Z0-9_.-]*$:
+              type: object
+              title: Service Account Name
+              description: An arbitrary name given to the service account which is
+                not used anywhere
+              properties:
+                name:
+                  type: string
+                  description: The name of the service account that you want to attach
+                    the role to with the trust relationship
+                  pattern: ^(?!-)[a-zA-Z0-9]+(?:[_-][a-zA-Z0-9]+)*(?<!-)$
+                  x-ui-error-message: 'Service account names must contain only letters,
+                    numbers, underscores and hyphens, cannot contain consecutive hyphens,
+                    and must not include spaces or special characters '
+                namespace:
+                  type: string
+                  description: The namespace of the service account that you want
+                    to attach the role to with the trust relationship
+        oidc_providers:
+          type: object
+          title: OIDC Providers
+          description: the map of all OIDC arns that you want to attach IRSA
+          patternProperties:
+            ^[a-zA-Z0-9_.-]*$:
+              type: object
+              title: OIDC Provider ARN
+              description: An arbitrary name given to the OIDC provider which is not
+                used anywhere
+              properties:
+                arn:
+                  type: string
+                  description: The arn of the OIDC that you want to attach the role
+                    to with the trust relationship
+                  pattern: ^arn:aws:iam::[0-9]{12}:oidc-provider\/[a-zA-Z0-9._\-\/]+$
+                  x-ui-error-message: Invalid OIDC ARN format. Ensure it follows the
+                    pattern <arn:aws:iam::<account-id>:oidc-provider/<provider-path>
+      required:
+      - service_accounts
+    policies:
+      type: object
+      title: Policies
+      description: the map of all policies arns that you want to attach to the role
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          type: object
+          title: Policy ARN
+          description: An arbitrary name given to the policies which is not used anywhere
+          properties:
+            arn:
+              type: string
+              description: The arn of the policy that you want to attach the role
+              pattern: ^arn:[a-zA-Z0-9-]+:[a-zA-Z0-9-]+:[a-zA-Z0-9-]*:[0-9]{12}:[a-zA-Z0-9-\/:_+=.@]+$
+              x-ui-error-message: Invalid ARN format. Ensure it follows the pattern
+                <arn:partition:service:region:account-id:resource>
+  required:
+  - policies
+sample:
+  $schema: https://facets-cloud.github.io/facets-schemas/schemas/iam_policy/iam_policy.schema.json
+  version: '0.2'
+  disabled: true
+  flavor: default
+  metadata: {}
+  kind: aws_iam_role
+  spec:
+    irsa:
+      service_accounts:
+        arbitrary_name:
+          name: ''
+          namespace: default
+      oidc_providers:
+        arbitrary_name:
+          arn: ''
+    policies:
+      external_policy:
+        arn: ''
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
