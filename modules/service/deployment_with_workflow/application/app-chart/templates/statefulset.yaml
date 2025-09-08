@@ -1,0 +1,195 @@
+{{- if eq .Values.spec.type "statefulset" }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "app-chart.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "app-chart.fullname" . }}
+  replicas: {{ .Values.spec.runtime.instance_count | default 1 }}
+  {{- if (hasKey .Values.advanced.common.app_chart.values  "pod_management_policy") }}
+  podManagementPolicy: {{ .Values.advanced.common.app_chart.values.pod_management_policy }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "app-chart.metadataLabels" . | nindent 8 }}
+      {{- if ( hasKey .Values.metadata "annotations" ) }}
+      annotations:
+        {{- toYaml .Values.metadata.annotations | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- if and ( hasKey .Values.advanced.common.app_chart.values  "termination_grace_period_seconds") (gt (default 0 (int .Values.advanced.common.app_chart.values.termination_grace_period_seconds)) 0) }}
+      terminationGracePeriodSeconds: {{ .Values.advanced.common.app_chart.values.termination_grace_period_seconds }}
+      {{- end }}
+      serviceAccountName: {{ include "app-chart.fullname" . }}-sa
+    {{- if ( hasKey .Values.advanced.common.app_chart.values "tolerations") }}
+    {{- include "app-chart.tolerations" . | indent 6 -}}
+    {{- end }}
+    {{- if ( hasKey .Values.spec "runtime_class_name") }}
+    {{- include "app-chart.runtime_class_name" . | indent 6 -}} 
+    {{- end }}
+    ## Pod Anti Affinity
+    {{- if and ( hasKey .Values.spec "enable_host_anti_affinity" ) (.Values.spec.enable_host_anti_affinity) }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ .Values.metadata.name }}
+            topologyKey: kubernetes.io/hostname
+    {{- end }}
+    ## Node Affinity
+    {{- if (hasKey .Values "advanced") }}
+    {{- if (hasKey .Values.advanced "affinity") }}
+    {{- if (hasKey .Values.advanced.affinity "node") }}
+    {{- if ( hasKey .Values.advanced.affinity.node "required") }}
+        {{- if .Values.advanced.affinity.node.required }}
+        nodeAffinity:
+          {{- include "app-chart.nodeAffinityRequired" . | indent 10 -}}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- with (.Values.advanced.node_selector | default .Values.advanced.common.app_chart.values.node_selector | default "") }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 -}}
+    {{- end }}
+    {{- if ( hasKey .Values.advanced  "image_pull_secrets") }}
+    {{- if gt (len .Values.advanced.image_pull_secrets) 0 }}
+      imagePullSecrets:
+      {{- include "app-chart.imagePullSecrets" . | indent 6 }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if ( hasKey .Values.advanced.common.app_chart.values  "security_context") }}
+    {{- include "app-chart.securityContext" . | nindent 6 -}}
+    {{- end }} 
+    {{- if and (hasKey .Values.advanced.common.app_chart.values "init_containers") (gt (len .Values.advanced.common.app_chart.values.init_containers) 0) }}
+      initContainers:
+      {{- include "app-chart.initContainers" . | indent 6 }}
+    {{- end }}  
+      containers:
+      - name: {{ include "app-chart.fullname" . }}
+        imagePullPolicy: {{ if .Values.spec.release.image_pull_policy }}{{ .Values.spec.release.image_pull_policy }}{{ else }}{{ .Values.spec.release.build.pull_policy | default "IfNotPresent" }}{{ end }}
+        {{- include "app-chart.lifecycle" . | nindent 8 -}}
+    {{- if  hasKey .Values.spec.runtime  "command" }}
+    {{- if gt (len .Values.spec.runtime.command) 0 }}
+        {{- include "app-chart.command" . | nindent 8 }}
+    {{- end }}
+    {{- end }}
+    {{- if  hasKey .Values.spec.runtime  "args" }}
+    {{- if gt (len .Values.spec.runtime.args) 0 }}
+        {{- include "app-chart.args" . | nindent 8 }}
+    {{- end }}
+    {{- end }}
+        image: {{ .Values.spec.release.image }}
+    {{- if ( hasKey .Values.spec.runtime "health_checks") }}
+        {{- include "app-chart.liveness-readiness-check" . | nindent 8 }}
+    {{- end }}
+    {{- if  hasKey .Values.spec.runtime  "ports" }}
+    {{- if gt (len .Values.spec.runtime.ports) 0 }}
+        ports:
+        {{- include "app-chart.ports" . | indent 8 }}
+    {{- end }}
+    {{- end }}
+        env:
+        {{- include "app-chart.env" . | indent 8 }}
+        {{- include "app-chart.envFrom" . | indent 8 }}
+        resources:
+        {{- include "app-chart.resources" . | nindent 10 }}
+  {{- if or (hasKey .Values.spec "persistent_volume_claims") (and (hasKey .Values.spec.runtime "volumes") (gt (len .Values.spec.runtime.volumes) 0)) (hasKey .Values.advanced.common.app_chart.values  "additional_volume_mounts") }}
+        volumeMounts:
+    {{- range $k, $v := .Values.spec.persistent_volume_claims }}
+    {{- with . }}
+        - name: {{ $k }}-vol
+          mountPath: {{ $v.path }}
+    {{- end }}
+    {{- end }}
+    {{- if and (hasKey .Values.spec.runtime "volumes") ( hasKey .Values.spec.runtime.volumes  "config_maps") (gt (len .Values.spec.runtime.volumes.config_maps) 0) }}
+        {{- include "app-chart.configsVolumeMounts" . | indent 8 }}
+    {{- end }}
+    {{- if and (hasKey .Values.spec.runtime "volumes") ( hasKey .Values.spec.runtime.volumes  "secrets") (gt (len .Values.spec.runtime.volumes.secrets) 0) }}
+        {{- include "app-chart.secretsVolumeMounts" . | indent 8 }}
+    {{- end }}
+    {{- if and (hasKey .Values.spec.runtime "volumes") ( hasKey .Values.spec.runtime.volumes  "pvc") (gt (len .Values.spec.runtime.volumes.pvc) 0) }}
+        {{- include "app-chart.pvcVolumeMounts" . | indent 8 }}
+    {{- end }}
+    {{- if and (hasKey .Values.spec.runtime "volumes") ( hasKey .Values.spec.runtime.volumes  "host_path") (gt (len .Values.spec.runtime.volumes.host_path) 0) }}
+        {{- include "app-chart.hostPathVolumeMounts" . | indent 8 }}
+    {{- end }}
+        {{- include "app-chart.additionalVolMounts" . | indent 8 }}
+    {{- end }}
+    {{- if (hasKey .Values.advanced.common.app_chart.values "sidecars") -}}
+    {{- include "app-chart.sidecars" . | indent 6 }}
+    {{- end }}
+    {{- if or ( hasKey .Values.spec.runtime  "volumes") ( hasKey .Values.advanced.common.app_chart.values "sidecars") ( hasKey .Values.advanced.common.app_chart.values "init_containers" ) ( hasKey .Values.advanced.common.app_chart.values "additional_volumes" ) }}
+      volumes:
+    {{- if and ( hasKey .Values.spec.runtime  "volumes") (gt (len .Values.spec.runtime.volumes) 0) }}
+    {{- if and ( hasKey .Values.spec.runtime.volumes  "config_maps") (gt (len .Values.spec.runtime.volumes.config_maps) 0) }}
+        {{- include "app-chart.configsVolume" . | nindent 6 }}
+    {{- end }}
+    {{- if and ( hasKey .Values.spec.runtime.volumes  "secrets") (gt (len .Values.spec.runtime.volumes.secrets) 0) }}
+        {{- include "app-chart.secretsVolume" . | nindent 6 }}
+    {{- end }}
+    {{- if and ( hasKey .Values.spec.runtime.volumes  "pvc") (gt (len .Values.spec.runtime.volumes.pvc) 0) }}
+        {{- include "app-chart.pvcVolume" . | nindent 6 }}
+    {{- end }}
+    {{- if and ( hasKey .Values.spec.runtime.volumes  "host_path") (gt (len .Values.spec.runtime.volumes.host_path) 0) }}
+        {{- include "app-chart.hostPathVolume" . | nindent 6 }}
+    {{- end }}
+    {{- end }}
+    {{- if and ( hasKey .Values.advanced.common.app_chart.values  "additional_volumes") (gt (len .Values.advanced.common.app_chart.values.additional_volumes) 0) }}
+    {{- toYaml .Values.advanced.common.app_chart.values.additional_volumes | nindent 6 }}
+    {{- end }}
+        {{- include "app-chart.sidecarVolume" . | nindent 6 }}
+        {{- include "app-chart.initcontainerVolume" . | nindent 6 }}
+    {{- end }}
+  {{- if (hasKey .Values.spec "persistent_volume_claims") }}
+  volumeClaimTemplates:
+{{- range $k, $v := .Values.spec.persistent_volume_claims }}
+{{- with . }}
+  {{- $storageSize := $v.storage_size -}}
+  {{- $accessMode := $v.access_mode -}}
+  {{- $transformedKey := $k | lower | replace "_" "-" -}}
+  {{- $pvcName := (printf "%s-vol" $transformedKey) -}}
+  {{- $stsName := include "app-chart.fullname" $ -}}
+  {{- $stsNamespace := $.Release.Namespace -}}
+  {{- $sts := (lookup "apps/v1" "StatefulSet" $stsNamespace $stsName) -}}
+  {{- if $sts }}
+    {{- range $tpl := $sts.spec.volumeClaimTemplates -}}
+    {{- with . }}
+      {{- if eq $tpl.metadata.name $pvcName -}}
+        {{- if not (and (eq $tpl.spec.resources.requests.storage $v.storage_size) (eq (index $tpl.spec.accessModes 0) $v.access_mode)) -}}
+          {{- $storageSize = $tpl.spec.resources.requests.storage -}}
+          {{- $accessMode = index $tpl.spec.accessModes 0 -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- end -}}
+  {{- end }}
+  - metadata:
+      name: {{ $pvcName }}
+    spec:
+      accessModes:
+      - {{ $accessMode }}
+      # storageClassName: "my-storage-class"
+      resources:
+        requests:
+          storage: {{ $storageSize }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

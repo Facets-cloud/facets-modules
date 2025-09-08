@@ -1,0 +1,7 @@
+{{- if and ( hasKey  .Values.advanced.common.app_chart.values  "additional_k8s_objects") (gt (len .Values.advanced.common.app_chart.values.additional_k8s_objects) 0) }}
+{{- range $key, $value := .Values.advanced.common.app_chart.values.additional_k8s_objects }}
+---
+{{- toYaml $value  -}}
+{{- end }}
+{{- end }}
+

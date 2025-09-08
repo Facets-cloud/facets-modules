@@ -1,0 +1,22 @@
+{{- if eq .Values.spec.type "statefulset" }}
+{{- if and (hasKey .Values.advanced.common.app_chart.values "enable_vpa") (eq .Values.advanced.common.app_chart.values.enable_vpa true) }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ include "app-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "app-chart.metadataLabels" . | nindent 4 }}
+  {{- if ( hasKey .Values.metadata "annotations" ) }}
+  annotations:
+    {{- include "app-chart.metadataAnnotations" . | nindent 4 }}
+  {{- end }}
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ include "app-chart.fullname" . }}
+  updatePolicy:
+    updateMode: "Off"
+{{- end }}
+{{- end }}
