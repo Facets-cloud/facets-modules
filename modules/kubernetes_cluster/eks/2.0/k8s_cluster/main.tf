@@ -11,9 +11,9 @@ data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks.cluster_id
-}
+data "aws_region" "current" {}
+
+# aws_eks_cluster_auth data source removed - not needed with exec plugin
 
 
 module "eks" {
@@ -68,54 +68,6 @@ terraform {
   }
 }
 
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
-}
+# Kubernetes provider removed - configure at consumer level with exec plugin
 
-provider "helm" {
-  kubernetes {
-    host                   = data.aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.cluster.token
-  }
-}
-
-resource "kubernetes_service_account" "admin-service-account" {
-  metadata {
-    name = "admin-service-account"
-  }
-
-  lifecycle {
-    ignore_changes = [image_pull_secret]
-  }
-}
-
-resource "kubernetes_cluster_role_binding" "admin-cluster-role-binding" {
-  metadata {
-    name = "admin-cluster-role-binding"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = kubernetes_service_account.admin-service-account.metadata[0].name
-    namespace = "default"
-  }
-}
-
-resource "kubernetes_secret_v1" "admin-service-account-token" {
-  metadata {
-    annotations = {
-      "kubernetes.io/service-account.name" = "admin-service-account"
-    }
-    name = "${kubernetes_service_account.admin-service-account.metadata[0].name}-token"
-  }
-  type = "kubernetes.io/service-account-token"
-}
+# Helm provider removed - configure at consumer level with exec plugin

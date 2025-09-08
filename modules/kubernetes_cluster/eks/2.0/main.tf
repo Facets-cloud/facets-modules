@@ -14,6 +14,5 @@ module "k8s_cluster" {
   k8s_subnets   = var.inputs.network_details.attributes.private_subnet_ids
   instance      = var.instance
   instance_name = var.instance_name
-  cluster       = var.cluster
-  cc_metadata   = var.cc_metadata
 }
+

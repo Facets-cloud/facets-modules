@@ -4,7 +4,6 @@ output "k8s_details" {
       auth = {
         host                   = module.eks.cluster_endpoint
         cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-        token                  = kubernetes_secret_v1.admin-service-account-token.data["token"]
       }
       name              = data.aws_eks_cluster.cluster.name
       version           = module.eks.cluster_version
@@ -19,11 +18,6 @@ output "k8s_details" {
       iam_role_name     = module.eks.node_iam_role_name
       security_group_id = module.eks.node_security_group_id
     }
-    admin_service_account = {
-      name                    = kubernetes_service_account.admin-service-account.metadata[0].name
-      token                   = kubernetes_secret_v1.admin-service-account-token.data["token"]
-      cluster_role_binding_id = kubernetes_cluster_role_binding.admin-cluster-role-binding.id
-    }
   }
 }
 
@@ -35,8 +29,7 @@ output "legacy_outputs" {
     k8s_details = {
       auth = {
         host                   = module.eks.cluster_endpoint
-        cluster_ca_certificate = kubernetes_secret_v1.admin-service-account-token.data["ca.crt"]
-        token                  = kubernetes_secret_v1.admin-service-account-token.data["token"]
+        cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
       }
       cluster_name             = data.aws_eks_cluster.cluster.name
       eks_auto_mode_enabled    = true
@@ -47,10 +40,9 @@ output "legacy_outputs" {
       node_group_iam_role_arn  = module.eks.node_iam_role_arn
       node_group_iam_role_name = module.eks.node_iam_role_name
       worker_nodes_secgrp      = module.eks.node_security_group_id
-      wait_for_admin_crb       = kubernetes_cluster_role_binding.admin-cluster-role-binding.id
     }
     aws_cloud = {
-      region = var.cluster.awsRegion
+      region = data.aws_region.current.name
     }
   }
 }
