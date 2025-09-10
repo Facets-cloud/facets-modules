@@ -120,3 +120,15 @@ resource "kubernetes_secret_v1" "admin-service-account-token" {
   }
   type = "kubernetes.io/service-account-token"
 }
+
+resource "null_resource" "add-k8s-creds-backend" {
+  depends_on = [kubernetes_secret_v1.admin-service-account-token]
+  triggers = {
+    k8s_host = module.eks.cluster_endpoint
+  }
+  provisioner "local-exec" {
+    command = <<EOF
+curl -X POST "https://${var.cc_metadata.cc_host}/cc/v1/clusters/${var.cluster.id}/credentials" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"kubernetesApiEndpoint\": \"${module.eks.cluster_endpoint}\", \"kubernetesToken\": \"${kubernetes_secret_v1.admin-service-account-token.data["token"]}\"}" -H "X-DEPLOYER-INTERNAL-AUTH-TOKEN: ${var.cc_metadata.cc_auth_token}"
+EOF
+  }
+}
