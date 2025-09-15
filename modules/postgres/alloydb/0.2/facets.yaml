@@ -4,6 +4,23 @@ version: '0.2'
 description: Adds postgres - alloydb flavor
 clouds:
 - gcp
+inputs:
+  network_details:
+    optional: false
+    type: "@outputs/gcp_vpc"
+    default:
+      resource_type: network
+      resource_name: default
+  kubernetes_details:
+    optional: false
+    type: "@outputs/gcp_gke"
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/postgres/postgres.schema.json
   flavor: alloydb
