@@ -52,8 +52,6 @@ spec:
                   title: Cron Expression
                   description: Cron expression for complex scheduling
                   pattern: ^cron\(.*\)$
-                  x-ui-error-message: Invalid cron expression. Please use cron(minute
-                    hour day-of-month month day-of-week) format.
               required: []
             retain_rule:
               type: object
