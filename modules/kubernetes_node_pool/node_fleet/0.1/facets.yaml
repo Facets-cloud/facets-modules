@@ -145,9 +145,9 @@ spec:
               description: Effect of the taint
               type: string
               enum:
-              - NoSchedule
-              - PreferNoSchedule
-              - NoExecute
+              - NO_SCHEDULE
+              - PREFER_NO_SCHEDULE
+              - NO_EXECUTE
           required:
           - key
           - value
@@ -182,7 +182,6 @@ iac:
   - versions.tf
 sample:
   flavor: node_fleet
-  $schema: https://facets-cloud.github.io/facets-schemas/schemas/kubernetes_node_pool/kubernetes_node_pool.schema.json
   version: '0.1'
   kind: kubernetes_node_pool
   metadata: {}
