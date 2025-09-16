@@ -144,6 +144,7 @@ spec:
 inputs:
   cloud_account:
     type: '@outputs/cloud_account'
+    optional: true
     providers:
     - google
 outputs:
