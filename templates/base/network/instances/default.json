@@ -5,7 +5,9 @@
   "ui": {
     "base_resource": true
   },
-  "spec": {},
+  "spec": {
+    "include_cluster_code": true
+  },
   "provided": false,
   "disabled": false,
   "advanced": {
