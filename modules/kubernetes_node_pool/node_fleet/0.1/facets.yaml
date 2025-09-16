@@ -17,7 +17,7 @@ spec:
         a node pool name with its configuration.
       type: object
       patternProperties:
-        ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+        ^[a-z](?:[a-z0-9-]{0,38}[a-z0-9])?$:
           title: Node Pool Configuration
           description: Configuration for a specific node pool
           type: object
@@ -110,9 +110,7 @@ spec:
           - disk_size
           - disk_type
           - type
-          x-ui-error-message: Node pool name should start with an alphabet and should
-            contain alpha numeric characters with allowed special characters like
-            underscore, period and hyphen
+          x-ui-error-message: Node pool name must be lowercase, may contain digits and '-', must start with a letter, end with a letter or digit, and be ≤ 40 characters.
     labels:
       title: Labels
       description: 'Map of labels to be added to all nodes in the fleet. Enter key-value
