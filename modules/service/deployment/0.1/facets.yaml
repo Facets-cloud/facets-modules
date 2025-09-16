@@ -192,7 +192,7 @@ spec:
                       title: Command
                       description: Command to run in the container.
                       items:
-                        type: string                     
+                        type: string
                       x-ui-command: true
                       x-ui-override-disable: true
               required:
@@ -212,7 +212,7 @@ spec:
                       title: Command
                       description: Command to run in the container.
                       items:
-                        type: string                     
+                        type: string
                       x-ui-command: true
                       x-ui-override-disable: true
               required:
@@ -224,7 +224,7 @@ spec:
           title: Command
           description: Command to run in the container
           items:
-            type: string 
+            type: string
           x-ui-command: true
           x-ui-override-disable: true
         args:
@@ -232,7 +232,7 @@ spec:
           title: Arguments
           description: Arguments to pass to the command
           items:
-            type: string         
+            type: string
           x-ui-command: true
           x-ui-override-disable: true
         health_checks:
