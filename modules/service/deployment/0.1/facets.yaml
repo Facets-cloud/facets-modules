@@ -12,6 +12,8 @@ artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
     artifact_type: "docker_image"
+controlPlaneUISettings:
+  enableKubernetesExplorer: true
 metadata:
   title: Metadata of service
   type: object
