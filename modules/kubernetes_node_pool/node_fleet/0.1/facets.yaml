@@ -41,9 +41,9 @@ spec:
               type: integer
               minimum: 0
               maximum: 100
-            is_public:
-              title: Is Public
-              description: Set this to true to deploy the node pool in public subnets
+            enable_external_ip:
+              title: Enable External IP
+              description: Set true to assign external IPs to nodes in this pool
               type: boolean
             disk_size:
               title: Disk Size
@@ -71,8 +71,8 @@ spec:
               - ondemand
               - spot
               x-ui-placeholder: e.g. 'ondemand'
-            azs:
-              title: Availability Zones
+            zones:
+              title: Zones
               description: List of zones where nodes can be created
               type: array
               items:
@@ -192,7 +192,7 @@ sample:
         max_node_count: 3
         disk_size: 100
         disk_type: pd-balanced
-        is_public: false
+        enable_external_ip: false
         type: ondemand
     taints: {}
     labels: {}
