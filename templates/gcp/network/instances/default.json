@@ -1,0 +1,20 @@
+{
+  "kind": "network",
+  "flavor": "gcp-vpc",
+  "version": "1.0",
+  "ui": {
+    "base_resource": true
+  },
+  "spec": {
+    "include_cluster_code": true
+  },
+  "provided": false,
+  "disabled": true,
+  "advanced": {
+    "inherit_from_base": true
+  },
+  "out": {
+    "attributes": {
+    }
+  }
+}

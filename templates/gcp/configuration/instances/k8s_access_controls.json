@@ -1,0 +1,9 @@
+{
+  "kind": "configuration",
+  "for": "k8s_access_controls",
+  "disabled": true,
+  "ui": {
+    "base_resource": true
+  },
+  "version": "0.1"
+}

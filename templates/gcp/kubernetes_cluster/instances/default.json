@@ -1,0 +1,15 @@
+{
+    "kind": "kubernetes_cluster",
+    "flavor": "gke",
+    "version": "1.0",
+    "ui": {
+        "base_resource": true
+    },
+    "spec": {},
+    "provided": false,
+    "disabled": true,
+    "inputs": {},
+    "advanced": {
+        "inherit_from_base": true
+    }
+  }
