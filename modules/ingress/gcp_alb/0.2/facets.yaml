@@ -40,80 +40,6 @@ spec:
       title: gRPC
       description: Whether the ingress supports gRPC
       default: false
-    use_internal_static_ip:
-      type: boolean
-      title: Use Internal Static IP
-      description: Whether to use an internal static IP for the ingress (only applicable
-        if 'Private' is true)
-      default: false
-    dns:
-      type: object
-      title: DNS Configuration
-      description: Configuration for DNS records
-      properties:
-        record_type:
-          type: string
-          title: Record Type
-          description: Type of DNS record (A, AAAA, CNAME, etc.)
-          enum:
-          - A
-          - AAAA
-        record_value:
-          type: string
-          title: DNS Record Value
-          description: Custom DNS record value (comma-separated for multiple values)
-        default: {}
-    ssl_policy:
-      type: object
-      title: SSL Policy
-      description: Custom SSL/TLS policy configuration
-      properties:
-        name:
-          type: string
-          title: SSL Policy Name
-          description: Name of the SSL policy
-          default: ssl-policy
-        tls_version:
-          type: string
-          title: Minimum TLS Version
-          description: Minimum TLS version to support
-          enum:
-          - TLS_1_0
-          - TLS_1_1
-          - TLS_1_2
-          - TLS_1_3
-          default: TLS_1_2
-      default: {}
-    existing_ssl_policy:
-      type: string
-      title: Existing SSL Policy
-      description: Reference to an existing SSL policy to use instead of creating
-        a new one
-      x-ui-placeholder: Enter the name of an existing SSL policy
-    certificate_type:
-      type: string
-      title: Certificate Type
-      description: Type of SSL certificate to use
-      enum:
-      - ''
-      - managed
-      - k8s
-      default: ''
-    enable_certificate_auto_renewal:
-      type: boolean
-      title: Enable Certificate Auto-Renewal
-      description: Enable automatic certificate renewal using cert-manager (only applies
-        when certificate_type is 'k8s')
-      default: false
-    renew_cert_before:
-      type: string
-      title: Renew Certificate Before Expiry
-      description: Time before certificate expiry to trigger renewal (e.g., "720h"
-        for 30 days)
-      default: 720h
-      pattern: ^[0-9]+(h|m|s)$
-      x-ui-placeholder: 720h
-      x-ui-error-message: Value must be a valid duration (e.g., '720h', '30d', '60m')
     domains:
       type: object
       title: Domains
@@ -144,6 +70,7 @@ spec:
     rules:
       title: Ingress Rules
       description: Objects of all ingress rules
+      x-ui-override-disable: true
       type: object
       patternProperties:
         ^[a-zA-Z0-9_.-]*$:
@@ -242,13 +169,6 @@ spec:
   - basic_auth
   - grpc
   - private
-  - use_internal_static_ip
-  - certificate_type
-  - enable_certificate_auto_renewal
-  - renew_cert_before
-  - ssl_policy
-  - existing_ssl_policy
-  - dns
   - domains
   - rules
   - force_ssl_redirection
