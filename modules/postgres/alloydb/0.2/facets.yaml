@@ -103,11 +103,12 @@ spec:
       type: array
       title: Database Names
       description: List of database names to create.
-      minLength: 1
-      maxLength: 63
-      pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+      x-ui-array-input-validation:
+        minLength: 1
+        maxLength: 63
+        pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+        error: "Database names must start with a letter and can only contain letters, numbers, and underscores"
       x-ui-override-disable: true
-      x-ui-error-message: "Database name must start with a letter and contain only letters, numbers, and underscores."
       x-ui-placeholder: "e.g., ['myapp', 'analytics']"
       default: []
     db_schemas:
