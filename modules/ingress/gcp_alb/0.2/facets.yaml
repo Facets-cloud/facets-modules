@@ -64,6 +64,96 @@ spec:
               type: string
               title: Alias
               description: Alias for the domain
+            rules:
+              title: Ingress Rules
+              description: Objects of all ingress rules
+              x-ui-override-disable: true
+              type: object
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Ingress Object
+                  description: Name of the ingress object
+                  properties:
+                    service_name:
+                      type: string
+                      title: Service Name
+                      description: Kubernetes service name
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                        method: GET
+                        params:
+                          includeContent: false
+                        labelKey: resourceName
+                        valueKey: resourceName
+                        valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                        filterConditions:
+                        - field: resourceType
+                          value: service
+                        x-ui-typeable: true
+                    port:
+                      type: string
+                      title: Port
+                      description: Service port number
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview
+                        dynamicProperties:
+                          serviceName:
+                            key: service_name
+                            lookup: regex
+                            x-ui-lookup-regex: \${[^.]+\.([^.]+).*
+                        method: GET
+                        labelKey: port
+                        valueKey: port
+                        path: ports
+                      x-ui-disable-tooltip: No Ports Found or Service not selected
+                      x-ui-typeable: true
+                    path:
+                      type: string
+                      title: Path
+                      description: Path for the ingress rule
+                      pattern: ^(/[^/]+)*(/)?$
+                      x-ui-placeholder: Enter path to which your application will be accessible
+                      x-ui-error-message: 'Value doesn''t match pattern, eg: / or /<path>
+                        etc'
+                      default: /
+                    domain_prefix:
+                      type: string
+                      title: Domain Prefix
+                      description: Subdomain prefix
+                      pattern: ^(?!-)[a-z0-9-]{1,18}(?<!-)$
+                      x-ui-placeholder: Enter the subdomain you want to expose your application
+                      x-ui-error-message: Value doesn't match pattern, max characters of 20,
+                        only hyphen special characters is accepted with numbers and alphabets
+                        and should not start or end with hyphen
+                    annotations:
+                      type: object
+                      title: Annotations (Optional)
+                      description: Add key-value pairs for configuring ingress annotations.
+                        Annotations allow you to customize the behavior of your ingress
+                      x-ui-error-message: This is not a valid yaml
+                      default: {}
+                      x-ui-yaml-editor: true
+                    namespace:
+                      type: string
+                      title: Namespace (Optional)
+                      description: Kubernetes namespace where the service is located <br />
+                        Optional, only needed if the service is in a different namespace
+                      x-ui-api-source:
+                        endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                        method: GET
+                        params:
+                          includeContent: false
+                        labelKey: resourceName
+                        valueKey: resourceName
+                        valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                        filterConditions:
+                        - field: resourceType
+                          value: service
+                  required:
+                  - service_name
+                  - path
+                  - port
           required:
           - domain
           - alias
