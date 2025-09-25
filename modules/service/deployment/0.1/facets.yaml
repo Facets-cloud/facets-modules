@@ -844,10 +844,6 @@ spec:
                   required:
                   - name
                   - mount_path
-      required:
-      - ports
-      - size
-      - health_checks
       x-ui-order:
       - ports
       - metrics
