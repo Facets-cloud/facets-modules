@@ -34,6 +34,10 @@ spec:
               type: integer
               minimum: 0
               maximum: 100
+              x-ui-compare:
+                field: spec.node_pools.default.max_node_count
+                comparator: <=
+                x-ui-error-message: Min cannot be greater than max
             max_node_count:
               title: Max Node Count
               description: Maximum number of nodes which should exist within this
@@ -41,6 +45,10 @@ spec:
               type: integer
               minimum: 0
               maximum: 100
+              x-ui-compare:
+                field: spec.node_pools.default.min_node_count
+                comparator: '>='
+                x-ui-error-message: Max cannot be less than min
             enable_external_ip:
               title: Enable External IP
               description: Set true to assign external IPs to nodes in this pool
