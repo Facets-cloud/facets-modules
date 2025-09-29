@@ -56,6 +56,14 @@ variable "environment" {
   })
 }
 
+variable "cloud_account" {
+  description = "GCP cloud account for project ID (optional - will use default provider project if not provided)"
+  type = object({
+    project = string
+  })
+  default = null
+}
+
 # Note: This is a placeholder variable to satisfy validation requirements
 # This module no longer uses inputs but the validation system expects it
 variable "inputs" {

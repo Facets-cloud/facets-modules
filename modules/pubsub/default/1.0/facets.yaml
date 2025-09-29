@@ -30,6 +30,33 @@ spec:
       title: Message Retention Duration
       description: How long to retain messages (e.g., '604800s' for 7 days)
       default: 604800s
+    schema:
+      type: object
+      title: Topic Schema (optional)
+      description: Message schema configuration to validate published messages
+      x-ui-toggle: true
+      properties:
+        name:
+          type: string
+          title: Schema Name
+          description: Logical name for the schema (will be suffixed with environment code)
+        type:
+          type: string
+          title: Schema Type
+          enum:
+          - AVRO
+          - PROTOCOL_BUFFER
+        definition:
+          type: string
+          title: Schema Definition
+          description: The schema contents (AVRO JSON or Proto descriptor)
+          x-ui-yaml-editor: true
+        encoding:
+          type: string
+          title: Message Encoding
+          enum:
+          - JSON
+          - BINARY
     pull_subscriptions:
       type: object
       title: Pull Subscriptions
@@ -41,7 +68,7 @@ spec:
           title: Pull Subscription Configuration
           properties:
             ack_deadline_seconds:
-              type: number
+              type: integer
               title: Acknowledgment Deadline (seconds)
               description: Time before Pub/Sub attempts redelivery
               default: 20
@@ -63,13 +90,19 @@ spec:
               title: Push Endpoint
               description: The URL where messages will be pushed
             ack_deadline_seconds:
-              type: number
+              type: integer
               title: Acknowledgment Deadline (seconds)
               description: Time before Pub/Sub attempts redelivery
               default: 20
               minimum: 10
               maximum: 600
   required: []
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    optional: true
+    displayName: GCP Cloud Account
+    description: GCP cloud account for project ID (optional - will use default provider project if not provided)
 outputs:
   default:
     type: '@outputs/misc'
