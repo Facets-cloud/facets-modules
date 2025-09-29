@@ -151,8 +151,6 @@ spec:
                         description:
                           title: Description
                           type: string
-                      required:
-                      - expression
                   required:
                   - role
                   type: object

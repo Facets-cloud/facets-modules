@@ -1,0 +1,206 @@
+intent: kubernetes_node_pool
+flavor: node_fleet
+version: '0.1'
+description: Creates and manages multiple Kubernetes node pools as a fleet for GKE
+  clusters
+clouds:
+- gcp
+spec:
+  title: Kubernetes Node Fleet
+  description: Specification of multiple kubernetes node pools for node_fleet_test
+    flavor
+  type: object
+  properties:
+    node_pools:
+      title: Node Pools Configuration
+      description: Map of node pool names to their configurations. Each key represents
+        a node pool name with its configuration.
+      type: object
+      patternProperties:
+        ^[a-z](?:[a-z0-9-]{0,38}[a-z0-9])?$:
+          title: Node Pool Configuration
+          description: Configuration for a specific node pool
+          type: object
+          properties:
+            instance_type:
+              title: Instance Type
+              description: Instance type for nodes in this node pool
+              type: string
+              x-ui-placeholder: e.g. 'e2-standard-2'
+            min_node_count:
+              title: Min Node Count
+              description: Minimum number of nodes which should exist within this
+                node pool
+              type: integer
+              minimum: 0
+              maximum: 100
+              x-ui-compare:
+                field: spec.node_pools.default.max_node_count
+                comparator: <=
+                x-ui-error-message: Min cannot be greater than max
+            max_node_count:
+              title: Max Node Count
+              description: Maximum number of nodes which should exist within this
+                node pool
+              type: integer
+              minimum: 0
+              maximum: 100
+              x-ui-compare:
+                field: spec.node_pools.default.min_node_count
+                comparator: '>='
+                x-ui-error-message: Max cannot be less than min
+            enable_external_ip:
+              title: Enable External IP
+              description: Set true to assign external IPs to nodes in this pool
+              type: boolean
+            disk_size:
+              title: Disk Size
+              description: Size of the Disk in GiB for node in this node pool
+              type: integer
+              minimum: 50
+              maximum: 1000
+            disk_type:
+              title: Disk Type
+              description: Type of disk for the nodes
+              type: string
+              enum:
+              - pd-standard
+              - pd-balanced
+              - pd-ssd
+              - pd-extreme
+              - hyperdisk-balanced
+              - hyperdisk-extreme
+              x-ui-placeholder: e.g. 'pd-balanced'
+            type:
+              title: Node Type
+              description: Type of nodes to provision (ondemand or spot)
+              type: string
+              enum:
+              - ondemand
+              - spot
+              x-ui-placeholder: e.g. 'ondemand'
+            zones:
+              title: Zones
+              description: List of zones where nodes can be created
+              type: array
+              items:
+                type: string
+              x-ui-overrides-only: true
+            iam:
+              title: IAM
+              description: IAM specification for node pool
+              type: object
+              properties:
+                roles:
+                  title: IAM Roles
+                  description: IAM roles to be assigned to node pool service account
+                  type: object
+                  patternProperties:
+                    ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+                      title: Key Name For Role
+                      description: Key name for role
+                      type: object
+                      properties:
+                        role:
+                          title: Role
+                          description: Role to be added to the node pool service account
+                          type: string
+                          x-ui-placeholder: e.g. roles/container.defaultNodeServiceAccount
+                      required:
+                      - role
+                      x-ui-error-message: Key name should start with an alphabet and
+                        should contain alpha numeric characters with allowed special
+                        characters like underscore, period and hyphen
+          required:
+          - instance_type
+          - min_node_count
+          - max_node_count
+          - disk_size
+          - disk_type
+          - type
+          x-ui-error-message: Node pool name must be lowercase, may contain digits and '-', must start with a letter, end with a letter or digit, and be ≤ 40 characters.
+    labels:
+      title: Labels
+      description: 'Map of labels to be added to all nodes in the fleet. Enter key-value
+        pair for labels in YAML format. Eg. key: value (provide a space after '':''
+        as expected in the YAML format)'
+      type: object
+      default: {}
+      x-ui-yaml-editor: true
+      x-ui-placeholder: 'Eg. key1: value1'
+    taints:
+      title: Taints
+      description: Map of taint configurations for all nodes in the fleet
+      type: object
+      patternProperties:
+        ^[a-zA-Z][a-zA-Z0-9_.-]*$:
+          title: Taint Configuration
+          description: Individual taint configuration
+          type: object
+          properties:
+            key:
+              type: string
+              title: Taint Key
+              description: The key of the taint
+            value:
+              type: string
+              title: Taint Value
+              description: The value of the taint
+            effect:
+              title: Taint Effect
+              description: Effect of the taint
+              type: string
+              enum:
+              - NO_SCHEDULE
+              - PREFER_NO_SCHEDULE
+              - NO_EXECUTE
+          required:
+          - key
+          - value
+          - effect
+      x-ui-overrides-only: true
+  required:
+  - node_pools
+inputs:
+  kubernetes_details:
+    type: '@outputs/kubernetes'
+    optional: false
+    displayName: Kubernetes Cluster
+    description: The target Kubernetes cluster for node pool deployment
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+  network_details:
+    type: '@outputs/gcp_vpc'
+    optional: false
+    displayName: GCP VPC Network
+    description: The VPC network where nodes will be deployed
+outputs:
+  default:
+    type: '@outputs/kubernetes_node_pool'
+    title: Kubernetes Node Fleet
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - locals.tf
+  - versions.tf
+sample:
+  flavor: node_fleet
+  version: '0.1'
+  kind: kubernetes_node_pool
+  metadata: {}
+  disabled: true
+  spec:
+    node_pools:
+      default:
+        instance_type: e2-medium
+        min_node_count: 1
+        max_node_count: 3
+        disk_size: 100
+        disk_type: pd-balanced
+        enable_external_ip: false
+        type: ondemand
+    taints: {}
+    labels: {}
