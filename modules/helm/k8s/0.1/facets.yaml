@@ -7,6 +7,8 @@ clouds:
   - azure
   - gcp
   - kubernetes
+controlPlaneUISettings:
+  enableKubernetesExplorer: true
 spec:
   title: Helm
   description: Specification of the Helm chart intent
