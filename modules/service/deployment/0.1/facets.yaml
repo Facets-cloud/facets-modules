@@ -20,6 +20,8 @@ metadata:
       type: string
       title: Namespace
       description: Namespace in which deployment should be deployed
+controlPlaneUISettings:
+  enableKubernetesExplorer: true
 spec:
   title: K8s flavor of service
   type: object
