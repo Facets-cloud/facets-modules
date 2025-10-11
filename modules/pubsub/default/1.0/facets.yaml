@@ -1,5 +1,5 @@
 intent: pubsub
-flavor: default
+flavor: test
 version: '1.0'
 clouds:
 - gcp
@@ -39,7 +39,8 @@ spec:
         name:
           type: string
           title: Schema Name
-          description: Logical name for the schema (will be suffixed with environment code)
+          description: Logical name for the schema (will be suffixed with environment
+            code)
         type:
           type: string
           title: Schema Type
@@ -102,14 +103,15 @@ inputs:
     type: '@outputs/cloud_account'
     optional: true
     displayName: GCP Cloud Account
-    description: GCP cloud account for project ID (optional - will use default provider project if not provided)
+    description: GCP cloud account for project ID (optional - will use default provider
+      project if not provided)
 outputs:
   default:
     type: '@outputs/misc'
     title: Pub/Sub Topic
 sample:
   kind: pubsub
-  flavor: default
+  flavor: test
   version: '1.0'
   disabled: false
   spec:
