@@ -1,0 +1,130 @@
+intent: openbao
+flavor: default
+version: '1.0'
+clouds:
+- azure
+description: Deploys OpenBao with static seal auto-unseal for Kubernetes
+metadata:
+  title: Metadata of service
+  type: object
+  properties:
+    namespace:
+      type: string
+      title: Kubernetes Namespace
+      description: Kubernetes namespace to deploy OpenBao (will be created if it doesn't
+        exist)
+      default: default
+      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+spec:
+  title: Auto-Unsealing OpenBao Cluster
+  description: Deploys OpenBao with static seal auto-unseal - pods auto-unseal on
+    restart
+  type: object
+  properties:
+    release_name:
+      type: string
+      title: Helm Release Name
+      description: Helm release name for the OpenBao deployment
+      default: openbao
+      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+    chart_version:
+      type: string
+      title: Helm Chart Version
+      description: Version of the OpenBao Helm chart to deploy
+      default: 0.18.4
+    server_replicas:
+      type: integer
+      title: Server Replicas
+      description: Number of OpenBao server replicas
+      default: 1
+      minimum: 1
+      maximum: 10
+    server_resources:
+      type: object
+      title: Server Resources
+      description: CPU and memory resource requests/limits for OpenBao servers
+      properties:
+        requests:
+          type: object
+          properties:
+            cpu:
+              type: string
+              default: 500m
+            memory:
+              type: string
+              default: 256Mi
+        limits:
+          type: object
+          properties:
+            cpu:
+              type: string
+              default: 1000m
+            memory:
+              type: string
+              default: 512Mi
+    ui_enabled:
+      type: boolean
+      title: Enable UI
+      description: Whether to enable OpenBao web UI
+      default: true
+    storage_type:
+      type: string
+      title: Storage Backend
+      description: Storage backend for OpenBao (raft for HA, file for standalone)
+      default: raft
+      enum:
+      - file
+      - raft
+    storage_size:
+      type: string
+      title: PVC Storage Size
+      description: Size of persistent volume for each OpenBao server
+      default: 10Gi
+    pvc_labels:
+      type: object
+      title: PVC Labels
+      description: Additional labels to apply to PersistentVolumeClaims
+      default: {}
+    openbao:
+      type: object
+      title: Advanced OpenBao Configuration
+      description: Advanced configuration options for OpenBao Helm chart
+      properties:
+        values:
+          type: object
+          title: Custom Helm Values
+          description: Additional Helm values to merge with constructed values
+          default: {}
+          x-ui-editor: true
+  required:
+  - namespace
+  - release_name
+  - storage_type
+inputs:
+  kubernetes_cluster:
+    type: '@outputs/kubernetes'
+    optional: false
+    displayName: Kubernetes Cluster
+    description: Kubernetes cluster to deploy OpenBao
+    providers:
+    - helm
+    - kubernetes
+outputs:
+  default:
+    type: '@outputs/openbao_cluster'
+    title: OpenBao Cluster
+    description: OpenBao cluster connection information
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - outputs.tf
+sample:
+  kind: openbao
+  flavor: default
+  version: '1.0'
+  disabled: true
+  spec:
+    namespace: default
+    release_name: openbao
+    storage_type: raft
