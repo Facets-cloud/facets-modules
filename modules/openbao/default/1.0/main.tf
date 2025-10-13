@@ -62,8 +62,8 @@ locals {
       path = "/openbao/data"
     }
 
-    cluster_addr = "http://POD_IP:8201"
-    api_addr = "http://POD_IP:8200"
+    cluster_addr = "http://$(POD_IP):8201"
+    api_addr = "http://$(POD_IP):8200"
 
     log_level = "info"
     EOF
@@ -229,7 +229,7 @@ module "openbao_pvc" {
   volume_size       = lookup(local.spec, "storage_size", "10Gi")
   access_modes      = ["ReadWriteOnce"]
   kind              = "openbao"
-  additional_labels = lookup(local.spec, "pvc_lables", {})
+  additional_labels = lookup(local.spec, "pvc_labels", {})
 }
 
 # Deploy OpenBao using Helm
@@ -480,6 +480,10 @@ resource "kubernetes_job_v1" "openbao_init" {
                 token_reviewer_jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token
             "
 
+            # Enable KV v2 secrets engine at 'secret/' path
+            echo "Enabling KV v2 secrets engine at secret/ path..."
+            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao secrets enable -path=secret -version=2 kv || echo "KV v2 secrets engine already enabled at secret/"
+
             # Create read-write policy for control-plane-service-sa
             echo "Creating read-write policy for control-plane-service-sa..."
             kubectl exec -n ${local.namespace} $POD_NAME -- sh -c "
@@ -564,10 +568,10 @@ POLICY
     backoff_limit = 3
   }
 
-  wait_for_completion = false
+  wait_for_completion = true
 
   timeouts {
-    create = "10m"
+    create = "15m"
   }
 
   depends_on = [

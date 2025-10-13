@@ -111,7 +111,7 @@ inputs:
     - kubernetes
 outputs:
   default:
-    type: '@outputs/openbao_cluster'
+    type: '@outputs/openbao'
     title: OpenBao Cluster
     description: OpenBao cluster connection information
 iac:
