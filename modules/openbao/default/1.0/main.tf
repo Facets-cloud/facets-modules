@@ -401,12 +401,7 @@ resource "kubernetes_job_v1" "openbao_init" {
                 --dry-run=client -o yaml | kubectl apply -f -
 
               echo "Recovery keys and root token stored in secret '${local.release_name}-init-keys'"
-              echo ""
-              echo "=== IMPORTANT: Save these credentials securely ==="
-              echo "Root Token: $ROOT_TOKEN"
-              echo "Recovery Keys: $RECOVERY_KEYS"
-              echo "=================================================="
-              echo ""
+              
               echo "OpenBao is now initialized and auto-unsealed via static seal!"
             fi
 
