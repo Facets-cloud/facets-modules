@@ -470,14 +470,39 @@ resource "kubernetes_job_v1" "openbao_init" {
             echo "Enabling Kubernetes auth method..."
             kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao auth enable kubernetes || echo "Kubernetes auth already enabled"
 
-            # Configure Kubernetes auth backend
+            # Detect Kubernetes issuer from JWT token
+            echo "Detecting Kubernetes issuer from JWT token..."
+            TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+            PAYLOAD=$(echo "$TOKEN" | cut -d. -f2)
+
+            # Add padding for base64 decoding if needed
+            MOD=$(($(echo -n "$PAYLOAD" | wc -c) % 4))
+            if [ $MOD -eq 2 ]; then
+              PAYLOAD="$${PAYLOAD}=="
+            elif [ $MOD -eq 3 ]; then
+              PAYLOAD="$${PAYLOAD}="
+            fi
+
+            # Extract issuer from JWT payload
+            ISSUER=$(echo "$PAYLOAD" | base64 -d 2>/dev/null | grep -o '"iss":"[^"]*"' | cut -d'"' -f4)
+
+            if [ -z "$ISSUER" ]; then
+              echo "Warning: Could not detect issuer from JWT token, using default configuration"
+              ISSUER_PARAM=""
+            else
+              echo "Detected issuer: $ISSUER"
+              ISSUER_PARAM="issuer='$ISSUER'"
+            fi
+
+            # Configure Kubernetes auth backend with auto-detected issuer
             echo "Configuring Kubernetes auth backend..."
             kubectl exec -n ${local.namespace} $POD_NAME -- sh -c "
               export BAO_TOKEN='$ROOT_TOKEN'
               bao write auth/kubernetes/config \
                 kubernetes_host='https://kubernetes.default.svc:443' \
                 kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
-                token_reviewer_jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token
+                token_reviewer_jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token \
+                $ISSUER_PARAM
             "
 
             # Enable KV v2 secrets engine at 'secret/' path
