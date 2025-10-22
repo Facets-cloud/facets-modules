@@ -1,0 +1,30 @@
+{
+  "flavor": "gke_custom_node_pool",
+  "metadata": {},
+  "kind": "kubernetes_node_pool",
+  "inputs": {
+    "kubernetes_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_cluster"
+    },
+    "cloud_account": {
+      "resource_name": "default",
+      "resource_type": "cloud_account"
+    },
+    "network_details": {
+      "resource_name": "default",
+      "resource_type": "network"
+    }
+  },
+  "disabled": false,
+  "version": "1.0",
+  "spec": {
+    "instance_type": "n2d-standard-2",
+    "min_node_count": 1,
+    "max_node_count": 10,
+    "disk_size": 100,
+    "taints": [],
+    "labels": {},
+    "is_public": false
+  }
+}

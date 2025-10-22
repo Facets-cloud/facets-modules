@@ -1,0 +1,7 @@
+{
+  "flavor": "gcp_provider",
+  "kind": "cloud_account",
+  "disabled": true,
+  "version": "1.0",
+  "spec": {}
+}

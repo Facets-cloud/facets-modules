@@ -1,0 +1,50 @@
+{
+  "flavor": "standard",
+  "metadata": {},
+  "kind": "vpa",
+  "inputs": {
+    "kubernetes_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_cluster"
+    },
+    "prometheus_details": {
+      "resource_name": "default",
+      "resource_type": "prometheus"
+    },
+    "kubernetes_node_pool_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_node_pool"
+    }
+  },
+  "disabled": false,
+  "version": "0.1",
+  "spec": {
+    "version": "2.5.1",
+    "namespace": "vpa-system",
+    "create_namespace": true,
+    "deployment": {
+      "cleanup_on_fail": true,
+      "wait": false,
+      "atomic": false,
+      "timeout": 600,
+      "recreate_pods": false
+    },
+    "recommender": {
+      "enabled": true,
+      "storage": "prometheus",
+      "size": {
+        "cpu": "500m",
+        "memory": "500Mi",
+        "cpu_limits": "1500m",
+        "memory_limits": "1500Mi"
+      }
+    },
+    "updater": {
+      "enabled": false
+    },
+    "admission_controller": {
+      "enabled": false
+    }
+  },
+  "uiProps": {}
+}

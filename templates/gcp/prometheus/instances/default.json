@@ -1,0 +1,104 @@
+{
+  "flavor": "k8s-custom",
+  "metadata": {
+    "namespace": "default"
+  },
+  "kind": "prometheus",
+  "inputs": {
+    "kubernetes_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_cluster"
+    },
+    "kubernetes_node_pool_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_node_pool"
+    }
+  },
+  "disabled": false,
+  "version": "0.1",
+  "spec": {
+    "enable_crds": true,
+    "node_selector": {},
+    "tolerations": [],
+    "values": {},
+    "operator": {
+      "enabled": true,
+      "size": {
+        "resources": {
+          "requests": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          },
+          "limits": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    },
+    "prometheus": {
+      "enabled": true,
+      "retention": "100d",
+      "size": {
+        "volume": "100Gi",
+        "resources": {
+          "requests": {
+            "cpu": "1000m",
+            "memory": "4Gi"
+          },
+          "limits": {
+            "cpu": "1000m",
+            "memory": "4Gi"
+          }
+        }
+      }
+    },
+    "grafana": {
+      "enabled": true,
+      "size": {
+        "resources": {
+          "requests": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          },
+          "limits": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    },
+    "alertmanager": {
+      "enabled": true,
+      "size": {
+        "volume": "10Gi",
+        "resources": {
+          "requests": {
+            "cpu": "1000m",
+            "memory": "2Gi"
+          },
+          "limits": {
+            "cpu": "1000m",
+            "memory": "2Gi"
+          }
+        }
+      }
+    },
+    "kube-state-metrics": {
+      "enabled": true,
+      "collectors": [],
+      "size": {
+        "resources": {
+          "requests": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          },
+          "limits": {
+            "cpu": "200m",
+            "memory": "512Mi"
+          }
+        }
+      }
+    }
+  }
+}

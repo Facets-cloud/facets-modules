@@ -1,0 +1,25 @@
+{
+  "flavor": "standard",
+  "metadata": {},
+  "kind": "cert_manager",
+  "inputs": {
+    "kubernetes_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_cluster"
+    },
+    "prometheus_details": {
+      "resource_name": "default",
+      "resource_type": "prometheus"
+    },
+    "kubernetes_node_pool_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_node_pool"
+    }
+  },
+  "disabled": false,
+  "version": "0.1",
+  "spec": {
+    "cname_strategy": "Follow",
+    "cert_manager": {}
+  }
+}

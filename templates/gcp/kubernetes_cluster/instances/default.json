@@ -1,15 +1,30 @@
 {
-    "kind": "kubernetes_cluster",
-    "flavor": "gke",
-    "version": "1.0",
-    "ui": {
-        "base_resource": true
+  "flavor": "gke",
+  "ui": {
+    "base_resource": true
+  },
+  "advanced": {
+    "inherit_from_base": true
+  },
+  "kind": "kubernetes_cluster",
+  "inputs": {
+    "cloud_account": {
+      "resource_name": "default",
+      "resource_type": "cloud_account"
     },
-    "spec": {},
-    "provided": false,
-    "disabled": true,
-    "inputs": {},
-    "advanced": {
-        "inherit_from_base": true
+    "network_details": {
+      "resource_name": "default",
+      "resource_type": "network"
     }
-  }
+  },
+  "provided": false,
+  "disabled": false,
+  "version": "1.0",
+  "spec": {
+    "auto_upgrade": true,
+    "whitelisted_cidrs": [
+      "0.0.0.0/0"
+    ]
+  },
+  "uiProps": {}
+}

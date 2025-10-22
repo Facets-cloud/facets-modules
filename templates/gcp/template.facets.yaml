@@ -1,0 +1,9 @@
+name: gcp
+clouds:
+  - gcp
+  - kubernetes
+version: 0.1
+type: MULTI_INSTANCE
+group: Capabilities
+displayName: GCP Project Template
+description: Template to create GCP Projects with predefined configurations.

@@ -13,6 +13,12 @@
   "advanced": {
     "inherit_from_base": true
   },
+  "inputs": {
+    "cloud_account": {
+      "resource_name": "default",
+      "resource_type": "cloud_account"
+    }
+  },
   "out": {
     "attributes": {
     }

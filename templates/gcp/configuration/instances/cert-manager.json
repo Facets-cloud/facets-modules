@@ -1,9 +1,0 @@
-{
-	"kind": "configuration",
-	"for": "cert_manager",
-	"spec":{},
-	"ui": {
-		"base_resource": true
-	},
-	"disabled": true
-}

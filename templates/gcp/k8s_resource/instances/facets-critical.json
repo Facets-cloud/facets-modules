@@ -1,0 +1,28 @@
+{
+  "flavor": "k8s-custom",
+  "metadata": {
+    "name": "facets-critical"
+  },
+  "kind": "k8s_resource",
+  "inputs": {
+    "kubernetes_details": {
+      "resource_name": "default",
+      "resource_type": "kubernetes_cluster"
+    }
+  },
+  "disabled": false,
+  "version": "0.3",
+  "spec": {
+    "additional_resources": {},
+    "resource": {
+      "apiVersion": "scheduling.k8s.io/v1",
+      "kind": "PriorityClass",
+      "metadata": {
+        "name": "facets-critical"
+      },
+      "value": 1000000000,
+      "globalDefault": false,
+      "description": "Critical priority for Facets system components"
+    }
+  }
+}
