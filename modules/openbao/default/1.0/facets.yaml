@@ -43,24 +43,45 @@ spec:
       type: object
       title: Server Resources
       description: CPU and memory resource requests/limits for OpenBao servers
+      default:
+        requests:
+          cpu: 500m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 512Mi
       properties:
         requests:
           type: object
+          title: Resource Requests
+          description: Minimum resources required
+          default:
+            cpu: 500m
+            memory: 256Mi
           properties:
             cpu:
               type: string
+              title: CPU Request
               default: 500m
             memory:
               type: string
+              title: Memory Request
               default: 256Mi
         limits:
           type: object
+          title: Resource Limits
+          description: Maximum resources allowed
+          default:
+            cpu: 1000m
+            memory: 512Mi
           properties:
             cpu:
               type: string
+              title: CPU Limit
               default: 1000m
             memory:
               type: string
+              title: Memory Limit
               default: 512Mi
     ui_enabled:
       type: boolean
@@ -85,11 +106,44 @@ spec:
       title: PVC Labels
       description: Additional labels to apply to PersistentVolumeClaims
       default: {}
+    unseal_secret_name:
+      type: string
+      title: Unseal Secret Name
+      description: Name of the Kubernetes secret storing the unseal key (defaults
+        to instance name + '-unseal-key' for uniqueness)
+      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
     openbao:
       type: object
       title: Advanced OpenBao Configuration
       description: Advanced configuration options for OpenBao Helm chart
       properties:
+        policies:
+          type: object
+          title: OpenBao Policies
+          description: Define custom policies, roles, and service account bindings
+            for OpenBao
+          default: {}
+          patternProperties:
+            .*:
+              type: object
+              properties:
+                service_account_name:
+                  type: string
+                  title: Service Account Name
+                  description: Kubernetes service account name to bind to this policy
+                role_name:
+                  type: string
+                  title: Role Name
+                  description: OpenBao Kubernetes auth role name
+                policy:
+                  type: string
+                  title: Policy HCL
+                  description: OpenBao policy in HCL format
+                  x-ui-editor: true
+              required:
+              - service_account_name
+              - role_name
+              - policy
         values:
           type: object
           title: Custom Helm Values
@@ -128,3 +182,22 @@ sample:
     namespace: default
     release_name: openbao
     storage_type: raft
+    openbao:
+      policies:
+        control-plane-rw:
+          service_account_name: control-plane-service-sa
+          role_name: control-plane-role
+          policy: "# Full read-write access to all secrets\npath \"cp-secrets/*\"\
+            \ {\n  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"\
+            list\"]\n}\n\npath \"cp-secrets/data/*\" {\n  capabilities = [\"create\"\
+            , \"read\", \"update\", \"delete\", \"list\"]\n}\n\npath \"cp-secrets/metadata/*\"\
+            \ {\n  capabilities = [\"list\", \"read\", \"delete\"]\n}\n\n# System\
+            \ health check\npath \"sys/health\" {\n  capabilities = [\"read\"]\n}\n"
+        facets-release-readonly:
+          service_account_name: facets-release-pod
+          role_name: facets-release-role
+          policy: "# Read-only access to all secrets\npath \"cp-secrets/*\" {\n  capabilities\
+            \ = [\"read\", \"list\"]\n}\n\npath \"cp-secrets/data/*\" {\n  capabilities\
+            \ = [\"read\", \"list\"]\n}\n\npath \"cp-secrets/metadata/*\" {\n  capabilities\
+            \ = [\"read\", \"list\"]\n}\n\n# System health check\npath \"sys/health\"\
+            \ {\n  capabilities = [\"read\"]\n}\n"

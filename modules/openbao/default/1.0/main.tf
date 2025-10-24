@@ -28,8 +28,8 @@ locals {
   chart_name    = "openbao"
   chart_version = lookup(local.spec, "chart_version", "0.18.4")
 
-  # Generate unique resource names
-  unseal_secret_name = "${local.release_name}-unseal-key"
+  # Generate unique resource names - use instance_name to ensure uniqueness across multiple instances
+  unseal_secret_name = lookup(local.spec, "unseal_secret_name", "${var.instance_name}-unseal-key")
 
   # Common labels
   labels = merge(var.environment.cloud_tags, {
@@ -183,11 +183,12 @@ locals {
       }])
     }
   }
-  user_defined_helm_values = lookup(local.openbao, "values", {})
+  # Handle values field - can be either YAML string or object
+  user_defined_helm_values_raw = lookup(local.openbao, "values", {})
+  user_defined_helm_values     = try(yamldecode(local.user_defined_helm_values_raw), local.user_defined_helm_values_raw)
 
-  # Hardcoded service account names for OpenBao policies
-  control_plane_sa_name  = "control-plane-service-sa"
-  facets_release_sa_name = "facets-release-pod"
+  # Get configurable policies from spec
+  policies = lookup(local.openbao, "policies", {})
 }
 
 # Generate a random 32-byte key for static seal
@@ -505,80 +506,35 @@ resource "kubernetes_job_v1" "openbao_init" {
                 $ISSUER_PARAM
             "
 
-            # Enable KV v2 secrets engine at 'secret/' path
-            echo "Enabling KV v2 secrets engine at secret/ path..."
-            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao secrets enable -path=secret -version=2 kv || echo "KV v2 secrets engine already enabled at secret/"
+            # Enable KV v2 secrets engine at 'cp-secrets/' path
+            echo "Enabling KV v2 secrets engine at cp-secrets/ path..."
+            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao secrets enable -path=cp-secrets -version=2 kv || echo "KV v2 secrets engine already enabled at cp-secrets/"
 
-            # Create read-write policy for control-plane-service-sa
-            echo "Creating read-write policy for control-plane-service-sa..."
-            kubectl exec -n ${local.namespace} $POD_NAME -- sh -c "
-              export BAO_TOKEN='$ROOT_TOKEN'
-              bao policy write control-plane-rw - <<'POLICY'
-# Full read-write access to all secrets
-path \"secret/*\" {
-  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]
-}
+            # Create dynamic policies and roles
+            echo ""
+            echo "=== Creating Custom Policies and Roles ==="
+            %{for policy_key, policy_config in local.policies~}
 
-path \"secret/data/*\" {
-  capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]
-}
+            # Create policy: ${policy_key}
+            echo "Creating policy '${policy_key}' for service account '${policy_config.service_account_name}'..."
+            cat <<'POLICY_EOF' | kubectl exec -i -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao policy write ${policy_key} -
+${policy_config.policy}
 
-path \"secret/metadata/*\" {
-  capabilities = [\"list\", \"read\", \"delete\"]
-}
+POLICY_EOF
 
-# System health check
-path \"sys/health\" {
-  capabilities = [\"read\"]
-}
-POLICY
-            "
-
-            # Create read-only policy for facets-release-pod
-            echo "Creating read-only policy for facets-release-pod..."
-            kubectl exec -n ${local.namespace} $POD_NAME -- sh -c "
-              export BAO_TOKEN='$ROOT_TOKEN'
-              bao policy write facets-release-readonly - <<'POLICY'
-# Read-only access to all secrets
-path \"secret/*\" {
-  capabilities = [\"read\", \"list\"]
-}
-
-path \"secret/data/*\" {
-  capabilities = [\"read\", \"list\"]
-}
-
-path \"secret/metadata/*\" {
-  capabilities = [\"read\", \"list\"]
-}
-
-# System health check
-path \"sys/health\" {
-  capabilities = [\"read\"]
-}
-POLICY
-            "
-
-            # Create auth role for control-plane-service-sa
-            echo "Creating auth role for control-plane-service-sa..."
-            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao write auth/kubernetes/role/control-plane-role \
-              bound_service_account_names=${local.control_plane_sa_name} \
+            # Create auth role: ${policy_config.role_name}
+            echo "Creating auth role '${policy_config.role_name}'..."
+            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao write auth/kubernetes/role/${policy_config.role_name} \
+              bound_service_account_names=${policy_config.service_account_name} \
               bound_service_account_namespaces='*' \
-              policies=control-plane-rw \
+              policies=${policy_key} \
               ttl=72h
 
-            # Create auth role for facets-release-pod
-            echo "Creating auth role for facets-release-pod..."
-            kubectl exec -n ${local.namespace} $POD_NAME -- env BAO_TOKEN="$ROOT_TOKEN" bao write auth/kubernetes/role/facets-release-role \
-              bound_service_account_names=${local.facets_release_sa_name} \
-              bound_service_account_namespaces='*' \
-              policies=facets-release-readonly \
-              ttl=72h
-
+            %{endfor~}
             echo ""
             echo "OpenBao configuration complete!"
-            echo "- Policies created: control-plane-rw, facets-release-readonly"
-            echo "- Auth roles created: control-plane-role, facets-release-role"
+            echo "- Policies created: ${join(", ", keys(local.policies))}"
+            echo "- Roles created: ${join(", ", [for p in local.policies : p.role_name])}"
           EOF
           ]
 

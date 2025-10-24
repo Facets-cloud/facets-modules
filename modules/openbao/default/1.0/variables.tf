@@ -28,14 +28,18 @@ variable "instance" {
           memory = optional(string, "512Mi")
         }), {})
       }), {})
-      ui_enabled             = optional(bool, true)
-      storage_type           = optional(string, "raft")
-      storage_size           = optional(string, "10Gi")
-      pvc_labels             = optional(map(string), {})
-      controlplane_sa_name   = optional(string, "control-plane-service-sa")
-      facets_release_sa_name = optional(string, "facets-release-pod")
+      ui_enabled         = optional(bool, true)
+      storage_type       = optional(string, "raft")
+      storage_size       = optional(string, "10Gi")
+      pvc_labels         = optional(map(string), {})
+      unseal_secret_name = optional(string)
       openbao = optional(object({
-        values = optional(map(any), {})
+        policies = optional(map(object({
+          service_account_name = string
+          role_name            = string
+          policy               = string
+        })), {})
+        values = optional(any, {})
       }), {})
     })
   })
