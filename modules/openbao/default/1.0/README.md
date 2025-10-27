@@ -1,75 +1,103 @@
-# Auto-Unsealing OpenBao Cluster
+# OpenBao Cluster with Static Seal Auto-Unseal
 
-This Facets module deploys OpenBao with automatic initialization and unsealing capabilities using configurable key shares and threshold. The module uses Helm to deploy OpenBao and implements auto-unseal functionality through Terraform null resources that execute API calls against the OpenBao cluster.
+This Facets module deploys OpenBao with automatic unsealing using a static seal mechanism. The module uses Helm to deploy OpenBao and a Kubernetes Job to handle initialization, Raft cluster setup, and policy configuration.
 
 ## Features
 
-- **Helm-based Deployment**: Uses the official Vault Helm chart (compatible with OpenBao)
-- **Automatic Initialization**: Initializes OpenBao with configurable key shares and threshold
-- **Auto-Unseal**: Automatically unseals OpenBao using stored unseal keys
-- **Secure Key Storage**: Stores unseal keys and root token in Kubernetes secrets
-- **Flexible Storage Backends**: Supports file, Raft, and Azure storage backends
-- **High Availability**: Configurable replicas with Raft consensus
-- **TLS Support**: Optional TLS configuration with multiple certificate sources
-- **UI Access**: Optional web UI with ingress support
+- **Static Seal Auto-Unseal**: Pods automatically unseal on restart without manual intervention
+- **Helm-based Deployment**: Uses the official OpenBao Helm chart
+- **Kubernetes Job Initialization**: Automated initialization and cluster setup
+- **High Availability**: Raft consensus with configurable replicas
+- **Kubernetes Auth Integration**: Pre-configured Kubernetes authentication backend
+- **Custom Policy Support**: Define policies, roles, and service account bindings
+- **KV v2 Secrets Engine**: Pre-enabled at `cp-secrets/` path
 - **Resource Management**: Configurable CPU/memory requests and limits
+- **Persistent Storage**: Automatic PVC creation for each replica
 
 ## Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Helm Release  │    │  Null Resource  │    │  Null Resource  │
-│   (OpenBao)     │───▶│  (Initialize)   │───▶│  (Auto-Unseal)  │
+│   Random Key    │───▶│  K8s Secret     │───▶│  Helm Release   │
+│   Generation    │    │  (Unseal Key)   │    │  (OpenBao Pods) │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  OpenBao Pods   │    │  K8s Secrets    │    │  Unsealed       │
-│                 │    │  - Unseal Keys  │    │  OpenBao        │
-│                 │    │  - Root Token   │    │  Ready for Use  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                                        │
+                                                        ▼
+                       ┌─────────────────────────────────────────┐
+                       │      Kubernetes Init Job                │
+                       │  1. Initialize leader (openbao-0)       │
+                       │  2. Store root token & recovery keys    │
+                       │  3. Join Raft nodes (HA mode)           │
+                       │  4. Configure Kubernetes auth           │
+                       │  5. Enable KV v2 secrets engine         │
+                       │  6. Create custom policies & roles      │
+                       └─────────────────────────────────────────┘
+                                         │
+                                         ▼
+                       ┌─────────────────────────────────────────┐
+                       │      Auto-Unsealed OpenBao Cluster      │
+                       │  - Static seal with env var key         │
+                       │  - Pods auto-unseal on restart          │
+                       │  - Raft HA (if replicas > 1)            │
+                       │  - Ready for secret management          │
+                       └─────────────────────────────────────────┘
 ```
+
+## How Static Seal Works
+
+Unlike traditional Shamir seal (which requires manual unseal keys), static seal:
+- Uses a pre-generated encryption key stored in a Kubernetes secret
+- Injects the key into pods via environment variable (`OPENBAO_UNSEAL_KEY`)
+- OpenBao automatically unseals on startup using the static key
+- Pods can restart without manual intervention
+- Recovery keys (not unseal keys) are generated during initialization for emergency access
+
+## Environment as Dimension
+
+The module is environment-aware through `var.environment`:
+- **Namespace**: Deployed in the namespace specified in metadata
+- **Tolerations**: Uses `var.environment.default_tolerations` for spot instance support
+- **Tags**: Applies `var.environment.cloud_tags` to all resources
+- **Storage**: PVCs are created per-environment, allowing different storage configurations
+
+## Resources Created
+
+- **Helm Release**: OpenBao cluster with static seal configuration
+- **Random ID**: 32-byte encryption key for static seal
+- **Kubernetes Secret**: Stores the static unseal key
+- **PersistentVolumeClaims**: One per replica for data storage
+- **ServiceAccount + RBAC**: For the initialization job
+- **Kubernetes Job**: Handles initialization and cluster setup
+- **Secret (created by job)**: Stores root token and recovery keys
 
 ## Usage
 
-### Basic Configuration
+### Basic Standalone Deployment
 
 ```yaml
 kind: openbao-cluster
-flavor: auto-unseal
+flavor: default
 version: "1.0"
 spec:
   namespace: "openbao"
-  release_name: "my-openbao"
-  key_shares: 5
-  key_threshold: 3
-  storage_backend:
-    type: "raft"
+  release_name: "openbao"
+  storage_type: "file"
+  server_replicas: 1
 ```
 
-### Advanced Configuration
+### High Availability Deployment
 
 ```yaml
 kind: openbao-cluster
-flavor: auto-unseal
+flavor: default
 version: "1.0"
 spec:
   namespace: "openbao-prod"
   release_name: "openbao-ha"
-  key_shares: 7
-  key_threshold: 4
-  
-  # High availability setup
+  storage_type: "raft"
   server_replicas: 3
-  storage_backend:
-    type: "raft"
-    config:
-      retry_join:
-        - "openbao-ha-0.openbao-ha-internal:8201"
-        - "openbao-ha-1.openbao-ha-internal:8201"
-        - "openbao-ha-2.openbao-ha-internal:8201"
-  
-  # Resource configuration
+  storage_size: "20Gi"
+
   server_resources:
     requests:
       cpu: "1000m"
@@ -77,16 +105,39 @@ spec:
     limits:
       cpu: "2000m"
       memory: "1Gi"
-  
-  # TLS and UI
-  tls_config:
-    enabled: true
-    cert_source: "cert-manager"
-  ui_enabled: true
-  ingress_enabled: true
-  
-  # Custom timeout
-  init_timeout: "600s"
+```
+
+### With Custom Policies
+
+```yaml
+kind: openbao-cluster
+flavor: default
+version: "1.0"
+spec:
+  namespace: "openbao"
+  release_name: "openbao"
+  storage_type: "raft"
+  server_replicas: 3
+
+  openbao:
+    policies:
+      app-readonly:
+        service_account_name: "my-app-sa"
+        role_name: "app-role"
+        policy: |
+          # Read-only access to app secrets
+          path "cp-secrets/data/app/*" {
+            capabilities = ["read", "list"]
+          }
+
+      admin-full:
+        service_account_name: "admin-sa"
+        role_name: "admin-role"
+        policy: |
+          # Full access to all secrets
+          path "cp-secrets/*" {
+            capabilities = ["create", "read", "update", "delete", "list"]
+          }
 ```
 
 ## Configuration Reference
@@ -95,186 +146,235 @@ spec:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `key_shares` | integer | Number of key shares to generate (1-255) |
-| `key_threshold` | integer | Number of shares required to unseal (1-255, ≤ key_shares) |
-| `namespace` | string | Kubernetes namespace (created automatically) |
+| `namespace` | string | Kubernetes namespace for deployment |
 | `release_name` | string | Helm release name |
-| `storage_backend` | object | Storage backend configuration |
+| `storage_type` | string | Storage backend: `raft` (HA) or `file` (standalone) |
 
 ### Optional Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `helm_chart_version` | string | "0.28.1" | Vault Helm chart version |
-| `helm_repository` | string | "https://helm.releases.hashicorp.com" | Helm repository URL |
-| `secret_name_prefix` | string | "openbao" | Prefix for secrets |
-| `server_replicas` | integer | 1 | Number of OpenBao replicas |
+| `chart_version` | string | "0.18.4" | OpenBao Helm chart version |
+| `server_replicas` | integer | 1 | Number of OpenBao replicas (1-10) |
 | `server_resources` | object | See defaults | CPU/memory requests and limits |
 | `ui_enabled` | boolean | true | Enable OpenBao web UI |
-| `ingress_enabled` | boolean | false | Create ingress for UI |
-| `tls_config` | object | See TLS section | TLS configuration |
-| `init_timeout` | string | "300s" | Initialization timeout |
+| `storage_size` | string | "10Gi" | PVC size per replica |
+| `pvc_labels` | object | {} | Additional labels for PVCs |
+| `unseal_secret_name` | string | `{instance_name}-unseal-key` | Name of unseal key secret |
+| `openbao.policies` | object | {} | Custom policies and roles |
+| `openbao.values` | object | {} | Additional Helm values |
 
-### Storage Backend Options
+### Policy Configuration
 
-#### Raft (Recommended for HA)
-```yaml
-storage_backend:
-  type: "raft"
-  config:
-    retry_join:
-      - "pod-0.service:8201"
-      - "pod-1.service:8201"
-```
-
-#### File (Single Instance)
-```yaml
-storage_backend:
-  type: "file"
-  config:
-    path: "/openbao/data"
-```
-
-#### Azure Key Vault
-```yaml
-storage_backend:
-  type: "azure"
-  config:
-    tenant_id: "your-tenant-id"
-    client_id: "your-client-id"
-    client_secret: "your-secret"
-    vault_name: "your-keyvault"
-```
-
-### TLS Configuration
+Define custom policies with Kubernetes auth integration:
 
 ```yaml
-tls_config:
-  enabled: true
-  cert_source: "self-signed"  # or "cert-manager" or "manual"
+openbao:
+  policies:
+    {policy-name}:
+      service_account_name: "k8s-service-account"
+      role_name: "openbao-auth-role"
+      policy: |
+        path "cp-secrets/data/my-app/*" {
+          capabilities = ["read"]
+        }
 ```
+
+Each policy creates:
+1. An OpenBao policy with the specified HCL
+2. A Kubernetes auth role bound to the service account
+3. Automatic binding allowing the SA to authenticate and assume the policy
 
 ## Outputs
 
-The module provides the following outputs:
-
-### Default Output
-- **Connection details**: Service URLs, namespace, release name
-- **UI access**: UI URL if enabled
-- **Ingress details**: Ingress host if enabled
-- **Secrets**: Names of Kubernetes secrets containing keys and tokens
-- **Configuration**: Deployment configuration details
-- **Health check**: Health check endpoint URL
-
-### Additional Outputs
-- `root_token_secret_name`: Name of secret containing root token
-- `unseal_keys_secret_name`: Name of secret containing unseal keys
-- `namespace`: Deployment namespace
-- `service_details`: Service connection details for other apps
-- `helm_release`: Helm release information
+| Output | Description |
+|--------|-------------|
+| `namespace` | Deployment namespace |
+| `release_name` | Helm release name |
+| `service_name` | Kubernetes service name |
+| `service_url` | Internal service URL |
+| `ui_enabled` | Whether UI is enabled |
+| `ui_url` | UI access URL (if enabled) |
+| `health_check_url` | Health check endpoint |
+| `unseal_secret_name` | Name of unseal key secret |
+| `init_keys_secret_name` | Name of init keys secret (root token & recovery keys) |
+| `storage_type` | Storage backend type |
+| `server_replicas` | Number of replicas |
+| `root_token` | Root token (sensitive) |
+| `recovery_keys` | Recovery keys (sensitive) |
 
 ## Security Considerations
 
-### Unseal Keys Storage
-- Unseal keys are stored in Kubernetes secrets with base64 encoding
-- Secrets are labeled for easy identification and management
-- Consider implementing additional encryption for secrets at rest
+### Static Unseal Key
 
-### Root Token Protection
-- Root token is stored in a separate Kubernetes secret
-- Rotate the root token regularly using OpenBao's token rotation features
-- Limit access to the root token secret using RBAC
+- The 32-byte unseal key is generated using Terraform's `random_id` resource
+- Stored in a Kubernetes secret with `prevent_destroy = true` lifecycle
+- Injected into pods via environment variable
+- Key is never exposed in logs or Terraform state (base64 encoded)
+- **Important**: Backup this secret - losing it means losing access to sealed data
+
+### Root Token & Recovery Keys
+
+- Root token is stored in `{release_name}-init-keys` secret
+- Recovery keys are for emergency access if static seal fails
+- Rotate the root token regularly using OpenBao's token rotation
+- Limit RBAC access to these secrets
 
 ### Network Security
-- Use TLS for all communications when possible
-- Configure network policies to restrict pod-to-pod communication
-- Use ingress with proper authentication for UI access
+
+- Service uses ClusterIP type (internal only)
+- TLS is disabled by default (enable for production)
+- Use Kubernetes network policies to restrict access
+- Consider using a service mesh for mTLS
+
+### RBAC
+
+- Init job uses a dedicated ServiceAccount with minimal permissions
+- Only has access to: pods, pods/exec, secrets, statefulsets
+- Permissions scoped to the deployment namespace only
 
 ## Operations
 
 ### Accessing OpenBao
+
 ```bash
 # Get the root token
-kubectl get secret openbao-root-token -n openbao -o jsonpath='{.data.root-token}' | base64 -d
+kubectl get secret openbao-init-keys -n openbao -o jsonpath='{.data.root-token}' | base64 -d
 
 # Port forward to access UI
-kubectl port-forward svc/openbao-vault -n openbao 8200:8200
+kubectl port-forward svc/openbao -n openbao 8200:8200
 
 # Access via browser
 open http://localhost:8200/ui
 ```
 
-### Manual Unseal (if needed)
-```bash
-# Get unseal keys
-kubectl get secret openbao-init-keys -n openbao -o jsonpath='{.data.unseal-keys}' | base64 -d | base64 -d
+### Using Kubernetes Auth (from a Pod)
 
-# Unseal manually (if auto-unseal fails)
-kubectl exec -n openbao openbao-vault-0 -- openbao operator unseal <key>
+```bash
+# Inside a pod with the configured service account
+export VAULT_ADDR="http://openbao.openbao.svc.cluster.local:8200"
+export SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+
+# Login
+vault write auth/kubernetes/login role=app-role jwt=$SA_TOKEN
+
+# Use the token to access secrets
+vault kv get cp-secrets/my-app/config
 ```
 
+### Scaling the Cluster
+
+To add more replicas:
+1. Update `server_replicas` in your configuration
+2. Apply the changes
+3. The init job will automatically join new nodes to the Raft cluster
+
 ### Backup and Recovery
-- Regularly backup the Kubernetes secrets containing unseal keys
-- Consider using Velero or similar tools for cluster-level backups
-- Test recovery procedures in non-production environments
+
+```bash
+# Backup critical secrets
+kubectl get secret openbao-unseal-key -n openbao -o yaml > unseal-key-backup.yaml
+kubectl get secret openbao-init-keys -n openbao -o yaml > init-keys-backup.yaml
+
+# Take Raft snapshots (using root token)
+export VAULT_TOKEN="<root-token>"
+vault operator raft snapshot save backup.snap
+```
 
 ## Troubleshooting
 
-### Common Issues
+### Init Job Fails
 
-1. **Initialization Timeout**
-   - Increase `init_timeout` value
-   - Check pod logs: `kubectl logs -n <namespace> <pod-name>`
-   - Verify network connectivity
-
-2. **Unseal Failures**
-   - Check if secrets exist and contain valid keys
-   - Verify key threshold is not greater than available keys
-   - Check OpenBao pod status and logs
-
-3. **Helm Deployment Issues**
-   - Verify Helm repository is accessible
-   - Check chart version compatibility
-   - Review Helm release status: `helm status <release-name> -n <namespace>`
-
-### Debugging Commands
 ```bash
-# Check OpenBao status
-kubectl exec -n <namespace> <pod-name> -- openbao status
+# Check job logs
+kubectl logs -n openbao job/openbao-init-xxxxx
 
-# View initialization logs
-kubectl logs -n <namespace> <pod-name> | grep init
+# Common issues:
+# - Pod not ready: Increase timeout or check pod status
+# - RBAC issues: Verify ServiceAccount permissions
+# - Network issues: Check service connectivity
+```
 
-# Check secrets
-kubectl get secrets -n <namespace> | grep openbao
+### Pods Not Auto-Unsealing
 
-# Describe Helm release
-helm get values <release-name> -n <namespace>
+```bash
+# Check if unseal key secret exists
+kubectl get secret openbao-unseal-key -n openbao
+
+# Verify environment variable is injected
+kubectl exec -n openbao openbao-0 -- env | grep OPENBAO_UNSEAL_KEY
+
+# Check pod logs for seal errors
+kubectl logs -n openbao openbao-0
+```
+
+### Raft Node Not Joining
+
+```bash
+# Check node status
+kubectl exec -n openbao openbao-1 -- bao status
+
+# Manually join if needed (using root token)
+kubectl exec -n openbao openbao-1 -- bao operator raft join \
+  http://openbao-0.openbao-internal.openbao.svc.cluster.local:8200
+```
+
+### Check Cluster Status
+
+```bash
+# View Raft peers
+export VAULT_TOKEN="<root-token>"
+vault operator raft list-peers
+
+# Check seal status
+vault status
 ```
 
 ## Prerequisites
 
-- Kubernetes cluster with RBAC enabled
-- Helm 3.x installed and configured
-- `kubectl` access to the target cluster
-- `jq` utility for JSON processing (required for auto-unseal scripts)
+- Kubernetes cluster (1.19+)
+- Helm 3.x
+- Persistent volume provisioner (for PVCs)
+- RBAC enabled
+- Kubernetes provider configured via inputs
 
 ## Limitations
 
-- Currently supports single-cluster deployments only
-- Auto-unseal requires `kubectl` and `jq` to be available in Terraform execution environment
-- Raft storage backend requires persistent volumes
-- TLS certificate management is basic (consider cert-manager for production)
+- Only supports Azure cloud (as configured)
+- TLS is not enabled by default
+- Static seal key rotation requires manual process
+- Single Kubernetes cluster deployments only
+- Raft storage requires persistent volumes
 
-## Contributing
+## Advanced Configuration
 
-This module follows Facets module development standards. When contributing:
+### Custom Helm Values
 
-1. Maintain backward compatibility
-2. Update documentation for any new features
-3. Add appropriate validation rules
-4. Test with different storage backends
-5. Follow Terraform best practices
+Override any Helm chart value:
+
+```yaml
+openbao:
+  values:
+    server:
+      extraEnvironmentVars:
+        FOO: "bar"
+      annotations:
+        custom-annotation: "value"
+```
+
+### Storage Backend Selection
+
+**File Storage** (Standalone):
+- Single replica only
+- Data stored in PVC
+- No HA capabilities
+- Simpler setup
+
+**Raft Storage** (HA):
+- Multiple replicas supported
+- Distributed consensus
+- Automatic failover
+- Requires internal service for inter-pod communication
 
 ## License
 

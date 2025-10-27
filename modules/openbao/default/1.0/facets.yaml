@@ -140,6 +140,7 @@ spec:
                   title: Policy HCL
                   description: OpenBao policy in HCL format
                   x-ui-editor: true
+                  x-ui-editor-language: hcl
               required:
               - service_account_name
               - role_name
