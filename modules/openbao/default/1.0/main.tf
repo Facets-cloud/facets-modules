@@ -365,7 +365,7 @@ resource "kubernetes_job_v1" "openbao_init" {
 
             # Wait for at least one OpenBao pod
             kubectl wait --for=condition=ready pod/${local.release_name}-0 -n ${local.namespace} --timeout=300s || {
-              echo "ERROR: openbao-0 pod not ready"
+              echo "ERROR: openbao server pod not ready"
               exit 1
             }
 
