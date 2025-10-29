@@ -37,6 +37,8 @@ spec:
                   type: string
                   description: The namespace of the service account that you want
                     to attach the role to with the trust relationship
+              required:
+              - name
         oidc_providers:
           type: object
           title: OIDC Providers
