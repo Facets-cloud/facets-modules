@@ -996,8 +996,7 @@ spec:
               type: string
               title: Image
               description: Docker image of the init container.
-              x-ui-image:
-                artifact_type: docker_image
+              x-ui-artifact: docker_image
               x-ui-error-message: Value doesn't match pattern for a container image
             pull_policy:
               title: Image Pull Policy
@@ -1260,8 +1259,7 @@ spec:
               type: string
               title: Image
               description: Docker image of the init container
-              x-ui-image:
-                artifact_type: docker_image
+              x-ui-artifact: docker_image
               x-ui-error-message: Value doesn't match pattern for a container image
             pull_policy:
               title: Image Pull Policy
