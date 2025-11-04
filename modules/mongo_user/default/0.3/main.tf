@@ -19,7 +19,7 @@ resource "kubernetes_secret" "user-password" {
   }
 
   data = {
-    "${local.user_name}" = local.user_password
+    "${module.unique_name.name}-user" = local.user_password
   }
 }
 
@@ -92,7 +92,7 @@ module "mongo-user" {
       dbRoles = concat([
         for key, val in local.spec.permissions :
         {
-          db   = val.database
+          db   = lookup(val, "database", local.database)
           role = "${module.unique_name.name}-${key}"
         }
         ],
