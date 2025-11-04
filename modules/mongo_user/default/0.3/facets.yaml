@@ -67,6 +67,9 @@ spec:
               type: boolean
               title: Cluster
               description: Determines if permission should be at cluster level
+          required:
+          - permission
+          - cluster
     mongo_user:
       type: object
       title: Mongo User
@@ -106,6 +109,8 @@ spec:
               type: string
               title: Roles to Role
               description: The roles to role for the user
+  required:
+  - database
 sample:
   $schema: https://facets-cloud.github.io/facets-schemas/schemas/mongo_user/mongo_user.schema.json
   kind: mongo_user
