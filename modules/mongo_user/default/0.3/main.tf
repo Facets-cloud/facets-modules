@@ -19,7 +19,7 @@ resource "kubernetes_secret" "user-password" {
   }
 
   data = {
-    "${module.unique_name.name}-user" = local.user_password
+    "${module.unique_name.name}-user" = sensitive(local.user_password)
   }
 }
 
@@ -41,7 +41,7 @@ module "mongo-role" {
       }
     }
     spec = {
-      connectionString = var.inputs.mongo_details.interfaces.writer.connection_string
+      connectionString = sensitive(var.inputs.mongo_details.interfaces.writer.connection_string)
       database         = local.database
       dbRoles          = [for role in lookup(local.role, "dbRoles", {}) : role]
       privileges = [
@@ -86,7 +86,7 @@ module "mongo-user" {
           serverAddress = split(",", val.serverAddress)
         }
       ]
-      connectionString = var.inputs.mongo_details.interfaces.writer.connection_string
+      connectionString = sensitive(var.inputs.mongo_details.interfaces.writer.connection_string)
       customData       = lookup(local.user, "customData", {})
       database         = local.database
       dbRoles = concat([
