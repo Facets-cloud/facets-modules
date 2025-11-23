@@ -2,10 +2,10 @@ locals {
   output_attributes = {
     node_pool_name = azurerm_kubernetes_cluster_node_pool.node_pool.name
     taints         = [for taint in var.instance.spec.taints : {
-      key      = value.key
-      value    = value.value
+      key      = taint.key
+      value    = taint.value
       operator = "Equal"
-      effect   = value.effect
+      effect   = taint.effect
     }]
     node_selector  = azurerm_kubernetes_cluster_node_pool.node_pool.node_labels
     disk_size      = azurerm_kubernetes_cluster_node_pool.node_pool.os_disk_size_gb
