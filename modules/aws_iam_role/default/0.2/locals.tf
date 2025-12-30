@@ -2,7 +2,7 @@
 
 locals {
   name             = lower(var.instance_name)
-  service_accounts = lookup(local.spec.irsa, "service_accounts", {})
+  service_accounts = lookup(local.irsa, "service_accounts", {})
   namespace        = lookup(var.instance.metadata, "namespace", null) == null ? var.environment.namespace : var.instance.metadata.namespace
   spec             = lookup(var.instance, "spec", {})
   advanced         = lookup(var.instance, "advanced", {})
