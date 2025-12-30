@@ -11,7 +11,7 @@ module "aws_iam_role_name" {
 
 
 module "iam_eks_role" {
-  count            = length(local.irsa) > 0 ? 1 : 0
+  count            = 1
   source           = "github.com/Facets-cloud/facets-utility-modules//aws_irsa/iam-role-for-service-accounts-eks"
   role_name        = module.aws_iam_role_name.name
   role_policy_arns = { for k, v in local.policies : k => v.arn }
