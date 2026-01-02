@@ -4,6 +4,7 @@ locals {
   advanced_default = lookup(local.advanced, "default", {})
   preserve_uid     = lookup(local.spec, "preserve_uid", lookup(local.advanced_default, "preserve_uid", false))
   uid_override     = local.preserve_uid ? {} : { uid = random_string.uid.result }
+  metadata         = lookup(var.instance, "metadata", {})
 }
 
 resource "random_string" "uid" {
@@ -22,7 +23,7 @@ resource "kubernetes_config_map" "grafana-dashboard-configmap" {
       lookup(var.instance.metadata, "labels", {})
     )
     annotations = lookup(var.instance.metadata, "annotations", {})
-    namespace   = var.environment.namespace
+    namespace   = lookup(local.metadata, "namespace", var.environment.namespace)
   }
   data = {
     "grafana-dashboard-${var.instance_name}.json" = jsonencode(merge(
