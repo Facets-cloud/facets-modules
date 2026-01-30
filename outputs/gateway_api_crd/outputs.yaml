@@ -1,0 +1,19 @@
+name: "@outputs/gateway_api_crd"
+properties:
+  attributes:
+    type: object
+    properties:
+      version:
+        type: string
+      channel:
+        type: string
+      install_url:
+        type: string
+      job_name:
+        type: string
+      namespace:
+        type: string
+  interfaces:
+    type: object
+    properties: {}
+providers: []
