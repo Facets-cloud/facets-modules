@@ -494,13 +494,6 @@ spec:
                 values: ["ExecCheck"]
               description: Commands for startup check
               x-ui-override-disable: true
-          required:
-          - readiness_port
-          - readiness_url
-          - readiness_exec_command
-          - liveness_port
-          - liveness_url
-          - liveness_exec_command
         autoscaling:
           type: object
           title: Autoscaling
