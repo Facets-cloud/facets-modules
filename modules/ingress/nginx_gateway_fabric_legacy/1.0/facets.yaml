@@ -272,12 +272,12 @@ spec:
             path_type:
               type: string
               title: Path Type
-              description: Path matching type. RegularExpression (default) auto-appends .* to paths for proper NGINX regex ordering. Use PathPrefix or Exact for literal matching.
+              description: "Path matching type. PathPrefix (default) matches paths starting with the specified prefix. Use RegularExpression for regex matching (e.g., ^/api/v[0-9]+/.*). Use Exact for exact path matching."
               enum:
               - Exact
               - PathPrefix
               - RegularExpression
-              default: RegularExpression
+              default: PathPrefix
               x-ui-visible-if:
                 field: spec.rules.{{this}}.grpc_config.enabled
                 values:

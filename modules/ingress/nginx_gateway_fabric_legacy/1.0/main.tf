@@ -282,13 +282,11 @@ locals {
         rules = [{
           matches = concat(
             # Path matching (with optional method and query params)
-            # Default: RegularExpression with .* suffix (e.g., /path becomes /path.*)
-            # This ensures proper regex ordering in NGINX (longer patterns match first)
             [merge(
               {
                 path = {
-                  type  = lookup(v, "path_type", "RegularExpression")
-                  value = lookup(v, "path_type", "RegularExpression") == "RegularExpression" ? "${lookup(v, "path", "/")}.*" : lookup(v, "path", "/")
+                  type  = lookup(v, "path_type", "PathPrefix")
+                  value = lookup(v, "path", "/")
                 }
               },
               # Method matching (ALL or null means match all methods)
