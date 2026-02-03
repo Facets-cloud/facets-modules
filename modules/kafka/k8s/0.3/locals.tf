@@ -19,7 +19,7 @@ locals {
   controller_persistence_enabled    = lookup(local.controller, "persistence_enabled", true)
   broker_persistence_enabled        = lookup(local.broker, "persistence_enabled", true)
   persistence_volume_controller     = local.controller_persistence_enabled ? lookup(local.controller_size, "volume", "50Gi") : ""
-  persistence_volume_broker         = local.broker_persistence_enabled ? lookup(local.controller_size, "volume", "50Gi") : ""
+  persistence_volume_broker         = local.broker_persistence_enabled ? lookup(local.broker_size, "volume", "50Gi") : ""
   controller_cpu_requests           = lookup(local.controller_size, "cpu")
   controller_memory_requests        = lookup(local.controller_size, "memory")
   controller_cpu_limits             = lookup(local.controller_size, "cpu_limit", local.controller_cpu_requests)
