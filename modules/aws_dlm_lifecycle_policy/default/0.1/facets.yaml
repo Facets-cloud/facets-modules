@@ -12,7 +12,7 @@ spec:
       title: DLM Schedules
       description: Configuration for DLM policy schedules
       patternProperties:
-        "^[a-zA-Z0-9_-]+$":
+        ^[a-zA-Z0-9_-]+$:
           type: object
           properties:
             copy_tags:
@@ -34,7 +34,9 @@ spec:
                   type: string
                   title: Interval Unit
                   description: Unit for the interval
-                  enum: ["HOURS", "DAYS"]
+                  enum:
+                  - HOURS
+                  - DAYS
                 times:
                   type: array
                   title: Times
@@ -42,12 +44,12 @@ spec:
                   x-ui-override-disable: true
                   items:
                     type: string
-                    pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"
+                    pattern: ^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$
                 cron_expression:
                   type: string
                   title: Cron Expression
                   description: Cron expression for complex scheduling
-                  pattern: "^cron\\(.*\\)$"
+                  pattern: ^cron\(.*\)$
               required: []
             retain_rule:
               type: object
@@ -68,14 +70,18 @@ spec:
                   type: string
                   title: Interval Unit
                   description: Unit for retention interval
-                  enum: ["DAYS", "WEEKS", "MONTHS", "YEARS"]
+                  enum:
+                  - DAYS
+                  - WEEKS
+                  - MONTHS
+                  - YEARS
               required: []
             cross_region_copy_rules:
               type: object
               title: Cross Region Copy Rules
               description: Rules for copying snapshots to other regions
               patternProperties:
-                "^[a-zA-Z0-9_-]+$":
+                ^[a-zA-Z0-9_-]+$:
                   type: object
                   properties:
                     target:
@@ -106,23 +112,35 @@ spec:
                           type: string
                           title: Interval Unit
                           description: Unit for retention interval
-                          enum: ["DAYS", "WEEKS", "MONTHS", "YEARS"]
-                      required: ["interval", "interval_unit"]
-                  required: ["target", "retain_rule"]
+                          enum:
+                          - DAYS
+                          - WEEKS
+                          - MONTHS
+                          - YEARS
+                      required:
+                      - interval
+                      - interval_unit
+                  required:
+                  - target
+                  - retain_rule
             tags_to_add:
               type: object
               title: Tags to Add
               description: Additional tags to apply to snapshots
               x-ui-yaml-editor: true
-          required: ["copy_tags", "create_rule", "retain_rule", "tags_to_add"]
+          required:
+          - copy_tags
+          - create_rule
+          - retain_rule
+          - tags_to_add
     target_tags:
       type: object
       title: Target Tags
       description: Tags used to identify volumes for snapshot policy
       x-ui-yaml-editor: true
   required:
-    - schedules
-    - target_tags
+  - schedules
+  - target_tags
 sample:
   kind: aws_dlm_lifecycle_policy
   flavor: default
