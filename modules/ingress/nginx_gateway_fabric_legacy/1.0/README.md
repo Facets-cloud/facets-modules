@@ -39,7 +39,7 @@ This module deploys **NGINX Gateway Fabric**, NGINX's implementation of the Kube
         "namespace": "default",
         "port": "8080",
         "path": "/api",
-        "path_type": "RegularExpression"
+        "path_type": "PathPrefix"
       }
     }
   }
@@ -59,11 +59,9 @@ This module deploys **NGINX Gateway Fabric**, NGINX's implementation of the Kube
 
 | Type | Default | Description |
 |------|---------|-------------|
-| `RegularExpression` | Yes | Auto-appends `.*` to path (e.g., `/api` becomes `/api.*`). Ensures longer paths match before shorter ones in NGINX. |
-| `PathPrefix` | No | Matches paths starting with the specified prefix |
+| `PathPrefix` | Yes | Matches paths starting with the specified prefix |
+| `RegularExpression` | No | Matches paths using regular expressions (e.g., `^/api/v[0-9]+/.*`) |
 | `Exact` | No | Matches the exact path only |
-
-> **Note**: `RegularExpression` is the default because it ensures proper route ordering in NGINX. More specific paths (e.g., `/perform_login.*`) will match before catch-all patterns (e.g., `/.*`).
 
 ---
 
@@ -81,7 +79,7 @@ Route traffic based on HTTP headers:
       "namespace": "default",
       "port": "8080",
       "path": "/",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "header_matches": {
         "version_header": {
           "name": "X-API-Version",
@@ -111,7 +109,7 @@ Route traffic based on query parameters:
       "namespace": "default",
       "port": "8080",
       "path": "/api",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "query_param_matches": {
         "version_param": {
           "name": "version",
@@ -136,7 +134,7 @@ Route traffic based on HTTP method:
       "namespace": "default",
       "port": "8080",
       "path": "/api",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "method": "GET"
     }
   }
@@ -159,7 +157,7 @@ Rewrite request URLs before forwarding to backend:
       "namespace": "default",
       "port": "8080",
       "path": "/old-api",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "url_rewrite": {
         "rewrite_rule": {
           "hostname": "internal-api.svc.cluster.local",
@@ -201,7 +199,7 @@ Modify headers sent to backend:
       "namespace": "default",
       "port": "8080",
       "path": "/",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "request_header_modifier": {
         "add": {
           "custom_header": {
@@ -270,7 +268,7 @@ Configure request and backend timeouts:
       "namespace": "default",
       "port": "8080",
       "path": "/api",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "timeouts": {
         "request": "60s",
         "backend_request": "30s"
@@ -294,7 +292,7 @@ Enable Cross-Origin Resource Sharing:
       "namespace": "default",
       "port": "8080",
       "path": "/",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "cors": {
         "enabled": true,
         "allow_origins": {
@@ -395,7 +393,7 @@ Split traffic between service versions:
       "namespace": "default",
       "port": "8080",
       "path": "/",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "canary_deployment": {
         "enabled": true,
         "canary_service": "api-v2",
@@ -422,7 +420,7 @@ Mirror traffic to a secondary service for testing:
       "namespace": "default",
       "port": "8080",
       "path": "/api",
-      "path_type": "RegularExpression",
+      "path_type": "PathPrefix",
       "request_mirror": {
         "service_name": "api-shadow",
         "port": "8080",
@@ -467,7 +465,7 @@ Configure custom domains at the root level:
         "namespace": "default",
         "port": "8080",
         "path": "/",
-        "path_type": "RegularExpression"
+        "path_type": "PathPrefix"
       }
     }
   }
@@ -540,7 +538,7 @@ Deploy with internal/private load balancer:
         "namespace": "default",
         "port": "8080",
         "path": "/",
-        "path_type": "RegularExpression"
+        "path_type": "PathPrefix"
       }
     }
   }
