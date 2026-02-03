@@ -88,7 +88,3 @@ resource "aws_dlm_lifecycle_policy" "dlm-lifecycle-policy" {
   }, var.environment.cloud_tags)
 }
 
-locals {
-  output_interfaces = {}
-  output_attributes = {}
-}
