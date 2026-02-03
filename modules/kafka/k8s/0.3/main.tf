@@ -113,7 +113,7 @@ broker:
       cpu: ${local.broker_cpu_requests}
       memory: ${local.broker_memory_requests}
   persistence:
-    enabled: true
+    enabled: ${local.broker_persistence_enabled}
   podLabels:
     resourceName: ${local.name}
     resourceType: kafka
