@@ -48,7 +48,7 @@ locals {
       (
         # gRPC routes don't need path/path_type - they use method matching
         lookup(lookup(v, "grpc_config", {}), "enabled", false) ||
-        # HTTP routes require path (path_type defaults to RegularExpression, with .* suffix auto-added)
+        # HTTP routes require path (path_type defaults to PathPrefix)
         (lookup(v, "path", null) != null && lookup(v, "path", "") != "")
       ) &&
       (lookup(v, "disable", false) == false)
@@ -922,6 +922,7 @@ resource "helm_release" "nginx_gateway_fabric" {
 
         service = {
           type                  = "LoadBalancer"
+          # loadBalancerClass     = local.cloud_provider == "AWS" ? "service.k8s.aws/nlb" : ""
           externalTrafficPolicy = "Cluster"
           # Service patches for annotations and labels
           patches = [

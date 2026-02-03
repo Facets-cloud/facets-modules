@@ -60,7 +60,6 @@ This module deploys **NGINX Gateway Fabric**, NGINX's implementation of the Kube
 | Type | Default | Description |
 |------|---------|-------------|
 | `PathPrefix` | Yes | Matches paths starting with the specified prefix |
-| `RegularExpression` | No | Matches paths using regular expressions (e.g., `^/api/v[0-9]+/.*`) |
 | `Exact` | No | Matches the exact path only |
 
 ---
