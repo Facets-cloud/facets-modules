@@ -84,7 +84,7 @@ module "name" {
 module "iam_role_name" {
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
-  limit           = 64
+  limit           = 38
   resource_name   = var.instance_name
   resource_type   = "ervice"
   globally_unique = false
