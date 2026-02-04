@@ -30,7 +30,7 @@ locals {
     }
   }
 
-  domains = merge(lookup(var.instance, "domains", {}), local.add_base_domain)
+  domains = merge(lookup(var.instance.spec, "domains", {}), local.add_base_domain)
 
   # List of all domain hostnames for HTTPRoutes
   all_domain_hostnames = [for domain_key, domain in local.domains : domain.domain]
