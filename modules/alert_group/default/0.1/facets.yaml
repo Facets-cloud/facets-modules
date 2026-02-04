@@ -254,10 +254,6 @@ inputs:
     default:
       resource_type: configuration
       resource_name: prometheus
-outputs:
-  default:
-    type: '@outputs/prometheus'
-    title: Alert Group Configuration
 sample:
   kind: alert_group
   flavor: default
