@@ -1,0 +1,322 @@
+intent: kubernetes_cluster
+flavor: azure_aks_cluster
+alias-flavors:
+- default
+version: '0.2'
+clouds:
+- azure
+title: AKS Cluster with Auto-Upgrade Support
+description: A Kubernetes AKS cluster module with auto-upgrade enabled by default
+  and all necessary configurations preset.
+allow_skipping_module_on_selective_release: false
+spec:
+  type: object
+  x-ui-order:
+  - cluster
+  - auto_upgrade_settings
+  - node_pools
+  - tags
+  properties:
+    cluster:
+      type: object
+      title: Cluster
+      description: Configuration for the AKS cluster.
+      x-ui-toggle: false
+      properties:
+        kubernetes_version:
+          type: string
+          title: Kubernetes Version
+          description: Version of Kubernetes to use for the AKS cluster. Only used
+            when auto-upgrade is disabled or using patch channel.
+          default: '1.31'
+          x-ui-visible-if:
+            field: spec.auto_upgrade_settings.enable_auto_upgrade
+            values:
+            - false
+        cluster_endpoint_public_access_cidrs:
+          type: array
+          title: Cluster Endpoint Public Access CIDRs
+          description: List of CIDR blocks which can access the AKS public API server
+            endpoint.
+          default:
+          - 0.0.0.0/0
+          x-ui-override-disable: true
+        cluster_enabled_log_types:
+          type: array
+          title: Cluster Enabled Log Types
+          description: List of log types to enable for the AKS cluster.
+          default: []
+          x-ui-overrides-only: true
+          items:
+            type: string
+            enum:
+            - api
+            - audit
+            - authenticator
+            - controllerManager
+            - scheduler
+        sku_tier:
+          type: string
+          title: SKU Tier
+          description: SKU tier for the AKS cluster.
+          default: Free
+          enum:
+          - Free
+          - Standard
+      required:
+      - kubernetes_version
+    auto_upgrade_settings:
+      type: object
+      title: Auto-Upgrade Settings
+      description: Configuration for automatic cluster upgrades.
+      x-ui-toggle: false
+      properties:
+        enable_auto_upgrade:
+          type: boolean
+          title: Enable Auto-Upgrade
+          description: Enable automatic cluster upgrades.
+          default: true
+        automatic_channel_upgrade:
+          type: string
+          title: Automatic Channel Upgrade
+          description: Auto-upgrade channel for the cluster. Note - when using stable/rapid/node-image,
+            the Kubernetes version will be managed automatically by Azure.
+          default: stable
+          enum:
+          - rapid
+          - regular
+          - stable
+          - patch
+          - node-image
+          - none
+          x-ui-visible-if:
+            field: spec.auto_upgrade_settings.enable_auto_upgrade
+            values:
+            - true
+        max_surge:
+          type: string
+          title: Max Surge
+          description: Maximum number of nodes that can be added during upgrade (number
+            or percentage).
+          default: '1'
+          pattern: ^([0-9]+%?|[0-9]+)$
+          x-ui-error-message: Max surge must be a number or percentage (e.g., 1, 33%)
+          x-ui-visible-if:
+            field: spec.auto_upgrade_settings.enable_auto_upgrade
+            values:
+            - true
+        maintenance_window:
+          type: object
+          title: Maintenance Window
+          description: Maintenance window configuration for upgrades.
+          x-ui-toggle: false
+          x-ui-visible-if:
+            field: spec.auto_upgrade_settings.enable_auto_upgrade
+            values:
+            - true
+          properties:
+            is_enabled:
+              type: boolean
+              title: Enable Maintenance Window
+              description: Enable maintenance window for scheduled upgrades.
+              default: true
+            day_of_week:
+              type: string
+              title: Day of Week
+              description: Day of week for maintenance.
+              default: Sunday
+              enum:
+              - Sunday
+              - Monday
+              - Tuesday
+              - Wednesday
+              - Thursday
+              - Friday
+              - Saturday
+              x-ui-visible-if:
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
+                values:
+                - true
+            start_time:
+              type: integer
+              title: Start Time
+              description: Start hour for maintenance window (24-hour format).
+              default: 2
+              minimum: 0
+              maximum: 23
+              x-ui-visible-if:
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
+                values:
+                - true
+            end_time:
+              type: integer
+              title: End Time
+              description: End hour for maintenance window (24-hour format).
+              default: 6
+              minimum: 0
+              maximum: 23
+              x-ui-visible-if:
+                field: spec.auto_upgrade_settings.maintenance_window.is_enabled
+                values:
+                - true
+    tags:
+      type: object
+      title: Tags
+      description: Tags to apply to the AKS cluster.
+      x-ui-toggle: false
+      x-ui-yaml-editor: true
+    node_pools:
+      type: object
+      title: Node Pools
+      description: Configuration for managed node pools.
+      x-ui-toggle: false
+      properties:
+        system_np:
+          type: object
+          title: System Node Pool
+          description: Configuration for system node pool (required for AKS).
+          x-ui-toggle: false
+          properties:
+            enabled:
+              type: boolean
+              title: Enabled
+              description: Enable system node pool.
+              default: true
+              readOnly: true
+            node_count:
+              type: integer
+              title: Node Count
+              description: Initial number of nodes.
+              default: 1
+              minimum: 1
+              maximum: 1000
+              x-ui-visible-if:
+                field: spec.node_pools.system_np.enabled
+                values:
+                - true
+            instance_type:
+              type: string
+              title: Instance Type
+              description: Azure VM size for system nodes.
+              default: Standard_D2_v4
+              x-ui-visible-if:
+                field: spec.node_pools.system_np.enabled
+                values:
+                - true
+            max_pods:
+              type: integer
+              title: Max Pods
+              description: Maximum pods per node.
+              default: 30
+              minimum: 10
+              maximum: 250
+              x-ui-visible-if:
+                field: spec.node_pools.system_np.enabled
+                values:
+                - true
+            os_disk_size_gb:
+              type: integer
+              title: OS Disk Size (GB)
+              description: OS disk size in GB.
+              default: 50
+              minimum: 30
+              maximum: 2048
+              x-ui-visible-if:
+                field: spec.node_pools.system_np.enabled
+                values:
+                - true
+            enable_auto_scaling:
+              type: boolean
+              title: Enable Auto Scaling
+              description: Enable auto-scaling for system node pool.
+              default: false
+              x-ui-visible-if:
+                field: spec.node_pools.system_np.enabled
+                values:
+                - true
+  required:
+  - cluster
+inputs:
+  network_details:
+    type: '@facets/azure-network-details'
+    displayName: Network
+    default:
+      resource_type: network
+      resource_name: default
+  cloud_account:
+    type: '@outputs/cloud_account'
+    displayName: Cloud Account
+    description: The Azure Cloud Account where the AKS cluster will be created
+    optional: false
+    providers:
+    - azurerm
+    - azapi
+outputs:
+  default:
+    type: '@facets/azure_aks'
+    title: Kubernetes Cluster Output
+    description: The output for the Kubernetes cluster
+    providers:
+      kubernetes:
+        source: hashicorp/kubernetes
+        version: 2.17.0
+        attributes:
+          host: attributes.cluster_endpoint
+          client_certificate: attributes.client_certificate
+          client_key: attributes.client_key
+          cluster_ca_certificate: attributes.cluster_ca_certificate
+      helm:
+        source: hashicorp/helm
+        version: 2.8.0
+        attributes:
+          kubernetes:
+            host: attributes.cluster_endpoint
+            client_certificate: attributes.client_certificate
+            client_key: attributes.client_key
+            cluster_ca_certificate: attributes.cluster_ca_certificate
+      kubernetes-alpha:
+        source: hashicorp/kubernetes-alpha
+        version: 0.6.0
+        attributes:
+          host: attributes.cluster_endpoint
+          client_certificate: attributes.client_certificate
+          client_key: attributes.client_key
+          cluster_ca_certificate: attributes.cluster_ca_certificate
+sample:
+  kind: kubernetes_cluster
+  flavor: azure_aks_cluster
+  alias-flavors:
+  - default
+  version: '0.2'
+  metadata:
+    name: aks-cluster
+  spec:
+    cluster:
+      kubernetes_version: '1.31'
+      cluster_endpoint_public_access_cidrs:
+      - 0.0.0.0/0
+      sku_tier: Free
+    auto_upgrade_settings:
+      enable_auto_upgrade: true
+      automatic_channel_upgrade: stable
+      max_surge: '1'
+      maintenance_window:
+        is_enabled: true
+        day_of_week: Sunday
+        start_time: 2
+        end_time: 6
+    node_pools:
+      system_np:
+        enabled: true
+        node_count: 1
+        instance_type: Standard_D2_v4
+        max_pods: 30
+        os_disk_size_gb: 50
+        enable_auto_scaling: false
+    tags: {}
+iac:
+  validated_files:
+  - main.tf
+  - variables.tf
+  - outputs.tf
+  - locals.tf
