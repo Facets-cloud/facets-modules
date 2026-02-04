@@ -40,6 +40,37 @@ spec:
       title: Disable Base Domain
       description: Disable automatic creation of base domain for this gateway
       default: false
+    domains:
+      title: Domains
+      description: Map of domain key to rules
+      type: object
+      x-ui-overrides-only: true
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Domain Object
+          description: Name of the domain object
+          type: object
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Host name of the domain
+              pattern: ^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,6}$
+              x-ui-unique: true
+              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk'
+              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com, my-domain.co.uk'
+            alias:
+              type: string
+              title: Alias
+              description: Alias for the domain
+            certificate_reference:
+              type: string
+              title: Certificate Reference
+              description: Name of an existing TLS secret to use instead of cert-manager managed certificates
+              x-ui-toggle: true
+          required:
+          - domain
+          - alias
     data_plane:
       type: object
       title: Data Plane (NGINX)
@@ -802,6 +833,7 @@ spec:
   - private
   - domain_prefix_override
   - disable_base_domain
+  - domains
   - force_ssl_redirection
   - body_size
   - disable_endpoint_validation
