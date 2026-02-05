@@ -1,0 +1,23 @@
+name: gateway_api_crd
+out:
+  type: object
+  title: Gateway API CRD
+  description: Gateway API Custom Resource Definitions
+  properties:
+    attributes:
+      type: object
+      properties:
+        version:
+          type: string
+        channel:
+          type: string
+        install_url:
+          type: string
+        job_name:
+          type: string
+        namespace:
+          type: string
+    interfaces:
+      type: object
+      properties: {}
+providers: []

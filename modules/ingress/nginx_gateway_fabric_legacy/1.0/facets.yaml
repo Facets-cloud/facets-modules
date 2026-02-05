@@ -1,0 +1,883 @@
+intent: ingress
+flavor: nginx_gateway_fabric_legacy
+version: '1.0'
+description: NGINX Gateway Fabric - Kubernetes Gateway API implementation (Legacy module format)
+clouds:
+- aws
+- azure
+- gcp
+- kubernetes
+inputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+  gateway_api_crd_details:
+    type: "@outputs/gateway_api_crd"
+    optional: false
+    default:
+      resource_type: gateway_api_crd
+      resource_name: default
+outputs:
+  default:
+    type: "@outputs/ingress"
+spec:
+  title: NGINX Gateway Fabric
+  type: object
+  properties:
+    private:
+      type: boolean
+      title: Private Load Balancer
+      description: Set load balancer as private/internal
+    disable_base_domain:
+      type: boolean
+      title: Disable Base Domain
+      description: Disable automatic creation of base domain for this gateway
+      default: false
+    domains:
+      title: Domains
+      description: Map of domain key to rules
+      type: object
+      x-ui-overrides-only: true
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Domain Object
+          description: Name of the domain object
+          type: object
+          properties:
+            domain:
+              type: string
+              title: Domain
+              description: Host name of the domain
+              pattern: ^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,6}$
+              x-ui-unique: true
+              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk'
+              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com, my-domain.co.uk'
+            alias:
+              type: string
+              title: Alias
+              description: Alias for the domain
+            certificate_reference:
+              type: string
+              title: Certificate Reference
+              description: Name of an existing TLS secret to use instead of cert-manager managed certificates
+              x-ui-toggle: true
+          required:
+          - domain
+          - alias
+    data_plane:
+      type: object
+      title: Data Plane (NGINX)
+      description: Configuration for NGINX pods that handle actual traffic
+      properties:
+        scaling:
+          type: object
+          title: Autoscaling
+          description: Horizontal Pod Autoscaler configuration
+          properties:
+            min_replicas:
+              type: integer
+              title: Minimum Replicas
+              description: Minimum number of NGINX pods (HPA lower bound)
+              default: 2
+            max_replicas:
+              type: integer
+              title: Maximum Replicas
+              description: Maximum number of NGINX pods (HPA upper bound)
+              default: 10
+            target_cpu_utilization_percentage:
+              type: integer
+              title: Target CPU Utilization (%)
+              description: Target CPU utilization percentage for HPA scaling
+              default: 70
+            target_memory_utilization_percentage:
+              type: integer
+              title: Target Memory Utilization (%)
+              description: Target memory utilization percentage for HPA scaling
+              default: 80
+        resources:
+          type: object
+          title: Resources
+          description: CPU and memory resources per NGINX pod
+          properties:
+            requests:
+              type: object
+              title: Resource Requests
+              description: Minimum resource requirements
+              properties:
+                cpu:
+                  type: string
+                  title: CPU Request
+                  description: Minimum CPU requirement (e.g., 250m, 500m, 1)
+                  pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+                  default: 250m
+                  x-ui-placeholder: 250m
+                memory:
+                  type: string
+                  title: Memory Request
+                  description: Minimum memory requirement (e.g., 256Mi, 512Mi, 1Gi)
+                  pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+                  default: 256Mi
+                  x-ui-placeholder: 256Mi
+            limits:
+              type: object
+              title: Resource Limits
+              description: Maximum resource limits
+              properties:
+                cpu:
+                  type: string
+                  title: CPU Limit
+                  description: Maximum CPU allowed (e.g., 1, 2, 500m)
+                  pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+                  default: "1"
+                  x-ui-placeholder: "1"
+                memory:
+                  type: string
+                  title: Memory Limit
+                  description: Maximum memory allowed (e.g., 512Mi, 1Gi, 2Gi)
+                  pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+                  default: 512Mi
+                  x-ui-placeholder: 512Mi
+    control_plane:
+      type: object
+      title: Control Plane (Gateway Controller)
+      description: Configuration for the NGINX Gateway Fabric controller that manages configuration
+      x-ui-toggle: true
+      properties:
+        scaling:
+          type: object
+          title: Autoscaling
+          description: Horizontal Pod Autoscaler configuration
+          properties:
+            min_replicas:
+              type: integer
+              title: Minimum Replicas
+              description: Minimum number of controller pods (HPA lower bound)
+              default: 2
+            max_replicas:
+              type: integer
+              title: Maximum Replicas
+              description: Maximum number of controller pods (HPA upper bound)
+              default: 3
+            target_cpu_utilization_percentage:
+              type: integer
+              title: Target CPU Utilization (%)
+              description: Target CPU utilization percentage for HPA scaling
+              default: 70
+            target_memory_utilization_percentage:
+              type: integer
+              title: Target Memory Utilization (%)
+              description: Target memory utilization percentage for HPA scaling
+              default: 80
+        resources:
+          type: object
+          title: Resources
+          description: CPU and memory resources per controller pod
+          properties:
+            requests:
+              type: object
+              title: Resource Requests
+              description: Minimum resource requirements
+              properties:
+                cpu:
+                  type: string
+                  title: CPU Request
+                  description: Minimum CPU requirement (e.g., 100m, 250m, 500m)
+                  pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+                  default: 200m
+                  x-ui-placeholder: 200m
+                memory:
+                  type: string
+                  title: Memory Request
+                  description: Minimum memory requirement (e.g., 256Mi, 512Mi)
+                  pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+                  default: 256Mi
+                  x-ui-placeholder: 256Mi
+            limits:
+              type: object
+              title: Resource Limits
+              description: Maximum resource limits
+              properties:
+                cpu:
+                  type: string
+                  title: CPU Limit
+                  description: Maximum CPU allowed (e.g., 500m, 1, 2)
+                  pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
+                  default: 500m
+                  x-ui-placeholder: 500m
+                memory:
+                  type: string
+                  title: Memory Limit
+                  description: Maximum memory allowed (e.g., 512Mi, 1Gi)
+                  pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
+                  default: 512Mi
+                  x-ui-placeholder: 512Mi
+    rules:
+      title: Routing Rules
+      description: Gateway API routing configurations (HTTP and gRPC)
+
+      type: object
+      patternProperties:
+        ^[a-zA-Z0-9_.-]*$:
+          title: Route Object
+          description: HTTP route configuration
+          type: object
+          properties:
+            disable:
+              type: boolean
+              title: Disable Route
+              description: Enable/Disable this route
+            domain_prefix:
+              type: string
+              title: Domain Prefix
+              description: Subdomain prefix
+              pattern: ^[a-z0-9]([a-z0-9-]{0,34}[a-z0-9])?$|^[a-z0-9]$
+              x-ui-placeholder: Enter the subdomain prefix
+              x-ui-error-message: Max 36 characters, only hyphens allowed, cannot start/end with hyphen
+            service_name:
+              type: string
+              title: Service Name
+              description: Kubernetes service name
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.service_name}
+                filterConditions:
+                - field: resourceType
+                  value: service
+              x-ui-typeable: true
+            namespace:
+              type: string
+              title: Service Namespace
+              description: Kubernetes service namespace
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/resources-info
+                method: GET
+                params:
+                  includeContent: false
+                labelKey: resourceName
+                valueKey: resourceName
+                valueTemplate: ${service.{{value}}.out.attributes.namespace}
+                filterConditions:
+                - field: resourceType
+                  value: service
+              x-ui-typeable: true
+            port:
+              type: string
+              title: Port
+              description: Service port number
+              x-ui-api-source:
+                endpoint: /cc-ui/v1/dropdown/stack/{{stackName}}/service/{{serviceName}}/overview
+                dynamicProperties:
+                  serviceName:
+                    key: service_name
+                    lookup: regex
+                    x-ui-lookup-regex: \${[^.]+\.([^.]+).*
+                method: GET
+                labelKey: port
+                valueKey: port
+                path: ports
+              x-ui-typeable: true
+            path:
+              type: string
+              title: Path
+              description: Path of the application (required for HTTP routes)
+              pattern: ^(/[^/]+)*(/)?$
+              x-ui-placeholder: Enter path (e.g., / or /api)
+              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /api'
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.grpc_config.enabled
+                values:
+                - false
+                - null
+            path_type:
+              type: string
+              title: Path Type
+              description: "Path matching type. PathPrefix (default) matches paths starting with the specified prefix. Use Exact for exact path matching."
+              enum:
+              - Exact
+              - PathPrefix
+              default: PathPrefix
+              x-ui-visible-if:
+                field: spec.rules.{{this}}.grpc_config.enabled
+                values:
+                - false
+                - null
+            header_matches:
+              type: object
+              title: Header-Based Routing
+              description: Route traffic based on HTTP headers
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Header Match
+                  properties:
+                    name:
+                      type: string
+                      title: Header Name
+                      description: HTTP header name to match
+                      x-ui-placeholder: X-API-Version
+                    value:
+                      type: string
+                      title: Header Value
+                      description: Header value to match
+                      x-ui-placeholder: v2
+                    type:
+                      type: string
+                      title: Match Type
+                      description: How to match the header value (Exact or RegularExpression)
+                      enum:
+                      - Exact
+                      - RegularExpression
+                      default: Exact
+                  required:
+                  - name
+                  - value
+            query_param_matches:
+              type: object
+              title: Query Parameter Matching
+              description: Route traffic based on query parameters
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: Query Param Match
+                  properties:
+                    name:
+                      type: string
+                      title: Parameter Name
+                      description: Query parameter name to match
+                      x-ui-placeholder: version
+                    value:
+                      type: string
+                      title: Parameter Value
+                      description: Query parameter value to match
+                      x-ui-placeholder: beta
+                    type:
+                      type: string
+                      title: Match Type
+                      description: How to match the parameter value (Exact or RegularExpression)
+                      enum:
+                      - Exact
+                      - RegularExpression
+                      default: Exact
+                  required:
+                  - name
+                  - value
+            method:
+              type: string
+              title: HTTP Method
+              description: Match requests by HTTP method
+              enum:
+              - ALL
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - HEAD
+              - OPTIONS
+              default: ALL
+              x-ui-toggle: true
+            request_header_modifier:
+              type: object
+              title: Request Header Modification
+              description: Modify request headers
+              x-ui-toggle: true
+              properties:
+                add:
+                  type: object
+                  title: Add Headers
+                  description: Headers to add to requests
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to add
+                          x-ui-placeholder: X-Custom-Header
+                        value:
+                          type: string
+                          title: Header Value
+                          description: Value for the header
+                          x-ui-placeholder: custom-value
+                      required:
+                      - name
+                      - value
+                set:
+                  type: object
+                  title: Set Headers
+                  description: Headers to set (override) in requests
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to set
+                          x-ui-placeholder: X-Request-Source
+                        value:
+                          type: string
+                          title: Header Value
+                          description: Value for the header
+                          x-ui-placeholder: gateway
+                      required:
+                      - name
+                      - value
+                remove:
+                  type: object
+                  title: Remove Headers
+                  description: Header names to remove from requests
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to remove
+                          x-ui-placeholder: X-Sensitive-Header
+                      required:
+                      - name
+            response_header_modifier:
+              type: object
+              title: Response Header Modification
+              description: Modify response headers
+              x-ui-toggle: true
+              properties:
+                add:
+                  type: object
+                  title: Add Headers
+                  description: Headers to add to responses
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to add
+                          x-ui-placeholder: X-Response-ID
+                        value:
+                          type: string
+                          title: Header Value
+                          description: Value for the header
+                          x-ui-placeholder: unique-id
+                      required:
+                      - name
+                      - value
+                set:
+                  type: object
+                  title: Set Headers
+                  description: Headers to set (override) in responses
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to set
+                          x-ui-placeholder: Cache-Control
+                        value:
+                          type: string
+                          title: Header Value
+                          description: Value for the header
+                          x-ui-placeholder: no-store
+                      required:
+                      - name
+                      - value
+                remove:
+                  type: object
+                  title: Remove Headers
+                  description: Header names to remove from responses
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        name:
+                          type: string
+                          title: Header Name
+                          description: Name of the header to remove
+                          x-ui-placeholder: Server
+                      required:
+                      - name
+            url_rewrite:
+              type: object
+              title: URL Rewriting
+              description: Rewrite request URLs
+              x-ui-toggle: true
+              patternProperties:
+                ^[a-zA-Z0-9_.-]*$:
+                  type: object
+                  title: URL Rewrite Rule
+                  properties:
+                    hostname:
+                      type: string
+                      title: Hostname
+                      description: New hostname for the request
+                      x-ui-placeholder: internal-api.svc.cluster.local
+                    path_type:
+                      type: string
+                      title: Path Rewrite Type
+                      description: How to rewrite the path (ReplaceFullPath or ReplacePrefixMatch)
+                      enum:
+                      - ReplaceFullPath
+                      - ReplacePrefixMatch
+                    replace_path:
+                      type: string
+                      title: Replace Path Value
+                      description: New path value (full path or prefix depending on type)
+                      x-ui-placeholder: /v2/api
+            canary_deployment:
+              type: object
+              title: Canary Deployment
+              description: Configure traffic splitting for canary deployments
+              x-ui-toggle: true
+              x-ui-skip: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Canary
+                  description: Enable canary deployment with traffic splitting
+                  default: false
+                canary_service:
+                  type: string
+                  title: Canary Service Name
+                  description: Name of the canary version service
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.canary_deployment.enabled
+                    values:
+                    - true
+                canary_weight:
+                  type: integer
+                  title: Canary Traffic Percentage
+                  description: Percentage of traffic to send to canary (0-100)
+                  minimum: 0
+                  maximum: 100
+                  default: 10
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.canary_deployment.enabled
+                    values:
+                    - true
+            request_mirror:
+              type: object
+              title: Request Mirroring
+              description: Mirror traffic to a secondary backend for testing
+              x-ui-toggle: true
+              x-ui-skip: true
+              properties:
+                service_name:
+                  type: string
+                  title: Mirror Service Name
+                  description: Name of the service to mirror traffic to
+                port:
+                  type: string
+                  title: Mirror Service Port
+                  description: Port of the mirror service
+                namespace:
+                  type: string
+                  title: Mirror Service Namespace
+                  description: Namespace of the mirror service
+            timeouts:
+              type: object
+              title: Request Timeouts
+              description: Configure request and backend timeouts
+              x-ui-toggle: true
+              properties:
+                request:
+                  type: string
+                  title: Request Timeout
+                  description: Total request timeout (e.g., 30s, 1m, 5m)
+                  pattern: ^\d+[smh]$
+                  default: 300s
+                  x-ui-placeholder: '300s'
+                backend_request:
+                  type: string
+                  title: Backend Request Timeout
+                  description: Backend response timeout (e.g., 30s, 1m, 5m)
+                  default: 300s
+                  pattern: ^\d+[smh]$
+                  x-ui-placeholder: '30s'
+            cors:
+              type: object
+              title: CORS Configuration
+              description: Configure Cross-Origin Resource Sharing
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable CORS
+                  description: Enable Cross-Origin Resource Sharing headers
+                  default: false
+                allow_origins:
+                  type: object
+                  title: Allowed Origins
+                  description: List of allowed origins (* for all)
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enabled
+                    values:
+                    - true
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Origin
+                      properties:
+                        origin:
+                          type: string
+                          title: Origin URL
+                          description: Allowed origin URL
+                          x-ui-placeholder: https://example.com
+                      required:
+                      - origin
+                allow_methods:
+                  type: object
+                  title: Allowed Methods
+                  description: HTTP methods allowed for CORS requests
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enabled
+                    values:
+                    - true
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Method
+                      properties:
+                        method:
+                          type: string
+                          title: HTTP Method
+                          description: HTTP method to allow
+                          enum:
+                          - GET
+                          - POST
+                          - PUT
+                          - DELETE
+                          - PATCH
+                          - OPTIONS
+                          - HEAD
+                      required:
+                      - method
+                allow_headers:
+                  type: object
+                  title: Allowed Headers
+                  description: HTTP headers allowed in CORS requests
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enabled
+                    values:
+                    - true
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Header
+                      properties:
+                        header:
+                          type: string
+                          title: Header Name
+                          description: Header name to allow
+                          x-ui-placeholder: Content-Type
+                      required:
+                      - header
+                allow_credentials:
+                  type: boolean
+                  title: Allow Credentials
+                  description: Allow cookies and authentication headers in CORS requests
+                  default: false
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enabled
+                    values:
+                    - true
+                max_age:
+                  type: integer
+                  title: Preflight Cache Max Age
+                  description: Seconds to cache preflight response
+                  default: 86400
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.cors.enabled
+                    values:
+                    - true
+            grpc_config:
+              type: object
+              title: gRPC Configuration
+              description: Configure gRPC routing
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable gRPC
+                  description: Enable gRPC routing for this service
+                  default: false
+                match_all_methods:
+                  type: boolean
+                  title: Match All Methods
+                  description: Route all gRPC traffic (no method filtering)
+                  default: true
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.grpc_config.enabled
+                    values:
+                    - true
+                method_match:
+                  type: object
+                  title: gRPC Method Matching
+                  description: Whitelist specific gRPC services/methods
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.grpc_config.match_all_methods
+                    values:
+                    - false
+                  patternProperties:
+                    ^[a-zA-Z0-9_.-]*$:
+                      type: object
+                      title: Method Match
+                      properties:
+                        service:
+                          type: string
+                          title: Service Name
+                          description: Protobuf service name (e.g., helloworld.Greeter)
+                        method:
+                          type: string
+                          title: Method Name
+                          description: gRPC method name (e.g., SayHello)
+                        type:
+                          type: string
+                          title: Match Type
+                          description: NGINX Gateway Fabric only supports Exact matching
+                          enum:
+                          - Exact
+                          default: Exact
+                      required:
+                      - service
+                      - method
+          required:
+          - service_name
+          - port
+          - namespace
+          x-ui-order:
+          - disable
+          - domain_prefix
+          - service_name
+          - namespace
+          - port
+          - path
+          - path_type
+          - method
+          - timeouts
+          - cors
+          - header_matches
+          - query_param_matches
+          - url_rewrite
+          - request_header_modifier
+          - response_header_modifier
+          - grpc_config
+# Disabling below things as too advanced for initial release
+          # - canary_deployment
+          # - request_mirror
+    force_ssl_redirection:
+      type: boolean
+      title: Force SSL Redirection
+      description: Force HTTP to HTTPS redirection
+    body_size:
+      type: string
+      title: Max Body Size
+      description: Maximum allowed size of the client request body (e.g., 150m, 1g)
+      pattern: ^\d{1,4}(k|m|g)?$
+      default: 150m
+      x-ui-placeholder: 150m
+      x-ui-toggle: true
+    helm_values:
+      type: object
+      title: Additional Helm Values
+      description: "Additional Helm values to merge with the default configuration. See available values at: https://github.com/nginxinc/nginx-gateway-fabric/blob/main/charts/nginx-gateway-fabric/values.yaml"
+      x-ui-toggle: true
+      x-ui-yaml-editor: true
+    domain_prefix_override:
+      type: string
+      title: Domain Prefix Override
+      description: Override the automatically generated domain prefix
+      x-ui-toggle: true
+    disable_endpoint_validation:
+      type: boolean
+      title: Disable Endpoint Validation
+      description: Disable endpoint validation for cert-manager (uses DNS validation instead of HTTP)
+      default: false
+      x-ui-toggle: true
+    helm_wait:
+      type: boolean
+      title: Helm Wait
+      description: Wait for all resources to be ready before marking the release as successful
+      default: true
+      x-ui-toggle: true
+  required:
+  - private
+  - rules
+  - force_ssl_redirection
+  x-ui-order:
+  - private
+  - domain_prefix_override
+  - disable_base_domain
+  - domains
+  - force_ssl_redirection
+  - body_size
+  - disable_endpoint_validation
+  - data_plane
+  - control_plane
+  - helm_values
+  - helm_wait
+  - rules
+sample:
+  kind: ingress
+  flavor: nginx_gateway_fabric_legacy
+  version: '1.0'
+  disabled: true
+  metadata:
+    annotations: {}
+  spec:
+    private: false
+    disable_base_domain: false
+    force_ssl_redirection: true
+    body_size: 150m
+    data_plane:
+      scaling:
+        min_replicas: 2
+        max_replicas: 5
+        target_cpu_utilization_percentage: 70
+        target_memory_utilization_percentage: 80
+      resources:
+        requests:
+          cpu: 250m
+          memory: 256Mi
+        limits:
+          cpu: "1"
+          memory: 512Mi
+    control_plane:
+      scaling:
+        min_replicas: 2
+        max_replicas: 3
+        target_cpu_utilization_percentage: 70
+        target_memory_utilization_percentage: 80
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+    rules: {}
