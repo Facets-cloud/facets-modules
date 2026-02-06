@@ -496,7 +496,7 @@ locals {
       spec = {
         selector = {
           matchLabels = {
-            "app.kubernetes.io/name"     = local.helm_release_name
+            "app.kubernetes.io/name"     = "nginx-gateway-fabric"
             "app.kubernetes.io/instance" = local.helm_release_name
           }
         }
@@ -526,11 +526,18 @@ locals {
         namespace = ns
       }
       spec = {
-        from = [{
-          group     = "gateway.networking.k8s.io"
-          kind      = "HTTPRoute"
-          namespace = var.environment.namespace
-        }]
+        from = [
+          {
+            group     = "gateway.networking.k8s.io"
+            kind      = "HTTPRoute"
+            namespace = var.environment.namespace
+          },
+          {
+            group     = "gateway.networking.k8s.io"
+            kind      = "GRPCRoute"
+            namespace = var.environment.namespace
+          }
+        ]
         to = [{
           group = ""
           kind  = "Service"

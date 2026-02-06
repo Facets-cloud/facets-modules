@@ -1,12 +1,12 @@
 intent: ingress
 flavor: nginx_gateway_fabric_legacy
-version: '1.0'
+version: "1.0"
 description: NGINX Gateway Fabric - Kubernetes Gateway API implementation (Legacy module format)
 clouds:
-- aws
-- azure
-- gcp
-- kubernetes
+  - aws
+  - azure
+  - gcp
+  - kubernetes
 inputs:
   kubernetes_details:
     type: "@outputs/kubernetes"
@@ -57,8 +57,8 @@ spec:
               description: Host name of the domain
               pattern: ^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,6}$
               x-ui-unique: true
-              x-ui-placeholder: 'Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk'
-              x-ui-error-message: 'Value doesn''t match the format. Eg: example.com, my-domain.co.uk'
+              x-ui-placeholder: "Domain to map ingress. Eg: example.com, sub.example.com, my-domain.co.uk"
+              x-ui-error-message: "Value doesn't match the format. Eg: example.com, my-domain.co.uk"
             alias:
               type: string
               title: Alias
@@ -69,8 +69,8 @@ spec:
               description: Name of an existing TLS secret to use instead of cert-manager managed certificates
               x-ui-toggle: true
           required:
-          - domain
-          - alias
+            - domain
+            - alias
     data_plane:
       type: object
       title: Data Plane (NGINX)
@@ -253,8 +253,8 @@ spec:
                 valueKey: resourceName
                 valueTemplate: ${service.{{value}}.out.attributes.service_name}
                 filterConditions:
-                - field: resourceType
-                  value: service
+                  - field: resourceType
+                    value: service
               x-ui-typeable: true
             namespace:
               type: string
@@ -269,8 +269,8 @@ spec:
                 valueKey: resourceName
                 valueTemplate: ${service.{{value}}.out.attributes.namespace}
                 filterConditions:
-                - field: resourceType
-                  value: service
+                  - field: resourceType
+                    value: service
               x-ui-typeable: true
             port:
               type: string
@@ -294,25 +294,25 @@ spec:
               description: Path of the application (required for HTTP routes)
               pattern: ^(/[^/]+)*(/)?$
               x-ui-placeholder: Enter path (e.g., / or /api)
-              x-ui-error-message: 'Value doesn''t match pattern, eg: / or /api'
+              x-ui-error-message: "Value doesn't match pattern, eg: / or /api"
               x-ui-visible-if:
                 field: spec.rules.{{this}}.grpc_config.enabled
                 values:
-                - false
-                - null
+                  - false
+                  - null
             path_type:
               type: string
               title: Path Type
               description: "Path matching type. PathPrefix (default) matches paths starting with the specified prefix. Use Exact for exact path matching."
               enum:
-              - Exact
-              - PathPrefix
+                - Exact
+                - PathPrefix
               default: PathPrefix
               x-ui-visible-if:
                 field: spec.rules.{{this}}.grpc_config.enabled
                 values:
-                - false
-                - null
+                  - false
+                  - null
             header_matches:
               type: object
               title: Header-Based Routing
@@ -338,12 +338,12 @@ spec:
                       title: Match Type
                       description: How to match the header value (Exact or RegularExpression)
                       enum:
-                      - Exact
-                      - RegularExpression
+                        - Exact
+                        - RegularExpression
                       default: Exact
                   required:
-                  - name
-                  - value
+                    - name
+                    - value
             query_param_matches:
               type: object
               title: Query Parameter Matching
@@ -369,25 +369,25 @@ spec:
                       title: Match Type
                       description: How to match the parameter value (Exact or RegularExpression)
                       enum:
-                      - Exact
-                      - RegularExpression
+                        - Exact
+                        - RegularExpression
                       default: Exact
                   required:
-                  - name
-                  - value
+                    - name
+                    - value
             method:
               type: string
               title: HTTP Method
               description: Match requests by HTTP method
               enum:
-              - ALL
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - PATCH
-              - HEAD
-              - OPTIONS
+                - ALL
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - PATCH
+                - HEAD
+                - OPTIONS
               default: ALL
               x-ui-toggle: true
             request_header_modifier:
@@ -416,8 +416,8 @@ spec:
                           description: Value for the header
                           x-ui-placeholder: custom-value
                       required:
-                      - name
-                      - value
+                        - name
+                        - value
                 set:
                   type: object
                   title: Set Headers
@@ -438,8 +438,8 @@ spec:
                           description: Value for the header
                           x-ui-placeholder: gateway
                       required:
-                      - name
-                      - value
+                        - name
+                        - value
                 remove:
                   type: object
                   title: Remove Headers
@@ -455,7 +455,7 @@ spec:
                           description: Name of the header to remove
                           x-ui-placeholder: X-Sensitive-Header
                       required:
-                      - name
+                        - name
             response_header_modifier:
               type: object
               title: Response Header Modification
@@ -482,8 +482,8 @@ spec:
                           description: Value for the header
                           x-ui-placeholder: unique-id
                       required:
-                      - name
-                      - value
+                        - name
+                        - value
                 set:
                   type: object
                   title: Set Headers
@@ -504,8 +504,8 @@ spec:
                           description: Value for the header
                           x-ui-placeholder: no-store
                       required:
-                      - name
-                      - value
+                        - name
+                        - value
                 remove:
                   type: object
                   title: Remove Headers
@@ -521,7 +521,7 @@ spec:
                           description: Name of the header to remove
                           x-ui-placeholder: Server
                       required:
-                      - name
+                        - name
             url_rewrite:
               type: object
               title: URL Rewriting
@@ -542,8 +542,8 @@ spec:
                       title: Path Rewrite Type
                       description: How to rewrite the path (ReplaceFullPath or ReplacePrefixMatch)
                       enum:
-                      - ReplaceFullPath
-                      - ReplacePrefixMatch
+                        - ReplaceFullPath
+                        - ReplacePrefixMatch
                     replace_path:
                       type: string
                       title: Replace Path Value
@@ -568,7 +568,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.canary_deployment.enabled
                     values:
-                    - true
+                      - true
                 canary_weight:
                   type: integer
                   title: Canary Traffic Percentage
@@ -579,7 +579,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.canary_deployment.enabled
                     values:
-                    - true
+                      - true
             request_mirror:
               type: object
               title: Request Mirroring
@@ -611,14 +611,14 @@ spec:
                   description: Total request timeout (e.g., 30s, 1m, 5m)
                   pattern: ^\d+[smh]$
                   default: 300s
-                  x-ui-placeholder: '300s'
+                  x-ui-placeholder: "300s"
                 backend_request:
                   type: string
                   title: Backend Request Timeout
                   description: Backend response timeout (e.g., 30s, 1m, 5m)
                   default: 300s
                   pattern: ^\d+[smh]$
-                  x-ui-placeholder: '30s'
+                  x-ui-placeholder: "300s"
             cors:
               type: object
               title: CORS Configuration
@@ -637,7 +637,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enabled
                     values:
-                    - true
+                      - true
                   patternProperties:
                     ^[a-zA-Z0-9_.-]*$:
                       type: object
@@ -649,7 +649,7 @@ spec:
                           description: Allowed origin URL
                           x-ui-placeholder: https://example.com
                       required:
-                      - origin
+                        - origin
                 allow_methods:
                   type: object
                   title: Allowed Methods
@@ -657,7 +657,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enabled
                     values:
-                    - true
+                      - true
                   patternProperties:
                     ^[a-zA-Z0-9_.-]*$:
                       type: object
@@ -668,15 +668,15 @@ spec:
                           title: HTTP Method
                           description: HTTP method to allow
                           enum:
-                          - GET
-                          - POST
-                          - PUT
-                          - DELETE
-                          - PATCH
-                          - OPTIONS
-                          - HEAD
+                            - GET
+                            - POST
+                            - PUT
+                            - DELETE
+                            - PATCH
+                            - OPTIONS
+                            - HEAD
                       required:
-                      - method
+                        - method
                 allow_headers:
                   type: object
                   title: Allowed Headers
@@ -684,7 +684,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enabled
                     values:
-                    - true
+                      - true
                   patternProperties:
                     ^[a-zA-Z0-9_.-]*$:
                       type: object
@@ -696,7 +696,7 @@ spec:
                           description: Header name to allow
                           x-ui-placeholder: Content-Type
                       required:
-                      - header
+                        - header
                 allow_credentials:
                   type: boolean
                   title: Allow Credentials
@@ -705,7 +705,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enabled
                     values:
-                    - true
+                      - true
                 max_age:
                   type: integer
                   title: Preflight Cache Max Age
@@ -714,7 +714,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.cors.enabled
                     values:
-                    - true
+                      - true
             grpc_config:
               type: object
               title: gRPC Configuration
@@ -734,7 +734,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.grpc_config.enabled
                     values:
-                    - true
+                      - true
                 method_match:
                   type: object
                   title: gRPC Method Matching
@@ -742,7 +742,7 @@ spec:
                   x-ui-visible-if:
                     field: spec.rules.{{this}}.grpc_config.match_all_methods
                     values:
-                    - false
+                      - false
                   patternProperties:
                     ^[a-zA-Z0-9_.-]*$:
                       type: object
@@ -761,35 +761,35 @@ spec:
                           title: Match Type
                           description: NGINX Gateway Fabric only supports Exact matching
                           enum:
-                          - Exact
+                            - Exact
                           default: Exact
                       required:
-                      - service
-                      - method
+                        - service
+                        - method
           required:
-          - service_name
-          - port
-          - namespace
+            - service_name
+            - port
+            - namespace
           x-ui-order:
-          - disable
-          - domain_prefix
-          - service_name
-          - namespace
-          - port
-          - path
-          - path_type
-          - method
-          - timeouts
-          - cors
-          - header_matches
-          - query_param_matches
-          - url_rewrite
-          - request_header_modifier
-          - response_header_modifier
-          - grpc_config
-# Disabling below things as too advanced for initial release
-          # - canary_deployment
-          # - request_mirror
+            - disable
+            - domain_prefix
+            - service_name
+            - namespace
+            - port
+            - path
+            - path_type
+            - method
+            - timeouts
+            - cors
+            - header_matches
+            - query_param_matches
+            - url_rewrite
+            - request_header_modifier
+            - response_header_modifier
+            - grpc_config
+    # Disabling below things as too advanced for initial release
+    # - canary_deployment
+    # - request_mirror
     force_ssl_redirection:
       type: boolean
       title: Force SSL Redirection
@@ -826,26 +826,26 @@ spec:
       default: true
       x-ui-toggle: true
   required:
-  - private
-  - rules
-  - force_ssl_redirection
+    - private
+    - rules
+    - force_ssl_redirection
   x-ui-order:
-  - private
-  - domain_prefix_override
-  - disable_base_domain
-  - domains
-  - force_ssl_redirection
-  - body_size
-  - disable_endpoint_validation
-  - data_plane
-  - control_plane
-  - helm_values
-  - helm_wait
-  - rules
+    - private
+    - domain_prefix_override
+    - disable_base_domain
+    - domains
+    - force_ssl_redirection
+    - body_size
+    - disable_endpoint_validation
+    - data_plane
+    - control_plane
+    - helm_values
+    - helm_wait
+    - rules
 sample:
   kind: ingress
   flavor: nginx_gateway_fabric_legacy
-  version: '1.0'
+  version: "1.0"
   disabled: true
   metadata:
     annotations: {}
