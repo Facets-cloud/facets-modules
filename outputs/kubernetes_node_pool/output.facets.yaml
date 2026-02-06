@@ -10,3 +10,5 @@ out:
         type: array
       node_selector:
         type: object
+      topology_spread_key:
+        type: string
