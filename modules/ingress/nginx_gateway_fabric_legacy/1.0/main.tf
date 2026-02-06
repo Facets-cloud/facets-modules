@@ -866,14 +866,27 @@ resource "helm_release" "nginx_gateway_fabric" {
       # - clientMaxBodySize (use ClientSettingsPolicy body.maxSize instead)
       # - proxyConnectTimeout, proxySendTimeout, proxyReadTimeout (not exposed in any CRD)
       nginx = {
-        config = {
-          # Enable Proxy Protocol to get real client IP with externalTrafficPolicy: Cluster
-          rewriteClientIP = local.cloud_provider == "AWS" ? {
-            mode = "ProxyProtocol"
-            trustedAddresses = [
-              {
-                type  = "CIDR"
-                value = "0.0.0.0/0"
+        # Enable Proxy Protocol to get real client IP with externalTrafficPolicy: Cluster (AWS only)
+        # Access logs are always enabled with upstream service name for debugging
+        config = merge(
+          local.cloud_provider == "AWS" ? {
+            rewriteClientIP = {
+              mode = "ProxyProtocol"
+              trustedAddresses = [
+                {
+                  type  = "CIDR"
+                  value = "0.0.0.0/0"
+                }
+              ]
+            }
+          } : {},
+          {
+            logging = {
+              errorLevel = "info"
+              agentLevel = "info"
+              accessLog = {
+                disable = false
+                format  = "$remote_addr - $remote_user [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" upstream=$upstream_addr upstream_name=$proxy_host"
               }
             ]
           } : null
