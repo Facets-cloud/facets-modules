@@ -93,10 +93,7 @@ locals {
   disable_endpoint_validation = lookup(var.instance.spec, "disable_endpoint_validation", false) || lookup(var.instance.spec, "private", false)
 
   # Common labels for all resources
-  # Note: app.kubernetes.io/instance must match the Helm release name for selector compatibility
   common_labels = {
-    "app.kubernetes.io/name"       = "nginx-gateway-fabric"
-    "app.kubernetes.io/instance"   = "${local.name}-nginx-fabric"
     "app.kubernetes.io/managed-by" = "facets"
     "facets.cloud/module"          = "nginx_gateway_fabric"
     "facets.cloud/instance"        = var.instance_name
@@ -481,6 +478,9 @@ locals {
     } if lookup(lookup(v, "grpc_config", {}), "enabled", false)
   }
 
+  # Helm release name - keep under 63 chars for k8s label limit
+  helm_release_name = substr(local.name, 0, min(length(local.name), 63))
+
   # ServiceMonitor (always enabled with defaults)
   servicemonitor_resources = {
     "servicemonitor-${local.name}" = {
@@ -496,8 +496,8 @@ locals {
       spec = {
         selector = {
           matchLabels = {
-            "app.kubernetes.io/name"     = "nginx-gateway-fabric"
-            "app.kubernetes.io/instance" = "${local.name}-nginx-fabric"
+            "app.kubernetes.io/name"     = local.helm_release_name
+            "app.kubernetes.io/instance" = local.helm_release_name
           }
         }
         endpoints = [{
@@ -921,7 +921,7 @@ resource "helm_release" "nginx_gateway_fabric" {
         ]
 
         service = {
-          type                  = "LoadBalancer"
+          type = "LoadBalancer"
           # loadBalancerClass     = local.cloud_provider == "AWS" ? "service.k8s.aws/nlb" : ""
           externalTrafficPolicy = "Cluster"
           # Service patches for annotations and labels
