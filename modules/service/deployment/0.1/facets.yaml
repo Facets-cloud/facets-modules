@@ -8,6 +8,10 @@ clouds:
 - azure
 - gcp
 - kubernetes
+inputs:
+  kubernetes_node_pool_details:
+    optional: true
+    type: "@outputs/kubernetes_node_pool"
 artifact_inputs:
   primary:
     attribute_path: "spec.release.image"
