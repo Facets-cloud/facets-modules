@@ -436,28 +436,28 @@ Mirror traffic to a secondary service for testing:
 
 ### Custom Domains
 
-Configure custom domains at the root level:
+Configure custom domains inside spec:
 
 ```json
 {
   "kind": "ingress",
   "flavor": "nginx_gateway_fabric_legacy",
   "version": "1.0",
-  "domains": {
-    "production": {
-      "domain": "api.example.com",
-      "alias": "prod"
-    },
-    "staging": {
-      "domain": "staging-api.example.com",
-      "alias": "staging",
-      "certificate_reference": "staging-tls"
-    }
-  },
   "spec": {
     "private": false,
     "disable_base_domain": true,
     "force_ssl_redirection": true,
+    "domains": {
+      "production": {
+        "domain": "api.example.com",
+        "alias": "prod"
+      },
+      "staging": {
+        "domain": "staging-api.example.com",
+        "alias": "staging",
+        "certificate_reference": "staging-tls"
+      }
+    },
     "rules": {
       "api": {
         "service_name": "api-service",
@@ -509,11 +509,13 @@ Use existing TLS certificates:
 
 ```json
 {
-  "domains": {
-    "custom": {
-      "domain": "api.example.com",
-      "alias": "api",
-      "certificate_reference": "my-existing-tls-secret"
+  "spec": {
+    "domains": {
+      "custom": {
+        "domain": "api.example.com",
+        "alias": "api",
+        "certificate_reference": "my-existing-tls-secret"
+      }
     }
   }
 }
@@ -603,7 +605,7 @@ See available values: https://github.com/nginxinc/nginx-gateway-fabric/blob/main
 
 | Output | Description |
 |--------|-------------|
-| `domains` | Map of all configured domains |
+| `domains` | List of all configured domains |
 | `domain` | Base domain (if not disabled) |
 | `secure_endpoint` | HTTPS endpoint for base domain |
 | `gateway_class` | GatewayClass name |
