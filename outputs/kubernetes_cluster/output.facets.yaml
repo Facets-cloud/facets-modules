@@ -4,9 +4,10 @@ out:
   title: Kubernetes Cluster
   description: Kubernetes
   properties:
-    interfaces: null
+    interfaces:
+      type: object
     attributes:
-      legacy_outputs:
-        type: object
-        required: true
-        secret: true
+      type: object
+      properties:
+        legacy_outputs:
+          type: object
