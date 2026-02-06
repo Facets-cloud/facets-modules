@@ -24,6 +24,12 @@ inputs:
     default:
       resource_type: gateway_api_crd
       resource_name: default
+  prometheus_details:
+    type: "@outputs/prometheus"
+    optional: true
+    default:
+      resource_type: prometheus
+      resource_name: default
 outputs:
   default:
     type: "@outputs/ingress"
