@@ -93,7 +93,7 @@ resource "kubernetes_job_v1" "gateway_api_crd_installer" {
 
         container {
           name    = "kubectl"
-          image   = "bitnami/kubectl:latest"
+          image   = "bitnami/kubectl:1.31.4"
           command = ["/bin/sh", "-c"]
           args = [
             # Using --server-side to avoid annotation size limit (262KB)
