@@ -1,0 +1,50 @@
+intent: gateway_api_crd
+flavor: legacy
+version: "1.0"
+description: Installs Kubernetes Gateway API CRDs (Legacy module format)
+clouds:
+  - aws
+  - azure
+  - gcp
+  - kubernetes
+inputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+outputs:
+  default:
+    type: "@outputs/gateway_api_crd"
+spec:
+  title: Gateway API CRD Configuration
+  type: object
+  properties:
+    channel:
+      type: string
+      default: experimental
+      description: Gateway API release channel
+      enum:
+        - standard
+        - experimental
+    version:
+      type: string
+      default: v1.4.1
+      description: Gateway API version to install
+      enum:
+        - v1.4.1
+        - v1.4.0
+        - v1.3.0
+        - v1.2.0
+sample:
+  kind: gateway_api_crd
+  version: "1.0"
+  flavor: legacy
+  disabled: true
+  spec:
+    channel: experimental
+    version: v1.4.1
