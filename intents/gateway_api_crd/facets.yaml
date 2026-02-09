@@ -1,0 +1,8 @@
+name: gateway_api_crd
+type: K8s
+displayName: Gateway API CRD
+description: Kubernetes Gateway API Custom Resource Definitions for advanced networking capabilities.
+iconUrl: https://uploads-ssl.webflow.com/6252ef50a9f5d4afb6983bc3/669fa0ccb5a2964fe7f4d754_k8s_resource.svg
+outputs:
+  - name: default
+    type: "@outputs/gateway_api_crd"
