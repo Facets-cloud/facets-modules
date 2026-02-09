@@ -93,11 +93,11 @@ resource "kubernetes_job_v1" "gateway_api_crd_installer" {
 
         container {
           name    = "kubectl"
-          image   = "bitnami/kubectl:1.31.4"
-          command = ["/bin/sh", "-c"]
+          image   = "registry.k8s.io/kubectl:v1.31.4"
+          command = ["kubectl"]
           args = [
             # Using --server-side to avoid annotation size limit (262KB)
-            "kubectl apply --server-side -f ${local.install_url}"
+            "apply", "--server-side", "-f", local.install_url
           ]
         }
       }
