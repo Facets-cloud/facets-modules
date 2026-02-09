@@ -28,8 +28,8 @@ inputs:
     type: "@outputs/prometheus"
     optional: true
     default:
-      resource_type: prometheus
-      resource_name: default
+      resource_type: configuration
+      resource_name: prometheus
 outputs:
   default:
     type: "@outputs/ingress"
