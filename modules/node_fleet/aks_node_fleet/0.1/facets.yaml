@@ -1,0 +1,155 @@
+flavor: aks_node_fleet
+version: '0.1'
+intent: kubernetes_node_pool
+description: AKS Node Fleet module for provisioning multiple node pools
+clouds:
+- azure
+inputs:
+  kubernetes_details:
+    optional: false
+    type: '@outputs/kubernetes'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+    - kubernetes
+    - kubernetes-alpha
+    - helm
+  network_details:
+    optional: false
+    type: '@outputs/azure_vpc'
+    default:
+      resource_type: network
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/kubernetes_node_pool'
+spec:
+  type: object
+  title: AKS Node Fleet Spec
+  description: Configuration for the AKS Node Fleet
+  properties:
+    labels:
+      title: Fleet Labels
+      description: Map of labels to be added to all nodes in the fleet. Enter key-value
+        pair for labels in YAML format.
+      type: object
+      x-ui-placeholder: 'Eg. key1: value1'
+      x-ui-yaml-editor: true
+    taints:
+      title: Fleet Taints
+      x-ui-overrides-only: true
+      description: List of Kubernetes taints which should be applied to all nodes
+        in this fleet
+      type: array
+      items:
+        type: object
+        title: Taint Object
+        required:
+        - key
+        - value
+        - effect
+        properties:
+          key:
+            title: Taint Key
+            description: Taint Key
+            type: string
+            x-ui-placeholder: CriticalAddonsOnly
+          value:
+            title: Taint Value
+            description: Taint Value
+            type: string
+            x-ui-placeholder: 'true'
+          effect:
+            title: Taint Effect
+            description: Taint Effect (NoSchedule, PreferNoSchedule, or NoExecute)
+            type: string
+            enum:
+            - NoSchedule
+            - PreferNoSchedule
+            - NoExecute
+            x-ui-placeholder: NoSchedule
+    node_pools:
+      title: Node Pools
+      description: Configuration for multiple node pools in the fleet
+      type: object
+      patternProperties:
+        ^[a-zA-Z][a-zA-Z0-9_-]*$:
+          title: Node Pool Configuration
+          description: Individual node pool configuration
+          type: object
+          properties:
+            instance_type:
+              type: string
+              title: Instance type for nodes in this node pool
+              x-ui-placeholder: Eg. Standard_D4a_v4
+            max_node_count:
+              type: integer
+              title: Max Node Count
+              description: Maximum number of nodes in this node pool
+              minimum: 0
+              maximum: 100
+            min_node_count:
+              title: Min Node Count
+              description: Minimum number of nodes in this node pool
+              type: integer
+              minimum: 0
+              maximum: 100
+            disk_size:
+              title: Disk Size
+              description: Size of the disk in GiB for nodes in this node pool
+              type: string
+              pattern: ^[0-9]+G$
+              x-ui-placeholder: eg. 50G
+              x-ui-error-message: Value doesn't match the format eg. 50G. Minimum
+                is 50G and max is 1000G
+            type:
+              title: Node Type
+              description: Type of node pool (spot for cost savings or regular for
+                guaranteed availability)
+              type: string
+              enum:
+              - spot
+              - regular
+              default: regular
+            node_labels:
+              title: Node Labels
+              description: Map of Kubernetes labels to be added to nodes in this specific
+                node pool
+              type: object
+              x-ui-placeholder: 'Eg. workload-type: compute-intensive'
+              x-ui-yaml-editor: true
+sample:
+  flavor: aks_node_fleet
+  kind: kubernetes_node_pool
+  metadata:
+    name: aksnp
+    tags:
+      managed-by: facets
+  disabled: false
+  version: '0.1'
+  spec:
+    labels:
+      environment: production
+      fleet: compute
+    taints:
+    - key: dedicated
+      value: compute
+      effect: NoSchedule
+    node_pools:
+      compute-pool:
+        instance_type: Standard_D2a_v4
+        min_node_count: 1
+        max_node_count: 2
+        disk_size: 100G
+        type: regular
+        node_labels:
+          workload: compute-intensive
+      spot-pool:
+        instance_type: Standard_D2as_v4
+        min_node_count: 1
+        max_node_count: 2
+        disk_size: 100G
+        type: spot
+        node_labels:
+          workload: batch-processing
