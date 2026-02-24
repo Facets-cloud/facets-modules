@@ -39,6 +39,6 @@ sample:
     size:
       volume: 2Gi
   advanced:
-    accessModes:
+    access_modes:
     - ReadWriteOnce
     storage_class_name: gp2
