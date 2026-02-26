@@ -477,6 +477,16 @@ locals {
             }
           ] : []
 
+          # Basic auth filter (applied when basic_auth is enabled and route doesn't have disable_auth)
+          filters = lookup(var.instance.spec, "basic_auth", false) && !lookup(v, "disable_auth", false) ? [{
+            type = "ExtensionRef"
+            extensionRef = {
+              group = "gateway.nginx.org"
+              kind  = "AuthenticationFilter"
+              name  = "${local.name}-basic-auth"
+            }
+          }] : []
+
           backendRefs = [{
             name      = v.service_name
             port      = tonumber(v.port)
