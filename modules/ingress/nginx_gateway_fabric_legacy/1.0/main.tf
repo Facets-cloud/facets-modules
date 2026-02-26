@@ -238,8 +238,10 @@ locals {
     }
   } : {}
 
-  # HTTPRoute Resources (HTTPS traffic - port 443)
+  # HTTPRoute Resources (HTTPS traffic - port 443, and HTTP - port 80 when force_ssl_redirection is disabled)
   # Note: GatewayClass, Gateway, and NginxProxy are created by the Helm chart
+  force_ssl_redirection = lookup(var.instance.spec, "force_ssl_redirection", false)
+
   httproute_resources = {
     for k, v in local.rulesFiltered : "httproute-${lower(var.instance_name)}-${k}" => {
       apiVersion = "gateway.networking.k8s.io/v1"
@@ -252,21 +254,30 @@ locals {
         # Reference the correct listener(s) for this route's hostnames
         # If route has domain_prefix, reference the additional hostname listeners
         # If route has no domain_prefix, reference the base domain listeners
-        parentRefs = lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
-          # No domain_prefix - use base domain listeners
-          for domain_key, domain in local.domains : {
+        # When force_ssl_redirection is disabled, also attach to HTTP listener so traffic is served on port 80
+        parentRefs = concat(
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
+            # No domain_prefix - use base domain listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${domain_key}"
+            }
+            ] : [
+            # Has domain_prefix - use additional hostname listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+            }
+          ],
+          # Also attach to HTTP listener when SSL redirection is disabled
+          !local.force_ssl_redirection ? [{
             name        = local.name
             namespace   = var.environment.namespace
-            sectionName = "https-${domain_key}"
-          }
-          ] : [
-          # Has domain_prefix - use additional hostname listeners
-          for domain_key, domain in local.domains : {
-            name        = local.name
-            namespace   = var.environment.namespace
-            sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-          }
-        ]
+            sectionName = "http"
+          }] : []
+        )
 
         # Include all domains in hostnames - Gateway API supports multiple hostnames per route
         hostnames = distinct([
@@ -282,7 +293,7 @@ locals {
             [merge(
               {
                 path = {
-                  type  = lookup(v, "path_type", "PathPrefix")
+                  type  = lookup(v, "path_type", "RegularExpression")
                   value = lookup(v, "path", "/")
                 }
               },
@@ -314,6 +325,15 @@ locals {
           )
 
           filters = concat(
+            # Basic auth filter (applied when basic_auth is enabled and route doesn't have disable_auth)
+            lookup(var.instance.spec, "basic_auth", false) && !lookup(v, "disable_auth", false) ? [{
+              type = "ExtensionRef"
+              extensionRef = {
+                group = "gateway.nginx.org"
+                kind  = "AuthenticationFilter"
+                name  = "${local.name}-basic-auth"
+              }
+            }] : [],
             # Static filters
             [
               for filter in [
@@ -432,21 +452,30 @@ locals {
         # Reference the correct listener(s) for this route's hostnames
         # If route has domain_prefix, reference the additional hostname listeners
         # If route has no domain_prefix, reference the base domain listeners
-        parentRefs = lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
-          # No domain_prefix - use base domain listeners
-          for domain_key, domain in local.domains : {
+        # When force_ssl_redirection is disabled, also attach to HTTP listener
+        parentRefs = concat(
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
+            # No domain_prefix - use base domain listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${domain_key}"
+            }
+            ] : [
+            # Has domain_prefix - use additional hostname listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+            }
+          ],
+          # Also attach to HTTP listener when SSL redirection is disabled
+          !local.force_ssl_redirection ? [{
             name        = local.name
             namespace   = var.environment.namespace
-            sectionName = "https-${domain_key}"
-          }
-          ] : [
-          # Has domain_prefix - use additional hostname listeners
-          for domain_key, domain in local.domains : {
-            name        = local.name
-            namespace   = var.environment.namespace
-            sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-          }
-        ]
+            sectionName = "http"
+          }] : []
+        )
 
         # Include all domains in hostnames - Gateway API supports multiple hostnames per route
         hostnames = distinct([
@@ -467,6 +496,16 @@ locals {
               }
             }
           ] : []
+
+          # Basic auth filter (applied when basic_auth is enabled and route doesn't have disable_auth)
+          filters = lookup(var.instance.spec, "basic_auth", false) && !lookup(v, "disable_auth", false) ? [{
+            type = "ExtensionRef"
+            extensionRef = {
+              group = "gateway.nginx.org"
+              kind  = "AuthenticationFilter"
+              name  = "${local.name}-basic-auth"
+            }
+          }] : []
 
           backendRefs = [{
             name      = v.service_name
@@ -571,6 +610,27 @@ locals {
     }
   }
 
+  # AuthenticationFilter for basic auth (NGF native CRD)
+  authenticationfilter_resources = lookup(var.instance.spec, "basic_auth", false) ? {
+    "authfilter-${local.name}" = {
+      apiVersion = "gateway.nginx.org/v1alpha1"
+      kind       = "AuthenticationFilter"
+      metadata = {
+        name      = "${local.name}-basic-auth"
+        namespace = var.environment.namespace
+      }
+      spec = {
+        type = "Basic"
+        basic = {
+          realm = "Authentication required"
+          secretRef = {
+            name = "${local.name}-basic-auth"
+          }
+        }
+      }
+    }
+  } : {}
+
   # Merge all Gateway API resources
   gateway_api_resources = merge(
     local.http_redirect_resources,
@@ -578,7 +638,8 @@ locals {
     local.grpcroute_resources,
     local.podmonitor_resources,
     local.referencegrant_resources,
-    local.clientsettingspolicy_resources
+    local.clientsettingspolicy_resources,
+    local.authenticationfilter_resources
   )
 }
 
@@ -808,7 +869,7 @@ module "http01_certificate_additional" {
 resource "helm_release" "nginx_gateway_fabric" {
   name             = "${local.name}-nginx-fabric"
   wait             = lookup(var.instance.spec, "helm_wait", true)
-  chart            = "${path.module}/charts/nginx-gateway-fabric-2.3.0.tgz"
+  chart            = "${path.module}/charts/nginx-gateway-fabric-2.4.1.tgz"
   namespace        = var.environment.namespace
   max_history      = 10
   skip_crds        = false
@@ -835,7 +896,7 @@ resource "helm_release" "nginx_gateway_fabric" {
 
         image = {
           repository = "facetscloud/nginx-gateway-fabric"
-          tag        = "2.3.0"
+          tag        = "v2.4.1"
           pullPolicy = "IfNotPresent"
         }
         imagePullSecrets = lookup(var.inputs, "artifactories", null) != null ? var.inputs.artifactories.attributes.registry_secrets_list : []
@@ -1097,36 +1158,39 @@ module "gateway_api_resources" {
   resources_data  = local.gateway_api_resources
   advanced_config = {}
 
-  depends_on = [helm_release.nginx_gateway_fabric]
+  depends_on = [helm_release.nginx_gateway_fabric, kubernetes_secret.basic_auth]
 }
 
-# Basic Authentication
-# NOTE: Basic auth is not natively supported in NGINX Gateway Fabric.
-# Unlike ingress-nginx, NGF doesn't have auth annotations.
-# Implementation would require SnippetsFilter + volume mounts which is complex and fragile.
-# TODO: Implement when NGF adds native policy support or use app-level auth.
-#
-# resource "random_string" "basic_auth_password" {
-#   count   = lookup(var.instance.spec, "basic_auth", false) ? 1 : 0
-#   length  = 16
-#   special = true
-# }
-#
-# resource "kubernetes_secret" "basic_auth" {
-#   count = lookup(var.instance.spec, "basic_auth", false) ? 1 : 0
-#
-#   metadata {
-#     name      = "${local.name}-basic-auth"
-#     namespace = var.environment.namespace
-#   }
-#
-#   data = {
-#     username = "${var.instance_name}-user"
-#     password = random_string.basic_auth_password[0].result
-#   }
-#
-#   type = "Opaque"
-# }
+# Basic Authentication using NGF AuthenticationFilter CRD
+# NGF 2.4.1 supports native basic auth via AuthenticationFilter (gateway.nginx.org/v1alpha1)
+# When basic_auth is enabled: auto-generates credentials, creates htpasswd Secret,
+# and applies AuthenticationFilter to all HTTPRoute rules (per-rule disable_auth to exempt)
+
+resource "random_string" "basic_auth_password" {
+  count   = lookup(var.instance.spec, "basic_auth", false) ? 1 : 0
+  length  = 10
+  special = false
+}
+
+resource "kubernetes_secret" "basic_auth" {
+  count = lookup(var.instance.spec, "basic_auth", false) ? 1 : 0
+
+  metadata {
+    name      = "${local.name}-basic-auth"
+    namespace = var.environment.namespace
+  }
+
+  data = {
+    auth = "${var.instance_name}user:${bcrypt(random_string.basic_auth_password[0].result)}"
+  }
+
+  type = "nginx.org/htpasswd"
+
+  lifecycle {
+    ignore_changes        = [data]
+    create_before_destroy = true
+  }
+}
 
 # Load Balancer Service Discovery
 # Note: The LoadBalancer service is created by NGINX Gateway Fabric controller
