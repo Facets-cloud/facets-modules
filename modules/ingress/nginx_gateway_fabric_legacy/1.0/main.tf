@@ -238,8 +238,10 @@ locals {
     }
   } : {}
 
-  # HTTPRoute Resources (HTTPS traffic - port 443)
+  # HTTPRoute Resources (HTTPS traffic - port 443, and HTTP - port 80 when force_ssl_redirection is disabled)
   # Note: GatewayClass, Gateway, and NginxProxy are created by the Helm chart
+  force_ssl_redirection = lookup(var.instance.spec, "force_ssl_redirection", false)
+
   httproute_resources = {
     for k, v in local.rulesFiltered : "httproute-${lower(var.instance_name)}-${k}" => {
       apiVersion = "gateway.networking.k8s.io/v1"
@@ -252,21 +254,30 @@ locals {
         # Reference the correct listener(s) for this route's hostnames
         # If route has domain_prefix, reference the additional hostname listeners
         # If route has no domain_prefix, reference the base domain listeners
-        parentRefs = lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
-          # No domain_prefix - use base domain listeners
-          for domain_key, domain in local.domains : {
+        # When force_ssl_redirection is disabled, also attach to HTTP listener so traffic is served on port 80
+        parentRefs = concat(
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
+            # No domain_prefix - use base domain listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${domain_key}"
+            }
+            ] : [
+            # Has domain_prefix - use additional hostname listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+            }
+          ],
+          # Also attach to HTTP listener when SSL redirection is disabled
+          !local.force_ssl_redirection ? [{
             name        = local.name
             namespace   = var.environment.namespace
-            sectionName = "https-${domain_key}"
-          }
-          ] : [
-          # Has domain_prefix - use additional hostname listeners
-          for domain_key, domain in local.domains : {
-            name        = local.name
-            namespace   = var.environment.namespace
-            sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-          }
-        ]
+            sectionName = "http"
+          }] : []
+        )
 
         # Include all domains in hostnames - Gateway API supports multiple hostnames per route
         hostnames = distinct([
@@ -441,21 +452,30 @@ locals {
         # Reference the correct listener(s) for this route's hostnames
         # If route has domain_prefix, reference the additional hostname listeners
         # If route has no domain_prefix, reference the base domain listeners
-        parentRefs = lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
-          # No domain_prefix - use base domain listeners
-          for domain_key, domain in local.domains : {
+        # When force_ssl_redirection is disabled, also attach to HTTP listener
+        parentRefs = concat(
+          lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
+            # No domain_prefix - use base domain listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${domain_key}"
+            }
+            ] : [
+            # Has domain_prefix - use additional hostname listeners
+            for domain_key, domain in local.domains : {
+              name        = local.name
+              namespace   = var.environment.namespace
+              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+            }
+          ],
+          # Also attach to HTTP listener when SSL redirection is disabled
+          !local.force_ssl_redirection ? [{
             name        = local.name
             namespace   = var.environment.namespace
-            sectionName = "https-${domain_key}"
-          }
-          ] : [
-          # Has domain_prefix - use additional hostname listeners
-          for domain_key, domain in local.domains : {
-            name        = local.name
-            namespace   = var.environment.namespace
-            sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-          }
-        ]
+            sectionName = "http"
+          }] : []
+        )
 
         # Include all domains in hostnames - Gateway API supports multiple hostnames per route
         hostnames = distinct([
