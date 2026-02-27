@@ -298,22 +298,32 @@ spec:
               type: string
               title: Path
               description: Path of the application (required for HTTP routes)
-              pattern: ^(/[^/]+)*(/)?$
-              x-ui-placeholder: Enter path (e.g., / or /api)
-              x-ui-error-message: "Value doesn't match pattern, eg: / or /api"
+              pattern: ^(/[^\s{};^]*)$
+              x-ui-placeholder: "Enter path (e.g., / or /api or /api/v[0-9]+)"
+              x-ui-error-message: "Path must start with /"
               x-ui-visible-if:
                 field: spec.rules.{{this}}.grpc_config.enabled
                 values:
                   - false
                   - null
+            disable_auth:
+              type: boolean
+              title: Disable Auth for this Route
+              description: Disable basic authentication for this specific route (only relevant when basic_auth is enabled)
+              default: false
+              x-ui-visible-if:
+                field: spec.basic_auth
+                values:
+                  - true
             path_type:
               type: string
               title: Path Type
-              description: "Path matching type. PathPrefix (default) matches paths starting with the specified prefix. Use Exact for exact path matching."
+              description: "Path matching type. RegularExpression (default) matches paths using regex for ingress-nginx parity. Use PathPrefix for prefix matching or Exact for exact path matching."
               enum:
-                - Exact
+                - RegularExpression
                 - PathPrefix
-              default: PathPrefix
+                - Exact
+              default: RegularExpression
               x-ui-visible-if:
                 field: spec.rules.{{this}}.grpc_config.enabled
                 values:
@@ -778,6 +788,7 @@ spec:
             - namespace
           x-ui-order:
             - disable
+            - disable_auth
             - domain_prefix
             - service_name
             - namespace
@@ -800,6 +811,11 @@ spec:
       type: boolean
       title: Force SSL Redirection
       description: Force HTTP to HTTPS redirection
+    basic_auth:
+      type: boolean
+      title: Basic Authentication
+      description: Enable/disable basic auth for all routes (individual routes can opt out with disable_auth)
+      default: false
     body_size:
       type: string
       title: Max Body Size
@@ -841,6 +857,7 @@ spec:
     - disable_base_domain
     - domains
     - force_ssl_redirection
+    - basic_auth
     - body_size
     - disable_endpoint_validation
     - data_plane
@@ -859,6 +876,7 @@ sample:
     private: false
     disable_base_domain: false
     force_ssl_redirection: true
+    basic_auth: false
     body_size: 150m
     data_plane:
       scaling:
