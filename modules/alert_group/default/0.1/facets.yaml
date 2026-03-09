@@ -262,6 +262,7 @@ sample:
   kind: alert_group
   flavor: default
   version: '0.1'
+  metadata: {}
   spec:
     rules:
       high_cpu_usage:
