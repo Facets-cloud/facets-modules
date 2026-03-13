@@ -24,16 +24,33 @@ locals {
     }
   )
 
-  output_interfaces = {
-    for route_key, route in local.rulesFiltered : route_key => {
-      connection_string = local.is_auth_enabled ? "https://${local.username}:${local.password}@${route.host}" : "https://${route.host}"
-      host              = route.host
-      port              = 443
-      username          = local.username
-      password          = local.password
-      secrets           = local.is_auth_enabled ? ["connection_string", "password"] : []
+  # Generate output interfaces for every rule × domain combination
+  # Each rule is expanded across all configured domains (not just the base domain)
+  output_interfaces = length(local.rulesFiltered) == 0 || length(local.domains) == 0 ? {} : merge([
+    for route_key, route in local.rulesFiltered : {
+      for domain_key, domain in local.domains :
+      "${route_key}--${domain_key}" => {
+        connection_string = local.is_auth_enabled ? "https://${local.username}:${local.password}@${
+          lookup(route, "domain_prefix", null) == null || lookup(route, "domain_prefix", null) == "" ?
+          domain.domain :
+          "${lookup(route, "domain_prefix", null)}.${domain.domain}"
+          }" : "https://${
+          lookup(route, "domain_prefix", null) == null || lookup(route, "domain_prefix", null) == "" ?
+          domain.domain :
+          "${lookup(route, "domain_prefix", null)}.${domain.domain}"
+        }"
+        host = (
+          lookup(route, "domain_prefix", null) == null || lookup(route, "domain_prefix", null) == "" ?
+          domain.domain :
+          "${lookup(route, "domain_prefix", null)}.${domain.domain}"
+        )
+        port     = 443
+        username = local.username
+        password = local.password
+        secrets  = local.is_auth_enabled ? ["connection_string", "password"] : []
+      }
     }
-  }
+  ]...)
 }
 
 output "domains" {
@@ -85,8 +102,11 @@ output "subdomain" {
 }
 
 output "tls_secret" {
-  value       = local.dns_validation_secret_name
-  description = "TLS certificate secret name"
+  value = {
+    for domain_key, domain in local.domains :
+    domain_key => lookup(domain, "certificate_reference", "") != "" ? domain.certificate_reference : "${local.name}-${domain_key}-tls-cert"
+  }
+  description = "Map of domain keys to their TLS certificate secret names"
 }
 
 output "load_balancer_hostname" {
@@ -97,4 +117,45 @@ output "load_balancer_hostname" {
 output "load_balancer_ip" {
   value       = local.lb_ip
   description = "Load balancer IP address (for A records)"
+}
+
+output "lb_record_value" {
+  value       = local.lb_record_value
+  description = "The value to use in DNS records (hostname or IP)"
+}
+
+output "record_type" {
+  value       = local.record_type
+  description = "DNS record type (CNAME or A)"
+}
+
+output "name" {
+  value       = local.name
+  description = "The computed resource name"
+}
+
+output "base_domain" {
+  value       = local.base_domain
+  description = "The computed base domain"
+}
+
+output "base_subdomain" {
+  value       = local.base_subdomain
+  description = "The wildcard base subdomain"
+}
+
+output "username" {
+  value       = local.username
+  description = "Basic auth username (empty if disabled)"
+}
+
+output "password" {
+  value       = local.password
+  sensitive   = true
+  description = "Basic auth password (empty if disabled)"
+}
+
+output "cloud_provider" {
+  value       = local.cloud_provider
+  description = "Detected cloud provider (AWS, GCP, AZURE, OVH)"
 }

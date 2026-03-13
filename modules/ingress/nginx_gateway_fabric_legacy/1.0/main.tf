@@ -72,13 +72,23 @@ locals {
     hostname if !contains(local.all_domain_hostnames, hostname)
   ]
 
+  # Domains that have a certificate_reference (wildcard cert covers subdomains)
+  domains_with_cert_ref = {
+    for domain_key, domain in local.domains :
+    domain.domain => lookup(domain, "certificate_reference", "")
+    if lookup(domain, "certificate_reference", "") != ""
+  }
+
   # Map of additional hostnames to their config for listeners and certs
+  # Subdomains of domains with certificate_reference are excluded — the wildcard listener covers them
   additional_hostname_configs = {
     for hostname in local.additional_hostnames :
     replace(replace(hostname, ".", "-"), "*", "wildcard") => {
       hostname    = hostname
       secret_name = "${local.name}-${replace(replace(hostname, ".", "-"), "*", "wildcard")}-tls-cert"
     }
+    # Exclude subdomains of domains with certificate_reference (covered by wildcard listener)
+    if !anytrue([for parent_domain, cert_ref in local.domains_with_cert_ref : endswith(hostname, ".${parent_domain}")])
   }
 
   # Tolerations: merge environment defaults with facets dedicated tolerations
@@ -138,9 +148,9 @@ locals {
     }
   )
 
-  azure_annotations = lookup(var.instance.spec, "private", false) ? {
-    "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
-  } : {}
+  azure_annotations = {
+    "service.beta.kubernetes.io/azure-load-balancer-internal" = lookup(var.instance.spec, "private", false) ? "true" : "false"
+  }
 
   gcp_annotations = lookup(var.instance.spec, "private", false) ? {
     "cloud.google.com/load-balancer-type"                          = "Internal"
@@ -148,12 +158,17 @@ locals {
     "networking.gke.io/internal-load-balancer-allow-global-access" = "true"
   } : {}
 
+  ovh_annotations = {
+    "loadbalancer.ovhcloud.com/flavor" = "small"
+  }
+
   cloud_provider = upper(try(var.inputs.kubernetes_details.attributes.cloud_provider, "aws"))
 
   service_annotations = merge(
     local.cloud_provider == "AWS" ? local.aws_annotations : {},
     local.cloud_provider == "AZURE" ? local.azure_annotations : {},
-    local.cloud_provider == "GCP" ? local.gcp_annotations : {}
+    local.cloud_provider == "GCP" ? local.gcp_annotations : {},
+    local.cloud_provider == "OVH" ? local.ovh_annotations : {}
   )
 
   # Get ClusterIssuer names and config from cert-manager
@@ -252,8 +267,7 @@ locals {
       }
       spec = {
         # Reference the correct listener(s) for this route's hostnames
-        # If route has domain_prefix, reference the additional hostname listeners
-        # If route has no domain_prefix, reference the base domain listeners
+        # Routes attach to HTTPS listeners per domain/hostname — TLS always terminates at the Gateway
         # When force_ssl_redirection is disabled, also attach to HTTP listener so traffic is served on port 80
         parentRefs = concat(
           lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
@@ -264,11 +278,13 @@ locals {
               sectionName = "https-${domain_key}"
             }
             ] : [
-            # Has domain_prefix - use additional hostname listeners
+            # Has domain_prefix:
+            # - If parent domain has certificate_reference → use wildcard domain listener (*.domain covers subdomains)
+            # - Otherwise → use additional hostname listener
             for domain_key, domain in local.domains : {
               name        = local.name
               namespace   = var.environment.namespace
-              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+              sectionName = lookup(domain, "certificate_reference", "") != "" ? "https-${domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
             }
           ],
           # Also attach to HTTP listener when SSL redirection is disabled
@@ -450,8 +466,7 @@ locals {
       }
       spec = {
         # Reference the correct listener(s) for this route's hostnames
-        # If route has domain_prefix, reference the additional hostname listeners
-        # If route has no domain_prefix, reference the base domain listeners
+        # Routes attach to HTTPS listeners per domain/hostname — TLS always terminates at the Gateway
         # When force_ssl_redirection is disabled, also attach to HTTP listener
         parentRefs = concat(
           lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
@@ -462,11 +477,13 @@ locals {
               sectionName = "https-${domain_key}"
             }
             ] : [
-            # Has domain_prefix - use additional hostname listeners
+            # Has domain_prefix:
+            # - If parent domain has certificate_reference → use wildcard domain listener (*.domain covers subdomains)
+            # - Otherwise → use additional hostname listener
             for domain_key, domain in local.domains : {
               name        = local.name
               namespace   = var.environment.namespace
-              sectionName = "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
+              sectionName = lookup(domain, "certificate_reference", "") != "" ? "https-${domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
             }
           ],
           # Also attach to HTTP listener when SSL redirection is disabled
@@ -552,8 +569,7 @@ locals {
 
   # Collect unique namespaces that need ReferenceGrants (for cross-namespace backends)
   cross_namespace_backends = {
-    for k, v in local.rulesFiltered : v.namespace => v.namespace
-    if v.namespace != var.environment.namespace
+    for ns in distinct([for k, v in local.rulesFiltered : v.namespace if v.namespace != var.environment.namespace]) : ns => ns
   }
 
   # ReferenceGrant resources for cross-namespace backends
@@ -674,7 +690,7 @@ resource "tls_self_signed_cert" "bootstrap" {
   ]
 }
 
-resource "kubernetes_secret" "bootstrap_tls" {
+resource "kubernetes_secret_v1" "bootstrap_tls" {
   for_each = local.bootstrap_tls_domains
 
   metadata {
@@ -695,15 +711,15 @@ resource "kubernetes_secret" "bootstrap_tls" {
 }
 
 # Bootstrap TLS for additional hostnames (from domain_prefix in rules)
-# Only created for HTTP-01 validation (when disable_endpoint_validation is false)
+# Only for additional hostnames that did NOT inherit a certificate_reference from parent domain
 resource "tls_private_key" "bootstrap_additional" {
-  for_each  = local.disable_endpoint_validation ? {} : local.additional_hostname_configs
+  for_each  = local.additional_hostname_configs
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
 resource "tls_self_signed_cert" "bootstrap_additional" {
-  for_each        = local.disable_endpoint_validation ? {} : local.additional_hostname_configs
+  for_each        = local.additional_hostname_configs
   private_key_pem = tls_private_key.bootstrap_additional[each.key].private_key_pem
 
   subject {
@@ -721,8 +737,8 @@ resource "tls_self_signed_cert" "bootstrap_additional" {
   ]
 }
 
-resource "kubernetes_secret" "bootstrap_tls_additional" {
-  for_each = local.disable_endpoint_validation ? {} : local.additional_hostname_configs
+resource "kubernetes_secret_v1" "bootstrap_tls_additional" {
+  for_each = local.additional_hostname_configs
 
   metadata {
     name      = each.value.secret_name
@@ -817,7 +833,7 @@ module "http01_certificate" {
 # Name module for additional hostname certificates (keeps helm release names under 53 chars)
 # Only created when NOT using gateway-shim (same as http01_certificate for base domains)
 module "http01_certificate_additional_name" {
-  for_each = !local.use_gateway_shim && !local.disable_endpoint_validation ? local.additional_hostname_configs : {}
+  for_each = !local.use_gateway_shim ? local.additional_hostname_configs : {}
 
   source          = "github.com/Facets-cloud/facets-utility-modules//name"
   environment     = var.environment
@@ -831,7 +847,7 @@ module "http01_certificate_additional_name" {
 # Explicit Certificate resources for additional hostnames (domain_prefix + domain)
 # Created when NOT using gateway-shim (gateway-shim handles certs automatically when enabled)
 module "http01_certificate_additional" {
-  for_each = !local.use_gateway_shim && !local.disable_endpoint_validation ? local.additional_hostname_configs : {}
+  for_each = !local.use_gateway_shim ? local.additional_hostname_configs : {}
 
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = module.http01_certificate_additional_name[each.key].name
@@ -1049,17 +1065,19 @@ resource "helm_release" "nginx_gateway_fabric" {
                 }
               }
             }],
-            # HTTPS Listeners per domain
+            # HTTPS Listeners per domain — TLS always terminates at the Gateway
+            # When certificate_reference is provided, use wildcard hostname (*.domain) to cover all subdomains
+            # Otherwise use exact hostname and rely on additional hostname listeners for subdomains
             [for domain_key, domain in local.domains : {
               name     = "https-${domain_key}"
               protocol = "HTTPS"
               port     = 443
-              hostname = domain.domain
+              hostname = lookup(domain, "certificate_reference", "") != "" ? "*.${domain.domain}" : domain.domain
               tls = {
                 mode = "Terminate"
                 certificateRefs = [{
                   kind = "Secret"
-                  # If certificate_reference is provided, use it (custom cert)
+                  # If certificate_reference is provided, use it (custom cert or K8s secret name)
                   # Otherwise: DNS-01 uses shared dns_validation_secret_name, HTTP-01 uses per-domain bootstrap cert
                   name = lookup(domain, "certificate_reference", "") != "" ? domain.certificate_reference : (
                     local.disable_endpoint_validation ? local.dns_validation_secret_name : "${local.name}-${domain_key}-tls-cert"
@@ -1072,7 +1090,7 @@ resource "helm_release" "nginx_gateway_fabric" {
                 }
               }
             } if can(domain.domain)],
-            # HTTPS Listeners for additional hostnames from rules (domain_prefix + domain)
+            # HTTPS Listeners for additional hostnames
             [for hostname_key, config in local.additional_hostname_configs : {
               name     = "https-${hostname_key}"
               protocol = "HTTPS"
@@ -1082,7 +1100,7 @@ resource "helm_release" "nginx_gateway_fabric" {
                 mode = "Terminate"
                 certificateRefs = [{
                   kind = "Secret"
-                  name = local.disable_endpoint_validation ? local.dns_validation_secret_name : config.secret_name
+                  name = config.secret_name
                 }]
               }
               allowedRoutes = {
@@ -1099,15 +1117,15 @@ resource "helm_release" "nginx_gateway_fabric" {
   ]
 
   depends_on = [
-    kubernetes_secret.bootstrap_tls,
-    kubernetes_secret.bootstrap_tls_additional
+    kubernetes_secret_v1.bootstrap_tls,
+    kubernetes_secret_v1.bootstrap_tls_additional
   ]
 }
 
 # Gateway API HTTP-01 ClusterIssuer - bundled here as it requires parentRefs to the Gateway
 # See: https://github.com/cert-manager/cert-manager/issues/7890
 module "cluster-issuer-gateway-http01" {
-  count           = local.disable_endpoint_validation ? 0 : 1
+  count           = length(local.certmanager_managed_domains) > 0 ? 1 : 0
   depends_on      = [helm_release.nginx_gateway_fabric]
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = local.cluster_issuer_gateway_http
@@ -1158,7 +1176,7 @@ module "gateway_api_resources" {
   resources_data  = local.gateway_api_resources
   advanced_config = {}
 
-  depends_on = [helm_release.nginx_gateway_fabric, kubernetes_secret.basic_auth]
+  depends_on = [helm_release.nginx_gateway_fabric, kubernetes_secret_v1.basic_auth]
 }
 
 # Basic Authentication using NGF AuthenticationFilter CRD
@@ -1172,7 +1190,7 @@ resource "random_string" "basic_auth_password" {
   special = false
 }
 
-resource "kubernetes_secret" "basic_auth" {
+resource "kubernetes_secret_v1" "basic_auth" {
   count = lookup(var.instance.spec, "basic_auth", false) ? 1 : 0
 
   metadata {
