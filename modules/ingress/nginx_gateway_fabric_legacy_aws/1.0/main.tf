@@ -277,7 +277,7 @@ resource "kubernetes_secret_v1" "dns01_bootstrap_tls" {
 # When use_dns01 is active, we set disable_base_domain=true in the modified instance
 # which causes the utility module to skip Route53 record creation.
 # We must create them ourselves to maintain DNS resolution.
-resource "aws_route53_record" "dns01_base_domain" {
+resource "aws_route53_record" "cluster-base-domain" {
   count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
   depends_on = [
     module.nginx_gateway_fabric
@@ -293,7 +293,7 @@ resource "aws_route53_record" "dns01_base_domain" {
   }
 }
 
-resource "aws_route53_record" "dns01_base_domain_wildcard" {
+resource "aws_route53_record" "cluster-base-domain-wildcard" {
   count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
   depends_on = [
     module.nginx_gateway_fabric
