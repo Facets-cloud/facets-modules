@@ -1,0 +1,58 @@
+intent: ack_acm_controller
+flavor: legacy
+version: "1.0"
+description: |
+  Deploys the AWS ACK ACM Controller on EKS clusters via Helm.
+  This controller manages AWS Certificate Manager (ACM) certificates as Kubernetes resources
+  and can export issued certificates to Kubernetes TLS secrets for use with Gateway API or Ingress.
+  Uses IRSA for secure IAM authentication. Supports DNS validation via Route53.
+clouds:
+  - aws
+  - kubernetes
+inputs:
+  kubernetes_details:
+    type: "@outputs/kubernetes"
+    optional: false
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+    providers:
+      - kubernetes
+      - kubernetes-alpha
+      - helm
+outputs:
+  default:
+    type: "@outputs/ack_acm_controller"
+spec:
+  title: ACK ACM Controller Configuration
+  type: object
+  properties:
+    chart_version:
+      type: string
+      default: "1.3.4"
+      title: Chart Version
+      description: Helm chart version of the ACK ACM Controller
+    namespace:
+      type: string
+      title: Namespace
+      description: Kubernetes namespace for the controller (defaults to environment namespace)
+      pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+      maxLength: 63
+    helm_values:
+      type: object
+      title: Helm Values
+      description: Additional Helm values to override defaults
+      x-ui-yaml-editor: true
+  required:
+    - chart_version
+  x-ui-order:
+    - chart_version
+    - namespace
+    - helm_values
+sample:
+  kind: ack_acm_controller
+  flavor: legacy
+  version: "1.0"
+  disabled: true
+  spec:
+    chart_version: "1.3.4"
