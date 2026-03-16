@@ -1,5 +1,5 @@
 locals {
-  # Compute name the same way as the base module (needed for ACM secret names)
+  # Compute name the same way as the base module
   name = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
 
   # --- DNS-01 configuration ---
@@ -11,33 +11,10 @@ locals {
   check_domain_prefix = coalesce(lookup(var.instance.spec, "domain_prefix_override", null), local.instance_env_name)
   base_domain         = lower("${local.check_domain_prefix}.${var.cc_metadata.tenant_base_domain}")
 
-  # --- ACM handling ---
-  # Detect domains with ACM ARN as certificate_reference
-  acm_cert_domains = {
-    for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
-    domain_key => domain
-    if can(domain.certificate_reference) && length(regexall("arn:aws:acm:", lookup(domain, "certificate_reference", ""))) > 0
-  }
-
-  # K8s secret name for ACM cert domains — the ACK Certificate CRD exports cert to this secret
-  acm_cert_secret_names = {
-    for domain_key, domain in local.acm_cert_domains :
-    domain_key => "${local.name}-${domain_key}-acm-tls"
-  }
-
-  # Rewrite instance domains: replace ACM ARN certificate_reference with K8s secret name
-  # The base module only sees K8s secret names — never ACM ARNs
-  acm_modified_domains = {
-    for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
-    domain_key => contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
-      certificate_reference = local.acm_cert_secret_names[domain_key]
-    }) : domain
-  }
-
   # --- DNS-01 domain handling ---
-  # User-configured domains eligible for DNS-01: use_dns01 enabled + no certificate_reference after ACM rewrite
+  # User-configured domains eligible for DNS-01: use_dns01 enabled + no certificate_reference
   dns01_domains = {
-    for domain_key, domain in local.acm_modified_domains :
+    for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
     domain_key => domain
     if local.use_dns01 && lookup(domain, "certificate_reference", "") == ""
   }
@@ -61,11 +38,11 @@ locals {
     domain_key => "${local.name}-${domain_key}-dns01-tls"
   }
 
-  # Final domain rewrite: apply DNS-01 certificate_reference on top of ACM rewrites
+  # Final domain rewrite: apply DNS-01 certificate_reference
   # Setting certificate_reference causes the utility module to use wildcard listeners (*.domain)
   modified_domains = merge(
     {
-      for domain_key, domain in local.acm_modified_domains :
+      for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
       domain_key => contains(keys(local.dns01_cert_secret_names), domain_key) ? merge(domain, {
         certificate_reference = local.dns01_cert_secret_names[domain_key]
       }) : domain
@@ -88,7 +65,6 @@ locals {
     })
   })
 
-
   # Merge default_tolerations into inputs so the utility module picks them up via kubernetes_node_pool_details.attributes.taints
   default_tolerations = lookup(var.environment, "default_tolerations", [])
   existing_taints     = try(var.inputs.kubernetes_node_pool_details.attributes.taints, [])
@@ -106,21 +82,10 @@ locals {
     )
   })
 
-  # AWS NLB annotations
-  aws_annotations = merge(
-    lookup(var.instance.spec, "private", false) ? {
-      "service.beta.kubernetes.io/aws-load-balancer-scheme"   = "internal"
-      "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
-      } : {
-      "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internet-facing"
-    },
-    {
-      "service.beta.kubernetes.io/aws-load-balancer-type"                    = "external"
-      "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type"         = "ip"
-      "service.beta.kubernetes.io/aws-load-balancer-backend-protocol"        = "tcp"
-      "service.beta.kubernetes.io/aws-load-balancer-target-group-attributes" = lookup(var.instance.spec, "private", false) ? "proxy_protocol_v2.enabled=true,preserve_client_ip.enabled=false" : "proxy_protocol_v2.enabled=true,preserve_client_ip.enabled=true"
-    }
-  )
+  # Azure Load Balancer annotations
+  azure_annotations = {
+    "service.beta.kubernetes.io/azure-load-balancer-internal" = lookup(var.instance.spec, "private", false) ? "true" : "false"
+  }
 }
 
 # Call the base utility module
@@ -132,79 +97,7 @@ module "nginx_gateway_fabric" {
   environment   = var.environment
   inputs        = local.merged_inputs
 
-  service_annotations = local.aws_annotations
-
-  load_balancer_class = "service.k8s.aws/nlb"
-
-  nginx_proxy_extra_config = {
-    rewriteClientIP = {
-      mode = "ProxyProtocol"
-      trustedAddresses = [{
-        type  = "CIDR"
-        value = "0.0.0.0/0"
-      }]
-    }
-  }
-}
-
-# ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
-# and exports them to K8s TLS secrets for Gateway listener consumption.
-# Only created for domains whose certificate_reference is an ACM ARN.
-# Requires the ack_acm_controller to be deployed (optional input).
-module "ack_acm_certificate" {
-  for_each = local.acm_cert_domains
-
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-acm-cert-${each.key}"
-  namespace       = var.environment.namespace
-  advanced_config = {}
-
-  data = {
-    apiVersion = "acm.services.k8s.aws/v1alpha1"
-    kind       = "Certificate"
-    metadata = {
-      name      = "${local.name}-acm-cert-${each.key}"
-      namespace = var.environment.namespace
-    }
-    spec = {
-      domainName = "*.${each.value.domain}"
-      subjectAlternativeNames = [
-        each.value.domain,
-        "*.${each.value.domain}"
-      ]
-      validationMethod = "DNS"
-      options = {
-        certificateTransparencyLoggingPreference = "ENABLED"
-      }
-      exportTo = {
-        namespace = var.environment.namespace
-        name      = local.acm_cert_secret_names[each.key]
-        key       = "tls.crt"
-      }
-    }
-  }
-}
-
-# Pre-create empty TLS secrets for ACK ACM certificate export
-# ACK ACM controller requires the target secret to exist before it can export
-resource "kubernetes_secret_v1" "acm_cert" {
-  for_each = local.acm_cert_domains
-
-  metadata {
-    name      = local.acm_cert_secret_names[each.key]
-    namespace = var.environment.namespace
-  }
-
-  data = {
-    "tls.crt" = ""
-    "tls.key" = ""
-  }
-
-  type = "kubernetes.io/tls"
-
-  lifecycle {
-    ignore_changes = [data, metadata[0].annotations, metadata[0].labels]
-  }
+  service_annotations = local.azure_annotations
 }
 
 # --- DNS-01 wildcard certificate resources ---
