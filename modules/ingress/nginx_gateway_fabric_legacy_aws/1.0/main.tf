@@ -272,3 +272,39 @@ resource "kubernetes_secret_v1" "dns01_bootstrap_tls" {
     ignore_changes = [data, metadata[0].annotations, metadata[0].labels]
   }
 }
+
+# --- Route53 DNS records for DNS-01 base domain ---
+# When use_dns01 is active, we set disable_base_domain=true in the modified instance
+# which causes the utility module to skip Route53 record creation.
+# We must create them ourselves to maintain DNS resolution.
+resource "aws_route53_record" "dns01_base_domain" {
+  count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
+  depends_on = [
+    module.nginx_gateway_fabric
+  ]
+  zone_id  = var.cc_metadata.tenant_base_domain_id
+  name     = local.base_domain
+  type     = module.nginx_gateway_fabric.record_type
+  ttl      = "300"
+  records  = [module.nginx_gateway_fabric.lb_record_value]
+  provider = aws3tooling
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_route53_record" "dns01_base_domain_wildcard" {
+  count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
+  depends_on = [
+    module.nginx_gateway_fabric
+  ]
+  zone_id  = var.cc_metadata.tenant_base_domain_id
+  name     = "*.${local.base_domain}"
+  type     = module.nginx_gateway_fabric.record_type
+  ttl      = "300"
+  records  = [module.nginx_gateway_fabric.lb_record_value]
+  provider = aws3tooling
+  lifecycle {
+    prevent_destroy = true
+  }
+}
