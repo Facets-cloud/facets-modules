@@ -46,18 +46,12 @@ resource "aws_iam_policy" "ack_acm" {
       {
         Effect = "Allow"
         Action = [
-          "acm:RequestCertificate",
           "acm:DescribeCertificate",
-          "acm:ListCertificates",
-          "acm:DeleteCertificate",
-          "acm:ExportCertificate",
           "acm:GetCertificate",
+          "acm:ListCertificates",
           "acm:ListTagsForCertificate",
           "acm:AddTagsToCertificate",
-          "acm:RemoveTagsFromCertificate",
-          "acm:UpdateCertificateOptions",
-          "acm:ImportCertificate",
-          "acm:RenewCertificate"
+          "acm:RemoveTagsFromCertificate"
         ]
         Resource = "*"
       }
