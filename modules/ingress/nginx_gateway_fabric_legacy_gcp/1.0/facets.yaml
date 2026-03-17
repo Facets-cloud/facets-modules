@@ -1,10 +1,8 @@
 intent: ingress
-flavor: nginx_gateway_fabric_legacy
+flavor: nginx_gateway_fabric_legacy_gcp
 version: "1.0"
-description: NGINX Gateway Fabric - Kubernetes Gateway API implementation (Legacy module format)
+description: NGINX Gateway Fabric for GCP - Gateway API with GKE Load Balancer and DNS-01 support (Legacy module format)
 clouds:
-  - aws
-  - azure
   - gcp
   - kubernetes
 inputs:
@@ -34,7 +32,7 @@ outputs:
   default:
     type: "@outputs/ingress"
 spec:
-  title: NGINX Gateway Fabric
+  title: NGINX Gateway Fabric (GCP)
   type: object
   properties:
     private:
@@ -227,7 +225,6 @@ spec:
     rules:
       title: Routing Rules
       description: Gateway API routing configurations (HTTP and gRPC)
-
       type: object
       patternProperties:
         ^[a-zA-Z0-9_.-]*$:
@@ -841,6 +838,22 @@ spec:
       description: Disable endpoint validation for cert-manager (uses DNS validation instead of HTTP)
       default: false
       x-ui-toggle: true
+    use_dns01:
+      type: boolean
+      title: Use DNS-01 Resolver
+      description: Use DNS-01 challenge type for certificate issuance. When enabled, all domain listeners use wildcard hostnames (*.domain) and certificates are issued via the DNS-01 ClusterIssuer.
+      default: false
+      x-ui-toggle: true
+    dns01_cluster_issuer:
+      type: string
+      title: DNS-01 ClusterIssuer
+      description: Name of the ClusterIssuer to use for DNS-01 certificate issuance
+      default: gts-production
+      x-ui-toggle: true
+      x-ui-visible-if:
+        field: spec.use_dns01
+        values:
+          - true
     helm_wait:
       type: boolean
       title: Helm Wait
@@ -860,6 +873,8 @@ spec:
     - basic_auth
     - body_size
     - disable_endpoint_validation
+    - use_dns01
+    - dns01_cluster_issuer
     - data_plane
     - control_plane
     - helm_values
@@ -867,7 +882,7 @@ spec:
     - rules
 sample:
   kind: ingress
-  flavor: nginx_gateway_fabric_legacy
+  flavor: nginx_gateway_fabric_legacy_gcp
   version: "1.0"
   disabled: true
   metadata:

@@ -1,0 +1,26 @@
+name: '@outputs/ack_acm_controller'
+properties:
+  type: object
+  properties:
+    attributes:
+      type: object
+      properties:
+        namespace:
+          description: Kubernetes namespace where the controller is deployed
+          type: string
+        release_name:
+          description: Helm release name
+          type: string
+        chart_version:
+          description: Helm chart version
+          type: string
+        role_arn:
+          description: IAM role ARN used by the controller
+          type: string
+        helm_release_id:
+          description: Helm release ID
+          type: string
+    interfaces:
+      type: object
+      properties: {}
+providers: []
