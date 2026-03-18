@@ -3,7 +3,8 @@ locals {
   name = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
 
   # --- DNS-01 configuration ---
-  use_dns01            = lookup(var.instance.spec, "use_dns01", false)
+  # DNS-01 is incompatible with ACM mode (NLB terminates TLS, no cert-manager involvement)
+  use_dns01            = !local.acm_mode && lookup(var.instance.spec, "use_dns01", false)
   dns01_cluster_issuer = lookup(var.instance.spec, "dns01_cluster_issuer", "gts-production")
 
   # Compute base domain (mirrors utility module logic — needed to take over base domain for DNS-01)
@@ -95,12 +96,12 @@ locals {
   )
 
   # Build modified instance with rewritten domains
-  # ACM mode: pass var.instance as-is — base module ignores certificate_reference when external_tls_termination=true
+  # ACM mode: pass original domains/spec — base module ignores certificate_reference when external_tls_termination=true
   # cert-manager/ACK mode: apply domain rewrites and DNS-01 overrides
-  modified_instance = local.acm_mode ? var.instance : merge(var.instance, {
+  modified_instance = merge(var.instance, {
     spec = merge(var.instance.spec, {
-      domains            = local.modified_domains
-      disable_base_domain = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false)
+      domains             = local.acm_mode ? lookup(var.instance.spec, "domains", {}) : local.modified_domains
+      disable_base_domain = local.acm_mode ? lookup(var.instance.spec, "disable_base_domain", false) : (local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false))
     })
   })
 
