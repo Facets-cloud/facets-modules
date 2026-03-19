@@ -23,7 +23,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: pip install -r .github/workflows/innersourcing/requirements.txt
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -r .github/workflows/innersourcing/requirements.txt
 
       - name: Run validate-bootstrapper script
         id: run
@@ -32,7 +34,7 @@ jobs:
           ROOT_TOKEN: ${{ secrets.ROOT_TOKEN }}
         run: |
           set +e
-          python -u .github/workflows/innersourcing/validate_bootstrapper.py 2>&1 | tee script_output.txt
+          .venv/bin/python -u .github/workflows/innersourcing/validate_bootstrapper.py 2>&1 | tee script_output.txt
           exit_status=${PIPESTATUS[0]}
           output=$(cat script_output.txt)
           
