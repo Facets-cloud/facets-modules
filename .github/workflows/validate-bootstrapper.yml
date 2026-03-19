@@ -22,6 +22,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: pip install -r .github/workflows/innersourcing/requirements.txt
+
       - name: Run validate-bootstrapper script
         id: run
         env:
