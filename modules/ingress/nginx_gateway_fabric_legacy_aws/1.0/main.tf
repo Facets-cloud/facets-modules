@@ -3,7 +3,8 @@ locals {
   name = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
 
   # --- DNS-01 configuration ---
-  use_dns01            = lookup(var.instance.spec, "use_dns01", false)
+  # DNS-01 is incompatible with ACM mode (NLB terminates TLS, no cert-manager involvement)
+  use_dns01            = !local.acm_mode && lookup(var.instance.spec, "use_dns01", false)
   dns01_cluster_issuer = lookup(var.instance.spec, "dns01_cluster_issuer", "gts-production")
 
   # Compute base domain (mirrors utility module logic — needed to take over base domain for DNS-01)
@@ -19,17 +20,32 @@ locals {
     if can(domain.certificate_reference) && length(regexall("arn:aws:acm:", lookup(domain, "certificate_reference", ""))) > 0
   }
 
+  # Detect ACK ACM controller availability
+  use_ack_acm = try(var.inputs.ack_acm_controller_details, null) != null
+
+  # ACM mode: when ACM domains exist but no ACK controller,
+  # TLS terminates at the NLB instead of at the Gateway pod
+  acm_mode = !local.use_ack_acm && length(local.acm_cert_domains) > 0
+
+  # ACM ARNs to attach to NLB for TLS termination
+  acm_cert_arns = local.acm_mode ? distinct([
+    for domain_key, domain in local.acm_cert_domains : domain.certificate_reference
+  ]) : []
+
   # K8s secret name for ACM cert domains — the ACK Certificate CRD exports cert to this secret
+  # Only relevant when ACK controller is available
   acm_cert_secret_names = {
     for domain_key, domain in local.acm_cert_domains :
     domain_key => "${local.name}-${domain_key}-acm-tls"
   }
 
-  # Rewrite instance domains: replace ACM ARN certificate_reference with K8s secret name
-  # The base module only sees K8s secret names — never ACM ARNs
+  # Rewrite instance domains based on TLS termination mode:
+  # - ACK path: replace ACM ARN with K8s secret name (TLS at Gateway)
+  # - ACM mode: no rewriting needed (base module ignores certificate_reference with external_tls_termination)
+  # - Otherwise: pass through unchanged
   acm_modified_domains = {
     for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
-    domain_key => contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
+    domain_key => local.use_ack_acm && contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
       certificate_reference = local.acm_cert_secret_names[domain_key]
     }) : domain
   }
@@ -80,11 +96,12 @@ locals {
   )
 
   # Build modified instance with rewritten domains
-  # When DNS-01 is active: disable_base_domain=true (we re-add it ourselves with certificate_reference)
+  # ACM mode: pass original domains/spec — base module ignores certificate_reference when external_tls_termination=true
+  # cert-manager/ACK mode: apply domain rewrites and DNS-01 overrides
   modified_instance = merge(var.instance, {
     spec = merge(var.instance.spec, {
-      domains            = local.modified_domains
-      disable_base_domain = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false)
+      domains             = local.acm_mode ? lookup(var.instance.spec, "domains", {}) : local.modified_domains
+      disable_base_domain = local.acm_mode ? lookup(var.instance.spec, "disable_base_domain", false) : (local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false))
     })
   })
 
@@ -119,7 +136,12 @@ locals {
       "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type"         = "ip"
       "service.beta.kubernetes.io/aws-load-balancer-backend-protocol"        = "tcp"
       "service.beta.kubernetes.io/aws-load-balancer-target-group-attributes" = lookup(var.instance.spec, "private", false) ? "proxy_protocol_v2.enabled=true,preserve_client_ip.enabled=false" : "proxy_protocol_v2.enabled=true,preserve_client_ip.enabled=true"
-    }
+    },
+    # ACM mode: attach ACM certs to NLB for TLS termination
+    local.acm_mode ? {
+      "service.beta.kubernetes.io/aws-load-balancer-ssl-cert"  = join(",", local.acm_cert_arns)
+      "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" = "443"
+    } : {}
   )
 }
 
@@ -132,7 +154,8 @@ module "nginx_gateway_fabric" {
   environment   = var.environment
   inputs        = local.merged_inputs
 
-  service_annotations = local.aws_annotations
+  service_annotations      = local.aws_annotations
+  external_tls_termination = local.acm_mode
 
   load_balancer_class = "service.k8s.aws/nlb"
 
@@ -149,10 +172,10 @@ module "nginx_gateway_fabric" {
 
 # ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
 # and exports them to K8s TLS secrets for Gateway listener consumption.
-# Only created for domains whose certificate_reference is an ACM ARN.
-# Requires the ack_acm_controller to be deployed (optional input).
+# Only created when ACK controller is available and domains have ACM ARNs.
+# When ACK is not available, ACM certs are attached directly to the NLB instead.
 module "ack_acm_certificate" {
-  for_each = local.acm_cert_domains
+  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
 
   source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
   name            = "${local.name}-acm-cert-${each.key}"
@@ -187,8 +210,9 @@ module "ack_acm_certificate" {
 
 # Pre-create empty TLS secrets for ACK ACM certificate export
 # ACK ACM controller requires the target secret to exist before it can export
+# Only created when ACK controller is available
 resource "kubernetes_secret_v1" "acm_cert" {
-  for_each = local.acm_cert_domains
+  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
 
   metadata {
     name      = local.acm_cert_secret_names[each.key]
