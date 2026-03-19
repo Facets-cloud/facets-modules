@@ -31,6 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update && sudo apt-get install -y python3-venv
           python3 -m venv .venv
           .venv/bin/pip install -r .github/workflows/innersourcing/requirements.txt
 
