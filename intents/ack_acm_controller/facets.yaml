@@ -1,0 +1,7 @@
+name: ack_acm_controller
+type: k8s
+displayName: ACK ACM Controller
+description: AWS Controllers for Kubernetes (ACK) ACM Controller that manages AWS Certificate Manager certificates as Kubernetes resources and exports them to TLS secrets.
+outputs:
+  - name: default
+    type: "@outputs/ack_acm_controller"

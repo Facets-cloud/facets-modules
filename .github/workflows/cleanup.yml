@@ -28,6 +28,9 @@ jobs:
         run: |
           echo '${{ toJson(secrets) }}' > secrets.json
 
+      - name: Install dependencies
+        run: pip install -r .github/workflows/innersourcing/requirements.txt
+
       - name: Execute cleanup script
         run: |
           set -e
