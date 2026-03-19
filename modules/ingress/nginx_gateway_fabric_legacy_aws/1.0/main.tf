@@ -28,9 +28,9 @@ locals {
   acm_mode = !local.use_ack_acm && length(local.acm_cert_domains) > 0
 
   # ACM ARNs to attach to NLB for TLS termination
-  acm_cert_arns = local.acm_mode ? [
+  acm_cert_arns = local.acm_mode ? distinct([
     for domain_key, domain in local.acm_cert_domains : domain.certificate_reference
-  ] : []
+  ]) : []
 
   # K8s secret name for ACM cert domains — the ACK Certificate CRD exports cert to this secret
   # Only relevant when ACK controller is available
