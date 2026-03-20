@@ -143,6 +143,60 @@ locals {
       "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" = "443"
     } : {}
   )
+
+  # ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
+  # and exports them to K8s TLS secrets for Gateway listener consumption.
+  ack_acm_resources = local.use_ack_acm ? {
+    for domain_key, domain in local.acm_cert_domains :
+    "ack-acm-cert-${domain_key}" => {
+      apiVersion = "acm.services.k8s.aws/v1alpha1"
+      kind       = "Certificate"
+      metadata = {
+        name      = "${local.name}-acm-cert-${domain_key}"
+        namespace = var.environment.namespace
+      }
+      spec = {
+        domainName = "*.${domain.domain}"
+        subjectAlternativeNames = [
+          domain.domain,
+          "*.${domain.domain}"
+        ]
+        validationMethod = "DNS"
+        options = {
+          certificateTransparencyLoggingPreference = "ENABLED"
+        }
+        exportTo = {
+          namespace = var.environment.namespace
+          name      = local.acm_cert_secret_names[domain_key]
+          key       = "tls.crt"
+        }
+      }
+    }
+  } : {}
+
+  # DNS-01 wildcard certificate resources for cert-manager
+  dns01_certificate_resources = {
+    for domain_key, domain in local.all_dns01_domains :
+    "dns01-cert-${domain_key}" => {
+      apiVersion = "cert-manager.io/v1"
+      kind       = "Certificate"
+      metadata = {
+        name      = "${local.name}-dns01-cert-${domain_key}"
+        namespace = var.environment.namespace
+      }
+      spec = {
+        secretName = local.dns01_cert_secret_names[domain_key]
+        issuerRef = {
+          name = local.dns01_cluster_issuer
+          kind = "ClusterIssuer"
+        }
+        dnsNames = [
+          domain.domain,
+          "*.${domain.domain}"
+        ]
+      }
+    }
+  }
 }
 
 # Call the base utility module
@@ -168,44 +222,8 @@ module "nginx_gateway_fabric" {
       }]
     }
   }
-}
 
-# ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
-# and exports them to K8s TLS secrets for Gateway listener consumption.
-# Only created when ACK controller is available and domains have ACM ARNs.
-# When ACK is not available, ACM certs are attached directly to the NLB instead.
-module "ack_acm_certificate" {
-  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
-
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-acm-cert-${each.key}"
-  namespace       = var.environment.namespace
-  advanced_config = {}
-
-  data = {
-    apiVersion = "acm.services.k8s.aws/v1alpha1"
-    kind       = "Certificate"
-    metadata = {
-      name      = "${local.name}-acm-cert-${each.key}"
-      namespace = var.environment.namespace
-    }
-    spec = {
-      domainName = "*.${each.value.domain}"
-      subjectAlternativeNames = [
-        each.value.domain,
-        "*.${each.value.domain}"
-      ]
-      validationMethod = "DNS"
-      options = {
-        certificateTransparencyLoggingPreference = "ENABLED"
-      }
-      exportTo = {
-        namespace = var.environment.namespace
-        name      = local.acm_cert_secret_names[each.key]
-        key       = "tls.crt"
-      }
-    }
-  }
+  additional_base_resources = merge(local.ack_acm_resources, local.dns01_certificate_resources)
 }
 
 # Pre-create empty TLS secrets for ACK ACM certificate export
@@ -228,39 +246,6 @@ resource "kubernetes_secret_v1" "acm_cert" {
 
   lifecycle {
     ignore_changes = [data, metadata[0].annotations, metadata[0].labels]
-  }
-}
-
-# --- DNS-01 wildcard certificate resources ---
-# cert-manager Certificate CRDs for DNS-01 wildcard domains.
-# Issues wildcard certs (*.domain + domain) via the dns01 ClusterIssuer (e.g. gts-production).
-# Only created when use_dns01 is enabled, for domains without existing certificate_reference.
-module "dns01_certificate" {
-  for_each = local.all_dns01_domains
-
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-dns01-cert-${each.key}"
-  namespace       = var.environment.namespace
-  advanced_config = {}
-
-  data = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "Certificate"
-    metadata = {
-      name      = "${local.name}-dns01-cert-${each.key}"
-      namespace = var.environment.namespace
-    }
-    spec = {
-      secretName = local.dns01_cert_secret_names[each.key]
-      issuerRef = {
-        name = local.dns01_cluster_issuer
-        kind = "ClusterIssuer"
-      }
-      dnsNames = [
-        each.value.domain,
-        "*.${each.value.domain}"
-      ]
-    }
   }
 }
 

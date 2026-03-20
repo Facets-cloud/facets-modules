@@ -60,7 +60,7 @@ locals {
   # When DNS-01 is active: disable_base_domain=true (we re-add it ourselves with certificate_reference)
   modified_instance = merge(var.instance, {
     spec = merge(var.instance.spec, {
-      domains            = local.modified_domains
+      domains             = local.modified_domains
       disable_base_domain = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false)
     })
   })
@@ -88,6 +88,30 @@ locals {
     "networking.gke.io/load-balancer-type"                         = "Internal"
     "networking.gke.io/internal-load-balancer-allow-global-access" = "true"
   } : {}
+
+  # DNS-01 wildcard certificate resources for cert-manager
+  dns01_certificate_resources = {
+    for domain_key, domain in local.all_dns01_domains :
+    "dns01-cert-${domain_key}" => {
+      apiVersion = "cert-manager.io/v1"
+      kind       = "Certificate"
+      metadata = {
+        name      = "${local.name}-dns01-cert-${domain_key}"
+        namespace = var.environment.namespace
+      }
+      spec = {
+        secretName = local.dns01_cert_secret_names[domain_key]
+        issuerRef = {
+          name = local.dns01_cluster_issuer
+          kind = "ClusterIssuer"
+        }
+        dnsNames = [
+          domain.domain,
+          "*.${domain.domain}"
+        ]
+      }
+    }
+  }
 }
 
 # Call the base utility module
@@ -99,40 +123,8 @@ module "nginx_gateway_fabric" {
   environment   = var.environment
   inputs        = local.merged_inputs
 
-  service_annotations = local.gcp_annotations
-}
-
-# --- DNS-01 wildcard certificate resources ---
-# cert-manager Certificate CRDs for DNS-01 wildcard domains.
-# Issues wildcard certs (*.domain + domain) via the dns01 ClusterIssuer (e.g. gts-production).
-# Only created when use_dns01 is enabled, for domains without existing certificate_reference.
-module "dns01_certificate" {
-  for_each = local.all_dns01_domains
-
-  source          = "github.com/Facets-cloud/facets-utility-modules//any-k8s-resource"
-  name            = "${local.name}-dns01-cert-${each.key}"
-  namespace       = var.environment.namespace
-  advanced_config = {}
-
-  data = {
-    apiVersion = "cert-manager.io/v1"
-    kind       = "Certificate"
-    metadata = {
-      name      = "${local.name}-dns01-cert-${each.key}"
-      namespace = var.environment.namespace
-    }
-    spec = {
-      secretName = local.dns01_cert_secret_names[each.key]
-      issuerRef = {
-        name = local.dns01_cluster_issuer
-        kind = "ClusterIssuer"
-      }
-      dnsNames = [
-        each.value.domain,
-        "*.${each.value.domain}"
-      ]
-    }
-  }
+  service_annotations       = local.gcp_annotations
+  additional_base_resources = local.dns01_certificate_resources
 }
 
 # Bootstrap TLS secrets for DNS-01 domains — Gateway 443 listeners need a TLS secret
