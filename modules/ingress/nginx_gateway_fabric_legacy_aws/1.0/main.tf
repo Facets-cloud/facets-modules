@@ -146,9 +146,8 @@ locals {
 
   # ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
   # and exports them to K8s TLS secrets for Gateway listener consumption.
-  # Iterates over acm_cert_domains directly (always known from spec) instead of
-  # gating on use_ack_acm which may be unknown on first apply.
-  ack_acm_resources = {
+  # Only created when ACK controller is available.
+  ack_acm_resources = local.use_ack_acm ? {
     for domain_key, domain in local.acm_cert_domains :
     "ack-acm-cert-${domain_key}" => {
       apiVersion = "acm.services.k8s.aws/v1alpha1"
@@ -174,7 +173,7 @@ locals {
         }
       }
     }
-  }
+  } : {}
 
   # DNS-01 wildcard certificate resources for cert-manager
   dns01_certificate_resources = {
@@ -230,9 +229,9 @@ module "nginx_gateway_fabric" {
 
 # Pre-create empty TLS secrets for ACK ACM certificate export
 # ACK ACM controller requires the target secret to exist before it can export
-# Gated on acm_cert_domains (always known from spec) instead of use_ack_acm
+# Only created when ACK controller is available
 resource "kubernetes_secret_v1" "acm_cert" {
-  for_each = local.acm_cert_domains
+  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
 
   metadata {
     name      = local.acm_cert_secret_names[each.key]
