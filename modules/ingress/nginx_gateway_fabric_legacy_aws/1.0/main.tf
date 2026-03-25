@@ -39,13 +39,13 @@ locals {
     domain_key => "${local.name}-${domain_key}-acm-tls"
   }
 
-  # Rewrite instance domains based on TLS termination mode:
-  # - ACK path: replace ACM ARN with K8s secret name (TLS at Gateway)
-  # - ACM mode: no rewriting needed (base module ignores certificate_reference with external_tls_termination)
-  # - Otherwise: pass through unchanged
+  # Rewrite ACM ARN certificate_reference → K8s secret name for all ACM domains.
+  # In ACM mode (no ACK), this rewrite is harmless — external_tls_termination=true
+  # tells the base module to ignore certificate_reference entirely.
+  # Always rewriting avoids unknown map values when use_ack_acm is unresolved at plan time.
   acm_modified_domains = {
     for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
-    domain_key => local.use_ack_acm && contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
+    domain_key => contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
       certificate_reference = local.acm_cert_secret_names[domain_key]
     }) : domain
   }
@@ -146,7 +146,9 @@ locals {
 
   # ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
   # and exports them to K8s TLS secrets for Gateway listener consumption.
-  ack_acm_resources = local.use_ack_acm ? {
+  # Iterates over acm_cert_domains directly (always known from spec) instead of
+  # gating on use_ack_acm which may be unknown on first apply.
+  ack_acm_resources = {
     for domain_key, domain in local.acm_cert_domains :
     "ack-acm-cert-${domain_key}" => {
       apiVersion = "acm.services.k8s.aws/v1alpha1"
@@ -172,7 +174,7 @@ locals {
         }
       }
     }
-  } : {}
+  }
 
   # DNS-01 wildcard certificate resources for cert-manager
   dns01_certificate_resources = {
@@ -228,9 +230,9 @@ module "nginx_gateway_fabric" {
 
 # Pre-create empty TLS secrets for ACK ACM certificate export
 # ACK ACM controller requires the target secret to exist before it can export
-# Only created when ACK controller is available
+# Gated on acm_cert_domains (always known from spec) instead of use_ack_acm
 resource "kubernetes_secret_v1" "acm_cert" {
-  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
+  for_each = local.acm_cert_domains
 
   metadata {
     name      = local.acm_cert_secret_names[each.key]
