@@ -1,3 +1,4 @@
+name_length_limit: 20
 intent: ingress
 flavor: nginx_gateway_fabric_legacy_aws
 version: "1.0"
