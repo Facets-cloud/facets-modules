@@ -3,7 +3,7 @@ resource "kubernetes_secret_v1" "registry_secret" {
   metadata {
     name      = each.value.name
     namespace = local.namespace
-    labels    = lookup(local.metadata, "labels", {})
+    labels    = merge(lookup(local.metadata, "labels", {}), {"secret-copier" = "yes"})
   }
   data = {
     ".dockerconfigjson" : each.value.dockerconfigjson
