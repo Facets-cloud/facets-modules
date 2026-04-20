@@ -8,5 +8,5 @@ locals {
   user          = lookup(local.mongo_user, "user", {})
   role          = lookup(local.mongo_user, "role", {})
   user_name     = lookup(local.user, "username", module.unique_name.name)
-  user_password = lookup(local.user, "password", module.user_password.result)
+  user_password = sensitive(lookup(local.user, "password", module.user_password.result))
 }
