@@ -903,6 +903,47 @@ locals {
     }
   }
 
+  # --- BackendTLSPolicy ---
+  # For rules with backend_tls configured, create BackendTLSPolicy resources.
+  # Deduplicated by service_name + namespace (one policy per unique backend service).
+  backend_tls_services = {
+    for k, v in local.rulesFiltered :
+    "${v.service_name}-${v.namespace}" => {
+      service_name = v.service_name
+      namespace    = v.namespace
+      ca_secret    = lookup(v.backend_tls, "ca_certificate_secret", "${v.service_name}-tls")
+      hostname     = lookup(v.backend_tls, "hostname", v.service_name)
+    }
+    if lookup(lookup(v, "backend_tls", {}), "enabled", false)
+  }
+
+  backendtlspolicy_resources = {
+    for key, svc in local.backend_tls_services :
+    "backendtlspolicy-${key}" => {
+      apiVersion = "gateway.networking.k8s.io/v1alpha3"
+      kind       = "BackendTLSPolicy"
+      metadata = {
+        name      = "${local.name}-btls-${key}"
+        namespace = svc.namespace
+      }
+      spec = {
+        targetRefs = [{
+          group = ""
+          kind  = "Service"
+          name  = svc.service_name
+        }]
+        validation = {
+          caCertificateRefs = [{
+            group = ""
+            kind  = "Secret"
+            name  = svc.ca_secret
+          }]
+          hostname = svc.hostname
+        }
+      }
+    }
+  }
+
   # --- ClientSettingsPolicy ---
   clientsettingspolicy_resources = {
     "clientsettingspolicy-${local.name}" = {
@@ -1106,6 +1147,7 @@ locals {
   gateway_api_resources_base = merge(
     local.podmonitor_resources,
     local.referencegrant_resources,
+    local.backendtlspolicy_resources,
     local.clientsettingspolicy_resources,
     local.authenticationfilter_resources,
     local.snippetspolicy_resources,

@@ -849,6 +849,35 @@ spec:
               description: "Custom NGINX server-level configuration snippet (injected via SnippetsFilter)"
               x-ui-toggle: true
               x-ui-yaml-editor: true
+            backend_tls:
+              type: object
+              title: Backend TLS Policy
+              description: "Configure TLS for connecting to the backend service. Creates a BackendTLSPolicy resource. Use when the backend serves HTTPS with a self-signed certificate issued via cert-manager."
+              x-ui-toggle: true
+              properties:
+                enabled:
+                  type: boolean
+                  title: Enable Backend TLS
+                  description: "Enable BackendTLSPolicy for this backend service"
+                  default: false
+                ca_certificate_secret:
+                  type: string
+                  title: CA Certificate Secret
+                  description: "Name of the Kubernetes Secret containing the CA certificate (ca.crt key) that signed the backend's TLS certificate"
+                  x-ui-placeholder: "my-backend-ca-cert"
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.backend_tls.enabled
+                    values:
+                      - true
+                hostname:
+                  type: string
+                  title: Backend TLS Hostname
+                  description: "Expected server name in the backend's TLS certificate (must match CN or SAN). Defaults to the rule's service_name if not set."
+                  x-ui-placeholder: "my-service"
+                  x-ui-visible-if:
+                    field: spec.rules.{{this}}.backend_tls.enabled
+                    values:
+                      - true
           required:
             - service_name
             - port
@@ -873,6 +902,7 @@ spec:
             - response_header_modifier
             - configuration_snippet
             - server_snippet
+            - backend_tls
             - grpc_config
     # Disabling below things as too advanced for initial release
     # - canary_deployment
