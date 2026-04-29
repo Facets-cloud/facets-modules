@@ -1,4 +1,4 @@
-name: '@outputs/ack_acm_controller'
+name: 'ack_acm_controller'
 properties:
   type: object
   properties:
