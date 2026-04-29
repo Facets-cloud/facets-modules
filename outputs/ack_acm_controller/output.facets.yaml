@@ -1,26 +1,28 @@
-name: 'ack_acm_controller'
-properties:
+name: ack_acm_controller
+out:
   type: object
+  title: ACK ACM Controller
+  description: ACK ACM Controller Attributes
   properties:
     attributes:
-      type: object
-      properties:
-        namespace:
-          description: Kubernetes namespace where the controller is deployed
-          type: string
-        release_name:
-          description: Helm release name
-          type: string
-        chart_version:
-          description: Helm chart version
-          type: string
-        role_arn:
-          description: IAM role ARN used by the controller
-          type: string
-        helm_release_id:
-          description: Helm release ID
-          type: string
+      namespace:
+        required: true
+        type: string
+        description: Kubernetes namespace where the controller is deployed
+      release_name:
+        required: true
+        type: string
+        description: Helm release name
+      chart_version:
+        required: true
+        type: string
+        description: Helm chart version
+      role_arn:
+        required: true
+        type: string
+        description: IAM role ARN used by the controller
+      helm_release_id:
+        required: true
+        type: string
+        description: Helm release ID
     interfaces:
-      type: object
-      properties: {}
-providers: []
