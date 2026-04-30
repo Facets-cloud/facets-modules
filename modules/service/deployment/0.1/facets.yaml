@@ -419,7 +419,7 @@ spec:
               - PortCheck
               - HttpCheck
               - ExecCheck
-            startup_start_up_time:
+            startup_initial_delay_seconds:
               type: integer
               title: Startup Start-Up Time
               default: 10
