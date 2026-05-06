@@ -303,6 +303,38 @@ spec:
               items:
                 type: string
               x-ui-override-disable: true
+            readiness_failure_threshold:
+              type: integer
+              title: Readiness Failure Threshold
+              default: 10
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter readiness failure threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive failures before marking unhealthy
+            readiness_success_threshold:
+              type: integer
+              title: Readiness Success Threshold
+              default: 1
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter readiness success threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.readiness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive successes before marking healthy
             liveness_check_type:
               type: string
               title: Liveness Check Type
@@ -399,6 +431,38 @@ spec:
               items:
                 type: string
               x-ui-override-disable: true
+            liveness_failure_threshold:
+              type: integer
+              title: Liveness Failure Threshold
+              default: 10
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter liveness failure threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive failures before marking unhealthy
+            liveness_success_threshold:
+              type: integer
+              title: Liveness Success Threshold
+              default: 1
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter liveness success threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.liveness_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive successes before marking healthy
             startup_check_type:
               type: string
               title: Startup Check Type
@@ -502,6 +566,38 @@ spec:
                 - ExecCheck
               description: Commands for startup check
               x-ui-override-disable: true
+            startup_failure_threshold:
+              type: integer
+              title: Startup Failure Threshold
+              default: 10
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter startup failure threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive failures before marking unhealthy
+            startup_success_threshold:
+              type: integer
+              title: Startup Success Threshold
+              default: 1
+              minimum: 1
+              maximum: 100
+              x-ui-placeholder: "Enter startup success threshold"
+              x-ui-error-message: "Value doesn't match pattern, accepted values are
+                from 1-100"
+              x-ui-visible-if:
+                field: spec.runtime.health_checks.startup_check_type
+                values:
+                - PortCheck
+                - HttpCheck
+                - ExecCheck
+              description: Number of consecutive successes before marking healthy
           required:
           - readiness_port
           - readiness_url
@@ -1606,6 +1702,38 @@ spec:
                       items:
                         type: string
                       x-ui-override-disable: true
+                    readiness_failure_threshold:
+                      type: integer
+                      title: Readiness Failure Threshold
+                      default: 10
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter readiness failure threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive failures before marking unhealthy
+                    readiness_success_threshold:
+                      type: integer
+                      title: Readiness Success Threshold
+                      default: 1
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter readiness success threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.readiness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive successes before marking healthy
                     liveness_check_type:
                       type: string
                       title: Liveness Check Type
@@ -1688,6 +1816,38 @@ spec:
                       items:
                         type: string
                       x-ui-override-disable: true
+                    liveness_failure_threshold:
+                      type: integer
+                      title: Liveness Failure Threshold
+                      default: 10
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter liveness failure threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive failures before marking unhealthy
+                    liveness_success_threshold:
+                      type: integer
+                      title: Liveness Success Threshold
+                      default: 1
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter liveness success threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.liveness_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive successes before marking healthy
                     startup_check_type:
                       type: string
                       title: Startup Check Type
@@ -1768,6 +1928,38 @@ spec:
                         - ExecCheck
                       description: Commands for startup check
                       x-ui-override-disable: true
+                    startup_failure_threshold:
+                      type: integer
+                      title: Startup Failure Threshold
+                      default: 10
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter startup failure threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive failures before marking unhealthy
+                    startup_success_threshold:
+                      type: integer
+                      title: Startup Success Threshold
+                      default: 1
+                      minimum: 1
+                      maximum: 100
+                      x-ui-placeholder: "Enter startup success threshold"
+                      x-ui-error-message: "Value doesn't match pattern, accepted values
+                        are from 1-100"
+                      x-ui-visible-if:
+                        field: spec.sidecars.{{this}}.runtime.health_checks.startup_check_type
+                        values:
+                        - PortCheck
+                        - HttpCheck
+                        - ExecCheck
+                      description: Number of consecutive successes before marking healthy
                     port:
                       type: string
                       title: Health Check Port
