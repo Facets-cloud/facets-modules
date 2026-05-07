@@ -5,7 +5,7 @@ format to the new nginx_gateway_fabric_legacy_aws/1.0 format.
 
 Enables use_dns01 by default with gts-production ClusterIssuer for wildcard
 certificate issuance via DNS-01 validation. ACM ARN certificate_references
-are preserved (the AWS module handles them natively via ACK).
+are preserved -- the AWS module attaches them at the NLB listener level.
 
 Usage:
     python3 convert_nginx_ingress.py <input.json> [-o output.json] [--default-namespace default]
@@ -28,6 +28,7 @@ SERVICE_TEMPLATE_RE = re.compile(
 SUPPORTED_DOMAIN_FIELDS = {"domain", "alias", "certificate_reference", "rules"}
 SUPPORTED_SPEC_FIELDS = {
     "private",
+    "disable_base_domain",
     "force_ssl_redirection",
     "domains",
     "rules",
@@ -41,6 +42,10 @@ SUPPORTED_SPEC_FIELDS = {
     "body_size",
     "data_plane",
     "control_plane",
+    "helm_values",
+    "helm_wait",
+    "use_dns01",
+    "dns01_cluster_issuer",
 }
 
 DEFAULT_INPUTS = {
@@ -55,10 +60,6 @@ DEFAULT_INPUTS = {
     "prometheus_details": {
         "resource_name": "prometheus",
         "resource_type": "configuration",
-    },
-    "ack_acm_controller_details": {
-        "resource_name": "<ResourceName>",
-        "resource_type": "ack_acm_controller",
     },
 }
 
@@ -89,7 +90,7 @@ DEFAULT_SPEC_FIELDS = {
         },
     },
 }
-DROP_SPEC_FIELDS_WARN = {"basicAuth", "basic_auth", "allow_wildcard"}
+DROP_SPEC_FIELDS_WARN = {"allow_wildcard", "subdomains"}
 DROP_SPEC_FIELDS_SILENT = {"ingress_chart_version", "annotations_risk_level", "grpc"}
 
 
@@ -192,7 +193,7 @@ def convert(input_data, default_namespace):
     for key, default_value in DEFAULT_INPUTS.items():
         if key not in inputs:
             inputs[key] = default_value
-            if key in ("gateway_api_crd_details", "ack_acm_controller_details"):
+            if key == "gateway_api_crd_details":
                 warn(f"ADDED: '{key}' with placeholder resource_name '<ResourceName>'.")
                 warn(f"       ACTION REQUIRED: Update resource_name with the actual resource name.")
             else:
@@ -205,20 +206,30 @@ def convert(input_data, default_namespace):
 
     out_spec = {}
 
-    # Carry over supported simple fields
-    for field in ("private", "force_ssl_redirection", "subdomains"):
+    # Carry over supported simple fields (body_size has a default and is handled below)
+    for field in (
+        "private",
+        "disable_base_domain",
+        "force_ssl_redirection",
+        "helm_values",
+        "helm_wait",
+    ):
         if field in spec:
             out_spec[field] = spec[field]
 
-    # Enable DNS-01 wildcard certs by default for AWS
-    out_spec["use_dns01"] = True
-    out_spec["dns01_cluster_issuer"] = "gts-production"
+    # basic_auth: legacy used basicAuth (camelCase); new module uses basic_auth
+    if "basic_auth" in spec:
+        out_spec["basic_auth"] = spec["basic_auth"]
+    elif "basicAuth" in spec:
+        out_spec["basic_auth"] = spec["basicAuth"]
+
+    # Enable DNS-01 wildcard certs by default for AWS, unless caller provided values
+    out_spec["use_dns01"] = spec.get("use_dns01", True)
+    out_spec["dns01_cluster_issuer"] = spec.get("dns01_cluster_issuer", "gts-production")
 
     # Move advanced fields into spec
     if "domain_prefix_override" in adv_nic:
         out_spec["domain_prefix_override"] = adv_nic["domain_prefix_override"]
-    if "disable_endpoint_validation" in adv_nic:
-        out_spec["disable_endpoint_validation"] = adv_nic["disable_endpoint_validation"]
 
     # Warn about helm values, dropped fields, unknown fields
     has_adv = bool(adv_nic)
@@ -254,8 +265,7 @@ def convert(input_data, default_namespace):
         cert = dval.get("certificate_reference", "")
         if cert and "arn:aws:acm" in cert:
             warn(f"Domain '{dkey}': KEPT ACM ARN certificate_reference.")
-            warn(f"  The AWS module handles ACM ARNs natively via ACK ACM controller.")
-            warn(f"  Ensure ack_acm_controller is deployed (see inputs).")
+            warn(f"  The AWS module attaches ACM ARNs directly at the NLB listener.")
 
         if "equivalent_prefixes" in dval:
             warn(f"Domain '{dkey}': DROPPED 'equivalent_prefixes' (not supported).")
