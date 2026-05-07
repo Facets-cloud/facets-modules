@@ -88,3 +88,7 @@ output "cloud_provider" {
   value       = module.nginx_gateway_fabric.cloud_provider
   description = "Detected cloud provider (AWS, GCP, AZURE)"
 }
+
+output "legacy_resource_details" {
+  value = module.nginx_gateway_fabric.legacy_resource_details
+}
