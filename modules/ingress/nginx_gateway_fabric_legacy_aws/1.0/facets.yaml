@@ -48,6 +48,11 @@ spec:
       title: Disable Base Domain
       description: Disable automatic creation of base domain for this gateway
       default: false
+    helm_release_name_override:
+      type: string
+      title: Helm Release Name Override
+      description: Advanced. Override the Helm release name for this gateway. Leave empty to keep the default (truncated instance/namespace name). Changing this on an existing instance will recreate the release.
+      x-ui-toggle: true
     domains:
       title: Domains
       description: Map of domain key to rules
