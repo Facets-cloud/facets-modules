@@ -51,8 +51,12 @@ spec:
     helm_release_name_override:
       type: string
       title: Helm Release Name Override
-      description: Advanced. Override the Helm release name for this gateway. Leave empty to keep the default (truncated instance/namespace name). Changing this on an existing instance will recreate the release.
+      description: Advanced. Override the Helm release name for this gateway. Leave empty to keep the default (truncated instance/namespace name). Must be a DNS-1123 label (lowercase alphanumerics and hyphens, starting/ending with alphanumeric) and at most 34 characters. Changing this on an existing instance will recreate the release.
+      pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+      maxLength: 34
       x-ui-toggle: true
+      x-ui-placeholder: "e.g. my-gateway-stable"
+      x-ui-error-message: "Must be lowercase alphanumeric with hyphens, start/end with alphanumeric, and at most 34 characters."
     domains:
       title: Domains
       description: Map of domain key to rules
