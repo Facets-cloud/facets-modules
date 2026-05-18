@@ -112,16 +112,43 @@ Gateway API removed this. There is **no `proxy_ssl_verify off`** equivalent.
 You have three honest options when a rule used to carry `backend-protocol: HTTPS`:
 
 1. **Expose plain HTTP on the backend** *(preferred for in-cluster traffic)*.
-   For example, with Kong:
+   The TLS hop between gateway and backend buys nothing inside a cluster —
+   the old controller didn't validate certs anyway. Just turn it off.
+
+   **For `k8s-dashboard-new` (the chart that ships Kong as its TLS frontend)**:
+   The chart's Kong proxy has both HTTPS and HTTP listeners; the HTTP one is
+   disabled by default. Flip it on by adding the following to the
+   `k8s-dashboard-new` helm release values:
+
    ```yaml
    kong:
      proxy:
        http:
          enabled: true
    ```
-   The backend Service then exposes port 80. Point the rule at port 80 and
-   drop the annotation entirely. This is what we did for `tools/k8s` ➝
-   `k8s-dashboard-new-kong-proxy`.
+
+   That exposes Kong on Service port `80` (containerPort `8000`) alongside
+   the existing `443`. The existing TLS listener stays untouched, so nothing
+   else breaks. After the helm upgrade lands, flip the corresponding rule in
+   the converted ingress blueprint:
+
+   ```diff
+     "k8s": {
+       "service_name": "k8s-dashboard-new-kong-proxy",
+   -   "port": 443,
+   +   "port": 80,
+       ...
+     }
+   ```
+
+   …and drop the `backend-protocol: HTTPS` annotation (the script already
+   dropped it on conversion; just confirm).
+
+   **For other Kong-fronted backends**: same pattern — find the chart's
+   plain-HTTP proxy port and enable it.
+
+   **For backends that don't have a plain-HTTP option**: pick option 2 or 3
+   below.
 
 2. **Use a real TLS cert on the backend** (cert-manager / publicly-trusted CA).
    Add a `BackendTLSPolicy` with `validation.wellKnownCACertificates: System`.
