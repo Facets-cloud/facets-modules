@@ -45,6 +45,15 @@ spec:
       title: Disable Base Domain
       description: Disable automatic creation of base domain for this gateway
       default: false
+    helm_release_name_override:
+      type: string
+      title: Helm Release Name Override
+      description: Advanced. Override the Helm release name for this gateway. Leave empty to keep the default (truncated instance/namespace name). Must be a DNS-1123 label (lowercase alphanumerics and hyphens, starting/ending with alphanumeric) and at most 34 characters. Changing this on an existing instance will recreate the release.
+      pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+      maxLength: 34
+      x-ui-toggle: true
+      x-ui-placeholder: "e.g. my-gateway-stable"
+      x-ui-error-message: "Must be lowercase alphanumeric with hyphens, start/end with alphanumeric, and at most 34 characters."
     domains:
       title: Domains
       description: Map of domain key to rules
@@ -633,6 +642,30 @@ spec:
                   default: 300s
                   pattern: ^\d+[smh]$
                   x-ui-placeholder: "300s"
+            nginx_timeouts:
+              type: object
+              title: Proxy Timeouts (per-rule override)
+              description: Override instance-level proxy_{connect,read,send}_timeout for this rule. Leave empty to inherit instance defaults.
+              x-ui-toggle: true
+              properties:
+                proxy_connect_timeout:
+                  type: string
+                  title: Proxy Connect Timeout
+                  description: Override proxy_connect_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]$
+                  x-ui-placeholder: 60s
+                proxy_read_timeout:
+                  type: string
+                  title: Proxy Read Timeout
+                  description: Override proxy_read_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]$
+                  x-ui-placeholder: 60s
+                proxy_send_timeout:
+                  type: string
+                  title: Proxy Send Timeout
+                  description: Override proxy_send_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]$
+                  x-ui-placeholder: 60s
             cors:
               type: object
               title: CORS Configuration
@@ -795,6 +828,7 @@ spec:
             - path_type
             - method
             - timeouts
+            - nginx_timeouts
             - cors
             - header_matches
             - query_param_matches
@@ -817,10 +851,34 @@ spec:
     body_size:
       type: string
       title: Max Body Size
-      description: Maximum allowed size of the client request body (e.g., 150m, 1g)
+      description: Maximum allowed size of the client request body (e.g., 1m, 1g)
       pattern: ^\d{1,4}(k|m|g)?$
-      default: 150m
-      x-ui-placeholder: 150m
+      default: 1m
+      x-ui-placeholder: 1m
+      x-ui-toggle: true
+    proxy_connect_timeout:
+      type: string
+      title: Proxy Connect Timeout
+      description: Default timeout for establishing connections to upstream services (e.g., 60s, 1m). Per-rule overrides win.
+      pattern: ^\d+[smh]$
+      default: 60s
+      x-ui-placeholder: 60s
+      x-ui-toggle: true
+    proxy_read_timeout:
+      type: string
+      title: Proxy Read Timeout
+      description: Default timeout for reading responses from upstream services. Per-rule overrides win.
+      pattern: ^\d+[smh]$
+      default: 60s
+      x-ui-placeholder: 60s
+      x-ui-toggle: true
+    proxy_send_timeout:
+      type: string
+      title: Proxy Send Timeout
+      description: Default timeout for transmitting requests to upstream services. Per-rule overrides win.
+      pattern: ^\d+[smh]$
+      default: 60s
+      x-ui-placeholder: 60s
       x-ui-toggle: true
     helm_values:
       type: object
@@ -873,6 +931,9 @@ spec:
     - force_ssl_redirection
     - basic_auth
     - body_size
+    - proxy_connect_timeout
+    - proxy_read_timeout
+    - proxy_send_timeout
     - disable_endpoint_validation
     - use_dns01
     - dns01_cluster_issuer
@@ -893,7 +954,7 @@ sample:
     disable_base_domain: false
     force_ssl_redirection: true
     basic_auth: false
-    body_size: 150m
+    body_size: 1m
     data_plane:
       scaling:
         min_replicas: 2
