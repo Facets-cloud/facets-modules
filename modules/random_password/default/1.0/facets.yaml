@@ -1,0 +1,63 @@
+# ╔═══════════════════════════════════════════════════════════╗
+# ║ MANAGED BY: raptor module — DO NOT EDIT DIRECTLY         ║
+# ║                                                          ║
+# ║ Modify via:                                              ║
+# ║   raptor module set-spec --add <field>                   ║
+# ║   raptor module add-input / remove-input                 ║
+# ║   raptor module add-output / remove-output               ║
+# ║   raptor module show | raptor module validate            ║
+# ╚═══════════════════════════════════════════════════════════╝
+intent: random_password
+flavor: default
+version: "1.0"
+description: Generates a random password and exports it as a sensitive attribute
+intentDetails:
+    type: random_password
+    description: Generates a cryptographically random password with configurable length and character sets
+    displayName: Random Password
+    iconUrl: ""
+clouds:
+    - gcp
+x-project-type: aws-eks
+outputs:
+    default:
+        type: '@facets/random_password'
+spec:
+    properties:
+        length:
+            default: 16
+            description: The length of the generated random password
+            maximum: 128
+            minimum: 8
+            title: Password Length
+            type: number
+        numeric:
+            default: true
+            description: Whether to include numeric characters in the password
+            title: Include Numeric Characters
+            type: boolean
+        special:
+            default: true
+            description: Whether to include special characters in the password
+            title: Include Special Characters
+            type: boolean
+        upper:
+            default: true
+            description: Whether to include uppercase letters in the password
+            title: Include Uppercase Letters
+            type: boolean
+    type: object
+    x-ui-order:
+        - length
+        - special
+        - upper
+        - numeric
+sample:
+    flavor: default
+    kind: random_password
+    spec:
+        length: 16
+        numeric: true
+        special: true
+        upper: true
+    version: "1.0"
