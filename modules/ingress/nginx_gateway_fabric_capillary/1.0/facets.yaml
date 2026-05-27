@@ -83,6 +83,12 @@ spec:
               items:
                 type: string
               x-ui-toggle: true
+            rules:
+              type: object
+              title: Per-Domain Rules
+              description: Routes scoped to this domain only. Same shape as top-level spec.rules. When set, top-level spec.rules do NOT apply to this domain. Provided for backward compatibility with the legacy nginx_ingress_controller module.
+              x-ui-toggle: true
+              x-ui-overrides-only: true
           required:
             - domain
             - alias

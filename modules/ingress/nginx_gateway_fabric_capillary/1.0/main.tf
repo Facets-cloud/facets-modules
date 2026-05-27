@@ -54,8 +54,10 @@ locals {
 
   dns01_base_domain = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? {
     "facets" = {
-      domain = local.base_domain
-      alias  = "base"
+      domain                = local.base_domain
+      alias                 = "base"
+      certificate_reference = ""
+      equivalent_prefixes   = []
     }
   } : {}
 
@@ -89,8 +91,10 @@ locals {
   # --- Final domains (no expansion — equivalent_prefixes is a rule-routing key, not domain multiplication) ---
   add_base_domain = local.effective_disable_base_domain ? {} : {
     "facets" = {
-      "domain" = local.base_domain
-      "alias"  = "base"
+      "domain"                = local.base_domain
+      "alias"                 = "base"
+      "certificate_reference" = ""
+      "equivalent_prefixes"   = []
     }
   }
 
@@ -246,8 +250,33 @@ locals {
   record_type     = local.lb_hostname != "" ? "CNAME" : "A"
   lb_record_value = local.lb_hostname != "" ? local.lb_hostname : local.lb_ip
 
+  # --- Per-domain rules (backward-compat with legacy nginx_ingress_controller) ---
+  # Flatten spec.domains[*].rules into a single map keyed "<domain_key>__<rule_key>".
+  # The injected _domain_key marker forces single-domain hostname/parentRef binding
+  # downstream — per-domain rules MUST NOT route to any other domain.
+  per_domain_rules = merge(concat(
+    [{}],
+    [
+      for domain_key, domain in local.domains : {
+        for rule_key, rule in lookup(domain, "rules", {}) :
+        "${domain_key}__${rule_key}" => merge(rule, { _domain_key = domain_key })
+      }
+    ]
+  )...)
+
+  # Domains that define their OWN rules. Top-level spec.rules MUST NOT route to
+  # these — matches the legacy `rules_outside_domains` filter
+  # (length(xx.rules) <= 0 && length(xx.equivalent_prefixes) <= 0).
+  domains_with_own_rules = [
+    for domain_key, domain in local.domains : domain_key
+    if length(lookup(domain, "rules", {})) > 0
+  ]
+
   # --- Rules ---
-  rulesRaw = lookup(var.instance.spec, "rules", {})
+  rulesRaw = merge(
+    lookup(var.instance.spec, "rules", {}),
+    local.per_domain_rules
+  )
 
   all_domain_hostnames = [for domain_key, domain in local.domains : domain.domain]
 
@@ -267,17 +296,26 @@ locals {
   }
 
   # --- Hostnames ---
-  # For rules whose domain_prefix matches an equivalent_prefixes entry, use the
-  # matched domains' hostnames directly (no prefix prepend). Otherwise, use
-  # normal prefix.domain behavior.
+  # Three cases:
+  #   1. Per-domain rule (_domain_key set): single hostname for that domain only.
+  #   2. Top-level rule with domain_prefix matching equivalent_prefixes_map: use
+  #      matched domains' hostnames directly (no prefix prepend).
+  #   3. Top-level rule: cross-product with domains, EXCLUDING any domain that
+  #      defines its own rules (mode 1 exclusivity, matches legacy semantics).
   all_route_hostnames = distinct(flatten([
     for rule_key, rule in local.rulesFiltered : (
+      lookup(rule, "_domain_key", null) != null ? (
+        lookup(rule, "domain_prefix", null) == null || lookup(rule, "domain_prefix", null) == "" ?
+        [local.domains[rule._domain_key].domain] :
+        ["${lookup(rule, "domain_prefix", null)}.${local.domains[rule._domain_key].domain}"]
+      ) :
       contains(keys(local.equivalent_prefixes_map), lookup(rule, "domain_prefix", "")) ?
       [for dk in local.equivalent_prefixes_map[lookup(rule, "domain_prefix", "")] : local.domains[dk].domain] :
       [for domain_key, domain in local.domains :
         lookup(rule, "domain_prefix", null) == null || lookup(rule, "domain_prefix", null) == "" ?
         domain.domain :
         "${lookup(rule, "domain_prefix", null)}.${domain.domain}"
+        if !contains(local.domains_with_own_rules, domain_key)
       ]
     )
   ]))
@@ -432,11 +470,11 @@ locals {
   # nginx_timeouts + configuration_snippet into a single "location" entry
   snippetsfilter_resources = {
     for k, v in local.rulesFiltered :
-    "snippetsfilter-${k}" => {
+    "snippetsfilter-${lower(replace(k, "__", "-"))}" => {
       apiVersion = "gateway.nginx.org/v1alpha1"
       kind       = "SnippetsFilter"
       metadata = {
-        name      = "${lower(var.instance_name)}-${k}-snippets"
+        name      = "${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}-snippets"
         namespace = var.environment.namespace
       }
       spec = {
@@ -492,11 +530,11 @@ locals {
   # --- HTTPRoute resources ---
   httproute_resources = merge([
     for variant_key, variant in local.httproute_variants : {
-      for k, v in local.rulesFiltered : "httproute-${lower(var.instance_name)}-${k}${variant.suffix}" => {
+      for k, v in local.rulesFiltered : "httproute-${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}${variant.suffix}" => {
         apiVersion = "gateway.networking.k8s.io/v1"
         kind       = "HTTPRoute"
         metadata = {
-          name      = "${lower(var.instance_name)}-${k}${variant.suffix}"
+          name      = "${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}${variant.suffix}"
           namespace = var.environment.namespace
         }
         spec = {
@@ -510,6 +548,16 @@ locals {
               sectionName = "http"
             }] : (
             concat(
+              # Per-domain rule: bind to exactly one parent domain's listener.
+              lookup(v, "_domain_key", null) != null ? [{
+                name      = local.name
+                namespace = var.environment.namespace
+                sectionName = (
+                  lookup(local.domains[v._domain_key], "certificate_reference", "") != "" ||
+                  lookup(v, "domain_prefix", null) == null ||
+                  lookup(v, "domain_prefix", null) == ""
+                ) ? "https-${v._domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${local.domains[v._domain_key].domain}", ".", "-"), "*", "wildcard")}"
+              }] :
               # equivalent_prefixes match: bind to matched domains only
               contains(keys(local.equivalent_prefixes_map), lookup(v, "domain_prefix", "")) ? [
                 for domain_key in local.equivalent_prefixes_map[lookup(v, "domain_prefix", "")] : {
@@ -518,19 +566,19 @@ locals {
                   sectionName = "https-${domain_key}"
                 }
                 ] : (
-                # Normal: no prefix → all domains; with prefix → prefix.domain listener
+                # Normal: no prefix → all domains except mode-1; with prefix → prefix.domain listener
                 lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ? [
                   for domain_key, domain in local.domains : {
                     name        = local.name
                     namespace   = var.environment.namespace
                     sectionName = "https-${domain_key}"
-                  }
+                  } if !contains(local.domains_with_own_rules, domain_key)
                   ] : [
                   for domain_key, domain in local.domains : {
                     name        = local.name
                     namespace   = var.environment.namespace
                     sectionName = lookup(domain, "certificate_reference", "") != "" ? "https-${domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-                  }
+                  } if !contains(local.domains_with_own_rules, domain_key)
               ]),
               !local.force_ssl_redirection ? [{
                 name        = local.name
@@ -541,14 +589,21 @@ locals {
           ))
 
           hostnames = distinct(
+            # Per-domain rule: single hostname for that domain only.
+            lookup(v, "_domain_key", null) != null ? (
+              lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
+              [local.domains[v._domain_key].domain] :
+              ["${lookup(v, "domain_prefix", null)}.${local.domains[v._domain_key].domain}"]
+            ) :
             # equivalent_prefixes match: use matched domains' hostnames directly
             contains(keys(local.equivalent_prefixes_map), lookup(v, "domain_prefix", "")) ?
             [for dk in local.equivalent_prefixes_map[lookup(v, "domain_prefix", "")] : local.domains[dk].domain] :
-            # Normal behavior
+            # Normal behavior, excluding domains with their own rules
             [for domain_key, domain in local.domains :
               lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
               domain.domain :
               "${lookup(v, "domain_prefix", null)}.${domain.domain}"
+              if !contains(local.domains_with_own_rules, domain_key)
             ]
           )
 
@@ -686,7 +741,7 @@ locals {
                 extensionRef = {
                   group = "gateway.nginx.org"
                   kind  = "SnippetsFilter"
-                  name  = "${lower(var.instance_name)}-${k}-snippets"
+                  name  = "${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}-snippets"
                 }
               }] : []
             )
@@ -728,11 +783,11 @@ locals {
 
   grpcroute_resources = merge([
     for variant_key, variant in local.grpcroute_variants : {
-      for k, v in local.rulesFiltered : "grpcroute-${lower(var.instance_name)}-${k}${variant.suffix}" => {
+      for k, v in local.rulesFiltered : "grpcroute-${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}${variant.suffix}" => {
         apiVersion = "gateway.networking.k8s.io/v1"
         kind       = "GRPCRoute"
         metadata = {
-          name      = "${lower(var.instance_name)}-${k}-grpc${variant.suffix}"
+          name      = "${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}-grpc${variant.suffix}"
           namespace = var.environment.namespace
         }
         spec = {
@@ -746,6 +801,16 @@ locals {
               sectionName = "http"
             }] : (
             concat(
+              # Per-domain rule: bind to exactly one parent domain's listener.
+              lookup(v, "_domain_key", null) != null ? [{
+                name      = local.name
+                namespace = var.environment.namespace
+                sectionName = (
+                  lookup(local.domains[v._domain_key], "certificate_reference", "") != "" ||
+                  lookup(v, "domain_prefix", null) == null ||
+                  lookup(v, "domain_prefix", null) == ""
+                ) ? "https-${v._domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${local.domains[v._domain_key].domain}", ".", "-"), "*", "wildcard")}"
+              }] :
               # equivalent_prefixes match: bind to matched domains only
               contains(keys(local.equivalent_prefixes_map), lookup(v, "domain_prefix", "")) ? [
                 for domain_key in local.equivalent_prefixes_map[lookup(v, "domain_prefix", "")] : {
@@ -759,13 +824,13 @@ locals {
                     name        = local.name
                     namespace   = var.environment.namespace
                     sectionName = "https-${domain_key}"
-                  }
+                  } if !contains(local.domains_with_own_rules, domain_key)
                   ] : [
                   for domain_key, domain in local.domains : {
                     name        = local.name
                     namespace   = var.environment.namespace
                     sectionName = lookup(domain, "certificate_reference", "") != "" ? "https-${domain_key}" : "https-${replace(replace("${lookup(v, "domain_prefix", null)}.${domain.domain}", ".", "-"), "*", "wildcard")}"
-                  }
+                  } if !contains(local.domains_with_own_rules, domain_key)
               ]),
               !local.force_ssl_redirection ? [{
                 name        = local.name
@@ -776,12 +841,18 @@ locals {
           ))
 
           hostnames = distinct(
+            lookup(v, "_domain_key", null) != null ? (
+              lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
+              [local.domains[v._domain_key].domain] :
+              ["${lookup(v, "domain_prefix", null)}.${local.domains[v._domain_key].domain}"]
+            ) :
             contains(keys(local.equivalent_prefixes_map), lookup(v, "domain_prefix", "")) ?
             [for dk in local.equivalent_prefixes_map[lookup(v, "domain_prefix", "")] : local.domains[dk].domain] :
             [for domain_key, domain in local.domains :
               lookup(v, "domain_prefix", null) == null || lookup(v, "domain_prefix", null) == "" ?
               domain.domain :
               "${lookup(v, "domain_prefix", null)}.${domain.domain}"
+              if !contains(local.domains_with_own_rules, domain_key)
             ]
           )
 
@@ -826,7 +897,7 @@ locals {
                 extensionRef = {
                   group = "gateway.nginx.org"
                   kind  = "SnippetsFilter"
-                  name  = "${lower(var.instance_name)}-${k}-snippets"
+                  name  = "${lower(var.instance_name)}-${lower(replace(k, "__", "-"))}-snippets"
                 }
               }] : []
             )

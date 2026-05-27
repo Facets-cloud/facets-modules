@@ -889,19 +889,30 @@ def convert(input_data, default_namespace, report):
 
     global_grpc = bool(spec.get("grpc", False))
 
+    # Gateway-wide state must be initialized before the domain loop so that
+    # per-domain rules can contribute to it (proxy_buffer_size, ip_access_control, etc.).
+    gateway_state = {}
+
     # Domains
     domains_in = spec.get("domains") or {}
     out_domains = {}
-    extracted_rules = {}
     for dkey, dval in domains_in.items():
         out_domain = {}
         for field in ("domain", "alias", "certificate_reference", "equivalent_prefixes"):
             if field in dval:
                 out_domain[field] = dval[field]
 
+        # Per-domain rules: convert in place, preserve nesting so the new module
+        # binds them to this domain only (mode 1 in the new module's semantics).
         if "rules" in dval and isinstance(dval["rules"], dict):
+            converted_domain_rules = {}
             for rkey, rval in dval["rules"].items():
-                extracted_rules[f"{dkey}_{rkey}"] = rval
+                converted_domain_rules[rkey] = convert_rule(
+                    rkey, rval, global_grpc, default_namespace, gateway_state, report
+                )
+                report.rules_converted += 1
+            if converted_domain_rules:
+                out_domain["rules"] = converted_domain_rules
 
         # Warn about anything else
         for field in dval:
@@ -922,12 +933,9 @@ def convert(input_data, default_namespace, report):
     if out_domains:
         out_spec["domains"] = out_domains
 
-    # Rules (global + extracted from domains)
-    all_rules_in = {}
-    all_rules_in.update(spec.get("rules") or {})
-    all_rules_in.update(extracted_rules)
+    # Top-level rules only — per-domain rules stay nested under their domain.
+    all_rules_in = dict(spec.get("rules") or {})
 
-    gateway_state = {}
     out_rules = {}
     for rkey, rval in all_rules_in.items():
         out_rules[rkey] = convert_rule(

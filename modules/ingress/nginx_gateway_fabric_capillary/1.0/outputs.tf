@@ -3,7 +3,7 @@ locals {
   password        = lookup(var.instance.spec, "basic_auth", false) && length(random_string.basic_auth_password) > 0 ? random_string.basic_auth_password[0].result : ""
   is_auth_enabled = length(local.username) > 0 && length(local.password) > 0
 
-    output_attributes = merge(
+  output_attributes = merge(
     {
       base_domain   = local.base_domain
       gateway_class = local.gateway_class_name

@@ -27,7 +27,7 @@ The community-maintained **ingress-nginx** controller is **end-of-life** — no 
 | **`advanced.nginx_ingress_controller.values`** | Helm overrides | Moved to `spec.helm_values` (not auto-translated — helm charts differ) |
 | **`advanced.nginx_ingress_controller.domain_prefix_override`** | Advanced block | `spec.domain_prefix_override` |
 | **`advanced.nginx_ingress_controller.disable_endpoint_validation`** | Advanced block | `spec.disable_endpoint_validation` |
-| **Domain-level `rules`** | Nested inside each domain object | Flattened into global `spec.rules` (keyed as `<domain>_<rule>`) |
+| **Domain-level `rules`** | Nested inside each domain object | **Preserved nested** — `spec.domains.<key>.rules.<rkey>`. Routes scoped to that domain only. Top-level `spec.rules` do NOT apply to a domain that has its own `rules`. |
 | **Namespace on rules** | Optional | Required per rule (derived from `${service.<name>.out.interfaces.*.name}` templates; else uses `--default-namespace`) |
 
 ### Annotation → spec field mapping
@@ -71,7 +71,7 @@ python3 convert_to_capillary.py <input.json> [-o output.json] [--default-namespa
 - Sets `flavor: nginx_gateway_fabric_capillary`, `kind: ingress`, `version: "1.0"`
 - Enables `use_dns01: true` with `dns01_cluster_issuer: "gts-production"`
 - Moves `advanced.nginx_ingress_controller.*` fields into `spec`
-- Flattens domain-level `rules` into `spec.rules` (keyed as `<domain>_<rule>`)
+- Preserves domain-level `rules` nested under each domain (`spec.domains.<key>.rules.<rkey>`). Only the rule schema is converted — domain binding is retained, matching the legacy module's per-domain scoping. Top-level `spec.rules` and per-domain rules are both supported on the same blueprint.
 - Adds `path_type: "PathPrefix"` to every rule that doesn't specify one
 - Strips leading `^` anchors from paths
 - Converts global `spec.grpc: true` → per-rule `grpc_config: { enabled: true, match_all_methods: true }`

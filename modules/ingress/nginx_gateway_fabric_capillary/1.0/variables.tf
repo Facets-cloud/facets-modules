@@ -25,6 +25,7 @@ variable "instance" {
         alias                 = string
         certificate_reference = optional(string)
         equivalent_prefixes   = optional(list(string), [])
+        rules                 = optional(any, {})
       })), {})
       data_plane             = optional(any)
       control_plane          = optional(any)

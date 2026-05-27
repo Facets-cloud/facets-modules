@@ -165,6 +165,28 @@ ReferenceGrant                 infra, per cross-namespace service
 | `backend.service.name` | `backendRefs[].name` |
 | `backend.service.port.number` | `backendRefs[].port` |
 
+### Rule placement and domain scoping (backward-compat with `nginx_ingress_controller`)
+
+Rules can live in two places on the spec. Each domain is in **exactly one of three exclusive modes**, matching the legacy `nginx_ingress_controller` semantics:
+
+| Mode | Domain condition | Routing |
+|---|---|---|
+| **1. Own rules** | `spec.domains.<key>.rules` is non-empty | Only those per-domain rules route to this domain. Top-level `spec.rules` are excluded. |
+| **2. Equivalent prefixes** | `equivalent_prefixes` non-empty, no own `rules` | Top-level rules whose `domain_prefix` matches one of `equivalent_prefixes` route to this domain's hostname directly (prefix not prepended). |
+| **3. Plain** | both empty | All top-level `spec.rules` cross-product onto this domain (with `domain_prefix` prepended as a subdomain when set). |
+
+**Per-domain rule shape**: same as top-level rule — every field supported under `spec.rules.<key>` is also supported under `spec.domains.<dkey>.rules.<rkey>`. The conversion script transforms the schema in-place without changing where the rule lives on the spec.
+
+**Hostname binding** for a per-domain rule with key `rkey` under domain `dkey`:
+- No `domain_prefix` → hostname `domains[dkey].domain`.
+- With `domain_prefix=x` → hostname `x.domains[dkey].domain` (subdomain under the parent only).
+
+**Listener binding** for a per-domain rule:
+- Parent domain has `certificate_reference` set, OR no `domain_prefix` → `https-<dkey>` listener.
+- Otherwise → `https-<prefix>-<domain>` wildcard sub-listener (cert-manager HTTP-01 path).
+
+**Resource naming**: per-domain rules generate `HTTPRoute`/`GRPCRoute` resources keyed `<instance>-<dkey>-<rkey>` (the internal terraform map key uses `<dkey>__<rkey>`; double underscore is rewritten to single dash in K8s names). Reserved separator: do not use `__` in top-level rule keys.
+
 ### TLS
 
 | ingress-nginx | NGF |
