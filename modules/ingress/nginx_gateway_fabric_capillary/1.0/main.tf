@@ -58,6 +58,7 @@ locals {
       alias                 = "base"
       certificate_reference = ""
       equivalent_prefixes   = []
+      rules                 = {}
     }
   } : {}
 
@@ -95,6 +96,7 @@ locals {
       "alias"                 = "base"
       "certificate_reference" = ""
       "equivalent_prefixes"   = []
+      "rules"                 = {}
     }
   }
 
@@ -331,8 +333,11 @@ locals {
     if lookup(domain, "certificate_reference", "") != ""
   }
 
-  additional_hostname_configs = local.acm_mode ? {} : {
-    for hostname in local.additional_hostnames :
+  # ACM mode → no additional hostnames; collapse the conditional into the `for`
+  # source so the expression always evaluates to a single map(object(...)) type
+  # (an outer `acm_mode ? {} : {...}` ternary would mismatch object types).
+  additional_hostname_configs = {
+    for hostname in(local.acm_mode ? [] : local.additional_hostnames) :
     replace(replace(hostname, ".", "-"), "*", "wildcard") => {
       hostname    = hostname
       secret_name = "${local.name}-${replace(replace(hostname, ".", "-"), "*", "wildcard")}-tls-cert"
@@ -456,14 +461,17 @@ locals {
   } : {}
 
   # --- HTTPRoute variants ---
-  httproute_variants = local.acm_mode && !local.force_ssl_redirection ? {
+  # tomap() forces map(object(...)) inference so ternary branches with different
+  # keys unify cleanly. proto is always a string ("" sentinel for "no proto
+  # header injection"); downstream uses `variant.proto != ""` instead of `!= null`.
+  httproute_variants = local.acm_mode && !local.force_ssl_redirection ? tomap({
     "https" = { suffix = "-https", listener = "https", proto = "https" }
     "http"  = { suffix = "-http", listener = "http", proto = "http" }
-    } : (local.acm_mode ? {
+    }) : (local.acm_mode ? tomap({
       "https" = { suffix = "", listener = "https", proto = "https" }
-      } : {
-      "default" = { suffix = "", listener = "default", proto = null }
-  })
+      }) : tomap({
+      "default" = { suffix = "", listener = "default", proto = "" }
+  }))
 
   # --- SnippetsFilter resources (Features 6, 8, 9) ---
   # SnippetsFilter also requires one snippet per context, so merge
@@ -654,7 +662,7 @@ locals {
               [
                 for filter in [
                   # Request header modification
-                  (lookup(v, "request_header_modifier", null) != null || variant.proto != null) ? {
+                  (lookup(v, "request_header_modifier", null) != null || variant.proto != "") ? {
                     type = "RequestHeaderModifier"
                     requestHeaderModifier = merge(
                       lookup(lookup(v, "request_header_modifier", {}), "add", null) != null ? {
@@ -663,7 +671,7 @@ locals {
                       {
                         set = concat(
                           try([for key, header in v.request_header_modifier.set : { name = header.name, value = header.value }], []),
-                          variant.proto != null ? [
+                          variant.proto != "" ? [
                             for h in [
                               { name = "X-Forwarded-Proto", value = variant.proto },
                               { name = "X-Forwarded-Scheme", value = variant.proto },
@@ -772,14 +780,15 @@ locals {
   ]...)
 
   # --- GRPCRoute variants ---
-  grpcroute_variants = local.acm_mode && !local.force_ssl_redirection ? {
+  # See httproute_variants for the tomap()/proto-sentinel rationale.
+  grpcroute_variants = local.acm_mode && !local.force_ssl_redirection ? tomap({
     "https" = { suffix = "-https", listener = "https", proto = "https" }
     "http"  = { suffix = "-http", listener = "http", proto = "http" }
-    } : (local.acm_mode ? {
+    }) : (local.acm_mode ? tomap({
       "https" = { suffix = "", listener = "https", proto = "https" }
-      } : {
-      "default" = { suffix = "", listener = "default", proto = null }
-  })
+      }) : tomap({
+      "default" = { suffix = "", listener = "default", proto = "" }
+  }))
 
   grpcroute_resources = merge([
     for variant_key, variant in local.grpcroute_variants : {
@@ -876,7 +885,7 @@ locals {
                   name  = "${local.name}-basic-auth"
                 }
               }] : [],
-              variant.proto != null ? [{
+              variant.proto != "" ? [{
                 type = "RequestHeaderModifier"
                 requestHeaderModifier = {
                   set = [
