@@ -86,8 +86,32 @@ locals {
   )
 
   # --- Effective domain state (after ACM/DNS-01 rewrites, before expansion) ---
-  effective_domains_pre_expansion = local.acm_mode ? lookup(var.instance.spec, "domains", {}) : local.modified_domains
-  effective_disable_base_domain   = local.acm_mode ? lookup(var.instance.spec, "disable_base_domain", false) : (local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false))
+  # Both branches rebuild via dynamic-key `for` with explicit attribute
+  # reconstruction. Terraform infers each side as `map(object({uniform shape}))`
+  # — without this, static keys force object-type inference and the ternary
+  # fails with "inconsistent conditional result types" (the synthetic `facets`
+  # key in modified_domains is absent from the raw spec domains, and the
+  # wrapper may pass untyped spec where the `rules` default isn't applied).
+  effective_domains_pre_expansion = local.acm_mode ? {
+    for k, v in lookup(var.instance.spec, "domains", {}) :
+    k => {
+      domain                = tostring(v.domain)
+      alias                 = tostring(v.alias)
+      certificate_reference = tostring(lookup(v, "certificate_reference", ""))
+      equivalent_prefixes   = [for p in lookup(v, "equivalent_prefixes", []) : tostring(p)]
+      rules                 = { for rk, rv in lookup(v, "rules", {}) : tostring(rk) => rv }
+    }
+    } : {
+    for k, v in local.modified_domains :
+    k => {
+      domain                = tostring(v.domain)
+      alias                 = tostring(v.alias)
+      certificate_reference = tostring(lookup(v, "certificate_reference", ""))
+      equivalent_prefixes   = [for p in lookup(v, "equivalent_prefixes", []) : tostring(p)]
+      rules                 = { for rk, rv in lookup(v, "rules", {}) : tostring(rk) => rv }
+    }
+  }
+  effective_disable_base_domain = local.acm_mode ? lookup(var.instance.spec, "disable_base_domain", false) : (local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false))
 
   # --- Final domains (no expansion — equivalent_prefixes is a rule-routing key, not domain multiplication) ---
   add_base_domain = local.effective_disable_base_domain ? {} : {
@@ -1092,11 +1116,10 @@ locals {
   ])
 
   gateway_snippet_http_server_location = compact([
-    # Feature 11: proxySetHeaders (always include X-Request-ID + FACETS-REQUEST-ID + custom)
+    # Feature 11: proxySetHeaders (always include X-Request-ID + custom)
     join("\n", concat(
       [
         "proxy_set_header X-Request-ID $request_id;",
-        "proxy_set_header FACETS-REQUEST-ID $request_id;"
       ],
       [for header_name, header_value in lookup(var.instance.spec, "proxy_set_headers", {}) :
         "proxy_set_header ${header_name} ${header_value};"

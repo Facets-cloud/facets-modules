@@ -746,7 +746,7 @@ def convert_advanced_block(advanced, out_spec, report):
             if "proxySetHeaders" in controller:
                 psh = controller.pop("proxySetHeaders") or {}
                 if isinstance(psh, dict):
-                    auto = {"x-request-id", "facets-request-id"}
+                    auto = {"x-request-id"}
                     filtered = {k: v for k, v in psh.items() if k.lower() not in auto}
                     if filtered:
                         out_spec["proxy_set_headers"] = filtered

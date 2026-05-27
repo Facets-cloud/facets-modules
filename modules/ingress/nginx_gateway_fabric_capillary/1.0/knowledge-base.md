@@ -232,7 +232,7 @@ Rules can live in two places on the spec. Each domain is in **exactly one of thr
 | `ReferenceGrant` | One per external namespace referenced by a backend | Cross-namespace backends |
 | `AuthenticationFilter` | Basic auth filter | `spec.basic_auth: true` |
 | `ClientSettingsPolicy` | Request body size limit | Always created; reads `spec.body_size` |
-| `SnippetsPolicy` | Gateway-wide NGINX directives | `custom_log_format`, `underscores_in_headers`, `ip_access_control`, `proxy_buffer_size`, `proxy_buffers_number`, `proxy_set_headers`, plus always-on `X-Request-ID` / `FACETS-REQUEST-ID` headers |
+| `SnippetsPolicy` | Gateway-wide NGINX directives | `custom_log_format`, `underscores_in_headers`, `ip_access_control`, `proxy_buffer_size`, `proxy_buffers_number`, `proxy_set_headers`, plus always-on `X-Request-ID` header |
 | `SnippetsFilter` | Per-route NGINX directives | `rules.*.nginx_timeouts`, `configuration_snippet`, `server_snippet` |
 | `Certificate` (cert-manager) | One per cert-manager-issued domain | Domains without `certificate_reference`, or `use_dns01: true` |
 | `ClusterIssuer` (cert-manager) | HTTP-01 issuer bound to the Gateway's port 80 listener | Any HTTP-01 domain |
@@ -312,7 +312,7 @@ On first deploy, cert-manager has not yet issued the real cert. The module pre-c
 |---|---|
 | Access logs | NGF stdout. Format set by `spec.custom_log_format`; `log_format_escape: "json"` for structured logs. |
 | Metrics | Prometheus endpoints on data plane pods. Module creates a `PodMonitor` when `prometheus_details` is wired. |
-| Request correlation | Module injects `X-Request-ID` and `FACETS-REQUEST-ID` (set to NGINX `$request_id`). Extend via `spec.proxy_set_headers`. |
+| Request correlation | Module injects `X-Request-ID` (set to NGINX `$request_id`). Extend via `spec.proxy_set_headers`. |
 
 ---
 
