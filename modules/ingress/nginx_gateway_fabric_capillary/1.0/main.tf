@@ -1857,26 +1857,31 @@ resource "aws_acm_certificate" "base_acm" {
 }
 
 resource "aws_route53_record" "base_acm_validation" {
-  # Key by domain_name (input echo, known at plan time). Keying by
-  # resource_record_name fails: ACM computes it at apply, so for_each can't
-  # resolve. ACM may emit the same CNAME for apex + wildcard; allow_overwrite
-  # handles the duplicate harmlessly. try(...,[]) covers count=0.
-  for_each = {
-    for d in try(aws_acm_certificate.base_acm[0].domain_validation_options, []) :
-    d.domain_name => {
-      name   = d.resource_record_name
-      record = d.resource_record_value
-      type   = d.resource_record_type
-    }
-  }
+  # Key by the domain names we requested (local inputs, known at plan time).
+  # Keying off domain_validation_options fails: ACM computes the WHOLE set at
+  # apply, so for_each can't resolve its keys for a new cert ("set of object
+  # with N elements"). Keys must be static; record values are looked up per
+  # key from the computed set (values may be unknown — that's fine).
+  # ACM may emit the same CNAME for apex + wildcard; allow_overwrite handles
+  # the duplicate harmlessly.
+  for_each = local.base_acm_enabled ? toset([local.base_domain, local.base_subdomain]) : toset([])
 
   allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = var.cc_metadata.tenant_base_domain_id
-  provider        = aws3tooling
+  name = one([
+    for d in aws_acm_certificate.base_acm[0].domain_validation_options :
+    d.resource_record_name if d.domain_name == each.key
+  ])
+  records = [one([
+    for d in aws_acm_certificate.base_acm[0].domain_validation_options :
+    d.resource_record_value if d.domain_name == each.key
+  ])]
+  type = one([
+    for d in aws_acm_certificate.base_acm[0].domain_validation_options :
+    d.resource_record_type if d.domain_name == each.key
+  ])
+  ttl      = 60
+  zone_id  = var.cc_metadata.tenant_base_domain_id
+  provider = aws3tooling
 }
 
 resource "aws_acm_certificate_validation" "base_acm" {
