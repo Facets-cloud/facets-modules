@@ -1857,12 +1857,13 @@ resource "aws_acm_certificate" "base_acm" {
 }
 
 resource "aws_route53_record" "base_acm_validation" {
-  # try(...,[]) handles count=0 case (no aws_acm_certificate.base_acm exists)
-  # AND keeps a single uniform map(...) result type — avoids
-  # "inconsistent conditional result types" from a ternary's empty branch.
+  # Key by domain_name (input echo, known at plan time). Keying by
+  # resource_record_name fails: ACM computes it at apply, so for_each can't
+  # resolve. ACM may emit the same CNAME for apex + wildcard; allow_overwrite
+  # handles the duplicate harmlessly. try(...,[]) covers count=0.
   for_each = {
     for d in try(aws_acm_certificate.base_acm[0].domain_validation_options, []) :
-    d.resource_record_name => {
+    d.domain_name => {
       name   = d.resource_record_name
       record = d.resource_record_value
       type   = d.resource_record_type
