@@ -28,9 +28,17 @@ locals {
   use_ack_acm = try(var.inputs.ack_acm_controller_details, null) != null
   acm_mode    = !local.use_ack_acm && length(local.acm_cert_domains) > 0
 
-  acm_cert_arns = local.acm_mode ? distinct([
-    for domain_key, domain in local.acm_cert_domains : domain.certificate_reference
-  ]) : []
+  # Auto-issue base domain ACM cert whenever any ACM signal is present
+  # (ACK controller available OR user-supplied ARN domains) and base domain not disabled.
+  base_acm_enabled = (
+    (local.use_ack_acm || length(local.acm_cert_domains) > 0)
+    && !lookup(var.instance.spec, "disable_base_domain", false)
+  )
+
+  acm_cert_arns = local.acm_mode ? distinct(concat(
+    [for domain_key, domain in local.acm_cert_domains : domain.certificate_reference],
+    local.base_acm_enabled ? [aws_acm_certificate_validation.base_acm[0].certificate_arn] : []
+  )) : []
 
   acm_cert_secret_names = {
     for domain_key, domain in local.acm_cert_domains :
@@ -1665,7 +1673,8 @@ resource "helm_release" "nginx_gateway_fabric" {
   depends_on = [
     kubernetes_secret_v1.bootstrap_tls,
     kubernetes_secret_v1.bootstrap_tls_additional,
-    kubernetes_secret_v1.dns01_bootstrap_tls
+    kubernetes_secret_v1.dns01_bootstrap_tls,
+    aws_acm_certificate_validation.base_acm
   ]
 }
 
@@ -1777,4 +1786,49 @@ resource "aws_route53_record" "cluster-base-domain-wildcard" {
   lifecycle {
     prevent_destroy = true
   }
+}
+
+# --- Auto-issued base domain ACM certificate ---
+# Issued whenever ACM signal is present (ACK controller OR user ARN domains) and
+# base domain is not disabled. In ARN-mode the ARN is appended to NLB ssl-cert
+# annotation via local.acm_cert_arns. In ACK-mode the cert is provisioned but
+# not auto-attached (consumer wiring left to caller).
+resource "aws_acm_certificate" "base_acm" {
+  count                     = local.base_acm_enabled ? 1 : 0
+  domain_name               = local.base_domain
+  subject_alternative_names = [local.base_subdomain]
+  validation_method         = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [options]
+  }
+}
+
+resource "aws_route53_record" "base_acm_validation" {
+  # try(...,[]) handles count=0 case (no aws_acm_certificate.base_acm exists)
+  # AND keeps a single uniform map(...) result type — avoids
+  # "inconsistent conditional result types" from a ternary's empty branch.
+  for_each = {
+    for d in try(aws_acm_certificate.base_acm[0].domain_validation_options, []) :
+    d.resource_record_name => {
+      name   = d.resource_record_name
+      record = d.resource_record_value
+      type   = d.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = var.cc_metadata.tenant_base_domain_id
+  provider        = aws3tooling
+}
+
+resource "aws_acm_certificate_validation" "base_acm" {
+  count                   = local.base_acm_enabled ? 1 : 0
+  certificate_arn         = aws_acm_certificate.base_acm[0].arn
+  validation_record_fqdns = [for r in aws_route53_record.base_acm_validation : r.fqdn]
 }
