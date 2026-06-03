@@ -870,12 +870,6 @@ spec:
       title: Domain Prefix Override
       description: Override the automatically generated domain prefix
       x-ui-toggle: true
-    disable_endpoint_validation:
-      type: boolean
-      title: Disable Endpoint Validation
-      description: Disable endpoint validation for cert-manager (uses DNS validation instead of HTTP)
-      default: false
-      x-ui-toggle: true
     use_dns01:
       type: boolean
       title: Use DNS-01 Resolver
@@ -914,7 +908,6 @@ spec:
     - proxy_connect_timeout
     - proxy_read_timeout
     - proxy_send_timeout
-    - disable_endpoint_validation
     - use_dns01
     - dns01_cluster_issuer
     - data_plane
