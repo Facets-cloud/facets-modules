@@ -625,50 +625,10 @@ spec:
                   type: string
                   title: Mirror Service Namespace
                   description: Namespace of the mirror service
-            timeouts:
-              type: object
-              title: Request Timeouts
-              description: Configure request and backend timeouts
-              x-ui-toggle: true
-              properties:
-                request:
-                  type: string
-                  title: Request Timeout
-                  description: Total request timeout (e.g., 30s, 1m, 5m)
-                  pattern: ^\d+[smh]$
-                  default: 300s
-                  x-ui-placeholder: "300s"
-                backend_request:
-                  type: string
-                  title: Backend Request Timeout
-                  description: Backend response timeout (e.g., 30s, 1m, 5m)
-                  default: 300s
-                  pattern: ^\d+[smh]$
-                  x-ui-placeholder: "300s"
-            nginx_timeouts:
-              type: object
-              title: Proxy Timeouts (per-rule override)
-              description: Override instance-level proxy_{connect,read,send}_timeout for this rule. Leave empty to inherit instance defaults.
-              x-ui-toggle: true
-              properties:
-                proxy_connect_timeout:
-                  type: string
-                  title: Proxy Connect Timeout
-                  description: Override proxy_connect_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
-                  x-ui-placeholder: 60s
-                proxy_read_timeout:
-                  type: string
-                  title: Proxy Read Timeout
-                  description: Override proxy_read_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
-                  x-ui-placeholder: 60s
-                proxy_send_timeout:
-                  type: string
-                  title: Proxy Send Timeout
-                  description: Override proxy_send_timeout for this rule (e.g., 60s, 1m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
-                  x-ui-placeholder: 60s
+            # Per-rule timeouts removed: HTTPRoute.spec.rules[].timeouts is ignored by
+            # NGF (nginx/nginx-gateway-fabric#2164) and per-rule nginx_timeouts had no
+            # rendering path. Use the instance-level proxy_*_timeout fields below, which
+            # apply gateway-wide via the proxy-timeouts SnippetsPolicy.
             cors:
               type: object
               title: CORS Configuration
@@ -830,8 +790,6 @@ spec:
             - path
             - path_type
             - method
-            - timeouts
-            - nginx_timeouts
             - cors
             - header_matches
             - query_param_matches
@@ -856,13 +814,13 @@ spec:
       title: Max Body Size
       description: Maximum allowed size of the client request body (e.g., 1m, 1g)
       pattern: ^\d{1,4}(k|m|g)?$
-      default: 1m
-      x-ui-placeholder: 1m
+      default: 150m
+      x-ui-placeholder: 150m
       x-ui-toggle: true
     proxy_connect_timeout:
       type: string
       title: Proxy Connect Timeout
-      description: Default timeout for establishing connections to upstream services (e.g., 60s, 1m). Per-rule overrides win.
+      description: Timeout for establishing connections to upstream services (e.g., 60s, 1m). Applies gateway-wide to all routes.
       pattern: ^\d+[smh]$
       default: 60s
       x-ui-placeholder: 60s
@@ -870,7 +828,7 @@ spec:
     proxy_read_timeout:
       type: string
       title: Proxy Read Timeout
-      description: Default timeout for reading responses from upstream services. Per-rule overrides win.
+      description: Timeout for reading responses from upstream services. Applies gateway-wide to all routes.
       pattern: ^\d+[smh]$
       default: 60s
       x-ui-placeholder: 60s
@@ -878,7 +836,7 @@ spec:
     proxy_send_timeout:
       type: string
       title: Proxy Send Timeout
-      description: Default timeout for transmitting requests to upstream services. Per-rule overrides win.
+      description: Timeout for transmitting requests to upstream services. Applies gateway-wide to all routes.
       pattern: ^\d+[smh]$
       default: 60s
       x-ui-placeholder: 60s
@@ -930,6 +888,7 @@ spec:
     - private
     - domain_prefix_override
     - disable_base_domain
+    - helm_release_name_override
     - domains
     - force_ssl_redirection
     - basic_auth
@@ -957,7 +916,7 @@ sample:
     disable_base_domain: false
     force_ssl_redirection: true
     basic_auth: false
-    body_size: 1m
+    body_size: 150m
     data_plane:
       scaling:
         min_replicas: 2
