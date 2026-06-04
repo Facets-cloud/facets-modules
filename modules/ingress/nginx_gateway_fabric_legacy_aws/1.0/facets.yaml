@@ -635,19 +635,19 @@ spec:
                   type: string
                   title: Proxy Connect Timeout
                   description: Override proxy_connect_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
+                  pattern: ^\d+[smh]?$
                   x-ui-placeholder: 300s
                 proxy_read_timeout:
                   type: string
                   title: Proxy Read Timeout
                   description: Override proxy_read_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
+                  pattern: ^\d+[smh]?$
                   x-ui-placeholder: 300s
                 proxy_send_timeout:
                   type: string
                   title: Proxy Send Timeout
                   description: Override proxy_send_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
-                  pattern: ^\d+[smh]$
+                  pattern: ^\d+[smh]?$
                   x-ui-placeholder: 300s
             cors:
               type: object
@@ -842,7 +842,7 @@ spec:
       type: string
       title: Proxy Connect Timeout
       description: Timeout for establishing connections to upstream services (e.g., 60s, 1m). Applies gateway-wide to all routes.
-      pattern: ^\d+[smh]$
+      pattern: ^\d+[smh]?$
       default: 60s
       x-ui-placeholder: 60s
       x-ui-toggle: true
@@ -850,7 +850,7 @@ spec:
       type: string
       title: Proxy Read Timeout
       description: Timeout for reading responses from upstream services. Applies gateway-wide to all routes.
-      pattern: ^\d+[smh]$
+      pattern: ^\d+[smh]?$
       default: 60s
       x-ui-placeholder: 60s
       x-ui-toggle: true
@@ -858,7 +858,7 @@ spec:
       type: string
       title: Proxy Send Timeout
       description: Timeout for transmitting requests to upstream services. Applies gateway-wide to all routes.
-      pattern: ^\d+[smh]$
+      pattern: ^\d+[smh]?$
       default: 60s
       x-ui-placeholder: 60s
       x-ui-toggle: true
