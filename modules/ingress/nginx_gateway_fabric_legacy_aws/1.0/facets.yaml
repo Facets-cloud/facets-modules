@@ -48,6 +48,15 @@ spec:
       title: Disable Base Domain
       description: Disable automatic creation of base domain for this gateway
       default: false
+    helm_release_name_override:
+      type: string
+      title: Helm Release Name Override
+      description: Advanced. Override the Helm release name for this gateway. Leave empty to keep the default (truncated instance/namespace name). Must be a DNS-1123 label (lowercase alphanumerics and hyphens, starting/ending with alphanumeric) and at most 34 characters. Changing this on an existing instance will recreate the release.
+      pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+      maxLength: 34
+      x-ui-toggle: true
+      x-ui-placeholder: "e.g. my-gateway-stable"
+      x-ui-error-message: "Must be lowercase alphanumeric with hyphens, start/end with alphanumeric, and at most 34 characters."
     domains:
       title: Domains
       description: Map of domain key to rules
@@ -616,26 +625,30 @@ spec:
                   type: string
                   title: Mirror Service Namespace
                   description: Namespace of the mirror service
-            timeouts:
+            nginx_timeouts:
               type: object
-              title: Request Timeouts
-              description: Configure request and backend timeouts
+              title: Proxy Timeouts (per-rule override)
+              description: Override the gateway-wide proxy_{connect,read,send}_timeout for this route. Rendered via NGF SnippetsFilter at http.server.location. Leave a field empty to inherit the instance default.
               x-ui-toggle: true
               properties:
-                request:
+                proxy_connect_timeout:
                   type: string
-                  title: Request Timeout
-                  description: Total request timeout (e.g., 30s, 1m, 5m)
-                  pattern: ^\d+[smh]$
-                  default: 300s
-                  x-ui-placeholder: "300s"
-                backend_request:
+                  title: Proxy Connect Timeout
+                  description: Override proxy_connect_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]?$
+                  x-ui-placeholder: 300s
+                proxy_read_timeout:
                   type: string
-                  title: Backend Request Timeout
-                  description: Backend response timeout (e.g., 30s, 1m, 5m)
-                  default: 300s
-                  pattern: ^\d+[smh]$
-                  x-ui-placeholder: "300s"
+                  title: Proxy Read Timeout
+                  description: Override proxy_read_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]?$
+                  x-ui-placeholder: 300s
+                proxy_send_timeout:
+                  type: string
+                  title: Proxy Send Timeout
+                  description: Override proxy_send_timeout for this route (e.g., 60s, 5m). Empty = inherit instance default.
+                  pattern: ^\d+[smh]?$
+                  x-ui-placeholder: 300s
             cors:
               type: object
               title: CORS Configuration
@@ -797,7 +810,7 @@ spec:
             - path
             - path_type
             - method
-            - timeouts
+            - nginx_timeouts
             - cors
             - header_matches
             - query_param_matches
@@ -820,10 +833,34 @@ spec:
     body_size:
       type: string
       title: Max Body Size
-      description: Maximum allowed size of the client request body (e.g., 150m, 1g)
+      description: Maximum allowed size of the client request body (e.g., 1m, 1g)
       pattern: ^\d{1,4}(k|m|g)?$
       default: 150m
       x-ui-placeholder: 150m
+      x-ui-toggle: true
+    proxy_connect_timeout:
+      type: string
+      title: Proxy Connect Timeout
+      description: Timeout for establishing connections to upstream services (e.g., 60s, 1m). Applies gateway-wide to all routes.
+      pattern: ^\d+[smh]?$
+      default: 300s
+      x-ui-placeholder: 300s
+      x-ui-toggle: true
+    proxy_read_timeout:
+      type: string
+      title: Proxy Read Timeout
+      description: Timeout for reading responses from upstream services. Applies gateway-wide to all routes.
+      pattern: ^\d+[smh]?$
+      default: 300s
+      x-ui-placeholder: 300s
+      x-ui-toggle: true
+    proxy_send_timeout:
+      type: string
+      title: Proxy Send Timeout
+      description: Timeout for transmitting requests to upstream services. Applies gateway-wide to all routes.
+      pattern: ^\d+[smh]?$
+      default: 300s
+      x-ui-placeholder: 300s
       x-ui-toggle: true
     helm_values:
       type: object
@@ -835,12 +872,6 @@ spec:
       type: string
       title: Domain Prefix Override
       description: Override the automatically generated domain prefix
-      x-ui-toggle: true
-    disable_endpoint_validation:
-      type: boolean
-      title: Disable Endpoint Validation
-      description: Disable endpoint validation for cert-manager (uses DNS validation instead of HTTP)
-      default: false
       x-ui-toggle: true
     use_dns01:
       type: boolean
@@ -872,11 +903,14 @@ spec:
     - private
     - domain_prefix_override
     - disable_base_domain
+    - helm_release_name_override
     - domains
     - force_ssl_redirection
     - basic_auth
     - body_size
-    - disable_endpoint_validation
+    - proxy_connect_timeout
+    - proxy_read_timeout
+    - proxy_send_timeout
     - use_dns01
     - dns01_cluster_issuer
     - data_plane
