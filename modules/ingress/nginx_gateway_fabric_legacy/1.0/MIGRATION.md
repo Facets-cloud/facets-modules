@@ -1,277 +1,222 @@
-# Migration Guide: `nginx_ingress_controller` to `nginx_gateway_fabric_legacy_aws`
+# Migrating from `nginx_ingress_controller` to `nginx_gateway_fabric_legacy_{aws,gcp,azure}/1.0`
 
-## Why migrate?
+Built around the saas-cp/tools rollout. Generic enough to reuse for other
+ingress instances, but the conversion script has a hardcoded
+`helm_release_name_override: "tools-facets"` — update it if you're migrating
+something else.
 
-The community-maintained **ingress-nginx** controller has reached **end-of-life**. Continued use means no security patches, no bug fixes, and increasing incompatibility with newer Kubernetes versions. The old ingress-nginx setup worked fine, but with the project at EOL we are moving to the **Kubernetes Gateway API**, which is the successor to the Ingress API -- it is now GA, natively supported by the Kubernetes project, and provides a standardised, role-oriented model for traffic routing. NGINX Gateway Fabric is the Gateway API implementation used by this module.
+## Why migrate
 
-Because NGINX Gateway Fabric's implementation of the Gateway API is still evolving, regex-based routing showed **unreliable and unpredictable behaviour** during our testing -- path ordering conflicts, capture-group interactions, and inconsistent matching made it difficult to reason about which backend ultimately received a request. For this reason, `nginx_gateway_fabric_legacy_aws` **enforces path-prefix-based routing only**. Regex paths (`~`, `~*`, `^` anchors) are not supported. Only `PathPrefix` and `Exact` path types are allowed. This keeps routing rules simple, auditable, and reproducible across environments.
+The community-maintained **ingress-nginx** controller is EOL: no security
+patches, no bug fixes, drifting compatibility with newer Kubernetes versions.
+We're moving onto **NGINX Gateway Fabric** (NGF) on top of the **Kubernetes
+Gateway API** — the successor to the Ingress API and now GA. Gateway API gives
+us a standardised, role-oriented model for traffic routing.
 
----
+NGF's regex routing was unreliable during our testing (path-ordering conflicts,
+inconsistent capture-group matching). The production fabric module enforces
+**path-prefix-based routing only** (`PathPrefix` / `Exact`). Regex anchors
+(`~`, `~*`, `^`) are not supported.
 
-## What changes?
+## What changes — high level
 
-| Area | Old (`nginx_ingress_controller`) | New (`nginx_gateway_fabric_legacy_aws`) |
-|------|----------------------------------|-------------------------------------|
-| **Flavor** | `nginx_ingress_controller` | `nginx_gateway_fabric_legacy_aws` |
-| **Routing model** | Regex + prefix (annotation-driven) | **Path prefix only** (`PathPrefix` / `Exact`) |
-| **Annotations on rules** | Supported (custom NGINX snippets, rewrites, etc.) | **Not supported** -- must be translated to native Gateway API features (header matching, URL rewrite, CORS, etc.) |
-| **TLS certificates** | ACM ARNs or manual | ACM ARNs supported natively (via ACK), DNS-01 wildcard certs enabled by default (`use_dns01: true`) |
-| **`basicAuth` / `basic_auth`** | Supported | Dropped (not natively supported in NGF) |
-| **`equivalent_prefixes`** | Supported on domains | Dropped |
-| **`grpc` (boolean)** | Global flag in `spec` | Per-rule `grpc_config` block |
-| **`port_name`** | Accepted | Dropped -- use `port` (number) instead |
-| **`advanced.nginx_ingress_controller.values`** | Helm overrides | Moved to `spec.helm_values` |
-| **`advanced.nginx_ingress_controller.domain_prefix_override`** | Advanced block | Moved to `spec.domain_prefix_override` |
-| **`advanced.nginx_ingress_controller.disable_endpoint_validation`** | Advanced block | Moved to `spec.disable_endpoint_validation` |
-| **Domain-level `rules`** | Nested inside each domain object | Flattened into global `spec.rules` (keyed as `<domain>_<rule>`) |
-| **`certificate_reference`** | Can be an AWS ACM ARN | ACM ARNs are supported natively; alternatively use a K8s TLS Secret name |
-| **Namespace** | Optional | Required on every rule (derived automatically when using `${service.<name>.out.interfaces.main.name}` templates) |
+| Area | Old `nginx_ingress_controller` | New `nginx_gateway_fabric_legacy_<cloud>` |
+|---|---|---|
+| Flavor | `nginx_ingress_controller` | `nginx_gateway_fabric_legacy_{aws,gcp,azure}` |
+| Routing | Regex + prefix, annotation-driven | Path-prefix only |
+| `nginx.ingress.kubernetes.io/*` annotations | Many supported | None supported. See below. |
+| `backend-protocol: HTTPS` annotation | TLS to backend, no verification | **Removed** — Gateway API has no `proxy_ssl_verify off`. Backend must be exposed plain-HTTP, or wrapped in `BackendTLSPolicy` |
+| `basicAuth` | Supported, htpasswd auto-generated | Supported, now via NGF's native `AuthenticationFilter` |
+| Grafana behind basic-auth | Worked accidentally because old controller's default proxy_pass passed Authorization through and Grafana fell through to anonymous | Authorization header now reaches Grafana → its login layer rejects. Strip it via `request_header_modifier.remove.Authorization`. **Script does this automatically for any rule whose service name contains "grafana".** |
+| `proxy-{connect,read,send}-timeout` (annotation) | 300s default in the old controller | Module default is **60s**. Script always injects 300s for parity. |
+| `proxy-body-size` (annotation) | 150m default in the old controller | Module default is **1m**. Script always injects 150m for parity. |
+| `advanced` block | `nginx_ingress_controller.values` carried Helm overrides | **Dropped entirely**. Re-express anything you need under `spec.helm_values` (NGF chart shape, not the old nginx-ingress chart). |
+| ACM ARN `certificate_reference` on domains | Worked via the controller's ACM integration | Still works — the AWS wrapper attaches ACM ARNs at the NLB listener |
+| Helm release name | Auto-named | Can pin via `spec.helm_release_name_override` (script hardcodes `"tools-facets"`) |
+| Resource name (`metadata.name`) | Kept as-is | Renamed to `"tools-facets"` so the migrated resource runs **in parallel** with the original nginx resource |
 
----
-
-## Conversion script
-
-A Python helper (`convert_nginx_ingress.py`) is included in this module to automate the mechanical parts of the migration:
+## Running the script
 
 ```bash
-python3 convert_nginx_ingress.py <input.json> [-o output.json] [--default-namespace default]
+python3 convert_nginx_ingress.py <input.json> \
+    --cloud aws|gcp|azure \
+    [-o output.json] \
+    [--default-namespace default]
 ```
 
-### What the script does automatically
+- `--cloud` is required; selects the wrapper flavor.
+- `--default-namespace` fills in `namespace` on rules where the script can't
+  derive one from a `${service.<name>.out.interfaces.main.name}` template.
+- Output goes to stdout unless `-o` is provided. Warnings go to stderr.
 
-- Updates `flavor` to `nginx_gateway_fabric_legacy_aws`, `kind`, and `version`.
-- Enables `use_dns01: true` and `dns01_cluster_issuer: "gts-production"` for DNS-01 wildcard certificates.
-- Moves `advanced.nginx_ingress_controller.*` fields into `spec`.
-- Flattens domain-level rules into `spec.rules`.
-- Adds `path_type: "PathPrefix"` to every rule.
-- Strips `^` anchors from paths.
-- Converts `grpc: true` to `grpc_config: { "enabled": true, "match_all_methods": true }`.
-- Derives `namespace` from `${service.<name>.out.interfaces.main.name}` templates, or falls back to `--default-namespace`.
-- Preserves ACM ARN `certificate_reference` values (the AWS module handles them natively via ACK).
-- Adds `ack_acm_controller_details` input (required for ACM ARN domains).
-- Drops unsupported fields (`basicAuth`, `equivalent_prefixes`, `annotations`, `disable_auth`, `port_name`, `allow_wildcard`, etc.) and prints warnings to stderr.
+Warnings come in two flavors:
 
-### What requires manual effort from your side
+| Marker | Meaning |
+|---|---|
+| `[!]` | Information / standard transformation. Reviewable but typically OK. |
+| `[!!]` | **Loud**. The converted spec is missing something the source had, and the rule will not work as-is. Hand-fix required. |
 
-1. **Custom annotations** -- The old format allowed arbitrary NGINX annotations on each rule (snippets, rewrite targets, rate limits, proxy settings, etc.). These have **no automatic translation**. You must review each dropped annotation and re-implement the behaviour using native Gateway API features (header matching, URL rewriting, CORS, request/response header modifiers, timeouts, etc.). Refer to the [README](README.md) for available options.
+## What the script does
 
-2. **Regex-based paths** -- Any rule whose `path` contained regex syntax (`~`, `~*`, capture groups, character classes) must be rewritten as one or more `PathPrefix` or `Exact` rules. There is no regex path support in this module.
+### Always emits
+- `flavor` → `nginx_gateway_fabric_legacy_<cloud>`, `version` → `"1.0"`, `kind` → `ingress`.
+- `metadata.name` → `"tools-facets"` (hardcoded). The migrated resource deploys
+  **in parallel** with the live nginx resource (which keeps its original name and is
+  left untouched). Edit `HARDCODED_METADATA_NAME` to change this.
+- Inputs block (`kubernetes_details`, `gateway_api_crd_details`, `prometheus_details`)
+  with defaults. `gateway_api_crd_details.resource_name` defaults to `"gateway-api-crd"`
+  — **verify it matches the gateway_api_crd resource in your blueprint**.
+- Legacy-parity defaults that the new module does not default to:
+  ```json
+  "body_size": "150m",
+  "proxy_connect_timeout": "300s",
+  "proxy_read_timeout":    "300s",
+  "proxy_send_timeout":    "300s"
+  ```
+- `helm_release_name_override: "tools-facets"` (hardcoded).
+- On AWS: `use_dns01: true` + `dns01_cluster_issuer: "gts-production"`.
+  On GCP/Azure: only carries over what was in input (DNS-01 plumbing differs
+  per cloud — set this up manually).
 
-3. **Certificate references** -- With `use_dns01: true` (enabled by default), certificates are issued automatically as wildcard certs via the `gts-production` ClusterIssuer using DNS-01 validation. ACM ARN `certificate_reference` values are preserved and handled natively by the AWS module via the ACK ACM controller. Ensure the `ack_acm_controller` module is deployed if you have ACM ARN domains.
+### Per-rule transforms
+- Strips leading `^` from paths; sets `path_type: "PathPrefix"`.
+- Carries over `port`, `service_name`, `domain_prefix`, `disable_auth`.
+- Resolves `namespace`: keeps explicit value, else derives from a
+  `${service.<name>.out.interfaces.main.name}` template, else falls back to
+  `--default-namespace`.
+- `grpc: true` on the spec → per-rule `grpc_config: { enabled: true, match_all_methods: true }`.
+- If `service_name` contains `grafana` (case-insensitive), adds:
+  ```json
+  "request_header_modifier": {
+    "remove": { "auth": { "name": "Authorization" } }
+  }
+  ```
+  Required because Grafana's `auth.anonymous` only kicks in when no
+  Authorization header is present; basic-auth at the gateway otherwise
+  forwards an Authorization header that Grafana's own login layer rejects.
 
-4. **`port_name` without `port`** -- If any rule only specified `port_name` (no numeric `port`), you must look up the correct port number and add it.
+### Drops (with a warning)
+- The `advanced` block. The old `nginx_ingress_controller.values` Helm overrides
+  target a different chart and are not portable. **One value is carried across**:
+  `controller.autoscaling.minReplicas` → `spec.data_plane.scaling.min_replicas`
+  (input `spec.data_plane`, if present, wins).
+- `nginx.ingress.kubernetes.io/*` annotations on the resource and on rules.
+- `spec.allow_wildcard`, `spec.subdomains`, and any unknown spec field.
 
----
+### Loud warnings (rule will fail until you act)
+- `nginx.ingress.kubernetes.io/backend-protocol: HTTPS` on any rule. See the
+  next section.
 
-## Migration steps
+## TLS-only backends (the `backend-protocol: HTTPS` case)
 
-1. **Run the converter:**
-   ```bash
-   python3 convert_nginx_ingress.py my-instance.json -o my-instance-converted.json
+The old controller paired `backend-protocol: HTTPS` with nginx's default
+`proxy_ssl_verify off`, so it talked TLS to the backend and accepted any cert.
+
+Gateway API removed this. There is **no `proxy_ssl_verify off`** equivalent.
+`BackendTLSPolicy.spec.validation` is required and must point to a real CA.
+
+You have three honest options when a rule used to carry `backend-protocol: HTTPS`:
+
+1. **Expose plain HTTP on the backend** *(preferred for in-cluster traffic)*.
+   The TLS hop between gateway and backend buys nothing inside a cluster —
+   the old controller didn't validate certs anyway. Just turn it off.
+
+   **For `k8s-dashboard-new` (the chart that ships Kong as its TLS frontend)**:
+   The chart's Kong proxy has both HTTPS and HTTP listeners; the HTTP one is
+   disabled by default. Flip it on by adding the following to the
+   `k8s-dashboard-new` helm release values:
+
+   ```yaml
+   kong:
+     proxy:
+       http:
+         enabled: true
    ```
 
-2. **Review warnings** printed to stderr. Each warning identifies a field that was dropped or needs attention.
+   That exposes Kong on Service port `80` (containerPort `8000`) alongside
+   the existing `443`. The existing TLS listener stays untouched, so nothing
+   else breaks. After the helm upgrade lands, flip the corresponding rule in
+   the converted ingress blueprint:
 
-3. **Handle annotations manually.** For each rule that had custom annotations, decide how to express the same behaviour using the examples below.
+   ```diff
+     "k8s": {
+       "service_name": "k8s-dashboard-new-kong-proxy",
+   -   "port": 443,
+   +   "port": 80,
+       ...
+     }
+   ```
 
-### Proxy timeouts
+   …and drop the `backend-protocol: HTTPS` annotation (the script already
+   dropped it on conversion; just confirm).
 
-Old (annotation):
-```json
-{
-  "annotations": {
-    "nginx.ingress.kubernetes.io/proxy-read-timeout": "60",
-    "nginx.ingress.kubernetes.io/proxy-send-timeout": "30"
-  }
-}
-```
+   **For other Kong-fronted backends**: same pattern — find the chart's
+   plain-HTTP proxy port and enable it.
 
-New (`timeouts` block on the rule):
-```json
-{
-  "rules": {
-    "api": {
-      "service_name": "api-service",
-      "namespace": "default",
-      "port": 8080,
-      "path": "/api",
-      "path_type": "PathPrefix",
-      "timeouts": {
-        "request": "60s",
-        "backend_request": "30s"
-      }
-    }
-  }
-}
-```
+   **For backends that don't have a plain-HTTP option**: pick option 2 or 3
+   below.
 
-### Rewrite target
+2. **Use a real TLS cert on the backend** (cert-manager / publicly-trusted CA).
+   Add a `BackendTLSPolicy` with `validation.wellKnownCACertificates: System`.
 
-Old (annotation):
-```json
-{
-  "annotations": {
-    "nginx.ingress.kubernetes.io/rewrite-target": "/v2/$1"
-  }
-}
-```
+3. **Pin the backend's CA into a ConfigMap** and reference it from
+   `BackendTLSPolicy.spec.validation.caCertificateRefs`. Works for stable
+   self-signed certs but breaks on backend cert rotation — you must refresh
+   the ConfigMap.
 
-New (`url_rewrite` block on the rule):
-```json
-{
-  "rules": {
-    "legacy_api": {
-      "service_name": "new-api-service",
-      "namespace": "default",
-      "port": 8080,
-      "path": "/old-api",
-      "path_type": "PathPrefix",
-      "url_rewrite": {
-        "rewrite_rule": {
-          "path_type": "ReplacePrefixMatch",
-          "replace_path": "/v2/api"
-        }
-      }
-    }
-  }
-}
-```
+The script does not generate option 2 / option 3 plumbing — those decisions are
+infrastructure-level and need a separate resource (e.g. a `k8s_resource/k8s/0.3`
+entry in the blueprint, or a follow-up Helm change on the backend). The
+loud warning per affected rule is your prompt to choose.
 
-> **Note:** Regex capture groups (`$1`, `$2`) are not supported. You must express rewrites as prefix replacements (`ReplacePrefixMatch`) or full path replacements (`ReplaceFullPath`).
+## Post-script checklist
 
-### CORS headers
+Before triggering a release on the converted blueprint:
 
-Old (annotations):
-```json
-{
-  "annotations": {
-    "nginx.ingress.kubernetes.io/enable-cors": "true",
-    "nginx.ingress.kubernetes.io/cors-allow-origin": "https://example.com,https://app.example.com",
-    "nginx.ingress.kubernetes.io/cors-allow-methods": "GET,POST,PUT",
-    "nginx.ingress.kubernetes.io/cors-allow-headers": "Content-Type,Authorization",
-    "nginx.ingress.kubernetes.io/cors-allow-credentials": "true",
-    "nginx.ingress.kubernetes.io/cors-max-age": "86400"
-  }
-}
-```
+1. **Resolve `[!!]` warnings.** Any rule with `backend-protocol: HTTPS` is
+   broken until you pick one of the three TLS strategies.
+2. **Fill in `gateway_api_crd_details.resource_name`.** The script writes
+   `<ResourceName>` as a placeholder.
+3. **Verify ACM ARN certs (AWS only).** The script preserves them; verify
+   the ARN is still valid in the target account/region.
+4. **Sanity-check `data_plane` / `control_plane` blocks.** If the source had
+   these, they're carried over verbatim — the field shapes match between
+   modules but values were tuned for the old controller's pod, double-check
+   replicas and resource requests still make sense for NGF.
+5. **Check service existence.** The script doesn't talk to the cluster, so a
+   rule pointing at a non-existent Service (like the old `noop-404` rules)
+   converts fine but will 502 in practice. Decide whether to drop the rule,
+   create a stub Service, or migrate the upstream.
+6. **Verify the converted spec applies cleanly** with `raptor apply -f` or by
+   committing to a feature branch and watching the GitOps release diff.
 
-New (`cors` block on the rule):
-```json
-{
-  "rules": {
-    "api": {
-      "service_name": "api-service",
-      "namespace": "default",
-      "port": 8080,
-      "path": "/",
-      "path_type": "PathPrefix",
-      "cors": {
-        "enabled": true,
-        "allow_origins": {
-          "origin1": { "origin": "https://example.com" },
-          "origin2": { "origin": "https://app.example.com" }
-        },
-        "allow_methods": {
-          "get": { "method": "GET" },
-          "post": { "method": "POST" },
-          "put": { "method": "PUT" }
-        },
-        "allow_headers": {
-          "content_type": { "header": "Content-Type" },
-          "auth": { "header": "Authorization" }
-        },
-        "allow_credentials": true,
-        "max_age": 86400
-      }
-    }
-  }
-}
-```
+## What still requires manual work
 
-### Custom request/response headers
+These cannot be automated by the script — pre-existing behaviors of the old
+controller that don't have a Gateway API analogue:
 
-Old (annotations):
-```json
-{
-  "annotations": {
-    "nginx.ingress.kubernetes.io/configuration-snippet": "proxy_set_header X-Custom-Header custom-value;",
-    "nginx.ingress.kubernetes.io/server-snippet": "add_header X-Response-ID unique-id always;"
-  }
-}
-```
+- **`backend-protocol: HTTPS`** → see § "TLS-only backends".
+- **`use-forwarded-headers`** (a controller-level Helm value) → NGF handles
+  `X-Forwarded-*` natively per rule via `request_header_modifier`. If your old
+  workload depended on specific header injection, set it per-rule.
+- **Custom NGINX snippet annotations** (e.g. `configuration-snippet`,
+  `server-snippet`) → re-express via NGF's `SnippetsPolicy` CRD. The fabric
+  module exposes a few via spec but not arbitrary snippets.
+- **`equivalent_prefixes` on domains** → no Gateway API equivalent.
+  Use multiple explicit hostnames if you need alias-domain behavior.
+- **inherit_from_base on the resource** → no fabric equivalent. The migrated
+  blueprint must explicitly include every rule it wants. If the base changes,
+  the migrated env will not automatically pick up the change.
 
-New (`request_header_modifier` / `response_header_modifier` on the rule):
-```json
-{
-  "rules": {
-    "api": {
-      "service_name": "api-service",
-      "namespace": "default",
-      "port": 8080,
-      "path": "/",
-      "path_type": "PathPrefix",
-      "request_header_modifier": {
-        "add": {
-          "custom_header": {
-            "name": "X-Custom-Header",
-            "value": "custom-value"
-          }
-        },
-        "set": {
-          "source_header": {
-            "name": "X-Request-Source",
-            "value": "gateway"
-          }
-        },
-        "remove": {
-          "sensitive_header": {
-            "name": "X-Sensitive-Header"
-          }
-        }
-      },
-      "response_header_modifier": {
-        "add": {
-          "response_id": {
-            "name": "X-Response-ID",
-            "value": "unique-id"
-          }
-        },
-        "remove": {
-          "server_header": {
-            "name": "Server"
-          }
-        }
-      }
-    }
-  }
-}
-```
+## Open knobs hardcoded in the script
 
-### No native equivalent -- use `spec.helm_values`
+Update these literals before reusing the script for a different rollout:
 
-If an annotation has no direct Gateway API equivalent (e.g., custom NGINX snippets, rate limiting, IP whitelisting), you can apply global NGINX configuration via `spec.helm_values`:
-
-```json
-{
-  "spec": {
-    "helm_values": {
-      "nginx": {
-        "config": {
-          "entries": {
-            "proxy-buffer-size": "16k",
-            "client-max-body-size": "50m"
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-> **Note:** `helm_values` applies globally, not per-rule. Features like per-rule rate limiting and IP whitelisting are not natively supported in NGINX Gateway Fabric.
-
-4. **Replace regex paths.** Split complex regex rules into multiple prefix rules if needed.
-
-5. **Verify ACM setup.** If you have domains with ACM ARN `certificate_reference`, ensure the `ack_acm_controller` module is deployed and the `ack_acm_controller_details` input is configured.
-
-6. **Validate** the output JSON and deploy to a staging environment first.
+| Constant | Value | Reason |
+|---|---|---|
+| `HARDCODED_HELM_RELEASE_NAME` | `"tools-facets"` | Names the NGF Helm release. Must be unique per Gateway in a namespace. |
+| `HARDCODED_METADATA_NAME` | `"tools-facets"` | Resource name for the migrated ingress. Renamed off the source so it deploys alongside the live nginx resource. |
+| `DEFAULT_INPUTS["gateway_api_crd_details"]["resource_name"]` | `"gateway-api-crd"` | Default resource_name for the gateway_api_crd input. Verify it matches your blueprint. |
+| `LEGACY_PARITY_DEFAULTS["body_size"]` | `"150m"` | Matches old controller default. Tighten if you don't need it. |
+| `LEGACY_PARITY_DEFAULTS["proxy_*_timeout"]` | `"300s"` | Matches old controller default. Tighten if you don't need it. |
+| AWS `dns01_cluster_issuer` default | `"gts-production"` | Route53 cluster issuer name used in our AWS envs. |
