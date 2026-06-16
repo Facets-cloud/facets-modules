@@ -843,24 +843,24 @@ spec:
       title: Proxy Connect Timeout
       description: Timeout for establishing connections to upstream services (e.g., 60s, 1m). Applies gateway-wide to all routes.
       pattern: ^\d+[smh]?$
-      default: 60s
-      x-ui-placeholder: 60s
+      default: 300s
+      x-ui-placeholder: 300s
       x-ui-toggle: true
     proxy_read_timeout:
       type: string
       title: Proxy Read Timeout
       description: Timeout for reading responses from upstream services. Applies gateway-wide to all routes.
       pattern: ^\d+[smh]?$
-      default: 60s
-      x-ui-placeholder: 60s
+      default: 300s
+      x-ui-placeholder: 300s
       x-ui-toggle: true
     proxy_send_timeout:
       type: string
       title: Proxy Send Timeout
       description: Timeout for transmitting requests to upstream services. Applies gateway-wide to all routes.
       pattern: ^\d+[smh]?$
-      default: 60s
-      x-ui-placeholder: 60s
+      default: 300s
+      x-ui-placeholder: 300s
       x-ui-toggle: true
     helm_values:
       type: object
