@@ -1,7 +1,7 @@
 locals {
   name      = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
   namespace = var.environment.namespace
-  version   = lookup(var.instance.spec, "version", "v1.4.1")
+  version   = lookup(var.instance.spec, "version", "v1.5.1")
   channel   = lookup(var.instance.spec, "channel", "experimental")
 
   # Build the install URL based on version and channel
