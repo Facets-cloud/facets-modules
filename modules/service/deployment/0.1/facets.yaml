@@ -1757,7 +1757,6 @@ spec:
           - runtime
   required:
   - restart_policy
-  - enable_host_anti_affinity
   - runtime
   x-ui-order:
   - restart_policy
