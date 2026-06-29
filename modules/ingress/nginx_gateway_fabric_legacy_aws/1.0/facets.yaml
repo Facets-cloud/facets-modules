@@ -29,9 +29,6 @@ inputs:
     default:
       resource_type: configuration
       resource_name: prometheus
-  ack_acm_controller_details:
-    type: "@outputs/ack_acm_controller"
-    optional: true
 outputs:
   default:
     type: "@outputs/ingress"
@@ -842,22 +839,6 @@ spec:
       description: Disable endpoint validation for cert-manager (uses DNS validation instead of HTTP)
       default: false
       x-ui-toggle: true
-    use_dns01:
-      type: boolean
-      title: Use DNS-01 Resolver
-      description: Use DNS-01 challenge type for certificate issuance. When enabled, all domain listeners use wildcard hostnames (*.domain) and certificates are issued via the DNS-01 ClusterIssuer.
-      default: false
-      x-ui-toggle: true
-    dns01_cluster_issuer:
-      type: string
-      title: DNS-01 ClusterIssuer
-      description: Name of the ClusterIssuer to use for DNS-01 certificate issuance
-      default: gts-production
-      x-ui-toggle: true
-      x-ui-visible-if:
-        field: spec.use_dns01
-        values:
-          - true
     helm_wait:
       type: boolean
       title: Helm Wait
@@ -877,8 +858,6 @@ spec:
     - basic_auth
     - body_size
     - disable_endpoint_validation
-    - use_dns01
-    - dns01_cluster_issuer
     - data_plane
     - control_plane
     - helm_values

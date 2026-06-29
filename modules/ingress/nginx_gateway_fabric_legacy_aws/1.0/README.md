@@ -1,15 +1,14 @@
 # NGINX Gateway Fabric (AWS Legacy)
 
-Kubernetes Gateway API implementation for AWS with NLB, Proxy Protocol v2, ACM, and DNS-01 support.
+Kubernetes Gateway API implementation for AWS with NLB, Proxy Protocol v2, HTTP-01, and ACM.
 
 ## Overview
 
 This module is an **AWS-specific wrapper** around the base `nginx_gateway_fabric` utility module. It adds:
 
 - **AWS NLB**: Network Load Balancer with Proxy Protocol v2 and IP target type
-- **Dual-Mode TLS**: Automatically selects TLS termination point based on configuration
-- **ACM Integration**: Use AWS Certificate Manager ARNs as `certificate_reference`
-- **DNS-01 Wildcard Certificates**: Optional DNS-01 validation via a pre-existing ClusterIssuer (e.g., `gts-production`) for wildcard listeners
+- **Two TLS modes**, selected automatically (see below)
+- **ACM integration**: use an AWS Certificate Manager ARN as `certificate_reference` to terminate TLS at the NLB
 
 This is the **legacy** flavor that uses `cc_metadata` and legacy input conventions.
 
@@ -21,174 +20,87 @@ This is the **legacy** flavor that uses `cc_metadata` and legacy input conventio
                      ┌──────────────────────────────────────────────┐
                      │       AWS Wrapper (this module)              │
                      │                                              │
-                     │  1. Dual-mode TLS detection                  │
-                     │  2. ACM ARN → K8s secret (ACK path)          │
-                     │     or ACM ARN → NLB ssl-cert (ACM mode)     │
-                     │  3. DNS-01 → certificate_reference rewrite   │
-                     │  4. AWS NLB annotations                      │
+                     │  1. TLS mode detection (ACM ARN present?)    │
+                     │  2. ACM ARN → NLB ssl-cert (ACM mode)        │
+                     │  3. AWS NLB annotations (scheme, PP2, ...)   │
                      │                                              │
                      │       ┌──────────────────────────────────┐   │
                      │       │   Base Utility Module             │   │
                      │       │   - Gateway + Listeners           │   │
                      │       │   - HTTPRoute / GRPCRoute         │   │
                      │       │   - Helm chart deployment         │   │
-                     │       │   - HTTP-01 certs (if needed)     │   │
+                     │       │   - HTTP-01 certs (default)       │   │
                      │       └──────────────────────────────────┘   │
                      └──────────────────────────────────────────────┘
 ```
 
 ---
 
-## Dual-Mode TLS
+## TLS Modes
 
-The module automatically selects between two TLS termination modes based on the presence of ACM ARNs and the ACK ACM controller input.
+The module selects one of two modes based on whether any domain's `certificate_reference` is an ACM ARN.
 
-### Mode Detection
+### Mode detection
 
 ```
 For each domain in spec.domains:
   if certificate_reference matches "arn:aws:acm:" → ACM domain
 
-If ACK controller input provided → ACK path (Gateway terminates TLS)
-If ACM domains exist + no ACK controller → ACM mode (NLB terminates TLS)
-If no ACM domains → cert-manager mode (Gateway terminates TLS)
+If any ACM domain exists → ACM mode (NLB terminates TLS)
+Otherwise               → HTTP-01 mode (Gateway terminates TLS, certs via cert-manager)
 ```
 
-### Path 1: cert-manager Mode (No ACM ARNs)
+### HTTP-01 mode (default — no ACM ARN)
 
-```
-Client (TLS) → NLB:443 (TCP passthrough)
-  → [PP2 header][TLS encrypted data]
-  → Gateway:443 (HTTPS listener + ProxyProtocol)
-  → Gateway terminates TLS with cert-manager K8s secret
-  → HTTPRoute matching, proxies to upstream
-```
-
-NLB annotations: no `ssl-cert`, no `ssl-ports`. Gateway has per-domain HTTPS listeners with TLS termination.
-
-### Path 2: ACK Path (ACM ARNs + ACK Controller)
-
-Same as cert-manager mode, but the ACK ACM controller creates ACM certificates and exports them to K8s TLS secrets. The Gateway terminates TLS using those secrets.
+The base utility module issues a **per-host** certificate for each domain via cert-manager **HTTP-01** (`gatewayHTTPRoute` solver, Let's Encrypt). The Gateway terminates TLS.
 
 ```
 Client (TLS) → NLB:443 (TCP passthrough)
   → [PP2 header][TLS encrypted data]
   → Gateway:443 (HTTPS listener + ProxyProtocol)
-  → Gateway terminates TLS with ACK-exported K8s secret
+  → Gateway terminates TLS with the cert-manager K8s secret
   → HTTPRoute matching, proxies to upstream
 ```
 
-### Path 3: ACM Mode (ACM ARNs + No ACK Controller)
+NLB annotations: no `ssl-cert`, no `ssl-ports`. Gateway has per-domain HTTPS listeners.
 
-NLB terminates TLS using free, non-exportable ACM public certificates. Gateway receives plaintext HTTP on port 443.
+> **HTTP-01 requires a public LB.** The ACME server must reach `http://<host>/.well-known/acme-challenge/...`. For **private** load balancers, use ACM mode — HTTP-01 cannot validate a private LB (and cannot issue wildcard certs).
+
+### ACM mode (ACM ARN as `certificate_reference`)
+
+The NLB terminates TLS using an existing ACM certificate; the Gateway receives plaintext HTTP on port 443.
 
 ```
 Client (TLS) → NLB:443 (TLS listener, ACM terminates)
   → [PP2 header][plain HTTP]
   → Gateway:443 (HTTP listener + ProxyProtocol)
   → Gateway reads PP2, matches HTTPRoute by Host header
-  → Proxies to upstream
+  → proxies to upstream
 ```
 
-NLB annotations include `ssl-cert` (ACM ARNs) and `ssl-ports: 443`. Gateway has a single HTTP listener on port 443 with no hostname restriction — routing is handled entirely by HTTPRoute `hostnames` fields.
+NLB annotations include `ssl-cert` (ACM ARNs) and `ssl-ports: 443`. The wrapper passes `external_tls_termination=true` to the base module, so there is a single HTTP listener on port 443 and routing is handled entirely by HTTPRoute `hostnames`.
 
-**Key differences in ACM mode:**
-- No TLS certificates created or managed (no bootstrap, no cert-manager, no ACK CRDs)
-- DNS-01 is automatically disabled (incompatible with NLB TLS termination)
-- Single Gateway listener instead of per-domain listeners
-- All HTTPRoutes reference the single `"https"` listener
+**Notes for ACM mode:**
+- No cert-manager and no TLS secrets created — TLS lives at the NLB.
+- The ACM certificate must already exist; pass its ARN as `certificate_reference`.
+- When any domain uses an ACM ARN, **all** traffic goes through NLB TLS termination — no mixing ACM and HTTP-01 on one instance.
+- Works for both public and private NLBs (the ACM cert is independent of LB reachability).
 
 ---
 
 ## TLS Certificate Flows
 
-| Domain has | Flow | Listener | Managed by |
+| Domain has | Mode | Listener | Managed by |
 |---|---|---|---|
-| ACM ARN + ACK controller | ACK ACM Certificate CRD | HTTPS, wildcard (`*.domain`) | AWS wrapper |
-| ACM ARN + no ACK controller | NLB TLS termination | HTTP on 443 (single listener) | NLB/ACM |
-| No cert ref + `use_dns01: true` | cert-manager DNS-01 via ClusterIssuer | HTTPS, wildcard (`*.domain`) | AWS wrapper |
-| No cert ref + `use_dns01: false` | cert-manager HTTP-01 (default) | HTTPS, exact hostname | Utility module |
-| K8s secret in `certificate_reference` | User-managed | HTTPS, wildcard (`*.domain`) | User |
-
-### HTTP-01 (Default)
-
-No extra configuration needed. The utility module creates a bundled HTTP-01 ClusterIssuer and issues certificates automatically via Let's Encrypt.
-
-### DNS-01 Wildcard Certificates
-
-When `use_dns01: true`, the module:
-
-1. Creates cert-manager `Certificate` resources requesting wildcard certs (`*.domain` + `domain`) from the specified ClusterIssuer
-2. Creates bootstrap self-signed TLS secrets so Gateway listeners can start immediately
-3. Sets `certificate_reference` on all domains, causing the utility module to create wildcard listeners (`*.domain`)
-4. Disables the utility module's HTTP-01 ClusterIssuer and bootstrap cert creation (no domains left without `certificate_reference`)
-
-**Note**: DNS-01 is automatically disabled when ACM mode is active (incompatible with NLB TLS termination).
-
-**Prerequisite**: The ClusterIssuer (default: `gts-production`) must already exist in the cluster with a DNS-01 solver configured.
-
-```json
-{
-  "spec": {
-    "use_dns01": true,
-    "dns01_cluster_issuer": "gts-production",
-    "domains": {
-      "production": {
-        "domain": "api.example.com",
-        "alias": "prod"
-      }
-    }
-  }
-}
-```
-
-### ACM Certificates (with ACK Controller)
-
-Use an ACM ARN as `certificate_reference` with the ACK ACM controller deployed. The module creates an ACK Certificate CRD that provisions the cert and exports it to a K8s TLS secret.
-
-```json
-{
-  "spec": {
-    "domains": {
-      "production": {
-        "domain": "api.example.com",
-        "alias": "prod",
-        "certificate_reference": "arn:aws:acm:us-east-1:123456789:certificate/abc-123"
-      }
-    }
-  }
-}
-```
-
-**Prerequisite**: The `ack_acm_controller` must be deployed (optional input).
-
-### ACM Certificates (NLB Termination — No ACK Controller)
-
-Use an ACM ARN as `certificate_reference` without the ACK controller. The NLB terminates TLS using the free ACM certificate directly.
-
-```json
-{
-  "spec": {
-    "domains": {
-      "production": {
-        "domain": "api.example.com",
-        "alias": "prod",
-        "certificate_reference": "arn:aws:acm:us-east-1:123456789:certificate/abc-123"
-      }
-    }
-  }
-}
-```
-
-**No ACK controller needed.** The ACM cert is attached directly to the NLB via `aws-load-balancer-ssl-cert` annotation. The Gateway receives plaintext HTTP on port 443.
-
-**Limitation**: When any domain uses ACM without ACK, ALL traffic goes through NLB TLS termination. No mixing of ACM and cert-manager on the same instance.
+| no `certificate_reference` | cert-manager HTTP-01 | HTTPS, exact hostname | Utility module |
+| ACM ARN in `certificate_reference` | NLB TLS termination | HTTP on 443 (single listener) | NLB / ACM |
+| K8s secret name in `certificate_reference` | user-managed | HTTPS, wildcard (`*.domain`) | User |
 
 ---
 
 ## Configuration
 
-### Basic Example
+### Basic (HTTP-01, public)
 
 ```json
 {
@@ -211,37 +123,7 @@ Use an ACM ARN as `certificate_reference` without the ACK controller. The NLB te
 }
 ```
 
-### DNS-01 + Private LB Example
-
-```json
-{
-  "kind": "ingress",
-  "flavor": "nginx_gateway_fabric_legacy_aws",
-  "version": "1.0",
-  "spec": {
-    "private": true,
-    "force_ssl_redirection": true,
-    "use_dns01": true,
-    "dns01_cluster_issuer": "gts-production",
-    "domains": {
-      "internal": {
-        "domain": "internal.example.com",
-        "alias": "internal"
-      }
-    },
-    "rules": {
-      "api": {
-        "service_name": "api-service",
-        "namespace": "default",
-        "port": "8080",
-        "path": "/api"
-      }
-    }
-  }
-}
-```
-
-### ACM (NLB Termination) Example
+### ACM (NLB termination) — and the path for private LBs
 
 ```json
 {
@@ -270,7 +152,7 @@ Use an ACM ARN as `certificate_reference` without the ACK controller. The NLB te
 }
 ```
 
-No `ack_acm_controller_details` input needed. The NLB terminates TLS with the ACM certificate.
+The NLB terminates TLS with the ACM certificate. For a private LB set `"private": true` and use ACM (HTTP-01 can't reach a private LB).
 
 ---
 
@@ -278,12 +160,10 @@ No `ack_acm_controller_details` input needed. The NLB terminates TLS with the AC
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `private` | boolean | `false` | Use internal NLB |
+| `private` | boolean | `false` | Use internal NLB (use ACM for TLS — HTTP-01 can't reach a private LB) |
 | `force_ssl_redirection` | boolean | `true` | Redirect HTTP to HTTPS |
 | `disable_base_domain` | boolean | `false` | Disable auto-generated base domain |
 | `domain_prefix_override` | string | - | Override auto-generated domain prefix |
-| `use_dns01` | boolean | `false` | Enable DNS-01 wildcard certificates (disabled automatically in ACM mode) |
-| `dns01_cluster_issuer` | string | `gts-production` | ClusterIssuer name for DNS-01 validation |
 | `disable_endpoint_validation` | boolean | `false` | Disable HTTP endpoint validation |
 | `basic_auth` | boolean | `false` | Enable basic authentication |
 | `body_size` | string | `150m` | Maximum client request body size |
@@ -299,7 +179,6 @@ No `ack_acm_controller_details` input needed. The NLB terminates TLS with the AC
 | `kubernetes_details` | `@outputs/kubernetes` | Yes | Kubernetes cluster connection |
 | `gateway_api_crd_details` | `@outputs/gateway_api_crd` | Yes | Gateway API CRD installation |
 | `prometheus_details` | `@outputs/prometheus` | No | Prometheus for PodMonitor |
-| `ack_acm_controller_details` | `@outputs/ack_acm_controller` | No | ACK ACM controller — when provided, ACM certs are exported to K8s secrets via ACK CRDs (Gateway terminates TLS). When absent and ACM ARNs are used, NLB terminates TLS directly. |
 
 ---
 
@@ -309,12 +188,12 @@ No `ack_acm_controller_details` input needed. The NLB terminates TLS with the AC
 
 - **Public**: `internet-facing` scheme with Proxy Protocol v2 and client IP preservation
 - **Private**: `internal` scheme with Proxy Protocol v2, client IP preservation disabled
-- Target type: IP (for direct pod routing)
+- Target type: IP (direct pod routing)
 - Load balancer class: `service.k8s.aws/nlb`
 
 ### NLB Annotations by Mode
 
-| Annotation | cert-manager / ACK | ACM mode |
+| Annotation | HTTP-01 | ACM mode |
 |---|---|---|
 | `aws-load-balancer-backend-protocol` | `tcp` | `tcp` |
 | `aws-load-balancer-type` | `external` | `external` |
@@ -325,43 +204,36 @@ No `ack_acm_controller_details` input needed. The NLB terminates TLS with the AC
 
 ### Proxy Protocol v2
 
-Always enabled in all modes. The module configures `NginxProxy` CRD with `rewriteClientIP` in ProxyProtocol mode to correctly extract client IPs from NLB.
+Always enabled. The module configures the `NginxProxy` CRD with `rewriteClientIP` in ProxyProtocol mode to extract client IPs from the NLB.
 
 ---
 
 ## Troubleshooting
 
-### Check DNS-01 Certificate Status
+### Check HTTP-01 certificate status
 
 ```bash
 kubectl get certificate -n <namespace>
-kubectl describe certificate <name>-dns01-cert-<domain_key> -n <namespace>
-kubectl get clusterissuer gts-production -o yaml
+kubectl describe certificate <name> -n <namespace>
+kubectl get clusterissuer <name>-gateway-http01 -o yaml
 ```
 
-### Check ACM Certificate Status (ACK path)
+### Check Gateway listeners
 
 ```bash
-kubectl get certificate.acm.services.k8s.aws -n <namespace>
-kubectl describe certificate.acm.services.k8s.aws <name>-acm-cert-<domain_key> -n <namespace>
-```
-
-### Check Gateway Listeners
-
-```bash
-# cert-manager/ACK mode: expect per-domain HTTPS listeners
-# ACM mode: expect single HTTP listener named "https" on port 443
+# HTTP-01 mode: per-domain HTTPS listeners
+# ACM mode: single HTTP listener on port 443
 kubectl get gateway -n <namespace> -o yaml | grep -A 20 listeners
 ```
 
-### Verify NLB TLS Mode
+### Verify NLB TLS mode
 
 ```bash
-# Check if ssl-cert annotation is present (ACM mode) or absent (cert-manager mode)
+# ssl-cert annotation present = ACM mode; absent = HTTP-01 mode
 kubectl get svc -n <namespace> -l app.kubernetes.io/name=nginx-gateway-fabric -o yaml | grep ssl-cert
 ```
 
-### NLB Issues
+### NLB issues
 
 ```bash
 kubectl get svc -n <namespace> -l app.kubernetes.io/name=nginx-gateway-fabric
