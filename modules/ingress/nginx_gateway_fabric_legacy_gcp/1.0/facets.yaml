@@ -204,14 +204,14 @@ spec:
                   title: CPU Request
                   description: Minimum CPU requirement (e.g., 100m, 250m, 500m)
                   pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
-                  default: 200m
+                  default: 250m
                   x-ui-placeholder: 200m
                 memory:
                   type: string
                   title: Memory Request
                   description: Minimum memory requirement (e.g., 256Mi, 512Mi)
                   pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
-                  default: 256Mi
+                  default: 512Mi
                   x-ui-placeholder: 256Mi
             limits:
               type: object
@@ -223,14 +223,14 @@ spec:
                   title: CPU Limit
                   description: Maximum CPU allowed (e.g., 500m, 1, 2)
                   pattern: ^([0-9]*\.?[0-9]+m?|[0-9]+)$
-                  default: 500m
+                  default: "1"
                   x-ui-placeholder: 500m
                 memory:
                   type: string
                   title: Memory Limit
                   description: Maximum memory allowed (e.g., 512Mi, 1Gi)
                   pattern: ^[0-9]+(\.[0-9]+)?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E)?$
-                  default: 512Mi
+                  default: 1Gi
                   x-ui-placeholder: 512Mi
     rules:
       title: Routing Rules
@@ -870,22 +870,6 @@ spec:
       title: Domain Prefix Override
       description: Override the automatically generated domain prefix
       x-ui-toggle: true
-    use_dns01:
-      type: boolean
-      title: Use DNS-01 Resolver
-      description: Use DNS-01 challenge type for certificate issuance. When enabled, all domain listeners use wildcard hostnames (*.domain) and certificates are issued via the DNS-01 ClusterIssuer.
-      default: false
-      x-ui-toggle: true
-    dns01_cluster_issuer:
-      type: string
-      title: DNS-01 ClusterIssuer
-      description: Name of the ClusterIssuer to use for DNS-01 certificate issuance
-      default: gts-production
-      x-ui-toggle: true
-      x-ui-visible-if:
-        field: spec.use_dns01
-        values:
-          - true
     helm_wait:
       type: boolean
       title: Helm Wait
@@ -908,8 +892,6 @@ spec:
     - proxy_connect_timeout
     - proxy_read_timeout
     - proxy_send_timeout
-    - use_dns01
-    - dns01_cluster_issuer
     - data_plane
     - control_plane
     - helm_values
@@ -949,9 +931,9 @@ sample:
         target_memory_utilization_percentage: 80
       resources:
         requests:
-          cpu: 200m
-          memory: 256Mi
-        limits:
-          cpu: 500m
+          cpu: 250m
           memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 1Gi
     rules: {}

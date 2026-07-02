@@ -1,7 +1,7 @@
 locals {
   name      = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
   namespace = var.environment.namespace
-  version   = lookup(var.instance.spec, "version", "v1.4.1")
+  version   = lookup(var.instance.spec, "version", "v1.5.1")
   channel   = lookup(var.instance.spec, "channel", "experimental")
 
   # Build the install URL based on version and channel
@@ -36,6 +36,13 @@ resource "kubernetes_cluster_role_v1" "gateway_api_crd_installer" {
     api_groups = ["apiextensions.k8s.io"]
     resources  = ["customresourcedefinitions"]
     verbs      = ["get", "list", "create", "update", "patch"]
+  }
+
+  # v1.5.x experimental manifest ships the safe-upgrades ValidatingAdmissionPolicy + binding.
+  rule {
+    api_groups = ["admissionregistration.k8s.io"]
+    resources  = ["validatingadmissionpolicies", "validatingadmissionpolicybindings"]
+    verbs      = ["get", "list", "create", "update", "patch", "delete"]
   }
 }
 
