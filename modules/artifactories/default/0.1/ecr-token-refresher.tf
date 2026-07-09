@@ -46,7 +46,7 @@ resource "kubernetes_cron_job_v1" "ecr-token-refresher-cron" {
             }
             container {
               name              = "kubectl"
-              image             = "facetscloud/aws-kubectl:1.31.0"
+              image             = "facetscloud/aws-kubectl:1.7.0"
               image_pull_policy = "Always"
               command           = ["/bin/sh", "-c", file("${path.module}/ecr-token-refresher-command")]
               env {
