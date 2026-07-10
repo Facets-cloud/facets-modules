@@ -1,0 +1,119 @@
+intent: pubsub
+flavor: test
+version: '1.0'
+clouds:
+- gcp
+description: A fully-managed real-time messaging service for Google Cloud that enables
+  message exchange between independent applications.
+iac:
+  validated_files:
+  - main.tf
+  - topic.tf
+  - schema.tf
+  - pull_subscriptions.tf
+  - push_subscriptions.tf
+  - variables.tf
+  - outputs.tf
+spec:
+  title: Google Cloud Pub/Sub
+  description: A fully-managed real-time messaging service for Google Cloud that enables
+    message exchange between independent applications.
+  type: object
+  properties:
+    topic_name:
+      type: string
+      title: Topic Name
+      description: Name for the Pub/Sub topic (will be suffixed with environment code)
+      default: my-topic
+    topic_message_retention_duration:
+      type: string
+      title: Message Retention Duration
+      description: How long to retain messages (e.g., '604800s' for 7 days)
+      default: 604800s
+    schema:
+      type: object
+      title: Topic Schema (optional)
+      description: Message schema configuration to validate published messages
+      x-ui-toggle: true
+      properties:
+        name:
+          type: string
+          title: Schema Name
+          description: Logical name for the schema (will be suffixed with environment
+            code)
+        type:
+          type: string
+          title: Schema Type
+          enum:
+          - AVRO
+          - PROTOCOL_BUFFER
+        definition:
+          type: string
+          title: Schema Definition
+          description: The schema contents (AVRO JSON or Proto descriptor)
+          x-ui-yaml-editor: true
+        encoding:
+          type: string
+          title: Message Encoding
+          enum:
+          - JSON
+          - BINARY
+    pull_subscriptions:
+      type: object
+      title: Pull Subscriptions
+      description: Pull-based subscriptions where clients pull messages from Pub/Sub
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_-]+$:
+          type: object
+          title: Pull Subscription Configuration
+          properties:
+            ack_deadline_seconds:
+              type: integer
+              title: Acknowledgment Deadline (seconds)
+              description: Time before Pub/Sub attempts redelivery
+              default: 20
+              minimum: 10
+              maximum: 600
+    push_subscriptions:
+      type: object
+      title: Push Subscriptions
+      description: Push-based subscriptions where Pub/Sub pushes messages to HTTP
+        endpoints
+      x-ui-toggle: true
+      patternProperties:
+        ^[a-zA-Z0-9_-]+$:
+          type: object
+          title: Push Subscription Configuration
+          properties:
+            push_endpoint:
+              type: string
+              title: Push Endpoint
+              description: The URL where messages will be pushed
+            ack_deadline_seconds:
+              type: integer
+              title: Acknowledgment Deadline (seconds)
+              description: Time before Pub/Sub attempts redelivery
+              default: 20
+              minimum: 10
+              maximum: 600
+  required: []
+inputs:
+  cloud_account:
+    type: '@outputs/cloud_account'
+    optional: true
+    displayName: GCP Cloud Account
+    description: GCP cloud account for project ID (optional - will use default provider
+      project if not provided)
+outputs:
+  default:
+    type: '@outputs/misc'
+    title: Pub/Sub Topic
+sample:
+  kind: pubsub
+  flavor: test
+  version: '1.0'
+  disabled: false
+  spec:
+    topic_name: my-topic
+    topic_message_retention_duration: 604800s
