@@ -1,0 +1,55 @@
+name: openbao
+out:
+  type: object
+  title: OpenBao Cluster Outputs
+  description: Outputs from the OpenBao cluster module including connection details and credentials
+  properties:
+    attributes:
+      type: object
+      description: Attributes of the OpenBao cluster outputs
+      properties:
+        namespace:
+          type: string
+          description: Kubernetes namespace where OpenBao is deployed
+        release_name:
+          type: string
+          description: Helm release name for the OpenBao deployment
+        service_name:
+          type: string
+          description: Kubernetes service name for OpenBao
+        service_url:
+          type: string
+          description: Internal service URL for OpenBao API access
+        ui_enabled:
+          type: boolean
+          description: Whether the OpenBao web UI is enabled
+        ui_url:
+          type: string
+          description: URL for accessing the OpenBao web UI (null if UI disabled)
+        health_check_url:
+          type: string
+          description: Health check endpoint URL for OpenBao
+        unseal_secret_name:
+          type: string
+          description: Name of the Kubernetes secret containing the unseal key
+        init_keys_secret_name:
+          type: string
+          description: Name of the Kubernetes secret containing initialization keys and root token
+        storage_type:
+          type: string
+          description: Storage backend type (raft or file)
+        server_replicas:
+          type: integer
+          description: Number of OpenBao server replicas
+        root_token:
+          type: string
+          description: Root token for OpenBao (sensitive)
+        recovery_keys:
+          type: string
+          description: Recovery keys for OpenBao (sensitive)
+        secrets:
+          type: array
+          description: List of sensitive field names
+          items:
+            type: string
+    interfaces: {}
