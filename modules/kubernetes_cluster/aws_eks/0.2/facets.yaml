@@ -218,6 +218,18 @@ spec:
                 field: spec.nodepools.facets_dedicated.enable
                 values: [true]
               x-ui-overrides-only: true
+            desired_nodes:
+              title: Desired Nodes
+              description: Desired number of worker nodes. Falls back to Min Nodes
+                when unset. Applied only at node pool creation (ignored on later
+                updates), and bounded to [Min Nodes, Max Nodes].
+              type: integer
+              minimum: 1
+              maximum: 200
+              x-ui-visible-if:
+                field: spec.nodepools.facets_dedicated.enable
+                values: [true]
+              x-ui-overrides-only: true
             instance_type:
               title: Instance Type
               description: Instance type for Facets Dedicated Node Pool
@@ -256,7 +268,7 @@ spec:
                 values: [true]
           required: ["instance_type"]
           x-ui-order: [enable, instance_type, node_lifecycle_type, root_disk_volume,
-            max_nodes, min_nodes, ami_id, ami_name_filter, ami_owner_id]
+            max_nodes, min_nodes, desired_nodes, ami_id, ami_name_filter, ami_owner_id]
         ondemand_fallback:
           title: Ondemand Fallback Nodepool Spec
           description: Specifications of Ondemand Fallback Nodepool
