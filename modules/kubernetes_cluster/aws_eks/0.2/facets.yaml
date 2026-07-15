@@ -222,7 +222,7 @@ spec:
               title: Desired Nodes
               description: Desired number of worker nodes. Falls back to Min Nodes
                 when unset. Applied only at node pool creation (ignored on later
-                updates), and bounded to [Min Nodes, Max Nodes].
+                updates). Must be between Min Nodes and Max Nodes.
               type: integer
               minimum: 1
               maximum: 200
