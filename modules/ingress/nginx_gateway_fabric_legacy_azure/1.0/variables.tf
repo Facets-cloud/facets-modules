@@ -34,8 +34,6 @@ variable "instance" {
       helm_values            = optional(any, {})
       domain_prefix_override = optional(string)
       helm_wait              = optional(bool, true)
-      use_dns01              = optional(bool, false)
-      dns01_cluster_issuer   = optional(string, "gts-production")
     })
   })
 }

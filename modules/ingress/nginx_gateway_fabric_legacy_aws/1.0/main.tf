@@ -1,110 +1,18 @@
 locals {
-  # Compute name the same way as the base module (needed for ACM secret names)
-  name = lower(var.environment.namespace == "default" ? var.instance_name : "${var.environment.namespace}-${var.instance_name}")
-
-  # --- DNS-01 configuration ---
-  # DNS-01 is incompatible with ACM mode (NLB terminates TLS, no cert-manager involvement)
-  use_dns01            = !local.acm_mode && lookup(var.instance.spec, "use_dns01", false)
-  dns01_cluster_issuer = lookup(var.instance.spec, "dns01_cluster_issuer", "gts-production")
-
-  # Compute base domain (mirrors utility module logic — needed to take over base domain for DNS-01)
-  instance_env_name   = length(var.environment.unique_name) + length(var.instance_name) + length(var.cc_metadata.tenant_base_domain) >= 60 ? substr(md5("${var.instance_name}-${var.environment.unique_name}"), 0, 20) : "${var.instance_name}-${var.environment.unique_name}"
-  check_domain_prefix = coalesce(lookup(var.instance.spec, "domain_prefix_override", null), local.instance_env_name)
-  base_domain         = lower("${local.check_domain_prefix}.${var.cc_metadata.tenant_base_domain}")
-
-  # --- ACM handling ---
-  # Detect domains with ACM ARN as certificate_reference
+  # Detect domains whose certificate_reference is an ACM ARN
   acm_cert_domains = {
     for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
     domain_key => domain
     if can(domain.certificate_reference) && length(regexall("arn:aws:acm:", lookup(domain, "certificate_reference", ""))) > 0
   }
 
-  # Detect ACK ACM controller availability
-  use_ack_acm = try(var.inputs.ack_acm_controller_details, null) != null
+  # ACM mode: ACM ARNs present → terminate TLS at the NLB (not the Gateway). All other
+  # domains use the base module's cert-manager HTTP-01 + ListenerSet path.
+  acm_mode = length(local.acm_cert_domains) > 0
 
-  # ACM mode: when ACM domains exist but no ACK controller,
-  # TLS terminates at the NLB instead of at the Gateway pod
-  acm_mode = !local.use_ack_acm && length(local.acm_cert_domains) > 0
-
-  # ACM ARNs to attach to NLB for TLS termination
   acm_cert_arns = local.acm_mode ? distinct([
     for domain_key, domain in local.acm_cert_domains : domain.certificate_reference
   ]) : []
-
-  # K8s secret name for ACM cert domains — the ACK Certificate CRD exports cert to this secret
-  # Only relevant when ACK controller is available
-  acm_cert_secret_names = {
-    for domain_key, domain in local.acm_cert_domains :
-    domain_key => "${local.name}-${domain_key}-acm-tls"
-  }
-
-  # Rewrite ACM ARN certificate_reference → K8s secret name for all ACM domains.
-  # In ACM mode (no ACK), this rewrite is harmless — external_tls_termination=true
-  # tells the base module to ignore certificate_reference entirely.
-  # Always rewriting avoids unknown map values when use_ack_acm is unresolved at plan time.
-  acm_modified_domains = {
-    for domain_key, domain in lookup(var.instance.spec, "domains", {}) :
-    domain_key => contains(keys(local.acm_cert_secret_names), domain_key) ? merge(domain, {
-      certificate_reference = local.acm_cert_secret_names[domain_key]
-    }) : domain
-  }
-
-  # --- DNS-01 domain handling ---
-  # User-configured domains eligible for DNS-01: use_dns01 enabled + no certificate_reference after ACM rewrite
-  dns01_domains = {
-    for domain_key, domain in local.acm_modified_domains :
-    domain_key => domain
-    if local.use_dns01 && lookup(domain, "certificate_reference", "") == ""
-  }
-
-  # Base domain for DNS-01: when use_dns01 is enabled and base domain is not disabled,
-  # we take over the base domain from the utility module (set disable_base_domain=true
-  # and re-add it ourselves with certificate_reference for wildcard listener)
-  dns01_base_domain = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? {
-    "facets" = {
-      domain = local.base_domain
-      alias  = "base"
-    }
-  } : {}
-
-  # All domains that need DNS-01 wildcard certs (user domains + base domain)
-  all_dns01_domains = merge(local.dns01_domains, local.dns01_base_domain)
-
-  # K8s secret names for DNS-01 wildcard certs
-  dns01_cert_secret_names = {
-    for domain_key, domain in local.all_dns01_domains :
-    domain_key => "${local.name}-${domain_key}-dns01-tls"
-  }
-
-  # Final domain rewrite: apply DNS-01 certificate_reference on top of ACM rewrites
-  # Setting certificate_reference causes the utility module to use wildcard listeners (*.domain)
-  modified_domains = merge(
-    {
-      for domain_key, domain in local.acm_modified_domains :
-      domain_key => contains(keys(local.dns01_cert_secret_names), domain_key) ? merge(domain, {
-        certificate_reference = local.dns01_cert_secret_names[domain_key]
-      }) : domain
-    },
-    # Add base domain with certificate_reference when DNS-01 is active
-    {
-      for domain_key, domain in local.dns01_base_domain :
-      domain_key => merge(domain, {
-        certificate_reference = local.dns01_cert_secret_names[domain_key]
-      })
-    }
-  )
-
-  # Build modified instance with rewritten domains
-  # ACM mode: pass original domains/spec — base module ignores certificate_reference when external_tls_termination=true
-  # cert-manager/ACK mode: apply domain rewrites and DNS-01 overrides
-  modified_instance = merge(var.instance, {
-    spec = merge(var.instance.spec, {
-      domains             = local.acm_mode ? lookup(var.instance.spec, "domains", {}) : local.modified_domains
-      disable_base_domain = local.acm_mode ? lookup(var.instance.spec, "disable_base_domain", false) : (local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? true : lookup(var.instance.spec, "disable_base_domain", false))
-    })
-  })
-
 
   # Merge default_tolerations into inputs so the utility module picks them up via kubernetes_node_pool_details.attributes.taints
   default_tolerations = lookup(var.environment, "default_tolerations", [])
@@ -144,60 +52,21 @@ locals {
     } : {}
   )
 
-  # ACK ACM Certificate CRD resources — creates ACM certificates via ACK controller
-  # and exports them to K8s TLS secrets for Gateway listener consumption.
-  # Only created when ACK controller is available.
-  ack_acm_resources = local.use_ack_acm ? {
-    for domain_key, domain in local.acm_cert_domains :
-    "ack-acm-cert-${domain_key}" => {
-      apiVersion = "acm.services.k8s.aws/v1alpha1"
-      kind       = "Certificate"
-      metadata = {
-        name      = "${local.name}-acm-cert-${domain_key}"
-        namespace = var.environment.namespace
-      }
-      spec = {
-        domainName = "*.${domain.domain}"
-        subjectAlternativeNames = [
-          domain.domain,
-          "*.${domain.domain}"
-        ]
-        validationMethod = "DNS"
-        options = {
-          certificateTransparencyLoggingPreference = "ENABLED"
-        }
-        exportTo = {
-          namespace = var.environment.namespace
-          name      = local.acm_cert_secret_names[domain_key]
-          key       = "tls.crt"
-        }
-      }
-    }
-  } : {}
+  # Private LB → HTTP-01 can't validate an internal NLB; issue certs via the
+  # gts-production DNS-01 ClusterIssuer instead. No effect in acm_mode (NLB
+  # terminates TLS with the ACM cert, no cert-manager involvement).
+  cluster_issuer_override = lookup(var.instance.spec, "private", false) && !local.acm_mode ? "gts-production" : null
 
-  # DNS-01 wildcard certificate resources for cert-manager
-  dns01_certificate_resources = {
-    for domain_key, domain in local.all_dns01_domains :
-    "dns01-cert-${domain_key}" => {
-      apiVersion = "cert-manager.io/v1"
-      kind       = "Certificate"
-      metadata = {
-        name      = "${local.name}-dns01-cert-${domain_key}"
-        namespace = var.environment.namespace
-      }
-      spec = {
-        secretName = local.dns01_cert_secret_names[domain_key]
-        issuerRef = {
-          name = local.dns01_cluster_issuer
-          kind = "ClusterIssuer"
-        }
-        dnsNames = [
-          domain.domain,
-          "*.${domain.domain}"
-        ]
-      }
-    }
-  }
+  # Private + DNS-01 (non-ACM): one wildcard cert [domain, *.domain] per domain (single DNS-01
+  # challenge) via the listenerset-shim + gts-production, instead of per-hostname HTTP-01 certs.
+  wildcard_tls = lookup(var.instance.spec, "private", false) && !local.acm_mode
+
+  modified_instance = merge(var.instance, {
+    spec = merge(var.instance.spec, {
+      cluster_issuer_override = local.cluster_issuer_override
+      wildcard_tls            = local.wildcard_tls
+    })
+  })
 }
 
 # Call the base utility module
@@ -222,116 +91,5 @@ module "nginx_gateway_fabric" {
         value = "0.0.0.0/0"
       }]
     }
-  }
-
-  additional_base_resources = merge(local.ack_acm_resources, local.dns01_certificate_resources)
-}
-
-# Pre-create empty TLS secrets for ACK ACM certificate export
-# ACK ACM controller requires the target secret to exist before it can export
-# Only created when ACK controller is available
-resource "kubernetes_secret_v1" "acm_cert" {
-  for_each = local.use_ack_acm ? local.acm_cert_domains : {}
-
-  metadata {
-    name      = local.acm_cert_secret_names[each.key]
-    namespace = var.environment.namespace
-  }
-
-  data = {
-    "tls.crt" = ""
-    "tls.key" = ""
-  }
-
-  type = "kubernetes.io/tls"
-
-  lifecycle {
-    ignore_changes = [data, metadata[0].annotations, metadata[0].labels]
-  }
-}
-
-# Bootstrap TLS secrets for DNS-01 domains — Gateway 443 listeners need a TLS secret
-# to start. cert-manager will overwrite these once the DNS-01 challenge succeeds.
-resource "tls_private_key" "dns01_bootstrap" {
-  for_each  = local.all_dns01_domains
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
-
-resource "tls_self_signed_cert" "dns01_bootstrap" {
-  for_each        = local.all_dns01_domains
-  private_key_pem = tls_private_key.dns01_bootstrap[each.key].private_key_pem
-
-  subject {
-    common_name = each.value.domain
-  }
-
-  validity_period_hours = 8760 # 1 year
-
-  dns_names = [
-    each.value.domain,
-    "*.${each.value.domain}"
-  ]
-
-  allowed_uses = [
-    "key_encipherment",
-    "digital_signature",
-    "server_auth"
-  ]
-}
-
-resource "kubernetes_secret_v1" "dns01_bootstrap_tls" {
-  for_each = local.all_dns01_domains
-
-  metadata {
-    name      = local.dns01_cert_secret_names[each.key]
-    namespace = var.environment.namespace
-  }
-
-  data = {
-    "tls.crt" = tls_self_signed_cert.dns01_bootstrap[each.key].cert_pem
-    "tls.key" = tls_private_key.dns01_bootstrap[each.key].private_key_pem
-  }
-
-  type = "kubernetes.io/tls"
-
-  lifecycle {
-    ignore_changes = [data, metadata[0].annotations, metadata[0].labels]
-  }
-}
-
-# --- Route53 DNS records for DNS-01 base domain ---
-# When use_dns01 is active, we set disable_base_domain=true in the modified instance
-# which causes the utility module to skip Route53 record creation.
-# We must create them ourselves to maintain DNS resolution.
-resource "aws_route53_record" "cluster-base-domain" {
-  count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
-  depends_on = [
-    module.nginx_gateway_fabric
-  ]
-  zone_id  = var.cc_metadata.tenant_base_domain_id
-  name     = local.base_domain
-  type     = module.nginx_gateway_fabric.record_type
-  ttl      = "300"
-  records  = [module.nginx_gateway_fabric.lb_record_value]
-  provider = aws3tooling
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_route53_record" "cluster-base-domain-wildcard" {
-  count = local.use_dns01 && !lookup(var.instance.spec, "disable_base_domain", false) ? 1 : 0
-  depends_on = [
-    module.nginx_gateway_fabric
-  ]
-  zone_id  = var.cc_metadata.tenant_base_domain_id
-  name     = "*.${local.base_domain}"
-  type     = module.nginx_gateway_fabric.record_type
-  ttl      = "300"
-  records  = [module.nginx_gateway_fabric.lb_record_value]
-  provider = aws3tooling
-  lifecycle {
-    prevent_destroy = true
   }
 }
