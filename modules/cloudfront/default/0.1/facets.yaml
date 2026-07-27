@@ -14,7 +14,7 @@ spec:
       title: Aliases
       description: Aliases for CloudFront
       x-ui-yaml-editor: true
-      x-ui-placeholder: "Enter a wildcard domain"
+      x-ui-placeholder: Enter a wildcard domain example alias1 "example.com"
     viewer_certificate:
       type: object
       title: Viewer Certificate
@@ -24,13 +24,46 @@ spec:
           type: string
           title: ACM Certificate ARN
           description: ARN of the ACM Certificate
-          x-ui-placeholder: "Enter the ACM certificate ARN"
+          pattern: ^arn:aws:acm:[a-z0-9-]+:[0-9]+:certificate/[a-f0-9-]+$
+          x-ui-placeholder: arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012
+        cloudfront_default_certificate:
+          type: boolean
+          title: Use CloudFront Default Certificate
+          description: Whether to use the default CloudFront certificate
+          default: true
+        iam_certificate_id:
+          type: string
+          title: IAM Certificate ID
+          description: The ID of the IAM certificate to use for the viewer certificate
+          x-ui-placeholder: Enter the IAM certificate ID
+        minimum_protocol_version:
+          type: string
+          title: Minimum Protocol version
+          description: Minimum SSL/TLS protocol version that you want CloudFront to
+            use for HTTPS connections
+          enum:
+          - TLSv1
+          - TLSv1.1_2016
+          - TLSv1.2_2018
+          - TLSv1.2_2021
+          - TLSv1.3
+          default: TLSv1
+        ssl_support_method:
+          type: string
+          title: SSL Support Method
+          description: The method that you want CloudFront to use to serve HTTPS
+          default: sni-only
+          enum:
+          - sni-only
+          - vip
+          - static-ip
+          x-ui-placeholder: Enter the SSL support method
     origins:
       type: object
       title: Origins
-      description: Specify the origin where CloudFront sends requests for the files
+      description: One or more origins for this distribution.
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
+        ^[a-zA-Z0-9_.-]*$:
           type: object
           title: Origin
           description: Origin configuration
@@ -39,9 +72,82 @@ spec:
               type: string
               title: Domain Name
               description: Domain name of the origin
-              x-ui-placeholder: "Enter the domain name of the origin"
-              x-ui-error-message: "Value doesn't match pattern, it should be domain
-                name eg: test.s3.ap-south-1.amazonaws.com"
+              x-ui-placeholder: Enter the domain name of the origin example.com or
+                mybucket.s3.amazonaws.com
+            origin_path:
+              type: string
+              title: Origin Path
+              description: Optional path that CloudFront appends to the origin domain
+                name when CloudFront requests content from the origin
+              x-ui-placeholder: Enter the origin path exmaple '/v1/api'
+              default: ''
+            connection_attempts:
+              type: integer
+              title: Connection Attempts
+              description: Number of times that you want CloudFront to retry when
+                the origin returns a 5xx HTTP status code
+              minimum: 1
+              maximum: 3
+            connection_timeout:
+              type: integer
+              title: Connection Timeout
+              description: Amount of time, in seconds, that you want CloudFront to
+                wait when trying to establish a connection to the origin
+              minimum: 1
+              maximum: 10
+            custom_origin_config:
+              type: object
+              title: Custom Origin Configuration
+              description: Configuration for custom origins (non-S3)
+              properties:
+                http_port:
+                  type: number
+                  title: HTTP Port
+                  description: HTTP port the custom origin listens on
+                https_port:
+                  type: number
+                  title: HTTPS Port
+                  description: HTTPS port the custom origin listens on
+                origin_protocol_policy:
+                  type: string
+                  title: Origin Protocol Policy
+                  description: Protocol to use when connecting to the origin
+                  enum:
+                  - http-only
+                  - https-only
+                  - match-viewer
+                origin_ssl_protocols:
+                  type: array
+                  title: Origin SSL Protocols
+                  description: SSL/TLS protocols that CloudFront can use when connecting
+                    via HTTPS
+                  items:
+                    type: string
+                    enum:
+                    - SSLv3
+                    - TLSv1
+                    - TLSv1.1
+                    - TLSv1.2
+                  x-ui-override-disable: true
+                origin_keepalive_timeout:
+                  type: integer
+                  title: Origin Keepalive Timeout
+                  description: Amount of time, in seconds, that you want CloudFront
+                    to wait for a response from the origin
+                  minimum: 1
+                  maximum: 60
+                origin_read_timeout:
+                  type: integer
+                  title: Origin Read Timeout
+                  description: Amount of time, in seconds, that you want CloudFront
+                    to wait for a response from the origin
+                  minimum: 1
+                  maximum: 60
+            custom_header:
+              type: object
+              title: Custom Headers
+              description: Custom headers to add to origin requests
+              x-ui-yaml-editor: true
     cache_policies:
       type: object
       title: Cache Policies
@@ -64,6 +170,23 @@ spec:
               type: integer
               title: Default time to live in seconds.
               description: Default TTL
+            trusted_signers:
+              type: array
+              title: Trusted Signers
+              description: AWS account IDs that can create signed URLs for private
+                content
+              items:
+                type: string
+              default: []
+              x-ui-override-disable: true
+            trusted_key_groups:
+              type: array
+              title: Trusted Key Groups
+              description: Key groups that can sign URLs for private content
+              items:
+                type: string
+              default: []
+              x-ui-override-disable: true
             parameters_in_cache_key_and_forwarded_to_origin:
               type: object
               title: Parameters
@@ -90,7 +213,7 @@ spec:
                       type: array
                       title: Cookies
                       description: Contains a list of cookie names
-                      x-ui-placeholder: "Enter the cookie name"
+                      x-ui-placeholder: Enter the cookie name
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -115,7 +238,7 @@ spec:
                         type: string
                       x-ui-override-disable: true
                       description: List of HTTP header names
-                      x-ui-placeholder: "Enter the header name"
+                      x-ui-placeholder: Enter the header name
                 query_strings_config:
                   type: object
                   title: Query Strings Config
@@ -137,7 +260,7 @@ spec:
                       type: array
                       title: Query Strings
                       description: Contains a list of query string names
-                      x-ui-placeholder: "Enter the header name"
+                      x-ui-placeholder: Enter the header name
                       items:
                         type: string
                       x-ui-override-disable: true
@@ -160,13 +283,13 @@ spec:
           type: string
           title: Cache Policy Name
           description: Name of the cache policy
-          x-ui-placeholder: "Enter the cache policy name"
+          x-ui-placeholder: Enter the cache policy name example my-cache-policy
         target_origin_id:
           type: string
           title: Target Origin ID
-          description: The value of ID for the origin that you want CloudFront to
-            route requests to
-          x-ui-placeholder: "Enter the target origin ID"
+          description: The origin ID to route requests to (must match an origin key)
+          x-ui-placeholder: Enter the target origin ID
+          default: ''
         allowed_methods:
           type: array
           title: Allowed Methods
@@ -199,7 +322,7 @@ spec:
       title: Ordered Cache Behaviors
       description: Ordered cache behaviors configuration
       patternProperties:
-        '^[a-zA-Z0-9_.-]*$':
+        ^[a-zA-Z0-9_.-]*$:
           type: object
           title: Cache Behavior
           description: Cache behavior configuration
@@ -208,19 +331,19 @@ spec:
               type: string
               title: Cache Policy Name
               description: Name of the cache policy
-              x-ui-placeholder: "Enter the cache policy name"
+              x-ui-placeholder: Enter the cache policy name
             path_pattern:
               type: string
               title: Path Pattern
               description: The pattern that specifies which requests to apply the
                 behavior to
-              x-ui-placeholder: "Enter the path pattern"
+              x-ui-placeholder: Enter the path pattern example '/api/*'
             target_origin_id:
               type: string
               title: Target Origin ID
               description: The value of ID for the origin that you want CloudFront
-                to route requests to
-              x-ui-placeholder: "Enter the target origin ID"
+                to route requests to (must match origin key)
+              x-ui-placeholder: Enter the target origin ID
             viewer_protocol_policy:
               type: string
               title: Viewer Protocol Policy
@@ -253,64 +376,79 @@ spec:
               title: Compress
               description: Determines whether you want CloudFront to automatically
                 compress certain files for this cache behavior.
+            origin_request_policy_id:
+              type: string
+              title: Origin Request Policy ID
+              description: The ID of the origin request policy that you want to associate
+                with this cache behavior
+              x-ui-placeholder: Enter the origin request policy ID
+            response_headers_policy_id:
+              type: string
+              title: Response Headers Policy ID
+              description: The ID of the response headers policy that you want to
+                associate with this cache behavior
+              x-ui-placeholder: Enter the response headers policy ID
     aws_waf_id:
       type: string
       title: AWS WAF ID
       description: Web Application Firewall ID
-      x-ui-placeholder: "Enter the AWS WAF ID"
+      x-ui-placeholder: Enter the AWS WAF ID
+inputs:
+  network_details:
+    optional: false
+    type: '@outputs/aws_vpc'
+    default:
+      resource_type: kubernetes_cluster
+      resource_name: default
+outputs:
+  default:
+    type: '@outputs/ingress'
 sample:
   version: '0.1'
   flavor: default
   kind: cloudfront
   lifecycle: ENVIRONMENT
-  disabled: false
+  disabled: true
   provided: false
   depends_on: []
   metadata:
-    name: ""
+    name: sample-cloudfront
   spec:
-    aliases:
-      alias1: "*.example.com"
-    viewer_certificate:
-      acm_certificate_arn: ""
     origins:
       origin1:
-        domain_name: ""
-      origin2:
-        domain_name: ""
+        domain_name: example.com
+        connection_attempts: 3
+        connection_timeout: 10
+        custom_origin_config:
+          http_port: 80
+          https_port: 443
+          origin_protocol_policy: https-only
+          origin_ssl_protocols:
+          - TLSv1.2
     cache_policies:
-      sample_policy:
-        max_ttl: 60
-        min_ttl: 10
-        default_ttl: 30
+      cache-name:
+        default_ttl: 5
+        min_ttl: 1
+        max_ttl: 10
         parameters_in_cache_key_and_forwarded_to_origin:
-          cookies_config:
-            cookie_behavior: "whitelist"
-            cookies:
-              items:
-              - ""
-          headers_config:
-            header_behavior: "none"
-          query_strings_config:
-            query_string_behavior: "none"
           enable_accept_encoding_brotli: false
           enable_accept_encoding_gzip: false
     default_cache_behavior:
-      cache_policy_name: ""
-      target_origin_id: ""
+      cache_policy_name: cache-name
+      target_origin_id: origin1
       allowed_methods:
       - GET
       - HEAD
       cached_methods:
       - GET
       - HEAD
-      viewer_protocol_policy: "allow-all"
+      viewer_protocol_policy: allow-all
     ordered_cache_behaviors:
       cache1:
-        cache_policy_name: ""
-        path_pattern: "/example/*"
-        target_origin_id: ""
-        viewer_protocol_policy: "redirect-to-https"
+        cache_policy_name: cache-name
+        path_pattern: /example/*
+        target_origin_id: origin1
+        viewer_protocol_policy: redirect-to-https
         allowed_methods:
         - GET
         - HEAD
@@ -318,4 +456,4 @@ sample:
         - GET
         - HEAD
         compress: true
-    waf_id: ""
+    waf_id: ''
