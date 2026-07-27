@@ -1,0 +1,5 @@
+name: configuration
+type: configuration
+displayName: Configuration
+description: A config resource to define the configuration of underlying resources.
+iconUrl: https://cdn-icons-png.flaticon.com/512/8053/8053573.png
