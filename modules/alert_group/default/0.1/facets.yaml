@@ -106,6 +106,16 @@ spec:
               - application
               - infrastructure
               - custom
+              x-ui-dropdown:
+              - performance
+              - availability
+              - security
+              - capacity
+              - network
+              - database
+              - application
+              - infrastructure
+              - custom
               minLength: 1
               maxLength: 100
               x-ui-typeable: true
@@ -116,6 +126,12 @@ spec:
               title: Severity Level
               description: Alert severity level for prioritization and routing
               enum:
+              - high
+              - normal
+              - urgent
+              - warning
+              - critical
+              x-ui-dropdown:
               - high
               - normal
               - urgent

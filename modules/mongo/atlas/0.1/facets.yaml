@@ -28,6 +28,12 @@ spec:
         - "6.0"
         - "7.0"
         - "8.0"
+      x-ui-dropdown:
+        - "4.4"
+        - "5.0"
+        - "6.0"
+        - "7.0"
+        - "8.0"
       x-ui-placeholder: "e.g., '6.0'"
       x-ui-error-message: "Please select a valid MongoDB version."
     region:

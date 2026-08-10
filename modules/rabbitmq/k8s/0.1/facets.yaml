@@ -28,6 +28,9 @@ spec:
       enum:
         - "3.10.7"
         - "3.10.19"
+      x-ui-dropdown:
+        - "3.10.7"
+        - "3.10.19"
     size:
       type: object
       title: Size

@@ -35,6 +35,19 @@ spec:
         - OpenSearch_1.2
         - OpenSearch_1.1
         - OpenSearch_1.0
+      x-ui-dropdown:
+        - OpenSearch_2.17
+        - OpenSearch_2.15
+        - OpenSearch_2.13
+        - OpenSearch_2.11
+        - OpenSearch_2.9
+        - OpenSearch_2.7
+        - OpenSearch_2.5
+        - OpenSearch_2.3
+        - OpenSearch_1.3
+        - OpenSearch_1.2
+        - OpenSearch_1.1
+        - OpenSearch_1.0
     size:
       type: object
       title: Size

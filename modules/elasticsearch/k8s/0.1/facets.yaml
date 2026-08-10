@@ -22,6 +22,11 @@ spec:
         - 7.16.3
         - 6.4.3
         - 5.6.12
+      x-ui-dropdown:
+        - 8.14.1
+        - 7.16.3
+        - 6.4.3
+        - 5.6.12
     size:
       type: object
       title: Size

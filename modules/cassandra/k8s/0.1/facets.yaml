@@ -29,6 +29,10 @@ spec:
         - "5.0.2"
         - "4.1.7"
         - "4.0.15"
+      x-ui-dropdown:
+        - "5.0.2"
+        - "4.1.7"
+        - "4.0.15"
     size:
       type: object
       title: Size

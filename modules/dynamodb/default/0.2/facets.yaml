@@ -32,7 +32,6 @@ spec:
               type: string
               title: Attribute Type
               description: The type of the attribute
-              x-ui-typeable: true
               enum:
               - S
               - N

@@ -17,6 +17,10 @@ spec:
       - "12.11"
       - "13.3"
       - "14.0"
+      x-ui-dropdown:
+      - "12.11"
+      - "13.3"
+      - "14.0"
       x-ui-error-message: "Please select a supported Postgres version."
     size:
       type: object
