@@ -78,6 +78,42 @@ spec:
             - db.r7g.8xlarge
             - db.r7g.12xlarge
             - db.r7g.16xlarge
+          x-ui-dropdown:
+            - db.t3.medium
+            - db.t3.large
+            - db.t3.xlarge
+            - db.t4g.medium
+            - db.r5.large
+            - db.r5.xlarge
+            - db.r5.2xlarge
+            - db.r5.4xlarge
+            - db.r5.8xlarge
+            - db.r5.12xlarge
+            - db.r5.16xlarge
+            - db.r5.24xlarge
+            - db.r6g.large
+            - db.r6g.xlarge
+            - db.r6g.2xlarge
+            - db.r6g.4xlarge
+            - db.r6g.8xlarge
+            - db.r6g.12xlarge
+            - db.r6g.16xlarge
+            - db.r6i.large
+            - db.r6i.xlarge
+            - db.r6i.2xlarge
+            - db.r6i.4xlarge
+            - db.r6i.8xlarge
+            - db.r6i.12xlarge
+            - db.r6i.16xlarge
+            - db.r6i.24xlarge
+            - db.r6i.32xlarge
+            - db.r7g.large
+            - db.r7g.xlarge
+            - db.r7g.2xlarge
+            - db.r7g.4xlarge
+            - db.r7g.8xlarge
+            - db.r7g.12xlarge
+            - db.r7g.16xlarge
           default: db.t3.medium
           x-ui-placeholder: "e.g., 'db.t3.medium'"
           x-ui-error-message: "Please select a valid instance class."

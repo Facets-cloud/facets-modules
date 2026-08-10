@@ -21,6 +21,12 @@ spec:
         - "5.6"
         - "2.3"
         - "1.5"
+      x-ui-dropdown:
+        - "7.10"
+        - "6.8"
+        - "5.6"
+        - "2.3"
+        - "1.5"
     size:
       type: object
       title: Size

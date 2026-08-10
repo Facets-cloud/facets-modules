@@ -27,6 +27,12 @@ spec:
         - '5.0'
         - '6.x'
         - '7.0'
+      x-ui-dropdown:
+        - '3.2'
+        - '4.0'
+        - '5.0'
+        - '6.x'
+        - '7.0'
       x-ui-error-message: "Please select a supported Redis version."
     size:
       type: object

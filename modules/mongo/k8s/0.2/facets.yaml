@@ -27,6 +27,13 @@ spec:
         - "7.0.11"
         - "7.0.14"
         - "8.0.1"
+      x-ui-dropdown:
+        - "4.4.15"
+        - "5.0.24"
+        - "6.0.13"
+        - "7.0.11"
+        - "7.0.14"
+        - "8.0.1"
       x-ui-placeholder: "e.g., '7.0' or '7.0.11'"
       x-ui-error-message: "Please select a valid MongoDB version."
     size:

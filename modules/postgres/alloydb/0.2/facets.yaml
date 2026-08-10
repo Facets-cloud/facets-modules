@@ -18,6 +18,11 @@ spec:
         - "14.0"
         - "15.0"
         - "16.0"
+      x-ui-dropdown:
+        - "13.0"
+        - "14.0"
+        - "15.0"
+        - "16.0"
       x-ui-placeholder: "e.g., '15.0'"
       x-ui-error-message: "Please select a valid PostgreSQL version."
     size:

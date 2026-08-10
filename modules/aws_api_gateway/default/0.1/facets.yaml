@@ -11,7 +11,6 @@ spec:
       type: string
       title: Protocol Type
       description: The protocol type for the API Gateway
-      x-ui-typeable: true
       enum:
       - HTTP
       - WEBSOCKET

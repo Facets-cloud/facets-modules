@@ -18,6 +18,9 @@ spec:
       enum:
         - "8.0"
         - "5.7"
+      x-ui-dropdown:
+        - "8.0"
+        - "5.7"
     size:
       type: object
       title: Size

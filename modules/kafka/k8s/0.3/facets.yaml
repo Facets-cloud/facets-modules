@@ -42,13 +42,11 @@ spec:
       type: string
       title: Kafka mode
       description: Mode in which kafka to be run e.g. kraft
-      x-ui-typeable: true
       enum:
       - kraft
       - combined
       - zookeeper
       - standalone
-      - combined
     controller:
       title: Controller Spec
       type: object

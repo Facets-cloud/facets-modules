@@ -37,6 +37,12 @@ spec:
       - "14"
       - "13"
       - "12"
+      x-ui-dropdown:
+      - "16"
+      - "15"
+      - "14"
+      - "13"
+      - "12"
     size:
       type: object
       title: Size
