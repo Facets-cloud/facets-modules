@@ -1,0 +1,24 @@
+name: azure_cloud_account
+out:
+  type: object
+  title: Cloud Account
+  description: Cloud Account
+  properties:
+    interfaces:
+    attributes:
+      type: object
+      title: attributes
+      description: output attributes
+      properties:
+        subscription_id:
+          type: string
+          description: "Azure subscription ID"
+        client_id:
+          type: string
+          description: "Azure client ID"
+        client_secret:
+          type: string
+          description: "Azure client secret"
+        tenant_id:
+          type: string
+          description: "Azure tenant ID"
