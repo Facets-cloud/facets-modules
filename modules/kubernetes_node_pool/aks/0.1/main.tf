@@ -55,7 +55,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "node_pool" {
 
   tags           = local.tags
   spot_max_price = local.priority == "Spot" ? lookup(local.aks_advanced, "spot_max_price", "-1") : local.spot_max_price
-  zones          = length(compact(var.cluster.azs)) == 0 ? null : [var.cluster.azs[0]]
+  zones          = length(compact(var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs)) == 0 ? null : [var.inputs.network_details.attributes.legacy_outputs.vpc_details.azs[0]]
 
 
   #  kubelet_config {
