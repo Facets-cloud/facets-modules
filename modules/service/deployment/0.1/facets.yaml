@@ -1755,7 +1755,6 @@ spec:
           - pull_policy
           - runtime
   required:
-  - restart_policy
   - runtime
   x-ui-order:
   - restart_policy
