@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   validate-bootstrapper:
-    runs-on: iac-arc
+    runs-on: ubuntu-latest
     outputs:
       script_output: ${{ steps.run.outputs.script_output }}
       slack_message: ${{ steps.run.outputs.slack_message }}
@@ -62,7 +62,7 @@ jobs:
           rm -f script_output.txt
   on-failure:
     needs: validate-bootstrapper
-    runs-on: iac-arc
+    runs-on: ubuntu-latest
     if: ${{ needs.validate-bootstrapper.outputs.exit_status != '0' }}
     steps:
       - name: Post Failure to a Slack channel

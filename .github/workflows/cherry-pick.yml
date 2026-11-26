@@ -9,7 +9,7 @@ permissions:
 jobs:
   cherry-pick:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/cherry-pick')
-    runs-on: iac-arc
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
